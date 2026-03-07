@@ -519,6 +519,72 @@
     }
     .back-btn:hover { background: var(--plat-light); }
 
+    /* ── Parent Dashboard ──────────────────────── */
+    .dash-profile-tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      width: 100%; max-width: 640px;
+      margin: 10px 0 20px;
+    }
+    .dash-tab {
+      background: white;
+      border: 2px solid var(--plat-mid);
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 0.82rem; font-weight: 800;
+      color: var(--plat-prime);
+      cursor: pointer; font-family: inherit;
+      transition: all 0.15s;
+    }
+    .dash-tab:hover  { background: var(--plat-light); }
+    .dash-tab.active { background: var(--plat-prime); color: white; border-color: var(--plat-prime); }
+
+    .dash-section       { margin-bottom: 22px; width: 100%; max-width: 640px; }
+    .dash-section-title {
+      font-size: 0.68rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--plat-soft); margin-bottom: 10px;
+    }
+
+    /* Topic heatmap */
+    .heatmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+    .heatmap-card {
+      border: 2px solid #e0e0e0; border-radius: 14px;
+      padding: 12px 8px; text-align: center; transition: transform 0.15s;
+    }
+    .heatmap-card:hover { transform: translateY(-2px); }
+
+    /* Question accordion */
+    .dash-accord-header {
+      background: var(--card);
+      border: 2px solid var(--plat-light);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 800; font-size: 0.88rem; color: var(--plat-text);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.15s; margin-bottom: 6px;
+    }
+    .dash-accord-header:hover { background: var(--plat-light); }
+    .dash-accord-body {
+      border: 2px solid var(--plat-light); border-top: none;
+      border-radius: 0 0 12px 12px;
+      margin-top: -6px; margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .dash-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    .dash-table th {
+      background: var(--plat-light); color: var(--plat-text);
+      font-weight: 800; font-size: 0.68rem;
+      padding: 6px 10px; text-align: left;
+    }
+    .dash-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(108,63,197,0.07);
+      vertical-align: top;
+    }
+    .dash-table tr:last-child td { border-bottom: none; }
+    .dash-table tr.weak-row td:first-child { border-left: 3px solid var(--coral); }
+
     /* ── Passage block (book comprehension) ────── */
     .passage-block {
       width: 100%;
@@ -1089,6 +1155,54 @@
 </div>
 
 <!-- ════════════════════════════════════════════
+     SCREEN · Parent Dashboard
+════════════════════════════════════════════ -->
+<div id="s-dashboard" class="screen">
+  <div class="gap"></div>
+  <div style="width:100%;max-width:640px;">
+    <button class="btn btn-outline btn-sm" onclick="showScreen('s-platform')">← Zurück</button>
+  </div>
+
+  <h2 class="mt2" style="color:var(--plat-text);">
+    📊 Eltern-Dashboard
+    <div class="it" style="font-size:0.8rem;color:var(--plat-soft);">Pannello genitori</div>
+  </h2>
+
+  <!-- Profile tabs -->
+  <div class="dash-profile-tabs" id="dash-profile-tabs"></div>
+
+  <!-- ① Topic heatmap -->
+  <div class="dash-section">
+    <div class="dash-section-title">Themen-Überblick <span class="it">/ Panoramica argomenti</span></div>
+    <div class="heatmap-grid" id="dash-heatmap">
+      <p style="color:var(--plat-soft);font-size:0.85rem;font-style:italic;grid-column:1/-1;text-align:center;">Noch keine Daten.</p>
+    </div>
+  </div>
+
+  <!-- ② Session history bars -->
+  <div class="dash-section">
+    <div class="dash-section-title">Letzte Versuche <span class="it">/ Ultimi tentativi</span></div>
+    <div class="card" style="padding:18px 14px 10px;max-width:640px;">
+      <div class="hist-bars" id="dash-hist-bars">
+        <p style="color:var(--plat-soft);font-size:0.85rem;font-style:italic;text-align:center;width:100%;">
+          Noch keine Ergebnisse! <span class="it">/ Ancora nessun risultato!</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ Per-question accordion -->
+  <div class="dash-section">
+    <div class="dash-section-title">Fragen im Detail <span class="it">/ Domande nel dettaglio</span></div>
+    <div id="dash-questions">
+      <p style="color:var(--plat-soft);font-size:0.85rem;font-style:italic;text-align:center;">Noch keine Statistiken.</p>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
      NAVIGATION & UI SHELL JS (Phase 1)
      Quiz engine added in Phase 2
 ════════════════════════════════════════════ -->
@@ -1196,12 +1310,204 @@ function updateModuleProgress() {
   });
 }
 
-// ── Go to history from platform footer ───────────
+// ── Go to history from platform footer → opens parent dashboard ──
 function goToHistory() {
   if (!currentProfile) { showScreen('s-profiles'); return; }
-  document.body.classList.add('theme-water');
-  renderHistory();
-  showScreen('s-history');
+  showDashboard();
+}
+
+// ── Parent Dashboard ─────────────────────────────
+let dashProfile = 'chiara';   // key in PROFILES currently shown in dashboard
+
+function showDashboard() {
+  document.body.classList.remove('theme-water');
+  // Default to the tab matching the current profile
+  dashProfile = Object.keys(PROFILES).find(
+    k => PROFILES[k].name === (currentProfile?.name || 'Chiara')
+  ) || 'chiara';
+  renderDashboard(dashProfile);
+  showScreen('s-dashboard');
+}
+
+function renderDashboard(profileKey) {
+  dashProfile = profileKey;
+  const p    = PROFILES[profileKey] || PROFILES.chiara;
+  const name = p.name;
+
+  // ── Profile tabs ──
+  const tabsEl = document.getElementById('dash-profile-tabs');
+  if (tabsEl) {
+    tabsEl.innerHTML = Object.keys(PROFILES).map(k => {
+      const pr = PROFILES[k];
+      return `<button class="dash-tab${k === profileKey ? ' active' : ''}"
+        onclick="renderDashboard('${k}')">${pr.avatar} ${pr.name}</button>`;
+    }).join('');
+  }
+
+  const stats   = JSON.parse(localStorage.getItem(`wq_stats_${name}`)   || '{}');
+  const history = JSON.parse(localStorage.getItem(`wq_${name}`)         || '[]');
+
+  renderDashHeatmap(stats);
+  renderDashHistory(history);
+  renderDashQuestions(stats);
+}
+
+// ① Heatmap — topic-level correct %
+function renderDashHeatmap(stats) {
+  const el = document.getElementById('dash-heatmap');
+  if (!el) return;
+
+  // Aggregate stats per topic
+  const agg = {};
+  TKEYS.forEach(k => agg[k] = { correct: 0, total: 0 });
+  Object.keys(stats).forEach(id => {
+    const dash  = id.lastIndexOf('-');
+    const topic = dash >= 0 ? id.substring(0, dash) : id;
+    if (!agg[topic]) return;
+    agg[topic].correct += (stats[id].correct || 0);
+    agg[topic].total   += (stats[id].shown   || 0);
+  });
+
+  const hasAny = Object.values(agg).some(a => a.total > 0);
+  if (!hasAny) {
+    el.innerHTML = `<p style="color:var(--plat-soft);font-size:0.85rem;font-style:italic;grid-column:1/-1;text-align:center;">
+      Noch keine Daten. <span class="it">/ Ancora nessun dato.</span></p>`;
+    return;
+  }
+
+  el.innerHTML = TKEYS.map(k => {
+    const t   = TOPICS[k];
+    const a   = agg[k];
+    const pct = a.total ? Math.round((a.correct / a.total) * 100) : null;
+    let bg, badge;
+    if (pct === null) {
+      bg    = '#f5f5f5';
+      badge = `<span style="font-size:0.72rem;color:#9E9E9E;">—</span>`;
+    } else if (pct >= 70) {
+      bg    = '#E8F5E9';
+      badge = `<span style="font-size:1.05rem;font-weight:900;color:#388E3C;">${pct}%</span>`;
+    } else if (pct >= 40) {
+      bg    = '#FFF8E1';
+      badge = `<span style="font-size:1.05rem;font-weight:900;color:#F9A825;">${pct}%</span>`;
+    } else {
+      bg    = '#FFEBEE';
+      badge = `<span style="font-size:1.05rem;font-weight:900;color:#C62828;">${pct}%</span>`;
+    }
+    return `<div class="heatmap-card" style="background:${bg};">
+      <div style="font-size:1.5rem;">${t.icon}</div>
+      <div style="font-size:0.7rem;font-weight:800;color:var(--plat-text);margin:4px 0 6px;line-height:1.25;">${t.de}</div>
+      ${badge}
+      <div style="font-size:0.65rem;color:var(--plat-soft);margin-top:3px;">${a.total} versucht</div>
+    </div>`;
+  }).join('');
+}
+
+// ② History — session bar chart (last 10)
+function renderDashHistory(history) {
+  const barsEl = document.getElementById('dash-hist-bars');
+  if (!barsEl) return;
+  if (!history.length) {
+    barsEl.innerHTML = `<p style="color:var(--plat-soft);font-size:0.85rem;font-style:italic;text-align:center;width:100%;">
+      Noch keine Ergebnisse! <span class="it">/ Ancora nessun risultato!</span></p>`;
+    return;
+  }
+  barsEl.innerHTML = '';
+  history.slice(-10).forEach(e => {
+    const col       = document.createElement('div');
+    col.className   = 'hist-col';
+    const barClass  = e.pct >= 80 ? 'bar-great' : e.pct >= 60 ? 'bar-good' : e.pct >= 40 ? 'bar-ok' : 'bar-low';
+    const barPx     = Math.max(6, Math.round(e.pct * 1.48));
+    const modeIcon  = (!e.mode || e.mode === 'mixed') ? '🎲' : (TOPICS[e.mode]?.icon || '📝');
+    const modeTitle = (!e.mode || e.mode === 'mixed') ? 'Gemischte Runde' : (TOPICS[e.mode]?.de || e.mode);
+    col.innerHTML = `
+      <div class="hist-pct">${e.pct}%</div>
+      <div class="hist-bar ${barClass}" style="height:${barPx}px;"></div>
+      <div class="hist-lbl">
+        ${e.date}${e.time ? '<br><span style="font-weight:500;">' + e.time + '</span>' : ''}
+        <br><span title="${modeTitle}" style="font-size:1rem;">${modeIcon}</span>
+      </div>`;
+    barsEl.appendChild(col);
+  });
+}
+
+// ③ Questions — per-topic accordion, sorted by wrong %
+function renderDashQuestions(stats) {
+  const el = document.getElementById('dash-questions');
+  if (!el) return;
+  if (!Object.keys(stats).length) {
+    el.innerHTML = `<p style="color:var(--plat-soft);font-size:0.85rem;font-style:italic;text-align:center;">
+      Noch keine Statistiken. <span class="it">/ Ancora nessun dato.</span></p>`;
+    return;
+  }
+
+  // Group by topic
+  const byTopic = {};
+  TKEYS.forEach(k => byTopic[k] = []);
+  Object.keys(stats).forEach(id => {
+    const dash  = id.lastIndexOf('-');
+    const topic = dash >= 0 ? id.substring(0, dash) : id;
+    if (!byTopic[topic]) return;
+    const s        = stats[id];
+    const shown    = s.shown   || 0;
+    const correct  = s.correct || 0;
+    const wrong    = s.wrong   || 0;
+    const wrongPct = shown ? Math.round((wrong / shown) * 100) : 0;
+    byTopic[topic].push({ id, shown, correct, wrong, wrongPct, lastSeen: s.lastSeen || '' });
+  });
+
+  el.innerHTML = TKEYS.map((k, idx) => {
+    const rows = byTopic[k];
+    if (!rows.length) return '';
+    rows.sort((a, b) => b.wrongPct - a.wrongPct);
+
+    const t        = TOPICS[k];
+    const accordId = `dash-acc-${k}`;
+    const tableRows = rows.map(r => {
+      const isWeak = r.wrongPct > 50;
+      // Try to find readable question text from QB
+      const qObj  = (typeof QB !== 'undefined' && QB[k]) ? QB[k].find(q => q.id === r.id) : null;
+      const rawTx = qObj
+        ? (qObj.question || qObj.prompt || qObj.statement || r.id)
+        : r.id;
+      const qText = rawTx.replace(/_+/g, '___').substring(0, 58) + (rawTx.length > 58 ? '…' : '');
+      return `<tr${isWeak ? ' class="weak-row"' : ''}>
+        <td style="max-width:180px;" title="${rawTx.replace(/"/g, '&quot;')}">${qText}</td>
+        <td style="text-align:center;">${r.shown}</td>
+        <td style="text-align:center;color:#388E3C;font-weight:700;">${r.correct}</td>
+        <td style="text-align:center;color:#C62828;font-weight:700;">${r.wrong}</td>
+        <td style="font-size:0.7rem;color:var(--plat-soft);">${r.lastSeen || '—'}</td>
+      </tr>`;
+    }).join('');
+
+    // First topic open by default, rest collapsed
+    const isOpen = idx === 0;
+    return `
+      <button class="dash-accord-header" onclick="toggleDashAccordion('${accordId}')">
+        <span>${t.icon} ${t.de}</span>
+        <span id="${accordId}-icon">${isOpen ? '▲' : '▼'}</span>
+      </button>
+      <div class="dash-accord-body" id="${accordId}" style="${isOpen ? '' : 'display:none;'}">
+        <table class="dash-table">
+          <thead><tr>
+            <th>Frage</th>
+            <th>Ges.</th>
+            <th>✅</th>
+            <th>❌</th>
+            <th>Zuletzt</th>
+          </tr></thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>`;
+  }).join('');
+}
+
+function toggleDashAccordion(id) {
+  const body = document.getElementById(id);
+  const icon = document.getElementById(`${id}-icon`);
+  if (!body) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : '';
+  if (icon) icon.textContent = isOpen ? '▼' : '▲';
 }
 
 // ── Italian toggle ──────────────────────────────
