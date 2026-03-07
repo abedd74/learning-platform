@@ -608,6 +608,35 @@
       margin-bottom: 8px;
     }
 
+    /* ── In-app Question Editor (Phase 9) ─────── */
+    .editor-tabs         { display:flex; gap:8px; width:100%; max-width:640px; margin:14px 0 12px; }
+    .editor-tab          { flex:1; background:white; border:2px solid var(--plat-mid); border-radius:50px; padding:8px 14px; font-size:0.82rem; font-weight:800; color:var(--plat-prime); cursor:pointer; font-family:inherit; transition:all 0.15s; }
+    .editor-tab:hover    { background:var(--plat-light); }
+    .editor-tab.active   { background:var(--plat-prime); color:white; border-color:var(--plat-prime); }
+    .editor-select       { width:100%; padding:9px 12px; border:2px solid var(--plat-mid); border-radius:12px; font-family:inherit; font-size:0.88rem; font-weight:700; color:var(--plat-text); background:white; cursor:pointer; }
+    .editor-input        { width:100%; padding:8px 11px; border:2px solid #e0e0e0; border-radius:10px; font-family:inherit; font-size:0.85rem; color:var(--plat-text); background:white; resize:vertical; transition:border-color 0.15s; box-sizing:border-box; }
+    .editor-input:focus  { outline:none; border-color:var(--plat-mid); }
+    .editor-textarea     { width:100%; padding:9px 11px; border:2px solid #e0e0e0; border-radius:10px; font-family:monospace; font-size:0.78rem; color:var(--plat-text); background:#fafafa; resize:vertical; transition:border-color 0.15s; box-sizing:border-box; }
+    .editor-textarea:focus { outline:none; border-color:var(--plat-mid); }
+    .editor-form         { background:white; border:2px solid var(--plat-light); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+    .editor-form label   { font-size:0.7rem; font-weight:900; text-transform:uppercase; letter-spacing:0.07em; color:var(--plat-soft); margin-bottom:-4px; display:block; }
+    .form-section-title  { font-size:0.85rem; font-weight:900; color:var(--plat-prime); padding-bottom:8px; border-bottom:2px solid var(--plat-light); }
+    .q-list              { display:flex; flex-direction:column; gap:7px; margin-top:8px; }
+    .q-item              { background:white; border:2px solid var(--plat-light); border-radius:12px; padding:9px 12px; display:flex; align-items:center; gap:8px; }
+    .q-item-body         { flex:1; min-width:0; }
+    .q-item-text         { font-size:0.82rem; font-weight:700; color:var(--plat-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .q-type-badge        { font-size:0.62rem; font-weight:900; background:var(--plat-light); color:var(--plat-prime); border-radius:20px; padding:2px 7px; white-space:nowrap; flex-shrink:0; margin-bottom:3px; display:inline-block; }
+    .q-item-btns         { display:flex; gap:5px; flex-shrink:0; }
+    .editor-toggle-it    { background:none; border:1px dashed #bbb; border-radius:8px; padding:7px 12px; font-size:0.78rem; color:var(--plat-soft); cursor:pointer; font-family:inherit; text-align:left; width:100%; }
+    .pairs-row, .items-row, .options-row { display:flex; gap:6px; align-items:center; margin-bottom:5px; }
+    .pairs-row input, .items-row input, .options-row input[type=text] { flex:1; padding:7px 10px; border:1.5px solid #ddd; border-radius:8px; font-family:inherit; font-size:0.83rem; box-sizing:border-box; }
+    .add-row-btn         { background:none; border:1.5px dashed var(--plat-mid); border-radius:8px; padding:6px 12px; font-size:0.8rem; color:var(--plat-prime); cursor:pointer; font-family:inherit; width:100%; margin-top:2px; }
+    .remove-row-btn      { background:none; border:none; color:var(--coral); font-size:1rem; cursor:pointer; padding:0 3px; font-weight:900; line-height:1; flex-shrink:0; }
+    .correct-radio       { accent-color:var(--plat-prime); width:15px; height:15px; cursor:pointer; flex-shrink:0; }
+    .editor-msg          { font-size:0.82rem; padding:7px 11px; border-radius:8px; font-weight:700; }
+    .editor-msg.ok       { background:#E8F5E9; color:#388E3C; }
+    .editor-msg.err      { background:#FFEBEE; color:#C62828; }
+
     /* ── Scrollbar ─────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
@@ -818,6 +847,7 @@
   <div class="plat-footer">
     <button class="footer-btn" onclick="showScreen('s-profiles')">← Profil wechseln</button>
     <button class="footer-btn" onclick="goToHistory()">📊 Meine Ergebnisse</button>
+    <button class="footer-btn" onclick="showEditor()">📝 Frageeditor</button>
   </div>
   <div class="gap"></div>
 </div>
@@ -1203,6 +1233,110 @@
 </div>
 
 <!-- ════════════════════════════════════════════
+     SCREEN · In-app Question Editor (Phase 9)
+════════════════════════════════════════════ -->
+<div id="s-editor" class="screen">
+  <div class="gap"></div>
+  <div style="width:100%;max-width:640px;">
+    <button class="btn btn-outline btn-sm" onclick="showScreen('s-platform')">← Zurück</button>
+  </div>
+
+  <h2 class="mt2" style="color:var(--plat-text);">
+    📝 Frageeditor
+    <div class="it" style="font-size:0.8rem;color:var(--plat-soft);">Editor domande</div>
+  </h2>
+
+  <!-- Topic selector -->
+  <div style="width:100%;max-width:640px;margin:12px 0 0;">
+    <select id="editor-topic" class="editor-select" onchange="editorLoadTopic(this.value)">
+      <option value="wissenswertes">🌍 Wissenswertes über Wasser</option>
+      <option value="teilchen">🔬 Wasserteilchen</option>
+      <option value="formen">🧊 Formen des Wassers</option>
+      <option value="kreislauf">🔄 Wasserkreislauf</option>
+      <option value="niederschlag">🌧️ Niederschlagsarten</option>
+      <option value="sparen">💚 Wasser sparen</option>
+    </select>
+  </div>
+
+  <!-- Tab switcher -->
+  <div class="editor-tabs">
+    <button class="editor-tab active" id="etab-list" onclick="switchEditorTab('list')">📋 Fragen</button>
+    <button class="editor-tab" id="etab-json" onclick="switchEditorTab('json')">{ } JSON</button>
+  </div>
+
+  <!-- TAB: Question list -->
+  <div id="editor-panel-list" style="width:100%;max-width:640px;">
+    <div id="editor-q-list" class="q-list">
+      <!-- Populated by JS -->
+    </div>
+    <button class="btn btn-primary w-full mt2" style="max-width:640px;" onclick="editorNewQuestion()">+ Neue Frage hinzufügen</button>
+  </div>
+
+  <!-- TAB: JSON import / export -->
+  <div id="editor-panel-json" style="width:100%;max-width:640px;display:none;">
+    <p style="font-size:0.82rem;color:var(--plat-soft);margin:8px 0 6px;">
+      JSON-Array für das gewählte Thema importieren oder exportieren:
+      <span class="it">/ Importa o esporta JSON per il tema selezionato:</span>
+    </p>
+    <textarea id="editor-json-input" class="editor-textarea" rows="10"
+      placeholder='[{ "type": "fitb", "question": "Wasser ist ___.", "answer": ["nass"] }]'></textarea>
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" onclick="editorImportJSON()">📥 Importieren</button>
+      <button class="btn btn-soft" onclick="editorExportJSON()">📤 Exportieren</button>
+      <button class="btn btn-soft" style="color:var(--coral);border-color:var(--coral);font-size:0.78rem;" onclick="editorClearTopic()">🗑️ Thema leeren</button>
+      <button class="btn btn-soft" style="font-size:0.78rem;" onclick="editorResetAll()">↺ Alles zurücksetzen</button>
+    </div>
+    <div id="editor-json-msg" style="margin-top:8px;"></div>
+  </div>
+
+  <!-- Edit / create form (hidden until triggered) -->
+  <div id="editor-form-wrap" style="display:none;width:100%;max-width:640px;">
+    <div class="editor-form">
+      <div class="form-section-title" id="ef-form-title">Neue Frage</div>
+
+      <label>Typ / Type</label>
+      <select id="ef-type" class="editor-select" onchange="editorUpdateFormFields()">
+        <option value="fitb">Lückentext (fitb)</option>
+        <option value="truefalse">Wahr/Falsch (truefalse)</option>
+        <option value="mcq">Multiple Choice (mcq)</option>
+        <option value="imageChoice">Bild-Auswahl (imageChoice)</option>
+        <option value="sequence">Reihenfolge (sequence)</option>
+        <option value="dragmatch">Zuordnung / Matching (dragmatch)</option>
+      </select>
+
+      <!-- Dynamic fields per type -->
+      <div id="ef-fields"></div>
+
+      <!-- Shared fields -->
+      <label>Hinweis (hint)</label>
+      <textarea id="ef-hint" class="editor-input" rows="2" placeholder="Tipp beim ersten Fehlversuch…"></textarea>
+
+      <label>Erklärung bei Auflösung (answer_text)</label>
+      <textarea id="ef-answer-text" class="editor-input" rows="2" placeholder="Die richtige Antwort lautet…"></textarea>
+
+      <!-- Italian section (collapsible) -->
+      <button type="button" class="editor-toggle-it" onclick="toggleEditorIt()" id="ef-it-toggle">
+        🇮🇹 Italienische Felder anzeigen ▼
+      </button>
+      <div id="ef-it-fields" style="display:none;border:1.5px dashed #c5b3e8;border-radius:12px;padding:12px;flex-direction:column;gap:10px;">
+        <div id="ef-it-dynamic" style="display:flex;flex-direction:column;gap:10px;"></div>
+        <label>Hinweis IT (hint_it)</label>
+        <textarea id="ef-hint-it" class="editor-input" rows="2"></textarea>
+        <label>Erklärung IT (answer_text_it)</label>
+        <textarea id="ef-answer-text-it" class="editor-input" rows="2"></textarea>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
+        <button class="btn btn-accent" onclick="editorSaveQuestion()">💾 Speichern</button>
+        <button class="btn btn-soft" onclick="editorCancelEdit()">❌ Abbrechen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
      NAVIGATION & UI SHELL JS (Phase 1)
      Quiz engine added in Phase 2
 ════════════════════════════════════════════ -->
@@ -1508,6 +1642,506 @@ function toggleDashAccordion(id) {
   const isOpen = body.style.display !== 'none';
   body.style.display = isOpen ? 'none' : '';
   if (icon) icon.textContent = isOpen ? '▼' : '▲';
+}
+
+// ── Phase 9: In-app Question Editor ──────────────
+let editorTopicKey = 'wissenswertes';
+let editorEditIdx  = -1;   // -1 = new question, ≥0 = editing existing
+let editorItOpen   = false;
+
+function showEditor() {
+  document.body.classList.remove('theme-water');
+  editorTopicKey = 'wissenswertes';
+  const sel = document.getElementById('editor-topic');
+  if (sel) sel.value = editorTopicKey;
+  editorCancelEdit();
+  editorRenderList();
+  showScreen('s-editor');
+}
+
+function editorLoadTopic(key) {
+  if (key) editorTopicKey = key;
+  editorCancelEdit();
+  editorRenderList();
+}
+
+function switchEditorTab(tab) {
+  const isList = (tab === 'list');
+  document.getElementById('editor-panel-list').style.display = isList ? '' : 'none';
+  document.getElementById('editor-panel-json').style.display = isList ? 'none' : '';
+  document.getElementById('etab-list').classList.toggle('active',  isList);
+  document.getElementById('etab-json').classList.toggle('active', !isList);
+  if (!isList) document.getElementById('editor-json-msg').innerHTML = '';
+}
+
+function editorRenderList() {
+  const list = document.getElementById('editor-q-list');
+  if (!list) return;
+  const qs = (typeof QB !== 'undefined' ? QB[editorTopicKey] : null) || [];
+  if (!qs.length) {
+    list.innerHTML = `<p style="text-align:center;color:var(--plat-soft);font-size:0.85rem;padding:16px 8px;">
+      Noch keine Fragen in diesem Thema. <span class="it">/ Ancora nessuna domanda.</span></p>`;
+    return;
+  }
+  const TYPE_ICONS = { fitb:'📝', truefalse:'✅', mcq:'🔘', imageChoice:'🖼️', sequence:'🔢', dragmatch:'🔗' };
+  list.innerHTML = qs.map((q, i) => {
+    const icon  = TYPE_ICONS[q.type] || '❓';
+    const text  = (q.question || q.statement || '(kein Text)').substring(0, 55);
+    return `<div class="q-item">
+      <div class="q-item-body">
+        <div><span class="q-type-badge">${icon} ${q.type || '?'}</span></div>
+        <div class="q-item-text" title="${escAttr(text)}">${text}</div>
+      </div>
+      <div class="q-item-btns">
+        <button class="btn btn-soft" style="padding:5px 11px;font-size:0.78rem;" onclick="editorEditQuestion(${i})">✏️</button>
+        <button class="btn btn-soft" style="padding:5px 11px;font-size:0.78rem;color:var(--coral);border-color:var(--coral);" onclick="editorDeleteQuestion(${i})">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function editorNewQuestion() {
+  editorEditIdx = -1;
+  document.getElementById('ef-form-title').textContent = 'Neue Frage';
+  document.getElementById('ef-type').value = 'fitb';
+  document.getElementById('ef-hint').value = '';
+  document.getElementById('ef-answer-text').value = '';
+  document.getElementById('ef-hint-it').value = '';
+  document.getElementById('ef-answer-text-it').value = '';
+  editorItOpen = false;
+  document.getElementById('ef-it-fields').style.display = 'none';
+  document.getElementById('ef-it-toggle').textContent = '🇮🇹 Italienische Felder anzeigen ▼';
+  editorUpdateFormFields();
+  const wrap = document.getElementById('editor-form-wrap');
+  wrap.style.display = '';
+  setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+}
+
+function editorEditQuestion(idx) {
+  editorEditIdx = idx;
+  const q = (typeof QB !== 'undefined' ? QB[editorTopicKey] : [])[idx];
+  if (!q) return;
+  document.getElementById('ef-form-title').textContent = `Frage ${idx + 1} bearbeiten`;
+  document.getElementById('ef-type').value = q.type || 'fitb';
+  document.getElementById('ef-hint').value         = q.hint         || '';
+  document.getElementById('ef-answer-text').value  = q.answer_text  || '';
+  document.getElementById('ef-hint-it').value      = q.hint_it      || '';
+  document.getElementById('ef-answer-text-it').value = q.answer_text_it || '';
+  editorUpdateFormFields(q);
+  const wrap = document.getElementById('editor-form-wrap');
+  wrap.style.display = '';
+  setTimeout(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+}
+
+function editorDeleteQuestion(idx) {
+  const qs   = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
+  const text = (qs[idx]?.question || qs[idx]?.statement || 'diese Frage').substring(0, 40);
+  if (!confirm(`Frage löschen?\n"${text}…"\n\nDiese Aktion kann nicht rückgängig gemacht werden.`)) return;
+  qs.splice(idx, 1);
+  editorSaveTopicToStorage();
+  editorRenderList();
+  if (editorEditIdx === idx || editorEditIdx >= qs.length) editorCancelEdit();
+}
+
+function editorCancelEdit() {
+  editorEditIdx = -1;
+  const wrap = document.getElementById('editor-form-wrap');
+  if (wrap) wrap.style.display = 'none';
+}
+
+// ── Dynamic form fields ───────────────────────────
+function editorUpdateFormFields(q) {
+  const type  = document.getElementById('ef-type').value;
+  const flds  = document.getElementById('ef-fields');
+  const itDyn = document.getElementById('ef-it-dynamic');
+  if (!flds) return;
+
+  // question_it is common to all types
+  const qitVal = escAttr(q?.question_it || '');
+  const questionItField = `<label>Frage IT (question_it)</label>
+    <input type="text" id="ef-question-it" class="editor-input" value="${qitVal}">`;
+
+  let html = '', itHtml = '';
+
+  if (type === 'fitb') {
+    const ans = Array.isArray(q?.answer) ? q.answer.join(', ') : (q?.answer || '');
+    html = `
+      <label>Frage mit _____ für die Lücke (question)</label>
+      <input type="text" id="ef-main-question" class="editor-input" value="${escAttr(q?.question||'')}" placeholder="z.B. Wasser besteht aus Sauerstoff und _____.">
+      <label>Prefix — Text VOR der Lücke</label>
+      <input type="text" id="ef-fitb-prefix" class="editor-input" value="${escAttr(q?.prefix||'')}">
+      <label>Suffix — Text NACH der Lücke</label>
+      <input type="text" id="ef-fitb-suffix" class="editor-input" value="${escAttr(q?.suffix||'')}">
+      <label>Akzeptierte Antworten — kommagetrennt (answer)</label>
+      <input type="text" id="ef-fitb-answers" class="editor-input" value="${escAttr(ans)}" placeholder="Wasserstoff, H2O">`;
+    const ansIt = Array.isArray(q?.answer_it) ? q.answer_it.join(', ') : '';
+    itHtml = questionItField + `
+      <label>Prefix IT</label>
+      <input type="text" id="ef-fitb-prefix-it" class="editor-input" value="${escAttr(q?.prefix_it||'')}">
+      <label>Suffix IT</label>
+      <input type="text" id="ef-fitb-suffix-it" class="editor-input" value="${escAttr(q?.suffix_it||'')}">
+      <label>Antworten IT (kommagetrennt)</label>
+      <input type="text" id="ef-fitb-answers-it" class="editor-input" value="${escAttr(ansIt)}">`;
+
+  } else if (type === 'truefalse') {
+    const defQ = 'Stimmt das, was Chiara sagt?';
+    const cor  = q?.correct === true ? 'true' : 'false';
+    html = `
+      <label>Frage (question)</label>
+      <input type="text" id="ef-main-question" class="editor-input" value="${escAttr(q?.question || defQ)}">
+      <label>Aussage von Chiara (statement)</label>
+      <textarea id="ef-tf-statement" class="editor-input" rows="3">${escHTML(q?.statement||'')}</textarea>
+      <label>Richtige Antwort (correct)</label>
+      <div style="display:flex;gap:16px;padding:4px 0;">
+        <label style="text-transform:none;letter-spacing:0;font-size:0.88rem;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="radio" name="ef-tf-cor" value="true"  ${cor==='true'  ? 'checked' : ''}> ✅ Richtig
+        </label>
+        <label style="text-transform:none;letter-spacing:0;font-size:0.88rem;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="radio" name="ef-tf-cor" value="false" ${cor==='false' ? 'checked' : ''}> ❌ Falsch
+        </label>
+      </div>`;
+    itHtml = questionItField + `
+      <label>Aussage IT (statement_it)</label>
+      <textarea id="ef-tf-statement-it" class="editor-input" rows="3">${escHTML(q?.statement_it||'')}</textarea>`;
+
+  } else if (type === 'mcq') {
+    const opts = q?.options || ['', '', '', ''];
+    const cor  = q?.correct || '';
+    const optRows = opts.map((o, i) => `
+      <div class="options-row">
+        <input class="correct-radio" type="radio" name="ef-mcq-cor" value="${i}" ${o===cor ? 'checked' : ''}>
+        <input type="text" class="ef-opt-input editor-input" value="${escAttr(o)}" placeholder="Option ${i+1}">
+        <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-opts-wrap')">✕</button>
+      </div>`).join('');
+    html = `
+      <label>Frage (question)</label>
+      <input type="text" id="ef-main-question" class="editor-input" value="${escAttr(q?.question||'')}">
+      <label>Optionen (⬤ = richtige Antwort)</label>
+      <div id="ef-opts-wrap">${optRows}</div>
+      <button type="button" class="add-row-btn" onclick="editorAddMcqOption()">+ Option hinzufügen</button>`;
+    const optsIt = q?.options_it || [];
+    itHtml = questionItField + `
+      <label>Optionen IT (eine pro Zeile, selbe Reihenfolge)</label>
+      <textarea id="ef-opts-it" class="editor-input" rows="${Math.max(3, optsIt.length+1)}">${escHTML(optsIt.join('\n'))}</textarea>`;
+
+  } else if (type === 'imageChoice') {
+    const opts = q?.options || [{emoji:'',label:''},{emoji:'',label:''}];
+    const cor  = q?.correct ?? 0;
+    const optRows = opts.map((o, i) => `
+      <div class="options-row">
+        <input class="correct-radio" type="radio" name="ef-img-cor" value="${i}" ${i===cor ? 'checked' : ''}>
+        <input type="text" class="ef-img-emoji editor-input" style="width:60px;text-align:center;" value="${escAttr(o.emoji||'')}" placeholder="🌊">
+        <input type="text" class="ef-img-label editor-input" value="${escAttr(o.label||'')}" placeholder="Label">
+        <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-imgopt-wrap')">✕</button>
+      </div>`).join('');
+    html = `
+      <label>Frage (meist Englisch, z.B. "Ice + heat = ?")</label>
+      <input type="text" id="ef-main-question" class="editor-input" value="${escAttr(q?.question||'')}" placeholder="Ice + heat = ?">
+      <label>Optionen (⬤ = richtig | emoji + label)</label>
+      <div id="ef-imgopt-wrap">${optRows}</div>
+      <button type="button" class="add-row-btn" onclick="editorAddImgOption()">+ Option hinzufügen</button>`;
+    itHtml = questionItField;  // imageChoice is mostly English, just question_it
+
+  } else if (type === 'sequence') {
+    const items = q?.items || ['','',''];
+    const itemRows = items.map((it, i) => `
+      <div class="items-row">
+        <span style="font-size:0.78rem;font-weight:900;color:var(--plat-soft);min-width:20px;">${i+1}.</span>
+        <input type="text" class="ef-seq-item editor-input" value="${escAttr(it)}" placeholder="Schritt ${i+1}">
+        <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-seq-wrap')">✕</button>
+      </div>`).join('');
+    html = `
+      <label>Frage (question)</label>
+      <input type="text" id="ef-main-question" class="editor-input" value="${escAttr(q?.question||'')}">
+      <label>Schritte in richtiger Reihenfolge (items)</label>
+      <div id="ef-seq-wrap">${itemRows}</div>
+      <button type="button" class="add-row-btn" onclick="editorAddSeqItem()">+ Schritt hinzufügen</button>`;
+    const itemsIt = q?.items_it || [];
+    itHtml = questionItField + `
+      <label>Schritte IT (eine pro Zeile, selbe Reihenfolge)</label>
+      <textarea id="ef-items-it" class="editor-input" rows="${Math.max(4, itemsIt.length+1)}">${escHTML(itemsIt.join('\n'))}</textarea>`;
+
+  } else if (type === 'dragmatch') {
+    const pairs = q?.pairs || [{left:'',right:''}];
+    const pairRows = pairs.map((p, i) => `
+      <div class="pairs-row">
+        <input type="text" class="ef-pair-left editor-input" value="${escAttr(p.left||'')}" placeholder="Links">
+        <span style="color:var(--plat-soft);font-weight:900;flex-shrink:0;">→</span>
+        <input type="text" class="ef-pair-right editor-input" value="${escAttr(p.right||'')}" placeholder="Rechts">
+        <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-pairs-wrap')">✕</button>
+      </div>`).join('');
+    html = `
+      <label>Frage (question)</label>
+      <input type="text" id="ef-main-question" class="editor-input" value="${escAttr(q?.question||'')}">
+      <label>Paare (links → rechts)</label>
+      <div id="ef-pairs-wrap">${pairRows}</div>
+      <button type="button" class="add-row-btn" onclick="editorAddPair()">+ Paar hinzufügen</button>`;
+    const pairsIt    = q?.pairs_it || [];
+    const pairsItTxt = pairsIt.map(p => `${p.left||''} | ${p.right||''}`).join('\n');
+    itHtml = questionItField + `
+      <label>Paare IT (Format: Links | Rechts, eine pro Zeile)</label>
+      <textarea id="ef-pairs-it" class="editor-input" rows="${Math.max(3, pairsIt.length+1)}">${escHTML(pairsItTxt)}</textarea>`;
+  }
+
+  flds.innerHTML  = html;
+  itDyn.innerHTML = itHtml;
+}
+
+// ── Dynamic row helpers ───────────────────────────
+function editorRemoveRow(btn, containerId) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  const rows = wrap.querySelectorAll('.options-row, .pairs-row, .items-row');
+  if (rows.length <= 1) return;
+  btn.closest('.options-row, .pairs-row, .items-row')?.remove();
+}
+function editorAddMcqOption() {
+  const wrap = document.getElementById('ef-opts-wrap');
+  if (!wrap) return;
+  const i = wrap.querySelectorAll('.options-row').length;
+  const div = document.createElement('div');
+  div.className = 'options-row';
+  div.innerHTML = `<input class="correct-radio" type="radio" name="ef-mcq-cor" value="${i}">
+    <input type="text" class="ef-opt-input editor-input" placeholder="Option ${i+1}">
+    <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-opts-wrap')">✕</button>`;
+  wrap.appendChild(div);
+}
+function editorAddImgOption() {
+  const wrap = document.getElementById('ef-imgopt-wrap');
+  if (!wrap) return;
+  const i = wrap.querySelectorAll('.options-row').length;
+  const div = document.createElement('div');
+  div.className = 'options-row';
+  div.innerHTML = `<input class="correct-radio" type="radio" name="ef-img-cor" value="${i}">
+    <input type="text" class="ef-img-emoji editor-input" style="width:60px;text-align:center;" placeholder="🌊">
+    <input type="text" class="ef-img-label editor-input" placeholder="Label">
+    <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-imgopt-wrap')">✕</button>`;
+  wrap.appendChild(div);
+}
+function editorAddSeqItem() {
+  const wrap = document.getElementById('ef-seq-wrap');
+  if (!wrap) return;
+  const i = wrap.querySelectorAll('.items-row').length;
+  const div = document.createElement('div');
+  div.className = 'items-row';
+  div.innerHTML = `<span style="font-size:0.78rem;font-weight:900;color:var(--plat-soft);min-width:20px;">${i+1}.</span>
+    <input type="text" class="ef-seq-item editor-input" placeholder="Schritt ${i+1}">
+    <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-seq-wrap')">✕</button>`;
+  wrap.appendChild(div);
+}
+function editorAddPair() {
+  const wrap = document.getElementById('ef-pairs-wrap');
+  if (!wrap) return;
+  const div = document.createElement('div');
+  div.className = 'pairs-row';
+  div.innerHTML = `<input type="text" class="ef-pair-left editor-input" placeholder="Links">
+    <span style="color:var(--plat-soft);font-weight:900;flex-shrink:0;">→</span>
+    <input type="text" class="ef-pair-right editor-input" placeholder="Rechts">
+    <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-pairs-wrap')">✕</button>`;
+  wrap.appendChild(div);
+}
+
+// ── Italian toggle ────────────────────────────────
+function toggleEditorIt() {
+  editorItOpen = !editorItOpen;
+  document.getElementById('ef-it-fields').style.display = editorItOpen ? 'flex' : 'none';
+  document.getElementById('ef-it-toggle').textContent   = editorItOpen
+    ? '🇮🇹 Italienische Felder verbergen ▲'
+    : '🇮🇹 Italienische Felder anzeigen ▼';
+}
+
+// ── Build question object from form & save ────────
+function editorSaveQuestion() {
+  const type    = document.getElementById('ef-type').value;
+  const hint    = document.getElementById('ef-hint').value.trim();
+  const aText   = document.getElementById('ef-answer-text').value.trim();
+  const hintIt  = document.getElementById('ef-hint-it')?.value.trim() || '';
+  const aTextIt = document.getElementById('ef-answer-text-it')?.value.trim() || '';
+  const qit     = document.getElementById('ef-question-it')?.value.trim() || '';
+
+  let q = { type };
+  if (hint)    q.hint        = hint;
+  if (aText)   q.answer_text = aText;
+  if (hintIt)  q.hint_it     = hintIt;
+  if (aTextIt) q.answer_text_it = aTextIt;
+  if (qit)     q.question_it = qit;
+
+  try {
+    if (type === 'fitb') {
+      const question = document.getElementById('ef-main-question').value.trim();
+      const prefix   = document.getElementById('ef-fitb-prefix').value.trim();
+      const suffix   = document.getElementById('ef-fitb-suffix').value.trim();
+      const answers  = document.getElementById('ef-fitb-answers').value
+        .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+      if (!question) throw new Error('Frage darf nicht leer sein!');
+      if (!answers.length) throw new Error('Mindestens eine Antwort angeben!');
+      Object.assign(q, { question, prefix, suffix, answer: answers });
+      const preIt = document.getElementById('ef-fitb-prefix-it')?.value.trim() || '';
+      const suIt  = document.getElementById('ef-fitb-suffix-it')?.value.trim() || '';
+      const anIt  = (document.getElementById('ef-fitb-answers-it')?.value || '')
+        .split(',').map(s => s.trim()).filter(Boolean);
+      if (preIt) q.prefix_it = preIt;
+      if (suIt)  q.suffix_it = suIt;
+      if (anIt.length) q.answer_it = anIt;
+
+    } else if (type === 'truefalse') {
+      const question  = document.getElementById('ef-main-question').value.trim();
+      const statement = document.getElementById('ef-tf-statement').value.trim();
+      const corEl     = document.querySelector('input[name="ef-tf-cor"]:checked');
+      if (!statement) throw new Error('Aussage (statement) darf nicht leer sein!');
+      if (!corEl)     throw new Error('Bitte Richtig oder Falsch auswählen!');
+      Object.assign(q, { question, statement, correct: corEl.value === 'true' });
+      const stIt = document.getElementById('ef-tf-statement-it')?.value.trim() || '';
+      if (stIt) q.statement_it = stIt;
+
+    } else if (type === 'mcq') {
+      const question = document.getElementById('ef-main-question').value.trim();
+      const corEl    = document.querySelector('input[name="ef-mcq-cor"]:checked');
+      const options  = Array.from(document.querySelectorAll('.ef-opt-input'))
+        .map(el => el.value.trim()).filter(Boolean);
+      if (!question)        throw new Error('Frage darf nicht leer sein!');
+      if (options.length < 2) throw new Error('Mindestens 2 Optionen angeben!');
+      if (!corEl)           throw new Error('Bitte eine richtige Antwort auswählen!');
+      const correct = options[parseInt(corEl.value)] || options[0];
+      Object.assign(q, { question, options, correct });
+      const optsIt = (document.getElementById('ef-opts-it')?.value || '')
+        .split('\n').map(s => s.trim()).filter(Boolean);
+      if (optsIt.length) q.options_it = optsIt;
+
+    } else if (type === 'imageChoice') {
+      const question = document.getElementById('ef-main-question').value.trim();
+      const corEl    = document.querySelector('input[name="ef-img-cor"]:checked');
+      const emojis   = Array.from(document.querySelectorAll('.ef-img-emoji'));
+      const labels   = Array.from(document.querySelectorAll('.ef-img-label'));
+      const options  = emojis.map((e, i) => ({
+        emoji: e.value.trim(), label: labels[i]?.value.trim() || ''
+      })).filter(o => o.emoji || o.label);
+      if (!question)        throw new Error('Frage darf nicht leer sein!');
+      if (options.length < 2) throw new Error('Mindestens 2 Optionen angeben!');
+      if (!corEl)           throw new Error('Bitte eine richtige Antwort auswählen!');
+      Object.assign(q, { question, options, correct: parseInt(corEl.value) });
+
+    } else if (type === 'sequence') {
+      const question = document.getElementById('ef-main-question').value.trim();
+      const items    = Array.from(document.querySelectorAll('.ef-seq-item'))
+        .map(el => el.value.trim()).filter(Boolean);
+      if (!question)      throw new Error('Frage darf nicht leer sein!');
+      if (items.length < 2) throw new Error('Mindestens 2 Schritte angeben!');
+      Object.assign(q, { question, items, correctOrder: items.map((_, i) => i) });
+      const itemsIt = (document.getElementById('ef-items-it')?.value || '')
+        .split('\n').map(s => s.trim()).filter(Boolean);
+      if (itemsIt.length) q.items_it = itemsIt;
+
+    } else if (type === 'dragmatch') {
+      const question = document.getElementById('ef-main-question').value.trim();
+      const leftEls  = Array.from(document.querySelectorAll('.ef-pair-left'));
+      const rightEls = Array.from(document.querySelectorAll('.ef-pair-right'));
+      const pairs    = leftEls.map((el, i) => ({
+        left: el.value.trim(), right: rightEls[i]?.value.trim() || ''
+      })).filter(p => p.left || p.right);
+      if (!question)      throw new Error('Frage darf nicht leer sein!');
+      if (pairs.length < 2) throw new Error('Mindestens 2 Paare angeben!');
+      Object.assign(q, { question, pairs });
+      const pairsIt = (document.getElementById('ef-pairs-it')?.value || '')
+        .split('\n').map(s => {
+          const [l, r] = s.split('|');
+          return { left: (l||'').trim(), right: (r||'').trim() };
+        }).filter(p => p.left || p.right);
+      if (pairsIt.length) q.pairs_it = pairsIt;
+    }
+  } catch (err) {
+    alert('⚠️ ' + err.message);
+    return;
+  }
+
+  const qs = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
+  if (editorEditIdx >= 0) {
+    q.id = qs[editorEditIdx]?.id;   // preserve existing ID
+    qs[editorEditIdx] = q;
+  } else {
+    q.id = `${editorTopicKey}-custom-${Date.now()}`;
+    qs.push(q);
+  }
+  editorSaveTopicToStorage();
+  editorRenderList();
+  editorCancelEdit();
+}
+
+// ── localStorage helpers ──────────────────────────
+function editorSaveTopicToStorage() {
+  const stored = JSON.parse(localStorage.getItem('wq_editor_QB') || '{}');
+  stored[editorTopicKey] = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
+  localStorage.setItem('wq_editor_QB', JSON.stringify(stored));
+}
+
+function editorLoadFromStorage() {
+  const stored = JSON.parse(localStorage.getItem('wq_editor_QB') || '{}');
+  if (typeof QB === 'undefined' || typeof TKEYS === 'undefined') return;
+  TKEYS.forEach(k => {
+    if (stored[k] && Array.isArray(stored[k])) QB[k] = stored[k];
+  });
+  assignQuestionIds();   // re-run to cover any IDs missing from stored questions
+}
+
+// ── JSON import / export ──────────────────────────
+function editorImportJSON() {
+  const raw   = (document.getElementById('editor-json-input').value || '').trim();
+  if (!raw) { editorShowMsg('Bitte JSON einfügen.', 'err'); return; }
+  let arr;
+  try   { arr = JSON.parse(raw); }
+  catch (e) { editorShowMsg('❌ Ungültiges JSON: ' + e.message, 'err'); return; }
+  if (!Array.isArray(arr)) { editorShowMsg('❌ JSON muss ein Array sein: [{ … }, …]', 'err'); return; }
+  if (typeof QB !== 'undefined') QB[editorTopicKey] = arr;
+  if (typeof assignQuestionIds === 'function') assignQuestionIds();
+  editorSaveTopicToStorage();
+  editorRenderList();
+  editorShowMsg(`✅ ${arr.length} Fragen importiert!`, 'ok');
+  document.getElementById('editor-json-input').value = '';
+}
+
+function editorExportJSON() {
+  const data = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
+  const json = JSON.stringify(data, null, 2);
+  document.getElementById('editor-json-input').value = json;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(json)
+      .then(()  => editorShowMsg('📋 JSON in Zwischenablage kopiert!', 'ok'))
+      .catch(()  => editorShowMsg('JSON im Textfeld — bitte manuell kopieren.', 'ok'));
+  } else {
+    editorShowMsg('JSON im Textfeld — bitte manuell kopieren.', 'ok');
+  }
+}
+
+function editorClearTopic() {
+  const name = (typeof TOPICS !== 'undefined' && TOPICS[editorTopicKey])
+    ? TOPICS[editorTopicKey].de : editorTopicKey;
+  if (!confirm(`Alle Fragen für "${name}" löschen?\n\nDies betrifft auch die gespeicherten Daten und kann nicht rückgängig gemacht werden.`)) return;
+  if (typeof QB !== 'undefined') QB[editorTopicKey] = [];
+  editorSaveTopicToStorage();
+  editorRenderList();
+  document.getElementById('editor-json-input').value = '';
+  editorShowMsg('✅ Thema geleert — Fragen wurden entfernt.', 'ok');
+}
+
+function editorResetAll() {
+  if (!confirm('Alle Editor-Änderungen zurücksetzen?\n\nDie Seite wird neu geladen und alle benutzerdefinierten Fragen werden entfernt.')) return;
+  localStorage.removeItem('wq_editor_QB');
+  location.reload();
+}
+
+function editorShowMsg(text, type) {
+  const el = document.getElementById('editor-json-msg');
+  if (!el) return;
+  el.innerHTML = `<div class="editor-msg ${type}">${text}</div>`;
+  setTimeout(() => { if (el.firstChild) el.innerHTML = ''; }, 4000);
+}
+
+// ── HTML escape helpers ───────────────────────────
+function escAttr(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escHTML(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 // ── Italian toggle ──────────────────────────────
@@ -3408,6 +4042,9 @@ QB.niederschlag.push(
 
 // ── Assign stable IDs to every question now that all arrays are populated ──
 assignQuestionIds();
+
+// ── Load editor-saved custom questions, replacing any stored topics (Phase 9) ──
+editorLoadFromStorage();
 </script>
 </body>
 </html>
