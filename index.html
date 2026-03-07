@@ -22,14 +22,29 @@
       --card:   rgba(255,255,255,0.92);
       --r:      20px;
       --shadow: 0 4px 20px rgba(2,119,189,0.15);
+      /* ── Platform shell (violet/indigo) ── */
+      --plat-bg1:    #d4b8ff;
+      --plat-bg2:    #e8d8ff;
+      --plat-bg3:    #f4eeff;
+      --plat-prime:  #6C3FC5;
+      --plat-mid:    #9B6DFF;
+      --plat-light:  #ede0ff;
+      --plat-text:   #2D1B69;
+      --plat-soft:   #7C6DAB;
+      --plat-shadow: 0 4px 20px rgba(108,63,197,0.18);
     }
 
     body {
       font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(160deg, #b3e5fc 0%, #e1f5fe 45%, #f0f9ff 100%);
+      background: linear-gradient(160deg, var(--plat-bg1) 0%, var(--plat-bg2) 45%, var(--plat-bg3) 100%);
       min-height: 100vh;
-      color: var(--text);
+      color: var(--plat-text);
       overflow-x: hidden;
+    }
+    /* Water cycle module — applied when entering the module */
+    body.theme-water {
+      background: linear-gradient(160deg, #b3e5fc 0%, #e1f5fe 45%, #f0f9ff 100%);
+      color: var(--text);
     }
 
     /* ── Screens ───────────────────────────────── */
@@ -53,7 +68,7 @@
       top: 12px; right: 12px;
       z-index: 1000;
       background: white;
-      border: 2px solid var(--blue);
+      border: 2px solid var(--plat-mid);
       border-radius: 50px;
       padding: 5px 12px;
       font-size: 0.8rem;
@@ -62,12 +77,14 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--plat-shadow);
       transition: all 0.2s;
       font-family: inherit;
     }
     #it-toggle:hover        { transform: scale(1.06); }
-    #it-toggle.active       { background: var(--deep); color: white; border-color: var(--deep); }
+    #it-toggle.active       { background: var(--plat-prime); color: white; border-color: var(--plat-prime); }
+    body.theme-water #it-toggle              { border-color: var(--blue); box-shadow: var(--shadow); }
+    body.theme-water #it-toggle.active       { background: var(--deep); border-color: var(--deep); }
 
     /* Italian text — hidden by default, shown when toggle active */
     .it { display: none; color: #7986CB; font-size: 0.82em; font-style: italic; margin-top: 2px; }
@@ -186,27 +203,31 @@
 
     /* ── Profile Cards ─────────────────────────── */
     .profile-grid {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 14px;
-      justify-content: center;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 4px;
     }
     .profile-card {
       background: var(--card);
       border-radius: 18px;
-      padding: 22px 18px;
+      padding: 20px 12px 16px;
       text-align: center;
       cursor: pointer;
       border: 3px solid transparent;
-      box-shadow: var(--shadow);
+      box-shadow: var(--plat-shadow);
       transition: all 0.2s;
-      min-width: 120px;
+      position: relative;
     }
-    .profile-card:hover           { transform: translateY(-4px); border-color: var(--blue); }
-    .profile-card.selected        { border-color: var(--deep); background: #deeefb; }
+    .profile-card:hover           { transform: translateY(-3px); border-color: var(--plat-mid); box-shadow: 0 8px 28px rgba(108,63,197,0.22); }
+    .profile-card.selected        { border-color: var(--plat-prime); background: var(--plat-light); }
     .profile-avatar               { font-size: 2.6rem; margin-bottom: 8px; }
-    .profile-name                 { font-size: 0.95rem; font-weight: 800; color: var(--navy); }
-    .profile-add                  { background: rgba(255,255,255,0.5); border: 3px dashed var(--blue); color: var(--deep); }
+    .profile-name                 { font-size: 0.95rem; font-weight: 800; color: var(--plat-text); }
+    .profile-grade                { display:inline-block; margin-top:6px; background:var(--plat-prime); color:white; font-size:0.7rem; font-weight:800; padding:2px 9px; border-radius:20px; letter-spacing:0.3px; }
+    .profile-grade.parent-badge   { background: var(--plat-soft); }
+    .profile-add                  { background: rgba(255,255,255,0.5); border: 3px dashed var(--plat-mid); color: var(--plat-prime); }
 
     /* ── Topic Grid ────────────────────────────── */
     .topic-grid {
@@ -313,14 +334,188 @@
     }
 
     /* ── Misc ──────────────────────────────────── */
-    h1   { font-size: 1.75rem; font-weight: 900; color: var(--navy); text-align: center; }
-    h2   { font-size: 1.25rem; font-weight: 800; color: var(--navy); text-align: center; }
-    .sub { color: var(--soft);  font-size: 0.88rem; text-align: center; margin-top: 4px; }
+    h1   { font-size: 1.75rem; font-weight: 900; color: var(--plat-text); text-align: center; }
+    h2   { font-size: 1.25rem; font-weight: 800; color: var(--plat-text); text-align: center; }
+    .sub { color: var(--plat-soft); font-size: 0.88rem; text-align: center; margin-top: 4px; }
+    body.theme-water h1  { color: var(--navy); }
+    body.theme-water h2  { color: var(--navy); }
+    body.theme-water .sub { color: var(--soft); }
     .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .mt1 { margin-top: 8px;  }
     .mt2 { margin-top: 16px; }
     .mt3 { margin-top: 24px; }
     .gap { height: 50px; }
+
+    /* ── Platform shell logo & CTA ─────────────── */
+    .logo-mark { font-size: 3rem; margin-bottom: 4px; text-align: center; }
+    .btn-go {
+      background: var(--plat-prime);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 40px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(108,63,197,0.35);
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .btn-go:hover           { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108,63,197,0.45); }
+    .btn-go:disabled        { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    /* ── Platform home welcome row ──────────────── */
+    .plat-welcome-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      max-width: 640px;
+      margin-bottom: 6px;
+      padding-top: 8px;
+    }
+    .welcome-avatar { font-size: 2.8rem; }
+
+    /* ── Grade filter pills ─────────────────────── */
+    .grade-filter {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: 640px;
+      margin: 14px 0 18px;
+    }
+    .grade-pill {
+      background: white;
+      border: 2px solid var(--plat-mid);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--plat-prime);
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    .grade-pill:hover                { background: var(--plat-light); }
+    .grade-pill.active               { background: var(--plat-prime); color: white; border-color: var(--plat-prime); }
+    .grade-pill.pill-all             { border-color: var(--plat-soft); color: var(--plat-soft); }
+    .grade-pill.pill-all.active      { background: var(--plat-soft); color: white; border-color: var(--plat-soft); }
+
+    /* ── Module cards grid ──────────────────────── */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 640px;
+    }
+    .module-card {
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: var(--plat-shadow);
+      padding: 20px 16px 16px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .module-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--module-color, var(--deep));
+      border-radius: 20px 20px 0 0;
+    }
+    .module-card:hover:not(.coming-soon) { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+    .module-card.coming-soon { opacity: 0.55; cursor: default; filter: grayscale(0.3); }
+    .module-icon        { font-size: 2.4rem; margin-bottom: 10px; display: block; }
+    .module-title       { font-weight: 900; font-size: 0.95rem; color: var(--plat-text); line-height: 1.25; margin-bottom: 4px; }
+    .module-meta        { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .module-grade-tag   { background: #f0f4ff; color: var(--plat-text); font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 20px; }
+    .module-subject-tag { font-size: 0.68rem; font-weight: 700; color: var(--plat-soft); }
+    .module-progress    { display: flex; gap: 4px; margin-bottom: 12px; }
+    .prog-dot           { width: 10px; height: 10px; border-radius: 50%; background: #e0e0e0; }
+    .module-btn {
+      width: 100%;
+      background: var(--module-color, var(--deep));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 9px 0;
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+    .module-btn:hover:not(:disabled) { opacity: 0.88; }
+
+    /* ── Platform footer ────────────────────────── */
+    .plat-footer {
+      width: 100%;
+      max-width: 640px;
+      margin-top: 28px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .footer-btn {
+      background: white;
+      border: 2px solid var(--plat-mid);
+      border-radius: 50px;
+      padding: 9px 20px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--plat-prime);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .footer-btn:hover { background: var(--plat-light); }
+
+    /* ── Module hero banner (inside water cycle) ── */
+    .module-hero {
+      background: linear-gradient(135deg, #0277BD 0%, #4FC3F7 100%);
+      border-radius: 20px;
+      padding: 20px 20px 16px;
+      width: 100%;
+      max-width: 480px;
+      color: white;
+      text-align: center;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 24px rgba(2,119,189,0.3);
+    }
+    .module-hero .hero-icon { font-size: 2.8rem; margin-bottom: 6px; display: block; }
+    .hero-score {
+      background: rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 4px 14px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    /* ── Back button (← Alle Themen) ───────────── */
+    .back-btn {
+      background: white;
+      border: 2px solid var(--plat-mid);
+      border-radius: 50px;
+      padding: 7px 16px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--plat-prime);
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .back-btn:hover { background: var(--plat-light); }
 
     /* ── Scrollbar ─────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; }
@@ -348,65 +543,179 @@
 <div id="s-profiles" class="screen active">
   <div class="gap"></div>
 
-  <!-- Tropfi -->
-  <div style="display:flex;flex-direction:column;align-items:center;">
-    <svg class="tropfi" id="tropfi-profile" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="tg1" x1="20%" y1="0%" x2="80%" y2="100%">
-          <stop offset="0%" stop-color="#81D4FA"/>
-          <stop offset="100%" stop-color="#0288D1"/>
-        </linearGradient>
-      </defs>
-      <path d="M50 8C50 8,14 58,14 76C14 97,30 112,50 112C70 112,86 97,86 76C86 58,50 8,50 8Z" fill="url(#tg1)"/>
-      <ellipse cx="37" cy="54" rx="7" ry="11" fill="rgba(255,255,255,0.28)" transform="rotate(-20 37 54)"/>
-      <circle cx="39" cy="76" r="7" fill="white"/>
-      <circle cx="61" cy="76" r="7" fill="white"/>
-      <circle cx="41" cy="76" r="4" fill="#01579B"/>
-      <circle cx="63" cy="76" r="4" fill="#01579B"/>
-      <circle cx="43" cy="74" r="1.5" fill="white"/>
-      <circle cx="65" cy="74" r="1.5" fill="white"/>
-      <path d="M40 89Q50 98,60 89" stroke="#01579B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    </svg>
-    <div class="bubble-speech">
-      Hallo! Wer spielt heute? 👋
-      <div class="it">Ciao! Chi gioca oggi?</div>
-    </div>
-  </div>
-
-  <h1 class="mt2">💧 Wasser Quiz</h1>
-  <p class="sub">Wähle dein Profil! <span class="it">/ Scegli il tuo profilo!</span></p>
+  <div class="logo-mark">🦉</div>
+  <h1>Lernplattform</h1>
+  <div class="it" style="text-align:center;font-size:0.9rem;margin-top:2px;">Piattaforma di apprendimento</div>
+  <p class="sub">Wer lernt heute?
+    <span class="it"> / Chi studia oggi?</span>
+  </p>
 
   <div class="profile-grid mt3" id="profile-grid">
-    <div class="profile-card" id="pc-Chiara" onclick="selectProfile('Chiara','💧',this)">
-      <div class="profile-avatar">💧</div>
+
+    <!-- Chiara -->
+    <div class="profile-card" id="pc-chiara" onclick="selectProfile('chiara',this)">
+      <div class="profile-avatar">🌺</div>
       <div class="profile-name">Chiara</div>
+      <div class="profile-grade">Klasse 3</div>
     </div>
-    <div class="profile-card" id="pc-Eltern" onclick="selectProfile('Eltern','🌊',this)">
-      <div class="profile-avatar">🌊</div>
+
+    <!-- Marta -->
+    <div class="profile-card" id="pc-marta" onclick="selectProfile('marta',this)">
+      <div class="profile-avatar">🌸</div>
+      <div class="profile-name">Marta</div>
+      <div class="profile-grade">Klasse 1</div>
+    </div>
+
+    <!-- Eltern -->
+    <div class="profile-card" id="pc-parent" onclick="selectProfile('parent',this)">
+      <div class="profile-avatar">👨‍👩‍👧</div>
       <div class="profile-name">Eltern</div>
+      <div class="profile-grade parent-badge">Alle Klassen</div>
     </div>
+
+    <!-- Add new profile -->
     <div class="profile-card profile-add" onclick="addProfile()">
-      <div class="profile-avatar">➕</div>
-      <div class="profile-name">Neu</div>
+      <div class="profile-avatar" style="font-size:2rem;">＋</div>
+      <div class="profile-name" style="font-size:0.85rem;color:var(--plat-prime);">Neues Profil</div>
     </div>
+
   </div>
 
   <div class="mt3">
-    <button class="btn btn-primary" id="btn-go" onclick="goHome()" disabled>
-      Los geht's! 🌊
+    <button class="btn-go" id="btn-go" onclick="goToPlatform()" disabled>
+      Los geht's! →
     </button>
   </div>
   <div class="gap"></div>
 </div>
 
 <!-- ════════════════════════════════════════════
-     SCREEN 2 · Home
+     SCREEN 2 · Platform Home
+════════════════════════════════════════════ -->
+<div id="s-platform" class="screen">
+
+  <!-- Welcome row -->
+  <div class="plat-welcome-row">
+    <div class="welcome-avatar" id="welcome-avatar">🌺</div>
+    <div>
+      <h1 id="welcome-name" style="text-align:left;font-size:1.4rem;">Hallo, Chiara! 🌟</h1>
+      <div class="it" style="font-size:0.82rem;margin-top:2px;">Ciao! Cosa vuoi imparare oggi?</div>
+      <p class="sub" style="text-align:left;margin-top:2px;">Was möchtest du heute lernen?</p>
+    </div>
+  </div>
+
+  <!-- Grade filter pills -->
+  <div class="grade-filter" id="grade-filter">
+    <button class="grade-pill pill-all" onclick="filterGrade('all',this)">Alle Klassen</button>
+    <button class="grade-pill" id="pill-1" onclick="filterGrade(1,this)">Klasse 1</button>
+    <button class="grade-pill" id="pill-2" onclick="filterGrade(2,this)">Klasse 2</button>
+    <button class="grade-pill" id="pill-3" onclick="filterGrade(3,this)">Klasse 3</button>
+    <button class="grade-pill" id="pill-4" onclick="filterGrade(4,this)">Klasse 4</button>
+  </div>
+
+  <!-- Module cards -->
+  <div class="modules-grid" id="modules-grid">
+
+    <!-- Water Cycle — active, grade 3 -->
+    <div class="module-card" style="--module-color:#0277BD;" data-grade="3" onclick="enterModule('water')">
+      <span class="module-icon">💧</span>
+      <div class="module-title">Der Wasserkreislauf
+        <div class="it" style="font-size:0.78em;">Il ciclo dell'acqua</div>
+      </div>
+      <div class="module-meta">
+        <span class="module-grade-tag">Klasse 3</span>
+        <span class="module-subject-tag">Sachunterricht</span>
+      </div>
+      <div class="module-progress" id="module-prog-water">
+        <div class="prog-dot"></div>
+        <div class="prog-dot"></div>
+        <div class="prog-dot"></div>
+        <div class="prog-dot"></div>
+        <div class="prog-dot"></div>
+      </div>
+      <button class="module-btn">Spielen! 🎮</button>
+    </div>
+
+    <!-- Book comprehension — coming soon, grade 3 -->
+    <div class="module-card coming-soon" style="--module-color:#FF7043;" data-grade="3">
+      <span class="module-icon">📖</span>
+      <div class="module-title">Buchbesprechung
+        <div class="it" style="font-size:0.78em;">Comprensione del testo</div>
+      </div>
+      <div class="module-meta">
+        <span class="module-grade-tag">Klasse 3</span>
+        <span class="module-subject-tag">Deutsch</span>
+      </div>
+      <div class="module-progress">
+        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      </div>
+      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🔒 Kommt bald</button>
+    </div>
+
+    <!-- Math — coming soon, grade 3 -->
+    <div class="module-card coming-soon" style="--module-color:#7B1FA2;" data-grade="3">
+      <span class="module-icon">➕</span>
+      <div class="module-title">Mathematik
+        <div class="it" style="font-size:0.78em;">Matematica</div>
+      </div>
+      <div class="module-meta">
+        <span class="module-grade-tag">Klasse 3</span>
+        <span class="module-subject-tag">Mathe</span>
+      </div>
+      <div class="module-progress">
+        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      </div>
+      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🔒 Kommt bald</button>
+    </div>
+
+    <!-- Grade 1 first reader — coming soon -->
+    <div class="module-card coming-soon" style="--module-color:#2E7D32;" data-grade="1">
+      <span class="module-icon">🌱</span>
+      <div class="module-title">Mein erstes Lesebuch
+        <div class="it" style="font-size:0.78em;">Il mio primo libro</div>
+      </div>
+      <div class="module-meta">
+        <span class="module-grade-tag">Klasse 1</span>
+        <span class="module-subject-tag">Deutsch</span>
+      </div>
+      <div class="module-progress">
+        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      </div>
+      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🔒 Kommt bald</button>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="plat-footer">
+    <button class="footer-btn" onclick="showScreen('s-profiles')">← Profil wechseln</button>
+    <button class="footer-btn" onclick="goToHistory()">📊 Meine Ergebnisse</button>
+  </div>
+  <div class="gap"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     SCREEN 3 · Module Home (Water Cycle)
 ════════════════════════════════════════════ -->
 <div id="s-home" class="screen">
-  <div class="gap"></div>
 
+  <!-- Back to platform -->
+  <div style="width:100%;max-width:480px;padding-top:16px;">
+    <button class="back-btn" onclick="backToPlatform()">← Alle Themen</button>
+  </div>
+
+  <!-- Module hero banner -->
+  <div class="module-hero">
+    <span class="hero-icon">💧</span>
+    <h2 style="color:white;font-size:1.25rem;margin-bottom:2px;">Der Wasserkreislauf</h2>
+    <div class="it" style="color:rgba(255,255,255,0.82);font-size:0.8rem;margin-bottom:8px;">Il ciclo dell'acqua</div>
+    <span class="hero-score" id="hero-score">Sachunterricht · Klasse 3</span>
+  </div>
+
+  <!-- Tropfi greeting -->
   <div style="display:flex;flex-direction:column;align-items:center;">
-    <svg class="tropfi" id="tropfi-home" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+    <svg class="tropfi tropfi-sm" id="tropfi-home" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="tg2" x1="20%" y1="0%" x2="80%" y2="100%">
           <stop offset="0%" stop-color="#81D4FA"/>
@@ -429,8 +738,6 @@
     </div>
   </div>
 
-  <h1 class="mt2">💧 Wasser Quiz</h1>
-
   <div class="mt3" style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:360px;">
     <button class="btn btn-accent w-full" style="font-size:1.1rem;padding:16px;" onclick="startMixed()">
       🎲 Spielen!
@@ -445,10 +752,6 @@
       <div class="it" style="font-size:0.75em;margin-top:2px">I miei risultati</div>
     </button>
   </div>
-
-  <button class="btn btn-outline btn-sm mt3" onclick="showScreen('s-profiles')">
-    🔄 Profil wechseln <span class="it">/ Cambia profilo</span>
-  </button>
   <div class="gap"></div>
 </div>
 
@@ -728,8 +1031,15 @@
 'use strict';
 
 // ── State ───────────────────────────────────────
-let currentProfile = null;   // { name, avatar }
+let currentProfile = null;   // { name, avatar, grade }
 let quizMode       = 'mixed'; // 'mixed' | topic key
+
+// ── Profile config ───────────────────────────────
+const PROFILES = {
+  chiara: { name: 'Chiara', avatar: '🌺', grade: 3 },
+  marta:  { name: 'Marta',  avatar: '🌸', grade: 1 },
+  parent: { name: 'Eltern', avatar: '👨‍👩‍👧', grade: null },
+};
 
 // ── Screen navigation ───────────────────────────
 function showScreen(id) {
@@ -741,7 +1051,92 @@ function showScreen(id) {
 function goHome() {
   if (!currentProfile) { showScreen('s-profiles'); return; }
   document.getElementById('home-name').textContent = currentProfile.name;
+  document.body.classList.add('theme-water');
+  // Update hero score from history
+  const key = `wq_history_${currentProfile.name}`;
+  const history = JSON.parse(localStorage.getItem(key) || '[]');
+  const heroScore = document.getElementById('hero-score');
+  if (heroScore) {
+    if (history.length > 0) {
+      const last = history[history.length - 1];
+      heroScore.textContent = `⭐ Letztes Ergebnis: ${last.pct}%`;
+    } else {
+      heroScore.textContent = 'Sachunterricht · Klasse 3';
+    }
+  }
   showScreen('s-home');
+}
+
+// ── Navigate to platform home ────────────────────
+function goToPlatform() {
+  if (!currentProfile) { showScreen('s-profiles'); return; }
+  document.getElementById('welcome-avatar').textContent = currentProfile.avatar;
+  document.getElementById('welcome-name').textContent   = `Hallo, ${currentProfile.name}! 🌟`;
+
+  // Apply grade filter based on profile
+  const grade = currentProfile.grade;
+  document.querySelectorAll('.grade-pill').forEach(p => p.classList.remove('active'));
+  if (grade) {
+    const pill = document.getElementById(`pill-${grade}`);
+    if (pill) pill.classList.add('active');
+    filterGradeByValue(grade);
+  } else {
+    const allPill = document.querySelector('.grade-pill.pill-all');
+    if (allPill) allPill.classList.add('active');
+    filterGradeByValue('all');
+  }
+
+  // Update water module progress dots from history
+  updateModuleProgress();
+
+  showScreen('s-platform');
+}
+
+// ── Navigate back to platform from module ────────
+function backToPlatform() {
+  document.body.classList.remove('theme-water');
+  showScreen('s-platform');
+}
+
+// ── Enter a module ───────────────────────────────
+function enterModule(moduleId) {
+  if (moduleId === 'water') {
+    goHome();
+  }
+}
+
+// ── Grade filter ─────────────────────────────────
+function filterGrade(grade, el) {
+  document.querySelectorAll('.grade-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  filterGradeByValue(grade);
+}
+
+function filterGradeByValue(grade) {
+  document.querySelectorAll('.module-card').forEach(card => {
+    const cardGrade = parseInt(card.dataset.grade);
+    card.style.display = (grade === 'all' || cardGrade === grade) ? '' : 'none';
+  });
+}
+
+// ── Update water module progress dots ────────────
+function updateModuleProgress() {
+  if (!currentProfile) return;
+  const key = `wq_history_${currentProfile.name}`;
+  const history = JSON.parse(localStorage.getItem(key) || '[]');
+  const dots = document.querySelectorAll('#module-prog-water .prog-dot');
+  const filled = Math.min(history.length, 5);
+  dots.forEach((dot, i) => {
+    dot.style.background = i < filled ? '#0277BD' : '#e0e0e0';
+  });
+}
+
+// ── Go to history from platform footer ───────────
+function goToHistory() {
+  if (!currentProfile) { showScreen('s-profiles'); return; }
+  document.body.classList.add('theme-water');
+  renderHistory();
+  showScreen('s-history');
 }
 
 // ── Italian toggle ──────────────────────────────
@@ -755,8 +1150,9 @@ function toggleIT() {
 }
 
 // ── Profile selection ───────────────────────────
-function selectProfile(name, avatar, el) {
-  currentProfile = { name, avatar };
+function selectProfile(key, el) {
+  const p = PROFILES[key] || { name: key, avatar: '🌱', grade: null };
+  currentProfile = { name: p.name, avatar: p.avatar, grade: p.grade };
   document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   document.getElementById('btn-go').disabled = false;
@@ -771,7 +1167,12 @@ function addProfile() {
   const card = document.createElement('div');
   card.className = 'profile-card';
   card.innerHTML = `<div class="profile-avatar">🌱</div><div class="profile-name">${n}</div>`;
-  card.onclick = () => selectProfile(n, '🌱', card);
+  card.onclick = function() {
+    currentProfile = { name: n, avatar: '🌱', grade: null };
+    document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    document.getElementById('btn-go').disabled = false;
+  };
   grid.insertBefore(card, addBtn);
 }
 
