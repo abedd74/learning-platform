@@ -1369,7 +1369,7 @@ function goHome() {
   document.getElementById('home-name').textContent = currentProfile.name;
   document.body.classList.add('theme-water');
   // Update hero score from history
-  const key = `wq_history_${currentProfile.name}`;
+  const key = `wq_${currentProfile.name}`;
   const history = JSON.parse(localStorage.getItem(key) || '[]');
   const heroScore = document.getElementById('hero-score');
   if (heroScore) {
@@ -1438,7 +1438,7 @@ function filterGradeByValue(grade) {
 // ── Update water module progress dots ────────────
 function updateModuleProgress() {
   if (!currentProfile) return;
-  const key = `wq_history_${currentProfile.name}`;
+  const key = `wq_${currentProfile.name}`;
   const history = JSON.parse(localStorage.getItem(key) || '[]');
   const dots = document.querySelectorAll('#module-prog-water .prog-dot');
   const filled = Math.min(history.length, 5);
@@ -2353,7 +2353,7 @@ function spawnBubbles() {
 function renderHistory() {
   const profile = currentProfile?.name || 'Chiara';
   document.getElementById('hist-profile').textContent = profile;
-  const key = `wq_history_${profile}`;
+  const key = `wq_${profile}`;
   const data = JSON.parse(localStorage.getItem(key) || '[]');
   const container = document.getElementById('hist-bars');
   if (!data.length) {
