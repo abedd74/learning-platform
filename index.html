@@ -32,6 +32,8 @@
       --plat-text:   #2D1B69;
       --plat-soft:   #7C6DAB;
       --plat-shadow: 0 4px 20px rgba(108,63,197,0.18);
+      /* ── Responsive content width ── */
+      --content-w: 480px;
     }
 
     body {
@@ -156,7 +158,7 @@
       box-shadow: var(--shadow);
       padding: 22px;
       width: 100%;
-      max-width: 480px;
+      max-width: var(--content-w);
     }
 
     /* ── Buttons ───────────────────────────────── */
@@ -184,11 +186,11 @@
     .btn-soft            { background: var(--sky);  color: var(--navy); }
     .btn-coral           { background: var(--coral); color: white; }
     .btn-sm              { padding: 8px 16px; font-size: 0.88rem; }
-    .w-full              { width: 100%; max-width: 480px; }
+    .w-full              { width: 100%; max-width: var(--content-w); }
 
     /* ── Progress Bar ──────────────────────────── */
     .prog-wrap {
-      width: 100%; max-width: 480px;
+      width: 100%; max-width: var(--content-w);
       background: rgba(255,255,255,0.5);
       border-radius: 50px;
       height: 10px;
@@ -235,7 +237,7 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       width: 100%;
-      max-width: 480px;
+      max-width: var(--content-w);
     }
     .topic-card {
       background: var(--card);
@@ -256,7 +258,7 @@
 
     /* ── Answer Mechanics ──────────────────────── */
     .answer-area {
-      width: 100%; max-width: 480px;
+      width: 100%; max-width: var(--content-w);
       min-height: 150px;
       background: rgba(255,255,255,0.6);
       border-radius: var(--r);
@@ -271,7 +273,7 @@
 
     /* ── Feedback ──────────────────────────────── */
     .feedback {
-      width: 100%; max-width: 480px;
+      width: 100%; max-width: var(--content-w);
       border-radius: 16px;
       padding: 13px 18px;
       font-weight: 700;
@@ -319,7 +321,7 @@
       align-items: center;
       gap: 10px;
       width: 100%;
-      max-width: 480px;
+      max-width: var(--content-w);
       padding-top: 48px;
     }
 
@@ -483,7 +485,7 @@
       border-radius: 20px;
       padding: 20px 20px 16px;
       width: 100%;
-      max-width: 480px;
+      max-width: var(--content-w);
       color: white;
       text-align: center;
       margin-bottom: 16px;
@@ -526,6 +528,43 @@
       h1 { font-size: 1.45rem; }
       .topic-grid { gap: 9px; }
       .btn { padding: 11px 18px; font-size: 0.92rem; }
+    }
+
+    /* ── Tablet (≥ 640px) ───────────────────────── */
+    @media (min-width: 640px) {
+      :root { --content-w: 560px; }
+
+      h1 { font-size: 2rem; }
+
+      /* 3-column topic grid */
+      .topic-grid { grid-template-columns: repeat(3, 1fr); }
+
+      /* Wider profile grid on tablet */
+      .profile-grid { max-width: var(--content-w); }
+
+      /* Inline-styled button groups in quiz/home/results screens */
+      #s-home  .mt3,
+      #s-results .mt3,
+      #s-history .mt3 { max-width: var(--content-w); }
+
+      /* Back button row */
+      #s-home > div:first-child,
+      #s-topics > div:first-child { max-width: var(--content-w); }
+
+      /* Wrong answers review panel */
+      #results-wrong { max-width: var(--content-w); }
+
+      /* Quiz JS-generated content respects container */
+      #q-answer > * { max-width: 100%; }
+
+      /* Tropfi slightly bigger on tablet */
+      .tropfi    { width: 108px; height: 130px; }
+      .tropfi-sm { width:  78px; height:  94px; }
+    }
+
+    /* ── Desktop/large tablet (≥ 900px) ─────────── */
+    @media (min-width: 900px) {
+      :root { --content-w: 620px; }
     }
   </style>
 </head>
