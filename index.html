@@ -1,0 +1,2624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💧 Wasser Quiz — Chiara</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Variables ─────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sky:    #E1F5FE;
+      --blue:   #4FC3F7;
+      --deep:   #0277BD;
+      --navy:   #01579B;
+      --sun:    #FFD54F;
+      --green:  #66BB6A;
+      --coral:  #FF7043;
+      --text:   #1A237E;
+      --soft:   #546E7A;
+      --card:   rgba(255,255,255,0.92);
+      --r:      20px;
+      --shadow: 0 4px 20px rgba(2,119,189,0.15);
+    }
+
+    body {
+      font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(160deg, #b3e5fc 0%, #e1f5fe 45%, #f0f9ff 100%);
+      min-height: 100vh;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── Screens ───────────────────────────────── */
+    .screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px 16px 40px;
+      animation: fadeIn 0.3s ease;
+    }
+    .screen.active { display: flex; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Italian Toggle ────────────────────────── */
+    #it-toggle {
+      position: fixed;
+      top: 12px; right: 12px;
+      z-index: 1000;
+      background: white;
+      border: 2px solid var(--blue);
+      border-radius: 50px;
+      padding: 5px 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    #it-toggle:hover        { transform: scale(1.06); }
+    #it-toggle.active       { background: var(--deep); color: white; border-color: var(--deep); }
+
+    /* Italian text — hidden by default, shown when toggle active */
+    .it { display: none; color: #7986CB; font-size: 0.82em; font-style: italic; margin-top: 2px; }
+    body.it-on .it { display: block !important; }
+    span.it { display: none; }
+    body.it-on span.it { display: inline !important; }
+
+    /* ── Tropfi SVG ────────────────────────────── */
+    .tropfi { width: 90px; height: 108px; transition: transform 0.2s; }
+    .tropfi-sm { width: 64px; height: 76px; }
+
+    @keyframes t-jump {
+      0%,100% { transform: translateY(0) scale(1);   }
+      40%      { transform: translateY(-20px) scale(1.06); }
+      65%      { transform: translateY(-8px) scale(1.02);  }
+    }
+    @keyframes t-wiggle {
+      0%,100% { transform: rotate(0);    }
+      25%     { transform: rotate(-9deg);}
+      75%     { transform: rotate(9deg); }
+    }
+    .t-jump   { animation: t-jump   0.65s ease; }
+    .t-wiggle { animation: t-wiggle 0.45s ease 2; }
+
+    /* ── Speech Bubble ─────────────────────────── */
+    .bubble-speech {
+      background: white;
+      border: 2.5px solid var(--blue);
+      border-radius: 16px;
+      padding: 8px 14px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--navy);
+      max-width: 230px;
+      text-align: center;
+      position: relative;
+      margin-top: 6px;
+    }
+    .bubble-speech::before {
+      content: '';
+      position: absolute;
+      top: -11px; left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-bottom-color: var(--blue);
+    }
+
+    /* ── Celebration Bubbles ───────────────────── */
+    #celebrate {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .cbubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.75), var(--blue));
+      animation: crise 1.6s ease-out forwards;
+    }
+    @keyframes crise {
+      0%   { opacity: 0.85; transform: translateY(0) scale(1);   }
+      100% { opacity: 0;    transform: translateY(-220px) scale(0.4); }
+    }
+
+    /* ── Cards ─────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* ── Buttons ───────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 50px;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .btn:hover           { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.14); }
+    .btn:active          { transform: translateY(0); }
+    .btn:disabled        { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-primary         { background: var(--deep); color: white; }
+    .btn-accent          { background: var(--sun);  color: var(--text); }
+    .btn-outline         { background: white; color: var(--deep); border: 2.5px solid var(--deep); }
+    .btn-soft            { background: var(--sky);  color: var(--navy); }
+    .btn-coral           { background: var(--coral); color: white; }
+    .btn-sm              { padding: 8px 16px; font-size: 0.88rem; }
+    .w-full              { width: 100%; max-width: 480px; }
+
+    /* ── Progress Bar ──────────────────────────── */
+    .prog-wrap {
+      width: 100%; max-width: 480px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+      height: 10px;
+      overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--deep));
+      border-radius: 50px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Profile Cards ─────────────────────────── */
+    .profile-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: center;
+    }
+    .profile-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 22px 18px;
+      text-align: center;
+      cursor: pointer;
+      border: 3px solid transparent;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+      min-width: 120px;
+    }
+    .profile-card:hover           { transform: translateY(-4px); border-color: var(--blue); }
+    .profile-card.selected        { border-color: var(--deep); background: #deeefb; }
+    .profile-avatar               { font-size: 2.6rem; margin-bottom: 8px; }
+    .profile-name                 { font-size: 0.95rem; font-weight: 800; color: var(--navy); }
+    .profile-add                  { background: rgba(255,255,255,0.5); border: 3px dashed var(--blue); color: var(--deep); }
+
+    /* ── Topic Grid ────────────────────────────── */
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 480px;
+    }
+    .topic-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 18px 12px;
+      text-align: center;
+      cursor: pointer;
+      border: 2.5px solid transparent;
+      box-shadow: var(--shadow);
+      transition: all 0.2s;
+    }
+    .topic-card:hover   { border-color: var(--blue); transform: translateY(-3px); }
+    .topic-card.weak    { border-color: var(--coral); }
+    .topic-card.weak::after { content: '⚠️'; font-size: 0.7rem; display: block; margin-top: 4px; }
+    .topic-icon         { font-size: 2rem; margin-bottom: 6px; }
+    .topic-name         { font-size: 0.82rem; font-weight: 800; color: var(--navy); line-height: 1.3; }
+    .topic-name .it     { font-size: 0.75em; }
+
+    /* ── Answer Mechanics ──────────────────────── */
+    .answer-area {
+      width: 100%; max-width: 480px;
+      min-height: 150px;
+      background: rgba(255,255,255,0.6);
+      border-radius: var(--r);
+      border: 2.5px dashed var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--soft);
+      font-style: italic;
+      padding: 16px;
+    }
+
+    /* ── Feedback ──────────────────────────────── */
+    .feedback {
+      width: 100%; max-width: 480px;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-weight: 700;
+      text-align: center;
+      display: none;
+    }
+    .feedback.correct { background: #E8F5E9; color: #2E7D32; border: 2px solid #A5D6A7; display: block; }
+    .feedback.hint    { background: #FFF3E0; color: #BF360C; border: 2px solid #FFCC80; display: block; }
+
+    /* ── Droplet Rating (Results) ──────────────── */
+    .result-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(79,195,247,0.18);
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-label { flex: 1; font-weight: 700; font-size: 0.88rem; }
+    .droplets     { display: flex; gap: 4px; }
+    .drop         { font-size: 1.25rem; filter: grayscale(1) opacity(0.28); transition: filter 0.4s; }
+    .drop.on      { filter: none; }
+
+    /* ── History Chart ─────────────────────────── */
+    .hist-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      height: 160px;
+      padding: 8px 0 0;
+      border-bottom: 2px solid rgba(79,195,247,0.25);
+    }
+    .hist-col   { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; min-width: 0; }
+    .hist-bar   { width: 100%; border-radius: 8px 8px 0 0; min-height: 6px; transition: height 0.7s cubic-bezier(.34,1.56,.64,1); }
+    .hist-bar.bar-great { background: linear-gradient(180deg, #81C784, var(--green)); }
+    .hist-bar.bar-good  { background: linear-gradient(180deg, var(--blue), var(--deep)); }
+    .hist-bar.bar-ok    { background: linear-gradient(180deg, #FFD54F, #FFA000); }
+    .hist-bar.bar-low   { background: linear-gradient(180deg, #FF8A65, var(--coral)); }
+    .hist-pct   { font-size: 0.75rem; font-weight: 900; color: var(--navy); }
+    .hist-lbl   { font-size: 0.65rem; font-weight: 700; color: var(--soft); text-align:center; word-break:break-all; }
+
+    /* ── Quiz header ───────────────────────────── */
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 480px;
+      padding-top: 48px;
+    }
+
+    /* ── Type label ────────────────────────────── */
+    .type-lbl {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--soft);
+      margin-bottom: 6px;
+    }
+
+    /* ── Misc ──────────────────────────────────── */
+    h1   { font-size: 1.75rem; font-weight: 900; color: var(--navy); text-align: center; }
+    h2   { font-size: 1.25rem; font-weight: 800; color: var(--navy); text-align: center; }
+    .sub { color: var(--soft);  font-size: 0.88rem; text-align: center; margin-top: 4px; }
+    .row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .mt1 { margin-top: 8px;  }
+    .mt2 { margin-top: 16px; }
+    .mt3 { margin-top: 24px; }
+    .gap { height: 50px; }
+
+    /* ── Scrollbar ─────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
+
+    /* ── Responsive ────────────────────────────── */
+    @media (max-width: 400px) {
+      h1 { font-size: 1.45rem; }
+      .topic-grid { gap: 9px; }
+      .btn { padding: 11px 18px; font-size: 0.92rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Italian toggle — always visible -->
+<button id="it-toggle" onclick="toggleIT()" title="Mostra traduzione italiana">🇮🇹 IT</button>
+
+<!-- Celebration bubbles layer -->
+<div id="celebrate"></div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 1 · Profile Selection
+════════════════════════════════════════════ -->
+<div id="s-profiles" class="screen active">
+  <div class="gap"></div>
+
+  <!-- Tropfi -->
+  <div style="display:flex;flex-direction:column;align-items:center;">
+    <svg class="tropfi" id="tropfi-profile" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tg1" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stop-color="#81D4FA"/>
+          <stop offset="100%" stop-color="#0288D1"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 8C50 8,14 58,14 76C14 97,30 112,50 112C70 112,86 97,86 76C86 58,50 8,50 8Z" fill="url(#tg1)"/>
+      <ellipse cx="37" cy="54" rx="7" ry="11" fill="rgba(255,255,255,0.28)" transform="rotate(-20 37 54)"/>
+      <circle cx="39" cy="76" r="7" fill="white"/>
+      <circle cx="61" cy="76" r="7" fill="white"/>
+      <circle cx="41" cy="76" r="4" fill="#01579B"/>
+      <circle cx="63" cy="76" r="4" fill="#01579B"/>
+      <circle cx="43" cy="74" r="1.5" fill="white"/>
+      <circle cx="65" cy="74" r="1.5" fill="white"/>
+      <path d="M40 89Q50 98,60 89" stroke="#01579B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="bubble-speech">
+      Hallo! Wer spielt heute? 👋
+      <div class="it">Ciao! Chi gioca oggi?</div>
+    </div>
+  </div>
+
+  <h1 class="mt2">💧 Wasser Quiz</h1>
+  <p class="sub">Wähle dein Profil! <span class="it">/ Scegli il tuo profilo!</span></p>
+
+  <div class="profile-grid mt3" id="profile-grid">
+    <div class="profile-card" id="pc-Chiara" onclick="selectProfile('Chiara','💧',this)">
+      <div class="profile-avatar">💧</div>
+      <div class="profile-name">Chiara</div>
+    </div>
+    <div class="profile-card" id="pc-Eltern" onclick="selectProfile('Eltern','🌊',this)">
+      <div class="profile-avatar">🌊</div>
+      <div class="profile-name">Eltern</div>
+    </div>
+    <div class="profile-card profile-add" onclick="addProfile()">
+      <div class="profile-avatar">➕</div>
+      <div class="profile-name">Neu</div>
+    </div>
+  </div>
+
+  <div class="mt3">
+    <button class="btn btn-primary" id="btn-go" onclick="goHome()" disabled>
+      Los geht's! 🌊
+    </button>
+  </div>
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 2 · Home
+════════════════════════════════════════════ -->
+<div id="s-home" class="screen">
+  <div class="gap"></div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;">
+    <svg class="tropfi" id="tropfi-home" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tg2" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stop-color="#81D4FA"/>
+          <stop offset="100%" stop-color="#0288D1"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 8C50 8,14 58,14 76C14 97,30 112,50 112C70 112,86 97,86 76C86 58,50 8,50 8Z" fill="url(#tg2)"/>
+      <ellipse cx="37" cy="54" rx="7" ry="11" fill="rgba(255,255,255,0.28)" transform="rotate(-20 37 54)"/>
+      <circle cx="39" cy="76" r="7" fill="white"/>
+      <circle cx="61" cy="76" r="7" fill="white"/>
+      <circle cx="41" cy="76" r="4" fill="#01579B"/>
+      <circle cx="63" cy="76" r="4" fill="#01579B"/>
+      <circle cx="43" cy="74" r="1.5" fill="white"/>
+      <circle cx="65" cy="74" r="1.5" fill="white"/>
+      <path d="M40 89Q50 98,60 89" stroke="#01579B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="bubble-speech">
+      Hallo, <span id="home-name">…</span>! Bereit? 🎉
+      <div class="it">Ciao! Sei pronta?</div>
+    </div>
+  </div>
+
+  <h1 class="mt2">💧 Wasser Quiz</h1>
+
+  <div class="mt3" style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:360px;">
+    <button class="btn btn-accent w-full" style="font-size:1.1rem;padding:16px;" onclick="startMixed()">
+      🎲 Spielen!
+      <div class="it" style="font-size:0.75em;margin-top:2px">Gioca!</div>
+    </button>
+    <button class="btn btn-primary w-full" onclick="showTopicSelect('practice')">
+      📚 Themen üben
+      <div class="it" style="font-size:0.75em;margin-top:2px">Esercita un tema</div>
+    </button>
+    <button class="btn btn-soft w-full" onclick="showScreen('s-history')">
+      ⭐ Meine Ergebnisse
+      <div class="it" style="font-size:0.75em;margin-top:2px">I miei risultati</div>
+    </button>
+  </div>
+
+  <button class="btn btn-outline btn-sm mt3" onclick="showScreen('s-profiles')">
+    🔄 Profil wechseln <span class="it">/ Cambia profilo</span>
+  </button>
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 3 · Topic Select
+════════════════════════════════════════════ -->
+<div id="s-topics" class="screen">
+  <div class="gap"></div>
+  <div style="width:100%;max-width:480px;">
+    <button class="btn btn-outline btn-sm" onclick="goHome()">← Zurück</button>
+  </div>
+
+  <h2 class="mt2" id="topic-title">Welches Thema?</h2>
+  <p class="sub" id="topic-sub">
+    Wähle ein Thema zum Üben
+    <span class="it">/ Scegli un tema</span>
+  </p>
+
+  <div class="topic-grid mt3">
+    <div class="topic-card" id="tc-wissenswertes" onclick="startQuiz('wissenswertes')">
+      <div class="topic-icon">🌍</div>
+      <div class="topic-name">
+        Wissenswertes über Wasser
+        <div class="it">Curiosità sull'acqua</div>
+      </div>
+    </div>
+    <div class="topic-card" id="tc-teilchen" onclick="startQuiz('teilchen')">
+      <div class="topic-icon">🔬</div>
+      <div class="topic-name">
+        Wasserteilchen
+        <div class="it">Le particelle d'acqua</div>
+      </div>
+    </div>
+    <div class="topic-card" id="tc-formen" onclick="startQuiz('formen')">
+      <div class="topic-icon">🧊</div>
+      <div class="topic-name">
+        Formen des Wassers
+        <div class="it">Gli stati dell'acqua</div>
+      </div>
+    </div>
+    <div class="topic-card" id="tc-kreislauf" onclick="startQuiz('kreislauf')">
+      <div class="topic-icon">🔄</div>
+      <div class="topic-name">
+        Wasserkreislauf
+        <div class="it">Il ciclo dell'acqua</div>
+      </div>
+    </div>
+    <div class="topic-card" id="tc-niederschlag" onclick="startQuiz('niederschlag')">
+      <div class="topic-icon">🌧️</div>
+      <div class="topic-name">
+        Niederschlagsarten
+        <div class="it">Tipi di precipitazione</div>
+      </div>
+    </div>
+    <div class="topic-card" id="tc-sparen" onclick="startQuiz('sparen')">
+      <div class="topic-icon">💚</div>
+      <div class="topic-name">
+        Wasser sparen
+        <div class="it">Risparmiare acqua</div>
+      </div>
+    </div>
+  </div>
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 4 · Quiz
+════════════════════════════════════════════ -->
+<div id="s-quiz" class="screen">
+
+  <!-- Header: back + progress + counter -->
+  <div class="quiz-header">
+    <button class="btn btn-outline btn-sm" onclick="confirmExit()">← Heim</button>
+    <div class="prog-wrap" style="flex:1;margin:0;">
+      <div class="prog-fill" id="q-prog" style="width:0%"></div>
+    </div>
+    <span id="q-count" style="font-weight:800;color:var(--navy);font-size:0.88rem;white-space:nowrap;">0 / 10</span>
+  </div>
+
+  <!-- Topic badge -->
+  <p class="sub mt1" id="q-badge" style="font-weight:800;"></p>
+
+  <!-- Tropfi small + speech -->
+  <div style="display:flex;flex-direction:column;align-items:center;" class="mt1">
+    <svg class="tropfi tropfi-sm" id="tropfi-quiz" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tg3" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stop-color="#81D4FA"/>
+          <stop offset="100%" stop-color="#0288D1"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 8C50 8,14 58,14 76C14 97,30 112,50 112C70 112,86 97,86 76C86 58,50 8,50 8Z" fill="url(#tg3)"/>
+      <ellipse cx="37" cy="54" rx="7" ry="11" fill="rgba(255,255,255,0.28)" transform="rotate(-20 37 54)"/>
+      <circle cx="39" cy="76" r="7" fill="white"/>
+      <circle cx="61" cy="76" r="7" fill="white"/>
+      <circle cx="41" cy="76" r="4" fill="#01579B"/>
+      <circle cx="63" cy="76" r="4" fill="#01579B"/>
+      <circle cx="43" cy="74" r="1.5" fill="white"/>
+      <circle cx="65" cy="74" r="1.5" fill="white"/>
+      <path d="M40 89Q50 98,60 89" stroke="#01579B" stroke-width="2.5" fill="none" stroke-linecap="round" id="q-mouth"/>
+    </svg>
+    <div class="bubble-speech" id="q-speech" style="font-size:0.82rem;">
+      Denk nach! 🤔
+      <div class="it">Pensa bene!</div>
+    </div>
+  </div>
+
+  <!-- Question card -->
+  <div class="card mt2">
+    <div class="type-lbl" id="q-type-lbl">Frage</div>
+    <div style="font-size:1.05rem;font-weight:800;line-height:1.55;" id="q-text">
+      Frage wird geladen…
+    </div>
+    <div class="it" id="q-text-it" style="font-size:0.88rem;margin-top:5px;"></div>
+  </div>
+
+  <!-- Answer area — populated by quiz engine (Phase 2) -->
+  <div class="answer-area mt2" id="q-answer">
+    <span style="font-size:0.85rem;">Antwortbereich wird geladen…</span>
+  </div>
+
+  <!-- Feedback -->
+  <div class="feedback mt2" id="q-feedback"></div>
+
+  <!-- Next button (hidden until answered) -->
+  <button class="btn btn-primary mt2" id="q-next" style="display:none;" onclick="nextQuestion()">
+    Weiter → <span class="it" style="display:none;font-size:0.82em;font-style:italic;">/ Avanti</span>
+  </button>
+
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 5 · Results Dashboard
+════════════════════════════════════════════ -->
+<div id="s-results" class="screen">
+  <div class="gap"></div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;">
+    <svg class="tropfi" id="tropfi-results" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tg4" x1="20%" y1="0%" x2="80%" y2="100%">
+          <stop offset="0%" stop-color="#81D4FA"/>
+          <stop offset="100%" stop-color="#0288D1"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 8C50 8,14 58,14 76C14 97,30 112,50 112C70 112,86 97,86 76C86 58,50 8,50 8Z" fill="url(#tg4)"/>
+      <ellipse cx="37" cy="54" rx="7" ry="11" fill="rgba(255,255,255,0.28)" transform="rotate(-20 37 54)"/>
+      <circle cx="39" cy="76" r="7" fill="white"/>
+      <circle cx="61" cy="76" r="7" fill="white"/>
+      <circle cx="41" cy="76" r="4" fill="#01579B"/>
+      <circle cx="63" cy="76" r="4" fill="#01579B"/>
+      <circle cx="43" cy="74" r="1.5" fill="white"/>
+      <circle cx="65" cy="74" r="1.5" fill="white"/>
+      <path d="M40 89Q50 98,60 89" stroke="#01579B" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="bubble-speech" id="results-msg">
+      Super gemacht! 🌟
+      <div class="it">Bravissima!</div>
+    </div>
+  </div>
+
+  <!-- Total score badge -->
+  <div id="results-score" style="font-size:2.4rem;font-weight:900;color:var(--deep);margin:8px 0 2px;letter-spacing:1px;text-align:center;"></div>
+  <div id="results-score-it" class="it" style="font-size:0.82rem;text-align:center;margin-bottom:4px;"></div>
+
+  <h2 class="mt2">
+    Meine Ergebnisse
+    <div class="it" style="font-size:0.8rem;">I miei risultati</div>
+  </h2>
+
+  <!-- Per-topic droplet ratings — populated by quiz engine -->
+  <div class="card mt2" id="results-drops">
+    <div class="result-row">
+      <div class="result-label">🌍 Wissenswertes</div>
+      <div class="droplets" id="dr-wissenswertes">
+        <span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span>
+      </div>
+    </div>
+    <div class="result-row">
+      <div class="result-label">🔬 Wasserteilchen</div>
+      <div class="droplets" id="dr-teilchen">
+        <span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span>
+      </div>
+    </div>
+    <div class="result-row">
+      <div class="result-label">🧊 Formen des Wassers</div>
+      <div class="droplets" id="dr-formen">
+        <span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span>
+      </div>
+    </div>
+    <div class="result-row">
+      <div class="result-label">🔄 Wasserkreislauf</div>
+      <div class="droplets" id="dr-kreislauf">
+        <span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span>
+      </div>
+    </div>
+    <div class="result-row">
+      <div class="result-label">🌧️ Niederschlagsarten</div>
+      <div class="droplets" id="dr-niederschlag">
+        <span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span>
+      </div>
+    </div>
+    <div class="result-row">
+      <div class="result-label">💚 Wasser sparen</div>
+      <div class="droplets" id="dr-sparen">
+        <span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span><span class="drop">💧</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wrong answer review — populated by showResults() -->
+  <div id="results-wrong" class="mt2" style="width:100%;max-width:480px;"></div>
+
+  <div class="mt3" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:360px;">
+    <button class="btn btn-coral w-full" id="btn-retry-weak" onclick="retryWeak()">
+      🔁 Schwache Themen üben
+      <div class="it" style="font-size:0.75em;margin-top:2px">Ripeti i temi difficili</div>
+    </button>
+    <button class="btn btn-accent w-full" onclick="startMixed()">
+      🎲 Neues Spiel
+      <div class="it" style="font-size:0.75em;margin-top:2px">Nuova partita</div>
+    </button>
+    <button class="btn btn-soft w-full" onclick="goHome()">
+      🏠 Startseite
+      <div class="it" style="font-size:0.75em;margin-top:2px">Pagina iniziale</div>
+    </button>
+  </div>
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     SCREEN 6 · Score History
+════════════════════════════════════════════ -->
+<div id="s-history" class="screen">
+  <div class="gap"></div>
+  <div style="width:100%;max-width:480px;">
+    <button class="btn btn-outline btn-sm" onclick="goHome()">← Zurück</button>
+  </div>
+
+  <h2 class="mt2">
+    ⭐ Meine Fortschritte
+    <div class="it" style="font-size:0.8rem;">I miei progressi</div>
+  </h2>
+  <p class="sub" id="hist-profile">Chiara</p>
+
+  <div class="card mt2">
+    <p style="font-size:0.82rem;font-weight:700;color:var(--soft);margin-bottom:10px;">
+      Letzte Versuche <span class="it">/ Ultimi tentativi</span>
+    </p>
+    <div class="hist-bars" id="hist-bars">
+      <!-- Populated by JS from localStorage -->
+      <p style="color:var(--soft);font-size:0.85rem;font-style:italic;text-align:center;width:100%;" id="hist-empty">
+        Noch keine Ergebnisse!
+        <span class="it">/ Ancora nessun risultato!</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="mt3" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:480px;">
+    <button class="btn btn-accent" onclick="startMixed()">🎲 Jetzt spielen!
+      <div class="it" style="font-size:0.75em;margin-top:2px">Gioca adesso!</div>
+    </button>
+    <button id="btn-clear-hist" class="btn btn-soft" style="font-size:0.8rem;padding:9px 18px;color:var(--coral);border-color:var(--coral);" onclick="clearHistory()">
+      🗑️ Verlauf löschen
+      <div class="it" style="font-size:0.85em;margin-top:1px;">Cancella cronologia</div>
+    </button>
+  </div>
+  <div class="gap"></div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     NAVIGATION & UI SHELL JS (Phase 1)
+     Quiz engine added in Phase 2
+════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ── State ───────────────────────────────────────
+let currentProfile = null;   // { name, avatar }
+let quizMode       = 'mixed'; // 'mixed' | topic key
+
+// ── Screen navigation ───────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  if (!currentProfile) { showScreen('s-profiles'); return; }
+  document.getElementById('home-name').textContent = currentProfile.name;
+  showScreen('s-home');
+}
+
+// ── Italian toggle ──────────────────────────────
+let itOn = false;
+function toggleIT() {
+  itOn = !itOn;
+  document.body.classList.toggle('it-on', itOn);
+  const btn = document.getElementById('it-toggle');
+  btn.classList.toggle('active', itOn);
+  btn.textContent = itOn ? '🇮🇹 IT ✓' : '🇮🇹 IT';
+}
+
+// ── Profile selection ───────────────────────────
+function selectProfile(name, avatar, el) {
+  currentProfile = { name, avatar };
+  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-go').disabled = false;
+}
+
+function addProfile() {
+  const name = prompt('Name des neuen Profils:\n(Nome del nuovo profilo:)');
+  if (!name || !name.trim()) return;
+  const n = name.trim();
+  const grid = document.getElementById('profile-grid');
+  const addBtn = grid.querySelector('.profile-add');
+  const card = document.createElement('div');
+  card.className = 'profile-card';
+  card.innerHTML = `<div class="profile-avatar">🌱</div><div class="profile-name">${n}</div>`;
+  card.onclick = () => selectProfile(n, '🌱', card);
+  grid.insertBefore(card, addBtn);
+}
+
+// ── Topic helpers ───────────────────────────────
+const TOPICS = {
+  wissenswertes: { icon: '🌍', de: 'Wissenswertes über Wasser', it: 'Curiosità sull\'acqua' },
+  teilchen:      { icon: '🔬', de: 'Wasserteilchen',            it: 'Le particelle d\'acqua' },
+  formen:        { icon: '🧊', de: 'Formen des Wassers',        it: 'Gli stati dell\'acqua'  },
+  kreislauf:     { icon: '🔄', de: 'Wasserkreislauf',           it: 'Il ciclo dell\'acqua'   },
+  niederschlag:  { icon: '🌧️', de: 'Niederschlagsarten',        it: 'Tipi di precipitazione' },
+  sparen:        { icon: '💚', de: 'Wasser sparen',             it: 'Risparmiare acqua'      },
+};
+function topicLabel(key) {
+  const t = TOPICS[key];
+  return t ? `${t.icon} ${t.de}` : key;
+}
+
+function showTopicSelect(mode) {
+  quizMode = mode;
+  const isMixed = (mode === 'mixed');
+  document.getElementById('topic-title').textContent = isMixed ? 'Wo willst du anfangen?' : 'Welches Thema?';
+  showScreen('s-topics');
+}
+
+// ── Quiz stubs (replaced by Phase 2 engine) ─────
+function startMixed() {
+  quizMode = 'mixed';
+  startQuiz('mixed');
+}
+
+function startQuiz(topic) {
+  quizMode = topic;
+  document.getElementById('q-badge').textContent = topic === 'mixed'
+    ? '🎲 Gemischte Runde'
+    : topicLabel(topic);
+  // Phase 2 will fill this in
+  document.getElementById('q-text').textContent = 'Quiz wird in Phase 2 hinzugefügt…';
+  document.getElementById('q-count').textContent = '0 / 10';
+  document.getElementById('q-prog').style.width = '0%';
+  document.getElementById('q-feedback').className = 'feedback';
+  document.getElementById('q-next').style.display = 'none';
+  document.getElementById('q-answer').innerHTML =
+    '<span style="font-size:0.85rem;font-style:italic;">Antwortbereich kommt in Phase 2…</span>';
+  showScreen('s-quiz');
+}
+
+function retryWeak() {
+  // Phase 2 will determine weak topics from session scores
+  showTopicSelect('practice');
+}
+
+function confirmExit() {
+  if (confirm('Spiel beenden und zur Startseite? / Vuoi tornare alla home?')) goHome();
+}
+
+function nextQuestion() {
+  // Phase 2 will handle question flow
+}
+
+// ── Animations (called by Phase 2 engine) ───────
+function tropfiJump(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('t-jump', 't-wiggle');
+  void el.offsetWidth; // reflow
+  el.classList.add('t-jump');
+  el.addEventListener('animationend', () => el.classList.remove('t-jump'), { once: true });
+}
+
+function tropfiWiggle(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('t-jump', 't-wiggle');
+  void el.offsetWidth;
+  el.classList.add('t-wiggle');
+  el.addEventListener('animationend', () => el.classList.remove('t-wiggle'), { once: true });
+}
+
+function spawnBubbles() {
+  const c = document.getElementById('celebrate');
+  for (let i = 0; i < 14; i++) {
+    setTimeout(() => {
+      const b = document.createElement('div');
+      b.className = 'cbubble';
+      const sz = 10 + Math.random() * 22;
+      b.style.cssText = `width:${sz}px;height:${sz}px;left:${5 + Math.random() * 90}%;bottom:${5 + Math.random() * 35}%;animation-delay:${Math.random() * 0.35}s;animation-duration:${1.1 + Math.random() * 0.9}s`;
+      c.appendChild(b);
+      setTimeout(() => b.remove(), 2200);
+    }, i * 55);
+  }
+}
+
+// ── History display stub (Phase 2 populates) ────
+function renderHistory() {
+  const profile = currentProfile?.name || 'Chiara';
+  document.getElementById('hist-profile').textContent = profile;
+  const key = `wq_history_${profile}`;
+  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  const container = document.getElementById('hist-bars');
+  if (!data.length) {
+    container.innerHTML = `<p style="color:var(--soft);font-size:0.85rem;font-style:italic;text-align:center;width:100%;">
+      Noch keine Ergebnisse! <span class="it">/ Ancora nessun risultato!</span></p>`;
+    return;
+  }
+  container.innerHTML = '';
+  data.slice(-5).forEach((entry, i) => {
+    const col = document.createElement('div');
+    col.className = 'hist-col';
+    col.innerHTML = `
+      <div class="hist-bar" style="height:${entry.pct}%;"></div>
+      <div class="hist-lbl">${i + 1}.</div>`;
+    container.appendChild(col);
+  });
+}
+
+// History render triggered by Phase 2 showScreen override
+</script>
+
+<!-- ════════════════════════════════════════════
+     PHASE 2 — Quiz Engine
+     Question bank (QB) populated in Phase 3
+════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ── Question Bank (Phase 3 fills these) ──────────
+const QB = {
+  wissenswertes: [],
+  teilchen:      [],
+  formen:        [],
+  kreislauf:     [],
+  niederschlag:  [],
+  sparen:        []
+};
+
+// ── Quiz State ───────────────────────────────────
+const QS = {
+  questions:    [],
+  index:        0,
+  retrying:     false,
+  topicPts:     {},
+  weakTopics:   [],
+  wrongAnswers: [],   // collects questions answered wrong both times
+  mode:         'mixed',
+};
+
+const TKEYS = ['wissenswertes','teilchen','formen','kreislauf','niederschlag','sparen'];
+
+// ── Override showScreen (adds history trigger) ───
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 's-history') renderHistory();
+}
+
+// ── Override startQuiz (deck-based randomisation) ─
+function startQuiz(topic) {
+  if (!currentProfile) { showScreen('s-profiles'); return; }
+
+  // Build full pool for this mode
+  let pool = [];
+  if (topic === 'mixed') {
+    TKEYS.forEach(k => QB[k].forEach(q => pool.push({...q, _topic: k})));
+  } else {
+    (QB[topic] || []).forEach(q => pool.push({...q, _topic: topic}));
+  }
+
+  if (!pool.length) {
+    alert('Noch keine Fragen geladen. (Phase 3 kommt gleich!)');
+    return;
+  }
+
+  const ROUND_SIZE = Math.min(10, pool.length);
+
+  // ── Deck: only show unseen questions until whole pool exhausted ──
+  const deck    = loadDeck();
+  const modeKey = topic;                        // 'mixed' or a topic key
+  const seen    = new Set(deck[modeKey] || []);
+  let   fresh   = pool.filter(q => !seen.has(q.id));
+
+  // Not enough fresh questions → reset this mode's deck and use full pool
+  if (fresh.length < ROUND_SIZE) {
+    seen.clear();
+    deck[modeKey] = [];
+    fresh = [...pool];
+  }
+
+  // Shuffle fresh pool and take round
+  const selected = fresh.sort(() => Math.random() - 0.5).slice(0, ROUND_SIZE);
+
+  // Persist updated seen-set for this mode
+  selected.forEach(q => seen.add(q.id));
+  deck[modeKey] = [...seen];
+  saveDeck(deck);
+
+  QS.questions    = selected;
+  QS.index        = 0;
+  QS.retrying     = false;
+  QS.wrongAnswers = [];
+  QS.mode         = topic;
+  TKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
+
+  document.getElementById('q-badge').textContent =
+    topic === 'mixed' ? '🎲 Gemischte Runde' : topicLabel(topic);
+
+  showScreen('s-quiz');
+  renderQuestion();
+}
+
+// ── Question type labels ──────────────────────────
+const TLABELS = {
+  mcq:         { de: 'Wähle die richtige Antwort',        it: 'Scegli la risposta giusta' },
+  truefalse:   { de: 'Wahr oder Falsch?',                 it: 'Vero o Falso?' },
+  fitb:        { de: 'Ergänze den Satz',                  it: 'Completa la frase' },
+  imageChoice: { de: 'Choose the right picture! 🖼️',     it: 'Scegli l\'immagine giusta! 🖼️' },
+  sequence:    { de: 'Bringe in die richtige Reihenfolge', it: 'Metti in ordine corretto' },
+  dragmatch:   { de: 'Verbinde richtig',                  it: 'Collega correttamente' },
+  cycleDiagram:{ de: 'Welche Box fehlt im Kreislauf?',    it: 'Quale casella manca nel ciclo?' },
+};
+
+// ── Water cycle step labels (DE + EN) ────────────
+const CYCLE_STEPS = {
+  de: ['Sonne erwärmt', 'Verdunsten', 'Wolkenbildung', 'Niederschlag', 'Abfluss',  'Grundwasser'],
+  en: ['Sun warms',     'Evaporation','Condensation',  'Precipitation','Runoff',   'Groundwater'],
+};
+
+// ── Render current question ───────────────────────
+function renderQuestion() {
+  const q = QS.questions[QS.index];
+  const n = QS.questions.length;
+
+  document.getElementById('q-prog').style.width = `${(QS.index / n) * 100}%`;
+  document.getElementById('q-count').textContent = `${QS.index + 1} / ${n}`;
+  const tl = TLABELS[q.type] || { de: 'Frage', it: '' };
+  document.getElementById('q-type-lbl').innerHTML =
+    tl.de + (tl.it ? `<span class="it" style="display:none;"> / ${tl.it}</span>` : '');
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('q-text-it').textContent = q.question_it || '';
+  if (quizMode === 'mixed') {
+    document.getElementById('q-badge').textContent = `🎲 ${topicLabel(q._topic)}`;
+  }
+
+  clearFeedback();
+  document.getElementById('q-next').style.display = 'none';
+  setTropfiMsg('Denk nach! 🤔', 'Pensa bene!');
+
+  const area = document.getElementById('q-answer');
+  area.innerHTML = '';
+  resetArea(area);
+
+  const render = { mcq, truefalse, fitb, imageChoice, sequence, dragmatch, cycleDiagram };
+  if (render[q.type]) render[q.type](q, area);
+  else area.innerHTML = '<p style="color:var(--soft)">Unbekannter Fragetyp</p>';
+}
+
+function resetArea(area) {
+  area.style.cssText = 'width:100%;max-width:480px;border-radius:20px;border:2.5px dashed var(--blue);display:flex;align-items:flex-start;justify-content:flex-start;padding:14px;flex-wrap:wrap;gap:10px;background:rgba(255,255,255,0.5);';
+}
+
+// ── MCQ ──────────────────────────────────────────
+function mcq(q, area) {
+  area.style.background = 'transparent';
+  area.style.border = 'none';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.style.cssText = 'flex:1 1 calc(50% - 5px);min-width:120px;padding:12px;font-size:0.92rem;border-radius:14px;text-align:center;line-height:1.35;';
+    btn.innerHTML = opt;
+    if (q.options_it && q.options_it[idx]) {
+      btn.innerHTML += `<div class="it" style="display:none;font-size:0.77em;margin-top:3px;">${q.options_it[idx]}</div>`;
+    }
+    btn.onclick = () => {
+      area.querySelectorAll('button').forEach(b => b.disabled = true);
+      checkAnswer(q, opt, btn, area);
+    };
+    area.appendChild(btn);
+  });
+}
+
+// ── True / False ──────────────────────────────────
+function truefalse(q, area) {
+  area.style.cssText = 'width:100%;max-width:480px;display:flex;flex-direction:column;gap:12px;padding:0;border:none;background:transparent;';
+
+  const stmt = document.createElement('div');
+  stmt.style.cssText = 'background:white;border-radius:14px;padding:14px 16px;font-size:0.95rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow);text-align:center;line-height:1.5;';
+  stmt.innerHTML = `💬 Chiara sagt: „${q.statement}"`;
+  if (q.statement_it) stmt.innerHTML += `<div class="it" style="font-size:0.83em;margin-top:4px;">Chiara dice: „${q.statement_it}"</div>`;
+  area.appendChild(stmt);
+
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:12px;justify-content:center;';
+  [
+    {label:'✅ Ja, richtig!', label_it:'Sì, giusto!',   val:true},
+    {label:'❌ Nein, falsch!', label_it:'No, sbagliato!', val:false}
+  ].forEach(({label, label_it, val}) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.style.cssText = 'flex:1;max-width:180px;padding:13px;border-radius:14px;background:white;color:var(--navy);border:2.5px solid var(--blue);font-size:1rem;';
+    btn.innerHTML = label + `<div class="it" style="display:none;font-size:0.77em;margin-top:2px;">${label_it}</div>`;
+    btn.onclick = () => {
+      row.querySelectorAll('button').forEach(b => b.disabled = true);
+      checkAnswer(q, val, btn, area);
+    };
+    row.appendChild(btn);
+  });
+  area.appendChild(row);
+}
+
+// ── Fill in the Blank ─────────────────────────────
+function fitb(q, area) {
+  area.style.cssText = 'width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0;border:none;background:transparent;';
+
+  const display = document.createElement('div');
+  display.style.cssText = 'width:100%;background:white;border-radius:14px;padding:14px;font-size:1rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow);text-align:center;line-height:1.9;';
+  const blank = `<span style="display:inline-block;min-width:80px;border-bottom:3px solid var(--deep);padding:0 6px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+  display.innerHTML = `${q.prefix || ''} ${blank} ${q.suffix || ''}`;
+  if (q.prefix_it !== undefined) {
+    display.innerHTML += `<div class="it" style="display:none;font-size:0.82em;color:#7986CB;font-style:italic;line-height:1.7;margin-top:4px;">${q.prefix_it || ''} ${blank} ${q.suffix_it || ''}</div>`;
+  }
+  area.appendChild(display);
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'Deine Antwort…';
+  input.autocomplete = 'off'; input.autocorrect = 'off'; input.autocapitalize = 'none';
+  input.style.cssText = 'width:100%;max-width:320px;padding:12px 16px;border:2.5px solid var(--blue);border-radius:50px;font-family:inherit;font-size:1rem;font-weight:700;color:var(--navy);outline:none;text-align:center;background:white;';
+  input.onkeydown = e => { if (e.key === 'Enter') doFitb(q, input, area); };
+  area.appendChild(input);
+
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary btn-sm';
+  btn.innerHTML = 'Prüfen ✓ <span class="it" style="display:none;font-size:0.82em;font-style:italic;">/ Controlla</span>';
+  btn.onclick = () => doFitb(q, input, area);
+  area.appendChild(btn);
+
+  setTimeout(() => input.focus(), 200);
+}
+
+function doFitb(q, input, area) {
+  const val = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
+  const ok = (q.answer || []).map(a => a.toLowerCase()).includes(val);
+  input.disabled = true;
+  area.querySelectorAll('button').forEach(b => b.disabled = true);
+  checkAnswer(q, ok, null, area, val);
+}
+
+// ── Image Choice (English +heat/-heat) ───────────
+function imageChoice(q, area) {
+  area.style.background = 'transparent';
+  area.style.border = 'none';
+  q.options.forEach((opt, i) => {
+    const card = document.createElement('button');
+    card.style.cssText = 'flex:1 1 calc(50% - 5px);min-width:100px;background:white;border:2.5px solid var(--blue);border-radius:16px;padding:14px 8px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all 0.2s;';
+    card.innerHTML = `<span style="font-size:2.3rem;">${opt.emoji}</span><span style="font-size:0.83rem;font-weight:800;color:var(--navy);">${opt.label}</span>`;
+    card.onmouseover = () => { if (!card.disabled) card.style.transform = 'translateY(-3px)'; };
+    card.onmouseout  = () => card.style.transform = '';
+    card.onclick = () => {
+      area.querySelectorAll('button').forEach(b => b.disabled = true);
+      checkAnswer(q, i, card, area);
+    };
+    area.appendChild(card);
+  });
+}
+
+// ── Sequence (tap cards in correct order) ─────────
+function sequence(q, area) {
+  area.style.cssText = 'width:100%;max-width:480px;display:flex;flex-direction:column;gap:8px;padding:0;border:none;background:transparent;';
+
+  const hint = document.createElement('p');
+  hint.style.cssText = 'font-size:0.8rem;font-weight:700;color:var(--soft);text-align:center;';
+  hint.innerHTML = 'Tippe die Schritte in der richtigen Reihenfolge!'
+    + '<span class="it" style="display:none;font-weight:normal;font-style:italic;"> / Tocca i passi nell\'ordine giusto!</span>';
+  area.appendChild(hint);
+
+  const order = [];
+  const shuffled = [...q.items.map((text, i) => ({text, i}))].sort(() => Math.random() - 0.5);
+  const container = document.createElement('div');
+  container.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+
+  shuffled.forEach(({text, i: origIdx}) => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:white;border:2.5px solid var(--blue);border-radius:12px;padding:9px 13px;font-weight:700;font-size:0.87rem;color:var(--navy);cursor:pointer;display:flex;align-items:flex-start;gap:10px;transition:all 0.2s;user-select:none;';
+    card.dataset.origIdx = origIdx;
+
+    const num = document.createElement('span');
+    num.style.cssText = 'min-width:24px;height:24px;border-radius:50%;background:var(--sky);color:var(--navy);font-weight:900;font-size:0.8rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;';
+    num.textContent = '?';
+    card.appendChild(num);
+
+    const textWrap = document.createElement('span');
+    textWrap.style.cssText = 'display:flex;flex-direction:column;gap:1px;';
+    textWrap.appendChild(document.createTextNode(text));
+    if (q.items_it && q.items_it[origIdx]) {
+      const itS = document.createElement('span');
+      itS.className = 'it';
+      itS.style.cssText = 'display:none;font-size:0.77em;color:#7986CB;font-style:italic;';
+      itS.textContent = q.items_it[origIdx];
+      textWrap.appendChild(itS);
+    }
+    card.appendChild(textWrap);
+
+    card.onclick = () => {
+      if (card.dataset.sel) return;
+      order.push(origIdx);
+      card.dataset.sel = '1';
+      num.textContent = order.length;
+      num.style.background = 'var(--deep)';
+      num.style.color = 'white';
+      card.style.borderColor = 'var(--deep)';
+      card.style.background = '#e3f2fd';
+      if (order.length === q.items.length) {
+        setTimeout(() => checkAnswer(q, order, null, area), 300);
+      }
+    };
+    container.appendChild(card);
+  });
+  area.appendChild(container);
+}
+
+// ── Drag Match (tap-to-select, tap-to-place) ──────
+function dragmatch(q, area) {
+  area.style.cssText = 'width:100%;max-width:480px;display:flex;flex-direction:column;gap:8px;padding:0;border:none;background:transparent;';
+
+  const hint = document.createElement('p');
+  hint.style.cssText = 'font-size:0.8rem;font-weight:700;color:var(--soft);text-align:center;';
+  hint.innerHTML = 'Wähle ein Wort, dann wähle die passende Erklärung!'
+    + '<span class="it" style="display:none;font-weight:normal;font-style:italic;"> / Scegli una parola, poi scegli la spiegazione!</span>';
+  area.appendChild(hint);
+
+  const pairs = q.pairs;
+  const shuffledR = [...pairs.map((p, i) => ({...p, oi: i}))].sort(() => Math.random() - 0.5);
+  const matched = {};
+  let selLeft = null;
+  const lCards = [];
+
+  const grid = document.createElement('div');
+  grid.style.cssText = 'display:grid;grid-template-columns:1fr 1.4fr;gap:7px;';
+  const lCol = document.createElement('div');
+  lCol.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+  const rCol = document.createElement('div');
+  rCol.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+
+  pairs.forEach((p, i) => {
+    const c = document.createElement('div');
+    c.style.cssText = 'background:white;border:2.5px solid var(--blue);border-radius:10px;padding:9px 10px;font-weight:800;font-size:0.83rem;color:var(--navy);cursor:pointer;text-align:center;transition:all 0.2s;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+    c.innerHTML = p.left;
+    if (q.pairs_it && q.pairs_it[i]) {
+      c.innerHTML += `<div class="it" style="display:none;font-size:0.77em;color:#7986CB;font-style:italic;font-weight:600;margin-top:2px;">${q.pairs_it[i].left}</div>`;
+    }
+    c.onclick = () => {
+      if (c.dataset.m) return;
+      lCards.forEach(x => { if (!x.dataset.m) { x.style.borderColor = 'var(--blue)'; x.style.background = 'white'; } });
+      selLeft = i;
+      c.style.borderColor = 'var(--sun)';
+      c.style.background = '#fffde7';
+    };
+    lCards.push(c);
+    lCol.appendChild(c);
+  });
+
+  shuffledR.forEach(p => {
+    const c = document.createElement('div');
+    c.style.cssText = 'background:white;border:2.5px solid var(--blue);border-radius:10px;padding:8px 10px;font-weight:600;font-size:0.77rem;color:var(--navy);cursor:pointer;transition:all 0.2s;min-height:44px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;line-height:1.3;';
+    c.innerHTML = p.right;
+    if (q.pairs_it && q.pairs_it[p.oi]) {
+      c.innerHTML += `<div class="it" style="display:none;font-size:0.77em;color:#7986CB;font-style:italic;margin-top:2px;">${q.pairs_it[p.oi].right}</div>`;
+    }
+    c.dataset.oi = p.oi;
+    c.onclick = () => {
+      if (selLeft === null || c.dataset.m) return;
+      matched[selLeft] = parseInt(c.dataset.oi);
+      lCards[selLeft].dataset.m = '1';
+      lCards[selLeft].style.background = '#e8f5e9';
+      lCards[selLeft].style.borderColor = 'var(--green)';
+      c.dataset.m = '1';
+      c.style.background = '#e8f5e9';
+      c.style.borderColor = 'var(--green)';
+      selLeft = null;
+      if (Object.keys(matched).length === pairs.length) {
+        const ok = pairs.every((_, i) => matched[i] === i);
+        setTimeout(() => checkAnswer(q, ok, null, area), 300);
+      }
+    };
+    rCol.appendChild(c);
+  });
+
+  grid.appendChild(lCol);
+  grid.appendChild(rCol);
+  area.appendChild(grid);
+}
+
+// ── Cycle Diagram (hexagonal gap-fill) ────────────
+function cycleDiagram(q, area) {
+  area.style.cssText = 'width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:0;border:none;background:transparent;';
+
+  const steps = CYCLE_STEPS[q.lang || 'de'];
+  const gap   = q.gapStep;
+
+  // Node centres — regular hexagon, R=108, centre (240,140)
+  const N = [
+    {x:240,y:32}, {x:334,y:86}, {x:334,y:194},
+    {x:240,y:248},{x:146,y:194},{x:146,y:86},
+  ];
+
+  // Arrow segment endpoints (pre-computed, ~20 px offset from each node)
+  const arrows = [
+    [257,42, 315,75], [334,106,334,172], [317,204,259,237],
+    [223,238,165,205],[146,174,146,108], [163,76, 221,43],
+  ];
+
+  function nodeBox(n, i) {
+    const isGap = (i === gap);
+    const bx = n.x - 48, by = n.y - 18;
+    const bg     = isGap ? '#FFF9C4' : 'white';
+    const stroke = isGap ? '#FF8F00' : '#4FC3F7';
+    const sw     = isGap ? 2.5 : 1.5;
+    const rect   = `<rect x="${bx}" y="${by}" width="96" height="36" rx="9" fill="${bg}" stroke="${stroke}" stroke-width="${sw}"/>`;
+    let   text;
+    if (isGap) {
+      text = `<text x="${n.x}" y="${n.y+6}" text-anchor="middle" font-size="17" font-weight="900" fill="#E65100" font-family="system-ui,sans-serif">?</text>`;
+    } else {
+      const parts = steps[i].split(' ');
+      if (parts.length === 1) {
+        text = `<text x="${n.x}" y="${n.y+5}" text-anchor="middle" font-size="10" font-weight="700" fill="#1A237E" font-family="system-ui,sans-serif">${steps[i]}</text>`;
+      } else {
+        text = `<text text-anchor="middle" font-size="10" font-weight="700" fill="#1A237E" font-family="system-ui,sans-serif"><tspan x="${n.x}" y="${n.y-1}">${parts[0]}</tspan><tspan x="${n.x}" dy="13">${parts.slice(1).join(' ')}</tspan></text>`;
+      }
+    }
+    return rect + text;
+  }
+
+  const arrowLines = arrows.map(([x1,y1,x2,y2]) =>
+    `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#4FC3F7" stroke-width="2.5" stroke-linecap="round" marker-end="url(#cdArr)"/>`
+  ).join('');
+
+  const boxes = N.map((n, i) => nodeBox(n, i)).join('');
+  const cL1 = q.lang === 'en' ? 'Water'     : 'Wasser-';
+  const cL2 = q.lang === 'en' ? 'Cycle'     : 'kreislauf';
+
+  const svgStr = `<svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:440px;border-radius:14px;border:1.5px solid rgba(79,195,247,0.3);background:#EEF7FF;">
+    <defs><marker id="cdArr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4FC3F7"/></marker></defs>
+    <text x="240" y="136" text-anchor="middle" font-size="10" fill="#5B9BD5" font-weight="700" opacity="0.6" font-family="system-ui,sans-serif">${cL1}</text>
+    <text x="240" y="150" text-anchor="middle" font-size="10" fill="#5B9BD5" font-weight="700" opacity="0.6" font-family="system-ui,sans-serif">${cL2}</text>
+    ${arrowLines}${boxes}
+  </svg>`;
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'width:100%;';
+  wrap.innerHTML = svgStr;
+  area.appendChild(wrap.firstElementChild);
+
+  // MCQ buttons below the diagram
+  const btnWrap = document.createElement('div');
+  btnWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.style.cssText = 'flex:1 1 calc(50% - 4px);min-width:120px;padding:11px;font-size:0.9rem;border-radius:13px;text-align:center;';
+    btn.innerHTML = opt;
+    if (q.options_it?.[idx]) {
+      btn.innerHTML += `<div class="it" style="display:none;font-size:0.77em;margin-top:2px;">${q.options_it[idx]}</div>`;
+    }
+    btn.onclick = () => {
+      btnWrap.querySelectorAll('button').forEach(b => b.disabled = true);
+      checkAnswer(q, opt, btn, area);
+    };
+    btnWrap.appendChild(btn);
+  });
+  area.appendChild(btnWrap);
+}
+
+// ── Answer checking ───────────────────────────────
+function checkAnswer(q, answer, btn, area) {
+  const correct = evalAnswer(q, answer);
+  const topic = q._topic;
+  QS.topicPts[topic].max += 2;
+
+  if (correct) {
+    QS.topicPts[topic].pts += QS.retrying ? 1 : 2;
+    if (btn) { btn.style.background='#e8f5e9'; btn.style.borderColor='#66BB6A'; btn.style.color='#2E7D32'; }
+    showFeedback('correct',
+      (q.msg_ok || '✅ Super! Das ist richtig!') + ' 🎉',
+      q.msg_ok_it || 'Corretto! Bravissima! 🌟');
+    setTropfiMsg('Toll gemacht! ⭐', 'Bravissima!');
+    tropfiJump('tropfi-quiz');
+    spawnBubbles();
+    document.getElementById('q-next').style.display = '';
+    QS.retrying = false;
+    // ── Stats: record correct outcome ──
+    (function() {
+      const st = loadStats();
+      if (!st[q.id]) st[q.id] = { shown: 0, correct: 0, wrong: 0, lastSeen: '' };
+      st[q.id].shown++;
+      st[q.id].correct++;
+      st[q.id].lastSeen = new Date().toLocaleDateString('de-DE');
+      saveStats(st);
+    })();
+
+  } else if (!QS.retrying) {
+    QS.retrying = true;
+    if (btn) { btn.style.background='#fff3e0'; btn.style.borderColor='#FF7043'; }
+    showFeedback('hint',
+      `💡 Fast! ${q.hint || 'Versuche es noch einmal!'}`,
+      q.hint_it || 'Quasi! Riprova!');
+    setTropfiMsg('Fast! Versuch es nochmal! 💪', 'Quasi! Riprova!');
+    tropfiWiggle('tropfi-quiz');
+    reactivate(q, area, btn);
+
+  } else {
+    // Record for end-of-round review
+    QS.wrongAnswers.push({
+      question:       q.question,
+      question_it:    q.question_it    || '',
+      answer_text:    q.answer_text    || q.hint || '',
+      answer_text_it: q.answer_text_it || '',
+      topic:          q._topic,
+    });
+    showFeedback('hint',
+      `💡 Die richtige Antwort: ${q.answer_text || q.hint || ''}`,
+      q.answer_text_it || '');
+    setTropfiMsg('Kein Problem! Nächstes Mal klappt\'s! 🌈', 'Non importa! La prossima volta!');
+    document.getElementById('q-next').style.display = '';
+    QS.retrying = false;
+    // ── Stats: record wrong outcome ──
+    (function() {
+      const st = loadStats();
+      if (!st[q.id]) st[q.id] = { shown: 0, correct: 0, wrong: 0, lastSeen: '' };
+      st[q.id].shown++;
+      st[q.id].wrong++;
+      st[q.id].lastSeen = new Date().toLocaleDateString('de-DE');
+      saveStats(st);
+    })();
+  }
+}
+
+function evalAnswer(q, answer) {
+  if (q.type === 'mcq')          return answer === q.correct;
+  if (q.type === 'truefalse')    return answer === q.correct;
+  if (q.type === 'fitb')         return answer === true;
+  if (q.type === 'imageChoice')  return answer === q.correct;
+  if (q.type === 'sequence')     return JSON.stringify(answer) === JSON.stringify(q.correctOrder);
+  if (q.type === 'dragmatch')    return answer === true;
+  if (q.type === 'cycleDiagram') return answer === q.correct;
+  return false;
+}
+
+function reactivate(q, area, wrongBtn) {
+  if (q.type === 'fitb') {
+    area.querySelectorAll('input, button').forEach(el => el.disabled = false);
+    const inp = area.querySelector('input');
+    if (inp) { inp.value = ''; setTimeout(() => inp.focus(), 100); }
+  } else if (q.type === 'sequence' || q.type === 'dragmatch') {
+    area.innerHTML = '';
+    resetArea(area);
+    ({ sequence, dragmatch }[q.type])(q, area);
+  } else {
+    area.querySelectorAll('button').forEach(b => b.disabled = false);
+    if (wrongBtn) wrongBtn.disabled = true;
+  }
+}
+
+// ── Feedback & Tropfi helpers ─────────────────────
+function showFeedback(type, msg, it) {
+  const fb = document.getElementById('q-feedback');
+  fb.className = `feedback ${type}`;
+  fb.innerHTML = msg + (it ? `<div class="it" style="font-size:0.85em;margin-top:3px;">${it}</div>` : '');
+}
+function clearFeedback() {
+  const fb = document.getElementById('q-feedback');
+  fb.className = 'feedback';
+  fb.innerHTML = '';
+}
+function setTropfiMsg(de, it) {
+  document.getElementById('q-speech').innerHTML =
+    de + (it ? `<div class="it">${it}</div>` : '');
+}
+
+// ── Question flow ─────────────────────────────────
+function nextQuestion() {
+  QS.index++;
+  QS.retrying = false;
+  if (QS.index >= QS.questions.length) showResults();
+  else renderQuestion();
+}
+
+// ── Results screen ────────────────────────────────
+function showResults() {
+  const weak = [];
+  TKEYS.forEach(k => {
+    const { pts, max } = QS.topicPts[k];
+    const pct = max > 0 ? pts / max : -1;
+    fillDroplets(k, pct < 0 ? -1 : Math.round(pct * 5));
+    if (pct >= 0 && pct < 0.7) weak.push(k);
+  });
+  QS.weakTopics = weak;
+
+  const totalPts = TKEYS.reduce((a, k) => a + QS.topicPts[k].pts, 0);
+  const totalMax = TKEYS.reduce((a, k) => a + QS.topicPts[k].max, 0);
+  const pct = totalMax > 0 ? Math.round(totalPts / totalMax * 100) : 0;
+
+  const msgs = [
+    ['Du bist eine Wasser-Expertin! 🏆',    'Sei una vera esperta dell\'acqua!'],
+    ['Sehr gut! Noch ein bisschen üben! 💪', 'Molto bene! Ancora un po\'!'],
+    ['Gut gemacht! Weiter so! 🌟',           'Ben fatto! Continua così!'],
+    ['Fast da! Üben macht den Meister! 🌈',  'Quasi! La pratica rende perfetti!'],
+  ];
+  const [de, it] = msgs[pct >= 90 ? 0 : pct >= 70 ? 1 : pct >= 50 ? 2 : 3];
+  document.getElementById('results-msg').innerHTML = `${de}<div class="it">${it}</div>`;
+  document.getElementById('results-score').textContent = `${pct}%`;
+  document.getElementById('results-score-it').textContent = `Punteggio: ${pct}%`;
+  document.getElementById('btn-retry-weak').style.display = weak.length ? '' : 'none';
+
+  saveScore(pct);
+
+  // ── Wrong-answer review ──────────────────────────
+  const wrongDiv = document.getElementById('results-wrong');
+  if (!QS.wrongAnswers.length) {
+    wrongDiv.innerHTML = `
+      <div class="card" style="text-align:center;padding:14px 16px;">
+        <div style="font-size:1.6rem;">🏆</div>
+        <div style="font-weight:800;color:var(--green);margin-top:4px;">
+          Alles richtig gemeistert!
+          <div class="it" style="font-size:0.8rem;font-weight:400;margin-top:2px;">Tutto corretto! Bravissima!</div>
+        </div>
+      </div>`;
+  } else {
+    const items = QS.wrongAnswers.map(w => {
+      const icon = TOPICS[w.topic]?.icon || '📝';
+      const label = TOPICS[w.topic]?.de || w.topic;
+      return `
+        <div style="border-left:3px solid var(--coral);padding:9px 11px;margin-bottom:8px;background:#fff8f7;border-radius:0 10px 10px 0;">
+          <div style="font-size:0.73rem;color:var(--soft);margin-bottom:3px;">${icon} ${label}</div>
+          <div style="font-size:0.87rem;font-weight:700;color:var(--navy);">❓ ${w.question}</div>
+          ${w.question_it ? `<div class="it" style="font-size:0.75rem;margin-top:1px;">${w.question_it}</div>` : ''}
+          <div style="font-size:0.83rem;color:#2E7D32;margin-top:5px;font-weight:600;">✅ ${w.answer_text}</div>
+          ${w.answer_text_it ? `<div class="it" style="font-size:0.75rem;color:#558B2F;margin-top:1px;">${w.answer_text_it}</div>` : ''}
+        </div>`;
+    }).join('');
+    wrongDiv.innerHTML = `
+      <div class="card" style="padding:14px 16px;">
+        <div style="font-weight:800;color:var(--coral);margin-bottom:10px;font-size:0.88rem;">
+          ❌ Was war falsch? (${QS.wrongAnswers.length})
+          <span class="it" style="font-size:0.82em;font-weight:400;"> / Cosa era sbagliato?</span>
+        </div>
+        ${items}
+        <div style="font-size:0.75rem;color:var(--soft);margin-top:8px;font-style:italic;">
+          Nächstes Mal weißt du es! 💪
+          <span class="it"> / La prossima volta lo sai!</span>
+        </div>
+      </div>`;
+  }
+
+  showScreen('s-results');
+  tropfiJump('tropfi-results');
+  if (pct >= 70) setTimeout(spawnBubbles, 400);
+}
+
+function fillDroplets(key, count) {
+  const el = document.getElementById(`dr-${key}`);
+  if (!el) return;
+  el.querySelectorAll('.drop').forEach((d, i) => {
+    if (count < 0) { d.style.filter = 'grayscale(1) opacity(0.12)'; return; }
+    setTimeout(() => d.classList.toggle('on', i < count), i * 130);
+  });
+}
+
+// ── Retry weak topics ─────────────────────────────
+function retryWeak() {
+  const keys = QS.weakTopics?.length ? QS.weakTopics : TKEYS;
+  const pool = [];
+  keys.forEach(k => QB[k].forEach(q => pool.push({...q, _topic: k})));
+  if (!pool.length) { startQuiz('mixed'); return; }
+  QS.questions = pool.sort(() => Math.random() - 0.5).slice(0, 10);
+  QS.index = 0;
+  QS.retrying = false;
+  TKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
+  document.getElementById('q-badge').textContent = '🔁 Schwache Themen';
+  showScreen('s-quiz');
+  renderQuestion();
+}
+
+// ── localStorage ──────────────────────────────────
+function saveScore(pct) {
+  if (!currentProfile) return;
+  const key = `wq_${currentProfile.name}`;
+  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  data.push({
+    date:   new Date().toLocaleDateString('de-DE'),
+    time:   new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'}),
+    mode:   QS.mode,
+    pct,
+    topics: Object.fromEntries(TKEYS.map(k => [k, {...QS.topicPts[k]}]))
+  });
+  if (data.length > 10) data.shift();
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function renderHistory() {
+  if (!currentProfile) return;
+  const key = `wq_${currentProfile.name}`;
+  document.getElementById('hist-profile').textContent =
+    `${currentProfile.avatar} ${currentProfile.name}`;
+  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  const bars = document.getElementById('hist-bars');
+  if (!data.length) {
+    bars.innerHTML = `<p style="color:var(--soft);font-size:0.85rem;font-style:italic;text-align:center;width:100%;">
+      Noch keine Ergebnisse! <span class="it">/ Ancora nessun risultato!</span></p>`;
+    return;
+  }
+  bars.innerHTML = '';
+  data.slice(-5).forEach(e => {
+    const col = document.createElement('div');
+    col.className = 'hist-col';
+    const barClass   = e.pct >= 80 ? 'bar-great' : e.pct >= 60 ? 'bar-good' : e.pct >= 40 ? 'bar-ok' : 'bar-low';
+    const barPx      = Math.max(6, Math.round(e.pct * 1.48));
+    const modeIcon   = (!e.mode || e.mode === 'mixed') ? '🎲' : (TOPICS[e.mode]?.icon || '📝');
+    const modeTitle  = (!e.mode || e.mode === 'mixed') ? 'Gemischte Runde' : (TOPICS[e.mode]?.de || e.mode);
+    col.innerHTML = `
+      <div class="hist-pct">${e.pct}%</div>
+      <div class="hist-bar ${barClass}" style="height:${barPx}px;"></div>
+      <div class="hist-lbl">
+        ${e.date}${e.time ? '<br><span style="font-weight:500;">' + e.time + '</span>' : ''}
+        <br><span title="${modeTitle}" style="font-size:1rem;">${modeIcon}</span>
+      </div>`;
+    bars.appendChild(col);
+  });
+}
+
+// ── Clear history (two-step confirm) ────────────
+function clearHistory() {
+  if (!currentProfile) return;
+  const btn = document.getElementById('btn-clear-hist');
+  if (btn.dataset.confirm !== '1') {
+    btn.dataset.confirm = '1';
+    btn.innerHTML = '⚠️ Sicher? Nochmal tippen!<div class="it" style="font-size:0.85em;margin-top:1px;">Sicuro? Tocca ancora!</div>';
+    btn.style.background = '#fff3e0';
+    setTimeout(() => {
+      if (btn.dataset.confirm === '1') {
+        btn.dataset.confirm = '';
+        btn.innerHTML = '🗑️ Verlauf löschen<div class="it" style="font-size:0.85em;margin-top:1px;">Cancella cronologia</div>';
+        btn.style.background = '';
+      }
+    }, 4000);
+    return;
+  }
+  localStorage.removeItem(`wq_${currentProfile.name}`);
+  btn.dataset.confirm = '';
+  btn.innerHTML = '🗑️ Verlauf löschen<div class="it" style="font-size:0.85em;margin-top:1px;">Cancella cronologia</div>';
+  btn.style.background = '';
+  renderHistory();
+}
+
+// ── Question ID assignment (called after QB is fully populated) ──
+function assignQuestionIds() {
+  TKEYS.forEach(k => {
+    QB[k].forEach((q, i) => {
+      if (!q.id) q.id = `${k}-${i}`;
+    });
+  });
+}
+
+// ── Deck helpers (per-profile, per-mode seen-question tracking) ──
+function loadDeck() {
+  if (!currentProfile) return {};
+  return JSON.parse(localStorage.getItem(`wq_deck_${currentProfile.name}`) || '{}');
+}
+function saveDeck(deck) {
+  if (!currentProfile) return;
+  localStorage.setItem(`wq_deck_${currentProfile.name}`, JSON.stringify(deck));
+}
+
+// ── Per-question stats helpers ───────────────────
+function loadStats() {
+  if (!currentProfile) return {};
+  return JSON.parse(localStorage.getItem(`wq_stats_${currentProfile.name}`) || '{}');
+}
+function saveStats(stats) {
+  if (!currentProfile) return;
+  localStorage.setItem(`wq_stats_${currentProfile.name}`, JSON.stringify(stats));
+}
+</script>
+
+<!-- ════════════════════════════════════════════
+     PHASE 3 — Question Bank
+     Populates QB arrays defined in Phase 2
+════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ── 1. Wissenswertes über Wasser ─────────────────
+QB.wissenswertes.push(
+
+  { type:'fitb',
+    question: 'Wasser besteht aus Sauerstoff und _____.',
+    question_it: 'L\'acqua è composta da ossigeno e _____.',
+    prefix: 'Wasser besteht aus Sauerstoff und', suffix: '.',
+    prefix_it: 'L\'acqua è composta da ossigeno e', suffix_it: '.',
+    answer: ['wasserstoff'],
+    hint: 'Das Wort klingt wie "Wasser..." und endet auf "-stoff"!',
+    hint_it: 'La parola suona come "Wasser-..." e finisce con "-stoff"!',
+    answer_text: 'Wasserstoff — Wasser = Sauerstoff + Wasserstoff.',
+    answer_text_it: 'Idrogeno — acqua = ossigeno + idrogeno.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Reines Wasser hat eine blaue Farbe und schmeckt süß.',
+    statement_it: 'L\'acqua pura è blu e ha un sapore dolce.',
+    correct: false,
+    hint: 'Reines Wasser hat gar keine Farbe, keinen Geruch und keinen Geschmack!',
+    hint_it: 'L\'acqua pura non ha colore, odore né sapore!',
+    answer_text: 'Falsch! Reines Wasser ist farblos, geruchlos und geschmacklos.',
+    answer_text_it: 'Falso! L\'acqua pura è incolore, inodore e insapore.'
+  },
+
+  { type:'mcq',
+    question: 'Wie viel der Erdoberfläche ist mit Wasser bedeckt?',
+    question_it: 'Quanto della superficie terrestre è coperto d\'acqua?',
+    options: ['Ein Drittel (1/3)', 'Die Hälfte (1/2)', 'Zwei Drittel (2/3)', 'Fast alles (9/10)'],
+    options_it: ['Un terzo (1/3)', 'La metà (1/2)', 'Due terzi (2/3)', 'Quasi tutto (9/10)'],
+    correct: 'Zwei Drittel (2/3)',
+    hint: 'Es ist mehr als die Hälfte — auf der Erde gibt es viel mehr Wasser als Land!',
+    hint_it: 'È più della metà — sulla Terra c\'è molto più acqua che terra!',
+    answer_text: 'Zwei Drittel (2/3) der Erdoberfläche sind Wasser.',
+    answer_text_it: 'Due terzi (2/3) della superficie terrestre sono acqua.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Alle Menschen auf der Welt haben genug sauberes Trinkwasser.',
+    statement_it: 'Tutte le persone nel mondo hanno abbastanza acqua potabile pulita.',
+    correct: false,
+    hint: 'Leider nicht! Ungefähr 1 von 12 Menschen hat kein sauberes Wasser.',
+    hint_it: 'Purtroppo no! Circa 1 persona su 12 non ha acqua pulita.',
+    answer_text: 'Falsch! Ca. 1 von 12 Menschen hat keinen Zugang zu sauberem Trinkwasser.',
+    answer_text_it: 'Falso! Circa 1 persona su 12 non ha accesso all\'acqua potabile pulita.'
+  },
+
+  { type:'mcq',
+    question: 'In wie vielen verschiedenen Zuständen kann Wasser vorkommen?',
+    question_it: 'In quanti stati diversi può trovarsi l\'acqua?',
+    options: ['1', '2', '3', '4'],
+    options_it: ['1', '2', '3', '4'],
+    correct: '3',
+    hint: 'Denk an: Eis... flüssiges Wasser... und Wasserdampf!',
+    hint_it: 'Pensa a: ghiaccio, acqua liquida e vapore acqueo!',
+    answer_text: '3 Zustände: fest (Eis), flüssig (Wasser), gasförmig (Wasserdampf).',
+    answer_text_it: '3 stati: solido (ghiaccio), liquido (acqua), gassoso (vapore).'
+  }
+
+);
+
+// ── 2. Wasserteilchen ─────────────────────────────
+QB.teilchen.push(
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Wenn Wasser in einem Glas steht und ruhig aussieht, stehen die Teilchen still.',
+    statement_it: 'Se l\'acqua è ferma in un bicchiere, le particelle sono immobili.',
+    correct: false,
+    hint: 'Wasserteilchen sind IMMER in Bewegung — auch wenn das Wasser ruhig aussieht!',
+    hint_it: 'Le particelle d\'acqua sono SEMPRE in movimento — anche se l\'acqua sembra ferma!',
+    answer_text: 'Falsch! Wasserteilchen bewegen sich immer, egal wie ruhig das Wasser aussieht.',
+    answer_text_it: 'Falso! Le particelle d\'acqua si muovono sempre, qualunque sia l\'aspetto dell\'acqua.'
+  },
+
+  { type:'mcq',
+    question: 'Wie verhalten sich Wasserteilchen zueinander?',
+    question_it: 'Come si comportano le particelle d\'acqua tra loro?',
+    options: ['Wie kleine Magnete', 'Sie ignorieren sich völlig', 'Wie Bälle, die immer abstoßen', 'Wie Puzzleteile'],
+    options_it: ['Come piccoli magneti', 'Si ignorano completamente', 'Come palle che si respingono', 'Come pezzi di puzzle'],
+    correct: 'Wie kleine Magnete',
+    hint: 'Sie ziehen sich an und stoßen sich ab — welches Objekt macht dasselbe?',
+    hint_it: 'Si attraggono e si respingono — quale oggetto fa la stessa cosa?',
+    answer_text: 'Wie kleine Magnete — sie ziehen sich an und stoßen sich manchmal ab.',
+    answer_text_it: 'Come piccoli magneti — si attraggono e a volte si respingono.'
+  },
+
+  { type:'fitb',
+    question: 'Wasserteilchen sind so klein, dass man sie nicht _____ kann.',
+    question_it: 'Le particelle d\'acqua sono così piccole che non si possono _____.',
+    prefix: 'Wasserteilchen sind so klein, dass man sie nicht', suffix: 'kann.',
+    prefix_it: 'Le particelle d\'acqua sono così piccole che non si possono', suffix_it: '.',
+    answer: ['sehen', 'erkennen'],
+    hint: 'Mit den Augen — was macht man damit normalerweise mit Dingen?',
+    hint_it: 'Con gli occhi — cosa si fa normalmente con le cose?',
+    answer_text: 'sehen — sie sind zu klein für das menschliche Auge!',
+    answer_text_it: 'vedere — sono troppo piccole per l\'occhio umano!'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Einen Wassertropfen kann man immer weiter und weiter teilen, ohne Ende.',
+    statement_it: 'Una goccia d\'acqua può essere divisa all\'infinito.',
+    correct: false,
+    hint: 'Irgendwann kommt man zu den kleinsten Teilchen — die lassen sich nicht mehr teilen!',
+    hint_it: 'Ad un certo punto si arriva alle particelle più piccole, non ulteriormente divisibili!',
+    answer_text: 'Falsch! Irgendwann erreicht man die kleinsten Wasserteilchen — die sind unteilbar.',
+    answer_text_it: 'Falso! Ad un certo punto si arriva alle particelle più piccole, che sono indivisibili.'
+  }
+
+);
+
+// ── 3. Formen des Wassers / Aggregatzustände ──────
+QB.formen.push(
+
+  { type:'mcq',
+    question: 'Bei welcher Temperatur wird flüssiges Wasser zu Eis?',
+    question_it: 'A quale temperatura l\'acqua liquida diventa ghiaccio?',
+    options: ['0°C', '4°C', '-10°C', '100°C'],
+    options_it: ['0°C', '4°C', '-10°C', '100°C'],
+    correct: '0°C',
+    hint: 'Es ist der Gefrierpunkt — eine runde, leicht zu merkende Zahl!',
+    hint_it: 'È il punto di congelamento — un numero tondo e facile da ricordare!',
+    answer_text: '0°C ist der Gefrierpunkt von Wasser.',
+    answer_text_it: '0°C è il punto di congelamento dell\'acqua.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Verdunsten und Verdampfen bedeuten dasselbe.',
+    statement_it: 'Evaporazione e ebollizione significano la stessa cosa.',
+    correct: false,
+    hint: 'Verdunsten = langsame Oberfläche, jede Temperatur. Verdampfen = Kochen bei 100°C. Unterschiedlich!',
+    hint_it: 'Verdunsten = evaporazione lenta. Verdampfen = ebollizione a 100°C. Sono diversi!',
+    answer_text: 'Falsch! Verdunsten ist langsam an der Oberfläche. Verdampfen (Sieden) nur bei 100°C.',
+    answer_text_it: 'Falso! Evaporazione lenta vs. ebollizione a 100°C — processi diversi!'
+  },
+
+  { type:'imageChoice',
+    question: 'Ice + heat = ?',
+    question_it: 'Ghiaccio + calore = ?',
+    options: [
+      { emoji: '💧', label: 'Water' },
+      { emoji: '🧊', label: 'More ice' },
+      { emoji: '💨', label: 'Steam' },
+      { emoji: '⛄', label: 'Snowman' }
+    ],
+    correct: 0,
+    hint: 'When ice gets warmer, it melts! What does melted ice become?',
+    hint_it: 'Quando il ghiaccio si scalda, si scioglie! Cosa diventa il ghiaccio sciolto?',
+    answer_text: 'Water 💧 — ice melts when heat is added (+heat = schmelzen).',
+    answer_text_it: 'Acqua 💧 — il ghiaccio si scioglie quando viene aggiunto calore.'
+  },
+
+  { type:'imageChoice',
+    question: 'Water − heat = ?',
+    question_it: 'Acqua − calore = ?',
+    options: [
+      { emoji: '💨', label: 'Steam' },
+      { emoji: '💧', label: 'Water' },
+      { emoji: '🧊', label: 'Ice' },
+      { emoji: '☁️', label: 'Cloud' }
+    ],
+    correct: 2,
+    hint: 'When water loses heat and gets very cold, it freezes! What does it become?',
+    hint_it: 'Quando l\'acqua perde calore e si raffredda, gela! Cosa diventa?',
+    answer_text: 'Ice 🧊 — water freezes when heat is removed (−heat = gefrieren).',
+    answer_text_it: 'Ghiaccio 🧊 — l\'acqua gela quando perde calore.'
+  },
+
+  { type:'fitb',
+    question: 'Wenn flüssiges Wasser kälter als 0°C wird, _____ es.',
+    question_it: 'Quando l\'acqua liquida diventa più fredda di 0°C, _____.',
+    prefix: 'Wenn flüssiges Wasser kälter als 0°C wird,', suffix: 'es.',
+    prefix_it: 'Quando l\'acqua liquida diventa più fredda di 0°C,', suffix_it: '.',
+    answer: ['gefriert', 'friert', 'erstarrt'],
+    hint: 'Es wird zu Eis! Welches Verb beschreibt das? Es ___ !',
+    hint_it: 'Diventa ghiaccio! Quale verbo si usa?',
+    answer_text: 'gefriert — das Wasser gefriert zu Eis.',
+    answer_text_it: 'gela — l\'acqua gela e diventa ghiaccio.'
+  },
+
+  { type:'mcq',
+    question: 'Was passiert mit Wasserdampf, wenn er in kältere Luftschichten aufsteigt?',
+    question_it: 'Cosa succede al vapore acqueo quando sale in strati d\'aria più freddi?',
+    options: ['Er verschwindet einfach', 'Er kondensiert und bildet Wolken', 'Er wird sofort zu Eis', 'Er fällt sofort als Regen'],
+    options_it: ['Scompare e basta', 'Si condensa e forma nuvole', 'Diventa subito ghiaccio', 'Cade subito come pioggia'],
+    correct: 'Er kondensiert und bildet Wolken',
+    hint: 'Kältere Luft lässt den Dampf wieder flüssig werden — was entsteht am Himmel?',
+    hint_it: 'L\'aria fredda fa condensare il vapore — cosa si forma nel cielo?',
+    answer_text: 'Er kondensiert zu winzigen Wassertröpfchen und bildet Wolken.',
+    answer_text_it: 'Si condensa in minuscole goccioline e forma le nuvole.'
+  }
+
+);
+
+// ── 4. Wasserkreislauf ────────────────────────────
+QB.kreislauf.push(
+
+  { type:'sequence',
+    question: 'Bringe die 6 Schritte des Wasserkreislaufs in die richtige Reihenfolge!',
+    question_it: 'Metti in ordine i 6 passi del ciclo dell\'acqua!',
+    items: [
+      'Die Sonne wärmt das Wasser und die Luft.',
+      'Das Wasser verdunstet und steigt als Wasserdampf auf.',
+      'Der Wasserdampf kühlt ab und bildet Wolken.',
+      'Es regnet oder schneit auf die Erde herab.',
+      'Das Wasser fließt in Flüsse und Seen zurück ins Meer.',
+      'Ein Teil des Wassers versickert im Boden — Grundwasser entsteht.'
+    ],
+    items_it: [
+      'Il sole scalda l\'acqua e l\'aria.',
+      'L\'acqua evapora e sale come vapore acqueo.',
+      'Il vapore acqueo si raffredda e forma le nuvole.',
+      'Piove o nevica sulla Terra.',
+      'L\'acqua scorre in fiumi e laghi, ritornando al mare.',
+      'Una parte dell\'acqua penetra nel suolo — si forma l\'acqua sotterranea.'
+    ],
+    correctOrder: [0,1,2,3,4,5],
+    hint: 'Starte mit der Sonne ☀️ — was passiert dann mit dem Wasser im Meer?',
+    hint_it: 'Inizia con il sole ☀️ — cosa succede poi all\'acqua nel mare?',
+    answer_text: 'Sonne → Verdunsten → Wolken → Regen/Schnee → Flüsse/Seen → Grundwasser.',
+    answer_text_it: 'Sole → evaporazione → nuvole → pioggia/neve → fiumi/laghi → falda freatica.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Wenn Meerwasser verdunstet, steigt das Salz mit dem Wasser in die Luft.',
+    statement_it: 'Quando l\'acqua del mare evapora, il sale sale insieme all\'acqua.',
+    correct: false,
+    hint: 'Nur reines Wasser verdunstet — das Salz bleibt im Meer zurück!',
+    hint_it: 'Solo l\'acqua pura evapora — il sale rimane nel mare!',
+    answer_text: 'Falsch! Nur reines Wasser verdunstet. Das Salz bleibt im Meer.',
+    answer_text_it: 'Falso! Solo l\'acqua pura evapora. Il sale rimane nel mare.'
+  },
+
+  { type:'mcq',
+    question: 'Was ist der wichtigste Antrieb für den Wasserkreislauf?',
+    question_it: 'Qual è il motore principale del ciclo dell\'acqua?',
+    options: ['Der Wind', 'Die Sonne', 'Der Mond', 'Der Regen'],
+    options_it: ['Il vento', 'Il sole', 'La luna', 'La pioggia'],
+    correct: 'Die Sonne',
+    hint: 'Ohne ihre Wärme würde das Wasser nie verdunsten und der Kreislauf stehen!',
+    hint_it: 'Senza il suo calore, l\'acqua non evaporerebbe mai e il ciclo si fermerebbe!',
+    answer_text: 'Die Sonne — ihre Wärme lässt das Wasser verdunsten und den Kreislauf starten.',
+    answer_text_it: 'Il sole — il suo calore fa evaporare l\'acqua e avvia il ciclo.'
+  },
+
+  { type:'fitb',
+    question: 'Die Menge des Wassers auf der Erde bleibt immer _____.',
+    question_it: 'La quantità d\'acqua sulla Terra rimane sempre _____.',
+    prefix: 'Die Menge des Wassers auf der Erde bleibt immer', suffix: '.',
+    prefix_it: 'La quantità d\'acqua sulla Terra rimane sempre', suffix_it: '.',
+    answer: ['gleich', 'die gleiche', 'dieselbe'],
+    hint: 'Wasser verschwindet nie — es verändert nur seinen Zustand. Es bleibt immer...?',
+    hint_it: 'L\'acqua non scompare mai — cambia solo stato. Rimane sempre...?',
+    answer_text: 'gleich — Wasser wird nie mehr und nie weniger, es kreist nur im Kreislauf.',
+    answer_text_it: 'uguale — l\'acqua non aumenta né diminuisce, cicla soltanto.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Grundwasser entsteht, wenn Regenwasser in den Boden versickert.',
+    statement_it: 'L\'acqua sotterranea si forma quando l\'acqua piovana penetra nel suolo.',
+    correct: true,
+    hint: 'Denk an Schritt 6 des Wasserkreislaufs — wohin geht ein Teil des Regens?',
+    hint_it: 'Pensa al passo 6 del ciclo — dove va una parte della pioggia?',
+    answer_text: 'Richtig! Ein Teil des Regenwassers versickert im Boden und wird zu Grundwasser.',
+    answer_text_it: 'Giusto! Una parte dell\'acqua piovana penetra nel suolo e diventa acqua sotterranea.'
+  }
+
+);
+
+// ── 5. Niederschlagsarten ─────────────────────────
+QB.niederschlag.push(
+
+  { type:'dragmatch',
+    question: 'Verbinde jede Niederschlagsart mit ihrer richtigen Beschreibung!',
+    question_it: 'Collega ogni tipo di precipitazione con la sua descrizione!',
+    pairs: [
+      { left: 'Regen',  right: 'Tropfen mit mind. 0,5 mm Durchmesser' },
+      { left: 'Hagel',  right: 'Gefrorene Schichten, mindestens 5 mm groß' },
+      { left: 'Tau',    right: 'Wasserdampf kondensiert an Pflanzen zu Tröpfchen' },
+      { left: 'Schnee', right: 'Wasserdampf wird direkt zu Eiskristallen' }
+    ],
+    pairs_it: [
+      { left: 'Pioggia',  right: 'Gocce di almeno 0,5 mm di diametro' },
+      { left: 'Grandine', right: 'Strati ghiacciati, almeno 5 mm di dimensione' },
+      { left: 'Rugiada',  right: 'Il vapore condensa sulle piante in goccioline' },
+      { left: 'Neve',     right: 'Il vapore diventa direttamente cristalli di ghiaccio' }
+    ],
+    hint: 'Tipp: Hagel ist groß und gefroren, Tau entsteht morgens an Pflanzen!',
+    hint_it: 'Suggerimento: la grandine è grande e ghiacciata, la rugiada si forma sulle piante!',
+    answer_text: 'Regen→Tropfen≥0,5mm | Hagel→gefroren≥5mm | Tau→Pflanzen | Schnee→Eiskristalle.',
+    answer_text_it: 'Pioggia→gocce≥0,5mm | Grandine→ghiacciata≥5mm | Rugiada→piante | Neve→cristalli.'
+  },
+
+  { type:'mcq',
+    question: 'Was unterscheidet Nieselregen von normalem Regen?',
+    question_it: 'Cosa distingue la pioggerella dalla pioggia normale?',
+    options: ['Die Farbe der Tropfen', 'Die Größe der Tropfen', 'Die Temperatur', 'Den Geruch'],
+    options_it: ['Il colore delle gocce', 'La dimensione delle gocce', 'La temperatura', 'L\'odore'],
+    correct: 'Die Größe der Tropfen',
+    hint: 'Nieselregen hat sehr kleine Tropfen — kleiner als 0,5 mm!',
+    hint_it: 'La pioggerella ha gocce molto piccole — meno di 0,5 mm!',
+    answer_text: 'Die Größe: Nieselregen < 0,5 mm, normaler Regen ≥ 0,5 mm Durchmesser.',
+    answer_text_it: 'La dimensione: pioggerella < 0,5 mm, pioggia normale ≥ 0,5 mm di diametro.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Hagel ist immer mindestens 5 mm groß.',
+    statement_it: 'La grandine è sempre grande almeno 5 mm.',
+    correct: true,
+    hint: 'Kleiner wäre Graupel — der ist nur 2–5 mm. Hagel ist ≥ 5 mm!',
+    hint_it: 'Più piccolo sarebbe Graupel (grandine morbida, 2–5 mm). La grandine vera ≥ 5 mm!',
+    answer_text: 'Richtig! Hagel ≥ 5 mm mit gefrorenen Schichten. Kleiner = Graupel (2–5 mm).',
+    answer_text_it: 'Giusto! Grandine ≥ 5 mm con strati congelati. Più piccola = grandine morbida (2–5mm).'
+  },
+
+  { type:'mcq',
+    question: 'Was entsteht, wenn Wasserdampf bei über 0°C an Pflanzen und Oberflächen kondensiert?',
+    question_it: 'Cosa si forma quando il vapore acqueo condensa sulle piante a temperature sopra 0°C?',
+    options: ['Reif', 'Tau', 'Nieselregen', 'Graupel'],
+    options_it: ['Brina', 'Rugiada', 'Pioggerella', 'Grandine morbida'],
+    correct: 'Tau',
+    hint: 'Morgens auf dem Gras — kleine glitzernde Tröpfchen! Wie heißt das?',
+    hint_it: 'Al mattino sull\'erba — piccole goccioline scintillanti! Come si chiama?',
+    answer_text: 'Tau — Wasserdampf kondensiert bei Temperaturen über 0°C zu Tröpfchen.',
+    answer_text_it: 'Rugiada — il vapore acqueo condensa a temperature sopra 0°C in goccioline.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Reif entsteht, wenn Tau oder Wasserdampf direkt zu Eis gefriert.',
+    statement_it: 'La brina si forma quando la rugiada o il vapore acqueo gela direttamente.',
+    correct: true,
+    hint: 'Reif ist wie Tau — aber bei Minustemperaturen friert er zu Eis!',
+    hint_it: 'La brina è come la rugiada — ma a temperature sotto zero gela subito!',
+    answer_text: 'Richtig! Reif = Tau oder Wasserdampf, der bei Minustemperaturen zu Eis gefriert.',
+    answer_text_it: 'Giusto! Brina = rugiada o vapore acqueo che gela a temperature sotto zero.'
+  }
+
+);
+
+// ── 6. Wassersparen ───────────────────────────────
+QB.sparen.push(
+
+  { type:'mcq',
+    question: 'Was verbraucht weniger Wasser?',
+    question_it: 'Cosa consuma meno acqua?',
+    options: ['Ein Vollbad nehmen', 'Kurz duschen', 'Zweimal am Tag duschen', 'Wäsche per Hand waschen'],
+    options_it: ['Fare un bagno completo', 'Fare una doccia breve', 'Fare la doccia due volte', 'Lavare i panni a mano'],
+    correct: 'Kurz duschen',
+    hint: 'Ein Bad braucht sehr viel Wasser — eine kurze Dusche viel weniger!',
+    hint_it: 'Un bagno usa moltissima acqua — una doccia breve molto meno!',
+    answer_text: 'Kurz duschen — ein Vollbad verbraucht viel mehr Wasser als eine Dusche.',
+    answer_text_it: 'Una doccia breve — un bagno usa molto più acqua di una doccia.'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Beim Zähneputzen kann man den Wasserhahn ruhig anlassen.',
+    statement_it: 'Mentre ci si lava i denti, si può lasciare il rubinetto aperto.',
+    correct: false,
+    hint: 'Der Hahn läuft, aber du brauchst das Wasser gerade nicht — was solltest du tun?',
+    hint_it: 'Il rubinetto scorre, ma non hai bisogno di quell\'acqua — cosa dovresti fare?',
+    answer_text: 'Falsch! Den Hahn zudrehen spart viel Wasser!',
+    answer_text_it: 'Falso! Chiudere il rubinetto risparmia molta acqua!'
+  },
+
+  { type:'fitb',
+    question: 'Beim Händewaschen sollte man den Hahn zudrehen, während man sich _____.',
+    question_it: 'Mentre ci si lava le mani, bisogna chiudere il rubinetto mentre ci si _____.',
+    prefix: 'Beim Händewaschen sollte man den Hahn zudrehen, während man sich', suffix: '.',
+    prefix_it: 'Mentre ci si lava le mani, bisogna chiudere il rubinetto mentre ci si', suffix_it: '.',
+    answer: ['einseift', 'einseifen', 'die hände einseift'],
+    hint: 'Was macht man mit der Seife an den Händen? Man ... sich ein!',
+    hint_it: 'Cosa si fa con il sapone sulle mani? Ci si _____!',
+    answer_text: 'einseift — Hahn zu beim Einseifen, Hahn auf zum Abspülen!',
+    answer_text_it: 'insapona — rubinetto chiuso mentre ci si insapona, aperto per sciacquarsi!'
+  },
+
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Beim Toilettenspülen spart der kleine Knopf Wasser gegenüber dem großen Knopf.',
+    statement_it: 'Tirare il tasto piccolo dello sciacquone risparmia acqua rispetto a quello grande.',
+    correct: true,
+    hint: 'Klein = weniger Wasser! Genau dafür gibt es zwei Knöpfe!',
+    hint_it: 'Piccolo = meno acqua! Ecco esattamente a cosa servono i due tasti!',
+    answer_text: 'Richtig! Der kleine Knopf spart Wasser. Immer wenn möglich den kleinen Knopf drücken!',
+    answer_text_it: 'Giusto! Il tasto piccolo risparmia acqua. Usarlo sempre quando possibile!'
+  },
+
+  // S5 — NEW
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Man spart Wasser, wenn man die Waschmaschine immer voll belädt, bevor man sie anstellt.',
+    statement_it: 'Si risparmia acqua se si riempie completamente la lavatrice prima di avviarla.',
+    correct: true,
+    hint: 'Zwei halbleere Maschinen brauchen doppelt so viel Wasser wie eine volle!',
+    hint_it: 'Due lavatrici mezze piene usano il doppio dell\'acqua rispetto a una piena!',
+    answer_text: 'Richtig! Eine volle Waschmaschine spart Wasser gegenüber mehreren halbleeren Ladungen.',
+    answer_text_it: 'Giusto! Una lavatrice piena risparmia acqua rispetto a più carichi mezzi pieni.'
+  },
+
+  // S6 — NEW
+  { type:'mcq',
+    question: 'Welche Aktivität verbraucht zu Hause am meisten Wasser?',
+    question_it: 'Quale attività domestica consuma più acqua?',
+    options: ['Zähneputzen', 'Hände waschen', 'Baden oder Duschen', 'Trinken'],
+    options_it: ['Lavarsi i denti', 'Lavarsi le mani', 'Bagno o doccia', 'Bere'],
+    correct: 'Baden oder Duschen',
+    hint: 'Ein Vollbad kann bis zu 200 Liter Wasser verbrauchen — das ist mit Abstand am meisten!',
+    hint_it: 'Un bagno completo può consumare fino a 200 litri d\'acqua — di gran lunga il massimo!',
+    answer_text: 'Baden oder Duschen — ein Vollbad verbraucht bis zu 200 Liter Wasser!',
+    answer_text_it: 'Bagno o doccia — un bagno completo consuma fino a 200 litri d\'acqua!'
+  }
+
+);
+
+// ── NEW QUESTIONS — Extended Bank ────────────────────
+
+// 1. Wissenswertes — NEW
+QB.wissenswertes.push(
+
+  // W6 — Alle Lebewesen brauchen Wasser
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Nicht nur Menschen, sondern auch Tiere und Pflanzen brauchen Wasser zum Leben.',
+    statement_it: 'Non solo gli esseri umani, ma anche gli animali e le piante hanno bisogno di acqua per vivere.',
+    correct: true,
+    hint: 'Denk an alle Lebewesen — ohne Wasser kann keines von ihnen überleben!',
+    hint_it: 'Pensa a tutti gli esseri viventi — senza acqua nessuno può sopravvivere!',
+    answer_text: 'Richtig! Alle Lebewesen — Menschen, Tiere und Pflanzen — brauchen Wasser zum Leben.',
+    answer_text_it: 'Giusto! Tutti gli esseri viventi — umani, animali e piante — hanno bisogno di acqua.'
+  }
+
+);
+
+// 2. Wasserteilchen — NEW
+QB.teilchen.push(
+
+  // T5 — Engsten zusammen = fest
+  { type:'mcq',
+    question: 'In welchem Zustand sind die Wasserteilchen am engsten zusammengepackt?',
+    question_it: 'In quale stato dell\'acqua le particelle sono più vicine tra loro?',
+    options: ['Flüssig (Wasser)', 'Fest (Eis)', 'Gasförmig (Wasserdampf)', 'In allen Zuständen gleich'],
+    options_it: ['Liquido (acqua)', 'Solido (ghiaccio)', 'Gassoso (vapore)', 'Uguale in tutti gli stati'],
+    correct: 'Fest (Eis)',
+    hint: 'Im festen Zustand sitzen die Teilchen ganz eng beieinander und können sich kaum bewegen!',
+    hint_it: 'Nello stato solido le particelle sono molto vicine e si muovono a malapena!',
+    answer_text: 'Fest (Eis) — die Teilchen sind eng gepackt und kaum in Bewegung.',
+    answer_text_it: 'Solido (ghiaccio) — le particelle sono compatte e quasi immobili.'
+  },
+
+  // T6 — Erhitzen = schnellere Teilchen
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Wenn man Wasser erhitzt, bewegen sich die Wasserteilchen schneller.',
+    statement_it: 'Quando si scalda l\'acqua, le particelle si muovono più velocemente.',
+    correct: true,
+    hint: 'Wärme gibt den Teilchen mehr Energie — und mehr Energie bedeutet mehr Bewegung!',
+    hint_it: 'Il calore dà più energia alle particelle — e più energia significa più movimento!',
+    answer_text: 'Richtig! Wärme = mehr Energie = die Teilchen bewegen sich schneller.',
+    answer_text_it: 'Giusto! Calore = più energia = le particelle si muovono più velocemente.'
+  }
+
+);
+
+// 3. Formen / Aggregatzustände — NEW
+QB.formen.push(
+
+  // F7 — Schmelzen
+  { type:'mcq',
+    question: 'Wie heißt der Vorgang, wenn Eis sich in Wasser verwandelt?',
+    question_it: 'Come si chiama il processo quando il ghiaccio si trasforma in acqua?',
+    options: ['Gefrieren', 'Kondensieren', 'Schmelzen', 'Verdunsten'],
+    options_it: ['Congelamento', 'Condensazione', 'Fusione', 'Evaporazione'],
+    correct: 'Schmelzen',
+    hint: 'Eis + Wärme = Wasser. Der Vorgang heißt S _ _ _ _ _ _ _!',
+    hint_it: 'Ghiaccio + calore = acqua. Il processo si chiama "fusione"!',
+    answer_text: 'Schmelzen — fest (Eis) + Wärme → flüssig (Wasser).',
+    answer_text_it: 'Fusione (Schmelzen) — solido (ghiaccio) + calore → liquido (acqua).'
+  },
+
+  // F8 — Verdampfen (als Fachbegriff)
+  { type:'mcq',
+    question: 'Wie heißt der Vorgang, wenn Wasser bei 100°C zu Wasserdampf wird?',
+    question_it: 'Come si chiama il processo quando l\'acqua a 100°C diventa vapore acqueo?',
+    options: ['Schmelzen', 'Verdunsten', 'Kondensieren', 'Verdampfen'],
+    options_it: ['Fusione', 'Evaporazione lenta', 'Condensazione', 'Ebollizione'],
+    correct: 'Verdampfen',
+    hint: 'Das passiert im Kochtopf bei genau 100°C — das Wasser kocht und wird zu Dampf!',
+    hint_it: 'Succede nella pentola esattamente a 100°C — l\'acqua bolle e diventa vapore!',
+    answer_text: 'Verdampfen (Sieden) — flüssig + 100°C → gasförmig. Nicht zu verwechseln mit Verdunsten!',
+    answer_text_it: 'Ebollizione (Verdampfen) — liquido + 100°C → gassoso. Da non confondere con l\'evaporazione!'
+  },
+
+  // F9 — Kondensieren (als Fachbegriff)
+  { type:'mcq',
+    question: 'Wie heißt der Vorgang, wenn Wasserdampf sich abkühlt und wieder zu Wasser wird?',
+    question_it: 'Come si chiama il processo quando il vapore acqueo si raffredda e torna acqua?',
+    options: ['Verdampfen', 'Schmelzen', 'Kondensieren', 'Gefrieren'],
+    options_it: ['Ebollizione', 'Fusione', 'Condensazione', 'Congelamento'],
+    correct: 'Kondensieren',
+    hint: 'Das sieht man an einem kalten Glas — Tröpfchen bilden sich außen. Dampf wird wieder flüssig!',
+    hint_it: 'Si vede su un bicchiere freddo — si formano goccioline fuori. Il vapore torna liquido!',
+    answer_text: 'Kondensieren — gasförmig (Dampf) + Kälte → flüssig (Wasser).',
+    answer_text_it: 'Condensazione (Kondensieren) — gassoso (vapore) + freddo → liquido (acqua).'
+  },
+
+  // F10 — Drag-match: 3 Zustände + Beispiele
+  { type:'dragmatch',
+    question: 'Verbinde jeden Aggregatzustand mit dem passenden Beispiel!',
+    question_it: 'Collega ogni stato dell\'acqua con l\'esempio corretto!',
+    pairs: [
+      { left: 'fest',      right: 'Eis' },
+      { left: 'flüssig',   right: 'Wasser' },
+      { left: 'gasförmig', right: 'Wasserdampf' }
+    ],
+    pairs_it: [
+      { left: 'solido',  right: 'ghiaccio' },
+      { left: 'liquido', right: 'acqua' },
+      { left: 'gassoso', right: 'vapore acqueo' }
+    ],
+    hint: 'Gefroren = fest, fließend = flüssig, unsichtbar in der Luft = gasförmig!',
+    hint_it: 'Congelato = solido, scorrente = liquido, invisibile nell\'aria = gassoso!',
+    answer_text: 'fest→Eis | flüssig→Wasser | gasförmig→Wasserdampf.',
+    answer_text_it: 'solido→ghiaccio | liquido→acqua | gassoso→vapore acqueo.'
+  },
+
+  // F11 — English imageChoice: Water + 100°C = Steam
+  { type:'imageChoice',
+    question: 'Water + lots of heat (100°C) = ?',
+    question_it: 'Acqua + molto calore (100°C) = ?',
+    options: [
+      { emoji: '💨', label: 'Steam' },
+      { emoji: '🧊', label: 'Ice' },
+      { emoji: '💧', label: 'More water' },
+      { emoji: '☁️', label: 'Cloud' }
+    ],
+    correct: 0,
+    hint: 'When water is heated to 100°C it boils! What does it become? (Hint: Verdampfen!)',
+    hint_it: 'Quando l\'acqua è scaldata a 100°C bolle! Cosa diventa? (Suggerimento: ebollizione!)',
+    answer_text: 'Steam 💨 — water boils at 100°C and becomes steam (= Verdampfen).',
+    answer_text_it: 'Vapore 💨 — l\'acqua bolle a 100°C e diventa vapore (= ebollizione).'
+  },
+
+  // F12 — English imageChoice: Steam - heat = Water
+  { type:'imageChoice',
+    question: 'Steam − heat = ?',
+    question_it: 'Vapore − calore = ?',
+    options: [
+      { emoji: '💧', label: 'Water' },
+      { emoji: '🧊', label: 'Ice' },
+      { emoji: '💨', label: 'More steam' },
+      { emoji: '⛄', label: 'Snowman' }
+    ],
+    correct: 0,
+    hint: 'When steam cools down, it turns back into liquid. What is that? (Hint: Kondensieren!)',
+    hint_it: 'Quando il vapore si raffredda, torna liquido. Cos\'è? (Suggerimento: condensazione!)',
+    answer_text: 'Water 💧 — steam cools and condenses back to water (= Kondensieren).',
+    answer_text_it: 'Acqua 💧 — il vapore si raffredda e condensa in acqua (= condensazione).'
+  },
+
+  // FV1 — Verdunsten/Verdampfen: Pfütze
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Wenn eine Pfütze auf der Straße in der Sonne trocknet, verdampft das Wasser.',
+    statement_it: 'Quando una pozzanghera si asciuga al sole per strada, l\'acqua evapora per ebollizione.',
+    correct: false,
+    hint: 'Kocht die Pfütze? Nein! Das Wasser geht langsam in die Luft über — ohne 100°C. Das nennt man Verdunsten!',
+    hint_it: 'La pozzanghera bolle? No! L\'acqua sale nell\'aria lentamente — senza 100°C. Si chiama Verdunsten!',
+    answer_text: 'Falsch! Eine Pfütze verdunstet (langsam, ohne Kochen). Verdampfen passiert nur bei 100°C.',
+    answer_text_it: 'Falso! Una pozzanghera evapora lentamente (Verdunsten). L\'ebollizione (Verdampfen) avviene solo a 100°C.'
+  },
+
+  // FV2 — Verdunsten/Verdampfen: bei jeder Temperatur
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Wasser kann nur bei 100°C zu Wasserdampf werden.',
+    statement_it: 'L\'acqua può diventare vapore acqueo solo a 100°C.',
+    correct: false,
+    hint: 'Verdunsten passiert bei jeder Temperatur — sogar bei kaltem Wetter trocknet Wäsche! Nur Verdampfen braucht 100°C.',
+    hint_it: 'L\'evaporazione avviene a qualsiasi temperatura — anche il freddo asciuga i panni! Solo l\'ebollizione richiede 100°C.',
+    answer_text: 'Falsch! Verdunsten passiert bei jeder Temperatur (langsam, an der Oberfläche). Verdampfen nur bei 100°C.',
+    answer_text_it: 'Falso! L\'evaporazione avviene a qualsiasi temperatura. L\'ebollizione (Verdampfen) solo a 100°C.'
+  },
+
+  // FV3 — Verdunsten/Verdampfen: Fill-in-blank Oberfläche
+  { type:'fitb',
+    question: 'Verdunsten passiert langsam an der _____ des Wassers, bei jeder Temperatur.',
+    question_it: 'L\'evaporazione avviene lentamente alla _____ dell\'acqua, a qualsiasi temperatura.',
+    prefix: 'Verdunsten passiert langsam an der', suffix: 'des Wassers, bei jeder Temperatur.',
+    prefix_it: 'L\'evaporazione avviene lentamente alla', suffix_it: 'dell\'acqua, a qualsiasi temperatura.',
+    answer: ['oberfläche', 'wasseroberfläche'],
+    hint: 'Verdunsten beginnt ganz oben am Wasser — nicht in der Tiefe. Wo genau?',
+    hint_it: 'L\'evaporazione inizia in cima all\'acqua — non in profondità. Dove esattamente?',
+    answer_text: 'Oberfläche — Verdunsten ist ein langsamer Prozess NUR an der Wasseroberfläche.',
+    answer_text_it: 'Superficie — l\'evaporazione è un processo lento SOLO sulla superficie dell\'acqua.'
+  }
+
+);
+
+// 3. Formen — State Transitions (gefrieren + comprehensive dragmatch)
+QB.formen.push(
+
+  // FG1 — Gefrieren (MCQ)
+  { type:'mcq',
+    question: 'Wie heißt der Vorgang, wenn flüssiges Wasser zu Eis wird?',
+    question_it: 'Come si chiama il processo quando l\'acqua liquida diventa ghiaccio?',
+    options: ['Schmelzen', 'Kondensieren', 'Gefrieren', 'Verdunsten'],
+    options_it: ['Fusione', 'Condensazione', 'Congelamento', 'Evaporazione'],
+    correct: 'Gefrieren',
+    hint: 'Das passiert bei 0°C — denk an einen zugefrorenen See! Was wird das Wasser dabei?',
+    hint_it: 'Succede a 0°C — pensa a un lago ghiacciato! Cosa diventa l\'acqua?',
+    answer_text: 'Gefrieren — flüssiges Wasser + Kälte (0°C) → fest (Eis).',
+    answer_text_it: 'Congelamento (Gefrieren) — acqua liquida + freddo (0°C) → solido (ghiaccio).'
+  },
+
+  // FG2 — Gefrieren (Fill-in-blank)
+  { type:'fitb',
+    question: 'Wenn Wasser auf 0°C abgekühlt wird, _____ es.',
+    question_it: 'Quando l\'acqua si raffredda a 0°C, _____.',
+    prefix: 'Wenn Wasser auf 0°C abgekühlt wird,', suffix: 'es.',
+    prefix_it: 'Quando l\'acqua si raffredda a 0°C,', suffix_it: '.',
+    answer: ['gefriert'],
+    hint: 'Das Wasser wird zu Eis! Der Vorgang heißt "Gefrieren" — welche Form passt im Satz?',
+    hint_it: 'L\'acqua diventa ghiaccio! Il processo si chiama "Gefrieren" — quale forma si usa nella frase?',
+    answer_text: 'gefriert — bei 0°C gefriert flüssiges Wasser zu Eis (Gefrieren).',
+    answer_text_it: 'si congela — a 0°C l\'acqua liquida si congela in ghiaccio.'
+  },
+
+  // FG3 — All 4 main transitions drag-match
+  { type:'dragmatch',
+    question: 'Verbinde jeden Übergang mit dem richtigen Fachbegriff!',
+    question_it: 'Collega ogni transizione con il termine scientifico corretto!',
+    pairs: [
+      { left: 'flüssig → fest',      right: 'Gefrieren' },
+      { left: 'fest → flüssig',      right: 'Schmelzen' },
+      { left: 'flüssig → gasförmig', right: 'Verdampfen' },
+      { left: 'gasförmig → flüssig', right: 'Kondensieren' },
+    ],
+    pairs_it: [
+      { left: 'liquido → solido',   right: 'Congelamento' },
+      { left: 'solido → liquido',   right: 'Fusione' },
+      { left: 'liquido → gassoso',  right: 'Ebollizione' },
+      { left: 'gassoso → liquido',  right: 'Condensazione' },
+    ],
+    hint: 'Eis macht Gefrieren, Dampf macht Verdampfen, Wolken machen Kondensieren...',
+    hint_it: 'Ghiaccio = Gefrieren, vapore = Verdampfen, nuvole = Kondensieren...',
+    answer_text: 'flüssig→fest = Gefrieren | fest→flüssig = Schmelzen | flüssig→Gas = Verdampfen | Gas→flüssig = Kondensieren.',
+    answer_text_it: 'liquido→solido = Gefrieren | solido→liquido = Schmelzen | liquido→gas = Verdampfen | gas→liquido = Kondensieren.'
+  },
+
+  // FG4 — Gefrieren (True/False)
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Beim Gefrieren wird flüssiges Wasser zu Eis. Das passiert bei 0°C.',
+    statement_it: 'Nel congelamento l\'acqua liquida diventa ghiaccio. Succede a 0°C.',
+    correct: true,
+    hint: 'Ja! Gefrieren passiert genau bei 0°C — das ist der Gefrierpunkt von Wasser!',
+    hint_it: 'Sì! Il congelamento avviene esattamente a 0°C — è il punto di congelamento dell\'acqua!',
+    answer_text: 'Richtig! Gefrieren = flüssig → fest, bei 0°C.',
+    answer_text_it: 'Giusto! Congelamento = liquido → solido, a 0°C.'
+  },
+
+  // FG5 — Gefrieren in context (MCQ)
+  { type:'mcq',
+    question: 'Chiara stellt ein Glas Wasser in den Gefrierschrank. Was passiert mit dem Wasser?',
+    question_it: 'Chiara mette un bicchiere d\'acqua nel congelatore. Cosa succede all\'acqua?',
+    options: ['Das Wasser verdunstet', 'Das Wasser gefriert', 'Das Wasser kondensiert', 'Das Wasser verdampft'],
+    options_it: ['L\'acqua evapora', 'L\'acqua si congela', 'L\'acqua condensa', 'L\'acqua bolle'],
+    correct: 'Das Wasser gefriert',
+    hint: 'Im Gefrierschrank wird es sehr kalt — viel kälter als 0°C. Was passiert dann mit Wasser?',
+    hint_it: 'Nel congelatore fa molto freddo — molto più di 0°C. Cosa succede all\'acqua?',
+    answer_text: 'Das Wasser gefriert — es wird zu Eis, weil es unter 0°C abgekühlt wird (Gefrieren).',
+    answer_text_it: 'L\'acqua si congela — diventa ghiaccio perché si raffredda sotto 0°C (Gefrieren).'
+  }
+
+);
+
+// ══════════════════════════════════════════════════
+// WASSER-3 PLACEHOLDER
+// English content on state changes (+ heat / - heat)
+// will be added here once the PDF is provided.
+// Pattern: QB.formen.push( { type:'imageChoice'|'mcq'|'truefalse', ... } );
+// ══════════════════════════════════════════════════
+
+// 4. Wasserkreislauf — NEW
+QB.kreislauf.push(
+
+  // K6 — Verdunsten im Wasserkreislauf (not Verdampfen)
+  { type:'mcq',
+    question: 'Im Wasserkreislauf steigt Wasser als Dampf in die Luft. Welcher Begriff passt?',
+    question_it: 'Nel ciclo dell\'acqua, l\'acqua sale come vapore nell\'aria. Quale termine è corretto?',
+    options: ['Verdampfen', 'Verdunsten', 'Kondensieren', 'Schmelzen'],
+    options_it: ['Ebollizione', 'Evaporazione', 'Condensazione', 'Fusione'],
+    correct: 'Verdunsten',
+    hint: 'Das Meerwasser kocht nicht! Es passiert langsam, ohne 100°C — also ist es nicht Verdampfen, sondern...?',
+    hint_it: 'L\'acqua del mare non bolle! Avviene lentamente, senza 100°C — quindi non è ebollizione, ma...?',
+    answer_text: 'Verdunsten — im Wasserkreislauf verdunstet das Wasser langsam (kein Kochen, keine 100°C!).',
+    answer_text_it: 'Evaporazione (Verdunsten) — nel ciclo dell\'acqua l\'acqua evapora lentamente (nessuna ebollizione!).'
+  },
+
+  // K7 — Falsch: Im Wasserkreislauf verdampft das Wasser
+  { type:'truefalse',
+    question: 'Stimmt das, was Chiara sagt?',
+    question_it: 'Chiara ha ragione?',
+    statement: 'Im Wasserkreislauf verdampft das Wasser aus dem Meer, weil es dort 100°C heiß wird.',
+    statement_it: 'Nel ciclo dell\'acqua, l\'acqua del mare evapora per ebollizione perché raggiunge i 100°C.',
+    correct: false,
+    hint: 'Das Meer kocht nicht! Die Sonne wärmt die Oberfläche und das Wasser verdunstet langsam.',
+    hint_it: 'Il mare non bolle! Il sole scalda la superficie e l\'acqua evapora lentamente.',
+    answer_text: 'Falsch! Im Wasserkreislauf verdunstet (nicht verdampft) das Wasser — ganz ohne 100°C.',
+    answer_text_it: 'Falso! Nel ciclo dell\'acqua l\'acqua evapora lentamente (Verdunsten), non bolle (Verdampfen).'
+  }
+
+);
+
+// 4. Wasserkreislauf — Cycle Diagram questions (DE + EN)
+QB.kreislauf.push(
+
+  // ── German diagram questions ────────────────────
+
+  // KD1 — Gap: Sonne erwärmt
+  { type:'cycleDiagram', lang:'de', gapStep:0,
+    question: 'Was ist der erste Schritt im Wasserkreislauf?',
+    question_it: 'Qual è il primo passo nel ciclo dell\'acqua?',
+    correct: 'Sonne erwärmt',
+    options: ['Sonne erwärmt', 'Niederschlag', 'Abfluss', 'Grundwasser'],
+    options_it: ['Il sole scalda', 'Precipitazione', 'Deflusso', 'Acqua sotterranea'],
+    hint: 'Ohne diesen Schritt könnte Wasser nicht verdunsten! Was gibt dem Wasser die Energie?',
+    hint_it: 'Senza questo passo l\'acqua non evaporerebbe! Cosa dà energia all\'acqua?',
+    answer_text: 'Sonne erwärmt — die Sonne liefert die Energie, damit Wasser verdunsten kann.',
+    answer_text_it: 'Il sole scalda — il sole fornisce l\'energia affinché l\'acqua possa evaporare.'
+  },
+
+  // KD2 — Gap: Verdunsten
+  { type:'cycleDiagram', lang:'de', gapStep:1,
+    question: 'Die Sonne erwärmt das Wasser. Was passiert als Nächstes?',
+    question_it: 'Il sole scalda l\'acqua. Cosa succede dopo?',
+    correct: 'Verdunsten',
+    options: ['Verdunsten', 'Kondensieren', 'Niederschlag', 'Abfluss'],
+    options_it: ['Evaporazione', 'Condensazione', 'Precipitazione', 'Deflusso'],
+    hint: 'Das Wasser verlässt die Oberfläche als unsichtbarer Dampf — was ist dieser Vorgang?',
+    hint_it: 'L\'acqua lascia la superficie come vapore invisibile — come si chiama questo processo?',
+    answer_text: 'Verdunsten — Wasser verdunstet langsam von der Oberfläche und steigt als Dampf auf.',
+    answer_text_it: 'Evaporazione — l\'acqua evapora lentamente dalla superficie e sale come vapore.'
+  },
+
+  // KD3 — Gap: Wolkenbildung
+  { type:'cycleDiagram', lang:'de', gapStep:2,
+    question: 'Der Wasserdampf steigt auf und kühlt ab. Was entsteht dabei?',
+    question_it: 'Il vapore acqueo sale e si raffredda. Cosa si forma?',
+    correct: 'Wolkenbildung',
+    options: ['Wolkenbildung', 'Verdunsten', 'Niederschlag', 'Grundwasser'],
+    options_it: ['Formazione nuvole', 'Evaporazione', 'Precipitazione', 'Acqua sotterranea'],
+    hint: 'Wenn Dampf abkühlt, kondensiert er zu winzigen Tropfen — was siehst du dann am Himmel?',
+    hint_it: 'Quando il vapore si raffredda, condensa in goccioline — cosa vedi nel cielo?',
+    answer_text: 'Wolkenbildung — der Wasserdampf kondensiert zu Tropfen und bildet Wolken.',
+    answer_text_it: 'Formazione di nuvole — il vapore condensa in goccioline e forma le nuvole.'
+  },
+
+  // KD4 — Gap: Niederschlag
+  { type:'cycleDiagram', lang:'de', gapStep:3,
+    question: 'Die Wolken werden schwer. Was fällt aus ihnen herab?',
+    question_it: 'Le nuvole diventano pesanti. Cosa cade da esse?',
+    correct: 'Niederschlag',
+    options: ['Niederschlag', 'Verdunsten', 'Abfluss', 'Sonne erwärmt'],
+    options_it: ['Precipitazione', 'Evaporazione', 'Deflusso', 'Il sole scalda'],
+    hint: 'Regen, Schnee, Hagel — wenn Wolken ihre Last abgeben, nennt man das...?',
+    hint_it: 'Pioggia, neve, grandine — quando le nuvole si alleggeriscono, si chiama...?',
+    answer_text: 'Niederschlag — Regen, Schnee oder Hagel fällt aus den Wolken auf die Erde.',
+    answer_text_it: 'Precipitazione — pioggia, neve o grandine cade dalle nuvole sulla terra.'
+  },
+
+  // KD5 — Gap: Abfluss
+  { type:'cycleDiagram', lang:'de', gapStep:4,
+    question: 'Das Wasser landet auf dem Boden. Wie fließt es zurück ins Meer?',
+    question_it: 'L\'acqua atterra sul terreno. Come torna al mare?',
+    correct: 'Abfluss',
+    options: ['Abfluss', 'Grundwasser', 'Wolkenbildung', 'Verdunsten'],
+    options_it: ['Deflusso', 'Acqua sotterranea', 'Formazione nuvole', 'Evaporazione'],
+    hint: 'Das Wasser fließt bergab — in Bäche und Flüsse, immer Richtung Meer!',
+    hint_it: 'L\'acqua scorre verso il basso — in ruscelli e fiumi, sempre verso il mare!',
+    answer_text: 'Abfluss — das Wasser fließt über Bäche und Flüsse zurück ins Meer.',
+    answer_text_it: 'Deflusso — l\'acqua scorre attraverso ruscelli e fiumi fino al mare.'
+  },
+
+  // KD6 — Gap: Grundwasser
+  { type:'cycleDiagram', lang:'de', gapStep:5,
+    question: 'Etwas Wasser versickert im Boden statt in Flüsse zu fließen. Wie nennt man das?',
+    question_it: 'Un po\' d\'acqua si infiltra nel terreno invece di scorrere nei fiumi. Come si chiama?',
+    correct: 'Grundwasser',
+    options: ['Grundwasser', 'Abfluss', 'Niederschlag', 'Verdunsten'],
+    options_it: ['Acqua sotterranea', 'Deflusso', 'Precipitazione', 'Evaporazione'],
+    hint: 'Dieses Wasser sickert tief in die Erde — es ist unser Trinkwasser!',
+    hint_it: 'Quest\'acqua si infiltra nel profondo — è la nostra acqua potabile!',
+    answer_text: 'Grundwasser — Wasser versickert im Boden und bildet unser wertvolles Grundwasser.',
+    answer_text_it: 'Acqua sotterranea — l\'acqua si infiltra nel terreno e forma la nostra falda freatica.'
+  },
+
+  // ── English diagram questions ───────────────────
+
+  // KE1 — Gap: Sun warms
+  { type:'cycleDiagram', lang:'en', gapStep:0,
+    question: 'What starts the water cycle? Find the missing box.',
+    question_it: 'Cosa avvia il ciclo dell\'acqua? Trova la casella mancante.',
+    correct: 'Sun warms',
+    options: ['Sun warms', 'Precipitation', 'Runoff', 'Groundwater'],
+    options_it: ['Il sole scalda', 'Precipitazione', 'Deflusso', 'Acqua sotterranea'],
+    hint: 'The energy that makes water evaporate comes from our nearest star!',
+    hint_it: 'L\'energia che fa evaporare l\'acqua viene dalla nostra stella più vicina!',
+    answer_text: 'Sun warms — the sun heats the water and provides energy for evaporation (= Sonne erwärmt).',
+    answer_text_it: 'Il sole scalda — il sole riscalda l\'acqua e fornisce energia per l\'evaporazione.'
+  },
+
+  // KE2 — Gap: Evaporation
+  { type:'cycleDiagram', lang:'en', gapStep:1,
+    question: 'The sun heats the water. What happens next?',
+    question_it: 'Il sole scalda l\'acqua. Cosa succede dopo?',
+    correct: 'Evaporation',
+    options: ['Evaporation', 'Condensation', 'Precipitation', 'Runoff'],
+    options_it: ['Evaporazione', 'Condensazione', 'Precipitazione', 'Deflusso'],
+    hint: 'Heated water rises into the air as invisible water vapour — what is this called?',
+    hint_it: 'L\'acqua riscaldata sale nell\'aria come vapore invisibile — come si chiama?',
+    answer_text: 'Evaporation — water turns into vapour and rises (= Verdunsten in German).',
+    answer_text_it: 'Evaporazione — l\'acqua diventa vapore e sale (= Verdunsten in tedesco).'
+  },
+
+  // KE3 — Gap: Condensation
+  { type:'cycleDiagram', lang:'en', gapStep:2,
+    question: 'Water vapour rises and cools down high in the sky. What forms?',
+    question_it: 'Il vapore acqueo sale e si raffredda in alto nel cielo. Cosa si forma?',
+    correct: 'Condensation',
+    options: ['Condensation', 'Evaporation', 'Precipitation', 'Groundwater'],
+    options_it: ['Condensazione', 'Evaporazione', 'Precipitazione', 'Acqua sotterranea'],
+    hint: 'Cool air turns vapour into tiny water droplets — what do you see in the sky?',
+    hint_it: 'L\'aria fredda trasforma il vapore in goccioline — cosa vedi nel cielo?',
+    answer_text: 'Condensation — vapour cools into droplets and forms clouds (= Wolkenbildung).',
+    answer_text_it: 'Condensazione — il vapore si raffredda in goccioline e forma le nuvole (= Wolkenbildung).'
+  },
+
+  // KE4 — Gap: Precipitation
+  { type:'cycleDiagram', lang:'en', gapStep:3,
+    question: 'The clouds get heavy with water. What falls to the ground?',
+    question_it: 'Le nuvole si riempiono d\'acqua. Cosa cade al suolo?',
+    correct: 'Precipitation',
+    options: ['Precipitation', 'Evaporation', 'Condensation', 'Runoff'],
+    options_it: ['Precipitazione', 'Evaporazione', 'Condensazione', 'Deflusso'],
+    hint: 'Rain, snow, hail — when clouds release water, we call it all...?',
+    hint_it: 'Pioggia, neve, grandine — quando le nuvole rilasciano acqua, la chiamiamo...?',
+    answer_text: 'Precipitation — rain, snow or hail falling from clouds (= Niederschlag).',
+    answer_text_it: 'Precipitazione — pioggia, neve o grandine che cade dalle nuvole (= Niederschlag).'
+  },
+
+  // KE5 — Gap: Runoff
+  { type:'cycleDiagram', lang:'en', gapStep:4,
+    question: 'Water lands on the ground. How does it travel back to the sea?',
+    question_it: 'L\'acqua atterra sul terreno. Come viaggia verso il mare?',
+    correct: 'Runoff',
+    options: ['Runoff', 'Groundwater', 'Condensation', 'Evaporation'],
+    options_it: ['Deflusso', 'Acqua sotterranea', 'Condensazione', 'Evaporazione'],
+    hint: 'Water always flows downhill — into streams and rivers all the way to the sea.',
+    hint_it: 'L\'acqua scorre sempre verso il basso — in ruscelli e fiumi fino al mare.',
+    answer_text: 'Runoff — water flows downhill into streams and rivers back to the sea (= Abfluss).',
+    answer_text_it: 'Deflusso — l\'acqua scorre verso il basso in ruscelli e fiumi fino al mare (= Abfluss).'
+  },
+
+  // KE6 — Gap: Groundwater
+  { type:'cycleDiagram', lang:'en', gapStep:5,
+    question: 'Some water soaks into the ground instead of flowing into rivers. What is this?',
+    question_it: 'Parte dell\'acqua si infiltra nel terreno invece di scorrere nei fiumi. Cos\'è?',
+    correct: 'Groundwater',
+    options: ['Groundwater', 'Runoff', 'Precipitation', 'Evaporation'],
+    options_it: ['Acqua sotterranea', 'Deflusso', 'Precipitazione', 'Evaporazione'],
+    hint: 'This water goes deep underground — it\'s the water we drink from wells and taps!',
+    hint_it: 'Quest\'acqua va in profondità — è l\'acqua che beviamo dai pozzi e dai rubinetti!',
+    answer_text: 'Groundwater — water seeps into the soil and becomes groundwater (= Grundwasser).',
+    answer_text_it: 'Acqua sotterranea — l\'acqua si infiltra nel suolo e diventa falda freatica (= Grundwasser).'
+  }
+
+);
+
+// 5. Niederschlagsarten — NEW
+QB.niederschlag.push(
+
+  // N6 — Graupel MCQ
+  { type:'mcq',
+    question: 'Was ist Graupel?',
+    question_it: 'Cos\'è il Graupel (grandine morbida)?',
+    options: [
+      'Sehr kleiner Regen (unter 0,5 mm)',
+      'Weiche, gefrorene Körner von 2–5 mm',
+      'Großer Hagel über 10 mm',
+      'Gefrorener Tau auf Oberflächen'
+    ],
+    options_it: [
+      'Pioggia molto piccola (sotto 0,5 mm)',
+      'Chicchi ghiacciati morbidi di 2–5 mm',
+      'Grandine grande oltre 10 mm',
+      'Rugiada ghiacciata sulle superfici'
+    ],
+    correct: 'Weiche, gefrorene Körner von 2–5 mm',
+    hint: 'Graupel ist größer als Nieselregen, aber kleiner und viel weicher als Hagel!',
+    hint_it: 'Il Graupel è più grande della pioggerella, ma più piccolo e morbido della grandine!',
+    answer_text: 'Weiche, gefrorene Körner, 2–5 mm — kleiner und weicher als Hagel (≥ 5 mm).',
+    answer_text_it: 'Chicchi ghiacciati morbidi, 2–5 mm — più piccoli e morbidi della grandine (≥ 5 mm).'
+  },
+
+  // N7 — Drag-match: Nieselregen, Graupel, Reif, Tau
+  { type:'dragmatch',
+    question: 'Verbinde auch diese Niederschlagsarten mit der richtigen Beschreibung!',
+    question_it: 'Collega anche questi tipi di precipitazione con la descrizione corretta!',
+    pairs: [
+      { left: 'Nieselregen', right: 'Sehr feine Tropfen, kleiner als 0,5 mm' },
+      { left: 'Graupel',     right: 'Weiche Eiskörner, 2 bis 5 mm groß' },
+      { left: 'Reif',        right: 'Wasserdampf gefriert bei Minustemperaturen zu Eis' },
+      { left: 'Tau',         right: 'Wasserdampf kondensiert bei über 0°C zu Tröpfchen' }
+    ],
+    pairs_it: [
+      { left: 'Pioggerella', right: 'Gocce finissime, più piccole di 0,5 mm' },
+      { left: 'Graupel',     right: 'Chicchi di ghiaccio morbidi, da 2 a 5 mm' },
+      { left: 'Brina',       right: 'Il vapore gela a temperature sotto zero' },
+      { left: 'Rugiada',     right: 'Il vapore condensa sopra 0°C in goccioline' }
+    ],
+    hint: 'Tipp: Tau und Reif unterscheiden sich durch die Temperatur — über oder unter 0°C!',
+    hint_it: 'Suggerimento: rugiada e brina si differenziano per la temperatura — sopra o sotto 0°C!',
+    answer_text: 'Nieselregen→<0,5mm | Graupel→weich 2–5mm | Reif→Minusgrade | Tau→über 0°C.',
+    answer_text_it: 'Pioggerella→<0,5mm | Graupel→morbido 2–5mm | Brina→sotto zero | Rugiada→sopra 0°C.'
+  }
+
+);
+
+// ── Assign stable IDs to every question now that all arrays are populated ──
+assignQuestionIds();
+</script>
+</body>
+</html>
