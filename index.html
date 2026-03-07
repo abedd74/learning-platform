@@ -1246,8 +1246,11 @@
     <div class="it" style="font-size:0.8rem;color:var(--plat-soft);">Editor domande</div>
   </h2>
 
-  <!-- Topic selector -->
-  <div style="width:100%;max-width:640px;margin:12px 0 0;">
+  <!-- Module selector (rendered by JS via editorRenderModuleTabs) -->
+  <div id="editor-module-tabs" class="editor-tabs" style="margin-top:12px;margin-bottom:4px;flex-wrap:wrap;"></div>
+
+  <!-- Topic selector within chosen module (options populated by editorPopulateTopicDropdown) -->
+  <div style="width:100%;max-width:640px;margin:4px 0 0;">
     <select id="editor-topic" class="editor-select" onchange="editorLoadTopic(this.value)">
       <option value="wissenswertes">🌍 Wissenswertes über Wasser</option>
       <option value="teilchen">🔬 Wasserteilchen</option>
@@ -1645,17 +1648,83 @@ function toggleDashAccordion(id) {
 }
 
 // ── Phase 9: In-app Question Editor ──────────────
-let editorTopicKey = 'wissenswertes';
-let editorEditIdx  = -1;   // -1 = new question, ≥0 = editing existing
-let editorItOpen   = false;
+
+// Module registry — add new modules here when content arrives
+// getQB uses a lazy getter so QB (Phase 2) doesn't need to be defined yet
+const EDITOR_MODULES = {
+  water: {
+    name:        'Wasserkreislauf',
+    icon:        '💧',
+    grade:       3,
+    active:      true,
+    tkeys:       ['wissenswertes','teilchen','formen','kreislauf','niederschlag','sparen'],
+    topicLabels: {
+      wissenswertes: '🌍 Wissenswertes über Wasser',
+      teilchen:      '🔬 Wasserteilchen',
+      formen:        '🧊 Formen des Wassers',
+      kreislauf:     '🔄 Wasserkreislauf',
+      niederschlag:  '🌧️ Niederschlagsarten',
+      sparen:        '💚 Wasser sparen',
+    },
+    getQB:       () => typeof QB !== 'undefined' ? QB : {},
+    storageKey:  'wq_editor_QB',
+  },
+  // book: { name:'Buchlektüre', icon:'📖', grade:3, active:false, tkeys:[], ... },
+  // math: { name:'Mathematik',  icon:'🔢', grade:3, active:false, tkeys:[], ... },
+};
+
+let editorModuleKey = 'water';
+let editorTopicKey  = 'wissenswertes';
+let editorEditIdx   = -1;   // -1 = new question, ≥0 = editing existing
+let editorItOpen    = false;
+
+// ── Module QB accessor ────────────────────────────
+function editorGetModuleQB() {
+  const mod = EDITOR_MODULES[editorModuleKey];
+  return mod ? mod.getQB() : {};
+}
+
+// ── Render module selector tabs ───────────────────
+function editorRenderModuleTabs() {
+  const el = document.getElementById('editor-module-tabs');
+  if (!el) return;
+  el.innerHTML = Object.keys(EDITOR_MODULES).map(k => {
+    const m = EDITOR_MODULES[k];
+    if (!m.active) {
+      return `<button class="editor-tab" style="opacity:0.45;cursor:not-allowed;font-size:0.78rem;" disabled>
+        ${m.icon} ${m.name}<br><span style="font-weight:700;font-size:0.65rem;">Kommt bald</span>
+      </button>`;
+    }
+    return `<button class="editor-tab${k === editorModuleKey ? ' active' : ''}"
+      onclick="editorLoadModule('${k}')">${m.icon} ${m.name}</button>`;
+  }).join('');
+}
+
+// ── Switch to a different module ──────────────────
+function editorLoadModule(key) {
+  const mod = EDITOR_MODULES[key];
+  if (!mod?.active) return;
+  editorModuleKey = key;
+  editorTopicKey  = mod.tkeys[0] || '';
+  editorRenderModuleTabs();
+  editorPopulateTopicDropdown();
+  editorCancelEdit();
+  editorRenderList();
+}
+
+// ── Populate topic dropdown for current module ────
+function editorPopulateTopicDropdown() {
+  const mod = EDITOR_MODULES[editorModuleKey];
+  const sel = document.getElementById('editor-topic');
+  if (!sel || !mod) return;
+  sel.innerHTML = mod.tkeys.map(k =>
+    `<option value="${k}" ${k === editorTopicKey ? 'selected' : ''}>${mod.topicLabels[k] || k}</option>`
+  ).join('');
+}
 
 function showEditor() {
   document.body.classList.remove('theme-water');
-  editorTopicKey = 'wissenswertes';
-  const sel = document.getElementById('editor-topic');
-  if (sel) sel.value = editorTopicKey;
-  editorCancelEdit();
-  editorRenderList();
+  editorLoadModule(editorModuleKey || 'water');
   showScreen('s-editor');
 }
 
@@ -1677,7 +1746,7 @@ function switchEditorTab(tab) {
 function editorRenderList() {
   const list = document.getElementById('editor-q-list');
   if (!list) return;
-  const qs = (typeof QB !== 'undefined' ? QB[editorTopicKey] : null) || [];
+  const qs = editorGetModuleQB()[editorTopicKey] || [];
   if (!qs.length) {
     list.innerHTML = `<p style="text-align:center;color:var(--plat-soft);font-size:0.85rem;padding:16px 8px;">
       Noch keine Fragen in diesem Thema. <span class="it">/ Ancora nessuna domanda.</span></p>`;
@@ -1719,7 +1788,7 @@ function editorNewQuestion() {
 
 function editorEditQuestion(idx) {
   editorEditIdx = idx;
-  const q = (typeof QB !== 'undefined' ? QB[editorTopicKey] : [])[idx];
+  const q = (editorGetModuleQB()[editorTopicKey] || [])[idx];
   if (!q) return;
   document.getElementById('ef-form-title').textContent = `Frage ${idx + 1} bearbeiten`;
   document.getElementById('ef-type').value = q.type || 'fitb';
@@ -1734,7 +1803,7 @@ function editorEditQuestion(idx) {
 }
 
 function editorDeleteQuestion(idx) {
-  const qs   = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
+  const qs = editorGetModuleQB()[editorTopicKey] || [];
   const text = (qs[idx]?.question || qs[idx]?.statement || 'diese Frage').substring(0, 40);
   if (!confirm(`Frage löschen?\n"${text}…"\n\nDiese Aktion kann nicht rückgängig gemacht werden.`)) return;
   qs.splice(idx, 1);
@@ -2054,12 +2123,13 @@ function editorSaveQuestion() {
     return;
   }
 
-  const qs = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
+  const qb = editorGetModuleQB();
+  const qs = qb[editorTopicKey] || [];
   if (editorEditIdx >= 0) {
     q.id = qs[editorEditIdx]?.id;   // preserve existing ID
     qs[editorEditIdx] = q;
   } else {
-    q.id = `${editorTopicKey}-custom-${Date.now()}`;
+    q.id = `${editorModuleKey}-${editorTopicKey}-custom-${Date.now()}`;
     qs.push(q);
   }
   editorSaveTopicToStorage();
@@ -2069,16 +2139,23 @@ function editorSaveQuestion() {
 
 // ── localStorage helpers ──────────────────────────
 function editorSaveTopicToStorage() {
-  const stored = JSON.parse(localStorage.getItem('wq_editor_QB') || '{}');
-  stored[editorTopicKey] = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
-  localStorage.setItem('wq_editor_QB', JSON.stringify(stored));
+  const mod = EDITOR_MODULES[editorModuleKey];
+  if (!mod) return;
+  const stored = JSON.parse(localStorage.getItem(mod.storageKey) || '{}');
+  stored[editorTopicKey] = editorGetModuleQB()[editorTopicKey] || [];
+  localStorage.setItem(mod.storageKey, JSON.stringify(stored));
 }
 
 function editorLoadFromStorage() {
-  const stored = JSON.parse(localStorage.getItem('wq_editor_QB') || '{}');
-  if (typeof QB === 'undefined' || typeof TKEYS === 'undefined') return;
-  TKEYS.forEach(k => {
-    if (stored[k] && Array.isArray(stored[k])) QB[k] = stored[k];
+  if (typeof QB === 'undefined') return;
+  // Load stored questions for every active module
+  Object.values(EDITOR_MODULES).forEach(mod => {
+    if (!mod.active) return;
+    const stored = JSON.parse(localStorage.getItem(mod.storageKey) || '{}');
+    const qb = mod.getQB();
+    mod.tkeys.forEach(k => {
+      if (stored[k] && Array.isArray(stored[k])) qb[k] = stored[k];
+    });
   });
   assignQuestionIds();   // re-run to cover any IDs missing from stored questions
 }
@@ -2091,7 +2168,8 @@ function editorImportJSON() {
   try   { arr = JSON.parse(raw); }
   catch (e) { editorShowMsg('❌ Ungültiges JSON: ' + e.message, 'err'); return; }
   if (!Array.isArray(arr)) { editorShowMsg('❌ JSON muss ein Array sein: [{ … }, …]', 'err'); return; }
-  if (typeof QB !== 'undefined') QB[editorTopicKey] = arr;
+  const qb = editorGetModuleQB();
+  if (qb) qb[editorTopicKey] = arr;
   if (typeof assignQuestionIds === 'function') assignQuestionIds();
   editorSaveTopicToStorage();
   editorRenderList();
@@ -2100,7 +2178,7 @@ function editorImportJSON() {
 }
 
 function editorExportJSON() {
-  const data = typeof QB !== 'undefined' ? QB[editorTopicKey] : [];
+  const data = editorGetModuleQB()[editorTopicKey] || [];
   const json = JSON.stringify(data, null, 2);
   document.getElementById('editor-json-input').value = json;
   if (navigator.clipboard) {
@@ -2113,10 +2191,11 @@ function editorExportJSON() {
 }
 
 function editorClearTopic() {
-  const name = (typeof TOPICS !== 'undefined' && TOPICS[editorTopicKey])
-    ? TOPICS[editorTopicKey].de : editorTopicKey;
+  const mod  = EDITOR_MODULES[editorModuleKey];
+  const name = mod?.topicLabels?.[editorTopicKey] || editorTopicKey;
   if (!confirm(`Alle Fragen für "${name}" löschen?\n\nDies betrifft auch die gespeicherten Daten und kann nicht rückgängig gemacht werden.`)) return;
-  if (typeof QB !== 'undefined') QB[editorTopicKey] = [];
+  const qb = editorGetModuleQB();
+  if (qb) qb[editorTopicKey] = [];
   editorSaveTopicToStorage();
   editorRenderList();
   document.getElementById('editor-json-input').value = '';
@@ -2125,7 +2204,7 @@ function editorClearTopic() {
 
 function editorResetAll() {
   if (!confirm('Alle Editor-Änderungen zurücksetzen?\n\nDie Seite wird neu geladen und alle benutzerdefinierten Fragen werden entfernt.')) return;
-  localStorage.removeItem('wq_editor_QB');
+  Object.values(EDITOR_MODULES).forEach(mod => localStorage.removeItem(mod.storageKey));
   location.reload();
 }
 
