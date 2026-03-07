@@ -519,6 +519,29 @@
     }
     .back-btn:hover { background: var(--plat-light); }
 
+    /* ── Passage block (book comprehension) ────── */
+    .passage-block {
+      width: 100%;
+      max-width: var(--content-w);
+      background: #fff8e1;
+      border: 2px solid #FFD54F;
+      border-left: 5px solid #FFA000;
+      border-radius: var(--r);
+      padding: 16px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.65;
+      color: var(--navy);
+    }
+    .passage-label {
+      font-size: 0.68rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #F9A825;
+      margin-bottom: 8px;
+    }
+
     /* ── Scrollbar ─────────────────────────────── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 10px; }
@@ -897,6 +920,9 @@
       <div class="it">Pensa bene!</div>
     </div>
   </div>
+
+  <!-- Passage block — shown only for questions with a reading passage (book comprehension etc.) -->
+  <div id="q-passage" class="passage-block mt2" style="display:none;"></div>
 
   <!-- Question card -->
   <div class="card mt2">
@@ -1455,6 +1481,23 @@ function renderQuestion() {
     document.getElementById('q-badge').textContent = `🎲 ${topicLabel(q._topic)}`;
   }
 
+  // ── Passage block (optional — for book comprehension questions) ──
+  const passageEl = document.getElementById('q-passage');
+  if (passageEl) {
+    if (q.passage) {
+      passageEl.style.display = '';
+      passageEl.innerHTML =
+        `<div class="passage-label">📖 Lies zuerst<span class="it"> / Leggi prima</span></div>` +
+        q.passage +
+        (q.passage_it
+          ? `<div class="it" style="display:none;margin-top:10px;font-size:0.87em;color:#5C6BC0;font-style:italic;">${q.passage_it}</div>`
+          : '');
+    } else {
+      passageEl.style.display = 'none';
+      passageEl.innerHTML = '';
+    }
+  }
+
   clearFeedback();
   document.getElementById('q-next').style.display = 'none';
   setTropfiMsg('Denk nach! 🤔', 'Pensa bene!');
@@ -1469,7 +1512,7 @@ function renderQuestion() {
 }
 
 function resetArea(area) {
-  area.style.cssText = 'width:100%;max-width:480px;border-radius:20px;border:2.5px dashed var(--blue);display:flex;align-items:flex-start;justify-content:flex-start;padding:14px;flex-wrap:wrap;gap:10px;background:rgba(255,255,255,0.5);';
+  area.style.cssText = 'width:100%;max-width:var(--content-w);border-radius:20px;border:2.5px dashed var(--blue);display:flex;align-items:flex-start;justify-content:flex-start;padding:14px;flex-wrap:wrap;gap:10px;background:rgba(255,255,255,0.5);';
 }
 
 // ── MCQ ──────────────────────────────────────────
