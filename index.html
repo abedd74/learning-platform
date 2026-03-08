@@ -250,6 +250,9 @@
       transition: all 0.2s;
     }
     .topic-card:hover   { border-color: var(--blue); transform: translateY(-3px); }
+    .topic-divider      { grid-column: 1 / -1; text-align:center; color:var(--soft); font-size:0.75rem;
+                          padding:10px 0 4px; letter-spacing:.5px; text-transform:uppercase;
+                          border-top: 1px solid var(--border,#eee); margin-top:4px; }
     .topic-card.weak    { border-color: var(--coral); }
     .topic-card.weak::after { content: '⚠️'; font-size: 0.7rem; display: block; margin-top: 4px; }
     .topic-icon         { font-size: 2rem; margin-bottom: 6px; }
@@ -793,20 +796,21 @@
       <button class="module-btn">Spielen! 🎮</button>
     </div>
 
-    <!-- Book comprehension — coming soon, grade 3 -->
-    <div class="module-card coming-soon" style="--module-color:#FF7043;" data-grade="3">
+    <!-- Book comprehension — Der Krokodildieb, grade 3 -->
+    <div class="module-card" style="--module-color:#FF7043;cursor:pointer;" data-grade="3"
+         onclick="enterModule('book')">
       <span class="module-icon">📖</span>
-      <div class="module-title">Buchbesprechung
+      <div class="module-title">Der Krokodildieb
         <div class="it" style="font-size:0.78em;">Comprensione del testo</div>
       </div>
       <div class="module-meta">
         <span class="module-grade-tag">Klasse 3</span>
         <span class="module-subject-tag">Deutsch</span>
       </div>
-      <div class="module-progress">
+      <div class="module-progress" id="module-prog-book">
         <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
       </div>
-      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🔒 Kommt bald</button>
+      <button class="module-btn" style="background:#FF7043;">Spielen! 📖</button>
     </div>
 
     <!-- Math — coming soon, grade 3 -->
@@ -935,7 +939,7 @@
 <div id="s-topics" class="screen">
   <div class="gap"></div>
   <div style="width:100%;max-width:480px;">
-    <button class="btn btn-outline btn-sm" onclick="goHome()">← Zurück</button>
+    <button id="topic-back-btn" class="btn btn-outline btn-sm" onclick="goHome()">← Zurück</button>
   </div>
 
   <h2 class="mt2" id="topic-title">Welches Thema?</h2>
@@ -944,50 +948,7 @@
     <span class="it">/ Scegli un tema</span>
   </p>
 
-  <div class="topic-grid mt3">
-    <div class="topic-card" id="tc-wissenswertes" onclick="startQuiz('wissenswertes')">
-      <div class="topic-icon">🌍</div>
-      <div class="topic-name">
-        Wissenswertes über Wasser
-        <div class="it">Curiosità sull'acqua</div>
-      </div>
-    </div>
-    <div class="topic-card" id="tc-teilchen" onclick="startQuiz('teilchen')">
-      <div class="topic-icon">🔬</div>
-      <div class="topic-name">
-        Wasserteilchen
-        <div class="it">Le particelle d'acqua</div>
-      </div>
-    </div>
-    <div class="topic-card" id="tc-formen" onclick="startQuiz('formen')">
-      <div class="topic-icon">🧊</div>
-      <div class="topic-name">
-        Formen des Wassers
-        <div class="it">Gli stati dell'acqua</div>
-      </div>
-    </div>
-    <div class="topic-card" id="tc-kreislauf" onclick="startQuiz('kreislauf')">
-      <div class="topic-icon">🔄</div>
-      <div class="topic-name">
-        Wasserkreislauf
-        <div class="it">Il ciclo dell'acqua</div>
-      </div>
-    </div>
-    <div class="topic-card" id="tc-niederschlag" onclick="startQuiz('niederschlag')">
-      <div class="topic-icon">🌧️</div>
-      <div class="topic-name">
-        Niederschlagsarten
-        <div class="it">Tipi di precipitazione</div>
-      </div>
-    </div>
-    <div class="topic-card" id="tc-sparen" onclick="startQuiz('sparen')">
-      <div class="topic-icon">💚</div>
-      <div class="topic-name">
-        Wasser sparen
-        <div class="it">Risparmiare acqua</div>
-      </div>
-    </div>
-  </div>
+  <div id="topic-cards" class="topic-grid mt3"></div>
   <div class="gap"></div>
 </div>
 
@@ -1321,6 +1282,7 @@
         <option value="imageChoice">Bild-Auswahl (imageChoice)</option>
         <option value="sequence">Reihenfolge (sequence)</option>
         <option value="dragmatch">Zuordnung / Matching (dragmatch)</option>
+        <option value="multiselect">☑️ Multi-Auswahl (multiselect)</option>
       </select>
 
       <!-- Dynamic fields per type -->
@@ -1363,8 +1325,9 @@
 'use strict';
 
 // ── State ───────────────────────────────────────
-let currentProfile = null;   // { name, avatar, grade }
-let quizMode       = 'mixed'; // 'mixed' | topic key
+let currentProfile  = null;    // { name, avatar, grade }
+let quizMode        = 'mixed'; // 'mixed' | topic key
+let currentModuleKey = 'water';
 
 // ── Profile config ───────────────────────────────
 const PROFILES = {
@@ -1433,7 +1396,16 @@ function backToPlatform() {
 // ── Enter a module ───────────────────────────────
 function enterModule(moduleId) {
   if (moduleId === 'water') {
+    currentModuleKey = 'water';
     goHome();
+  } else {
+    currentModuleKey = moduleId;
+    document.getElementById('topic-back-btn').onclick = () => {
+      document.body.classList.remove('theme-water');
+      showScreen('s-platform');
+    };
+    renderTopicPicker(moduleId);
+    showScreen('s-topics');
   }
 }
 
@@ -1685,8 +1657,31 @@ const EDITOR_MODULES = {
     getQB:       () => typeof QB !== 'undefined' ? QB : {},
     storageKey:  'wq_editor_QB',
   },
-  // book: { name:'Buchlektüre', icon:'📖', grade:3, active:false, tkeys:[], ... },
-  // math: { name:'Mathematik',  icon:'🔢', grade:3, active:false, tkeys:[], ... },
+  book: {
+    name:        'Der Krokodildieb',
+    icon:        '📖',
+    grade:       3,
+    active:      true,
+    tkeys:       ['kap01','kap02','kap03','kap04','kap05','kap06','kap07','kap08',
+                  'kap09','kap10','kap11','kap12','kap13','kap14','kap15','kap16',
+                  'kap17','kap18','kap19','kap20','kap21',
+                  'personen','handlung','tierwissen'],
+    topicLabels: {
+      kap01:'📖 Kapitel 1',  kap02:'📖 Kapitel 2',  kap03:'📖 Kapitel 3',
+      kap04:'📖 Kapitel 4',  kap05:'📖 Kapitel 5',  kap06:'📖 Kapitel 6',
+      kap07:'📖 Kapitel 7',  kap08:'📖 Kapitel 8',  kap09:'📖 Kapitel 9',
+      kap10:'📖 Kapitel 10', kap11:'📖 Kapitel 11', kap12:'📖 Kapitel 12',
+      kap13:'📖 Kapitel 13', kap14:'📖 Kapitel 14', kap15:'📖 Kapitel 15',
+      kap16:'📖 Kapitel 16', kap17:'📖 Kapitel 17', kap18:'📖 Kapitel 18',
+      kap19:'📖 Kapitel 19', kap20:'📖 Kapitel 20', kap21:'📖 Kapitel 21',
+      personen:   '👤 Personen & Charaktere',
+      handlung:   '📋 Handlung & Ereignisse',
+      tierwissen: '🐊 Tierwissen',
+    },
+    getQB:      () => typeof QB_BOOK !== 'undefined' ? QB_BOOK : {},
+    storageKey: 'wq_editor_QB_book',
+  },
+  // math: { name:'Mathematik', icon:'🔢', grade:3, active:false, tkeys:[], ... },
 };
 
 let editorModuleKey = 'water';
@@ -1970,6 +1965,26 @@ function editorUpdateFormFields(q) {
     itHtml = questionItField + `
       <label>Paare IT (Format: Links | Rechts, eine pro Zeile)</label>
       <textarea id="ef-pairs-it" class="editor-input" rows="${Math.max(3, pairsIt.length+1)}">${escHTML(pairsItTxt)}</textarea>`;
+
+  } else if (type === 'multiselect') {
+    const opts = q?.options || ['', '', '', ''];
+    const cor  = q?.correct || [];
+    const optRows = opts.map((o, i) => `
+      <div class="options-row">
+        <input class="ef-ms-cor-cb" type="checkbox" data-idx="${i}" ${cor.includes(o) && o ? 'checked' : ''}>
+        <input type="text" class="ef-ms-opt-input editor-input" value="${escAttr(o)}" placeholder="Option ${i+1}">
+        <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-ms-wrap')">✕</button>
+      </div>`).join('');
+    html = `
+      <label>Frage (question)</label>
+      <input type="text" id="ef-main-question" class="editor-input" value="${escAttr(q?.question||'')}">
+      <label>Optionen (☑️ = richtige Antworten, mehrere möglich)</label>
+      <div id="ef-ms-wrap">${optRows}</div>
+      <button type="button" class="add-row-btn" onclick="editorAddMsOption()">+ Option hinzufügen</button>`;
+    const optsIt = q?.options_it || [];
+    itHtml = questionItField + `
+      <label>Optionen IT (eine pro Zeile, selbe Reihenfolge)</label>
+      <textarea id="ef-ms-opts-it" class="editor-input" rows="${Math.max(3, optsIt.length+1)}">${escHTML(optsIt.join('\n'))}</textarea>`;
   }
 
   flds.innerHTML  = html;
@@ -2027,6 +2042,18 @@ function editorAddPair() {
     <span style="color:var(--plat-soft);font-weight:900;flex-shrink:0;">→</span>
     <input type="text" class="ef-pair-right editor-input" placeholder="Rechts">
     <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-pairs-wrap')">✕</button>`;
+  wrap.appendChild(div);
+}
+
+function editorAddMsOption() {
+  const wrap = document.getElementById('ef-ms-wrap');
+  if (!wrap) return;
+  const i = wrap.querySelectorAll('.options-row').length;
+  const div = document.createElement('div');
+  div.className = 'options-row';
+  div.innerHTML = `<input class="ef-ms-cor-cb" type="checkbox" data-idx="${i}">
+    <input type="text" class="ef-ms-opt-input editor-input" placeholder="Option ${i+1}">
+    <button type="button" class="remove-row-btn" onclick="editorRemoveRow(this,'ef-ms-wrap')">✕</button>`;
   wrap.appendChild(div);
 }
 
@@ -2137,6 +2164,20 @@ function editorSaveQuestion() {
           return { left: (l||'').trim(), right: (r||'').trim() };
         }).filter(p => p.left || p.right);
       if (pairsIt.length) q.pairs_it = pairsIt;
+
+    } else if (type === 'multiselect') {
+      const question = document.getElementById('ef-main-question').value.trim();
+      const options  = Array.from(document.querySelectorAll('.ef-ms-opt-input'))
+        .map(el => el.value.trim()).filter(Boolean);
+      const correct  = Array.from(document.querySelectorAll('.ef-ms-cor-cb:checked'))
+        .map(cb => options[parseInt(cb.dataset.idx)]).filter(Boolean);
+      if (!question)         throw new Error('Frage darf nicht leer sein!');
+      if (options.length < 2) throw new Error('Mindestens 2 Optionen angeben!');
+      if (!correct.length)   throw new Error('Mindestens eine richtige Antwort wählen!');
+      Object.assign(q, { question, options, correct });
+      const optsIt = (document.getElementById('ef-ms-opts-it')?.value || '')
+        .split('\n').map(s => s.trim()).filter(Boolean);
+      if (optsIt.length) q.options_it = optsIt;
     }
   } catch (err) {
     alert('⚠️ ' + err.message);
@@ -2289,15 +2330,68 @@ const TOPICS = {
   niederschlag:  { icon: '🌧️', de: 'Niederschlagsarten',        it: 'Tipi di precipitazione' },
   sparen:        { icon: '💚', de: 'Wasser sparen',             it: 'Risparmiare acqua'      },
 };
+function getActiveQB()    { return EDITOR_MODULES[currentModuleKey]?.getQB() ?? QB; }
+function getActiveTKEYS() { return EDITOR_MODULES[currentModuleKey]?.tkeys ?? TKEYS; }
+
 function topicLabel(key) {
+  const mod = EDITOR_MODULES[currentModuleKey];
+  if (mod?.topicLabels?.[key]) return mod.topicLabels[key];
   const t = TOPICS[key];
   return t ? `${t.icon} ${t.de}` : key;
 }
 
+function renderTopicPicker(moduleKey) {
+  const mod = EDITOR_MODULES[moduleKey];
+  const container = document.getElementById('topic-cards');
+  if (!container || !mod) return;
+
+  // For book module: chapters first, then divider, then themes
+  const themeKeys  = ['personen','handlung','tierwissen'];
+  const isBook     = (moduleKey === 'book');
+  const chapterKeys = isBook ? mod.tkeys.filter(k => !themeKeys.includes(k)) : mod.tkeys;
+  const extraKeys   = isBook ? themeKeys : [];
+
+  let html = '';
+
+  // Mixed card
+  html += `<div class="topic-card" style="grid-column:1/-1;flex-direction:row;gap:10px;justify-content:flex-start;"
+    onclick="startQuiz('mixed')">
+    <span style="font-size:1.6rem;">🎲</span>
+    <div class="topic-name">${isBook ? 'Alle Kapitel gemischt' : 'Gemischte Runde'}</div>
+  </div>`;
+
+  // Chapter/topic cards
+  chapterKeys.forEach(k => {
+    const label = mod.topicLabels?.[k] || k;
+    const [icon, ...rest] = label.split(' ');
+    html += `<div class="topic-card" onclick="startQuiz('${k}')">
+      <div class="topic-icon">${icon}</div>
+      <div class="topic-name">${rest.join(' ')}</div>
+    </div>`;
+  });
+
+  // Divider + theme cards (book only)
+  if (extraKeys.length) {
+    html += `<div class="topic-divider">🏷️ Themen</div>`;
+    extraKeys.forEach(k => {
+      const label = mod.topicLabels?.[k] || k;
+      const [icon, ...rest] = label.split(' ');
+      html += `<div class="topic-card" onclick="startQuiz('${k}')">
+        <div class="topic-icon">${icon}</div>
+        <div class="topic-name">${rest.join(' ')}</div>
+      </div>`;
+    });
+  }
+
+  container.innerHTML = html;
+  document.getElementById('topic-title').textContent = isBook ? 'Welches Kapitel?' : 'Welches Thema?';
+}
+
 function showTopicSelect(mode) {
   quizMode = mode;
-  const isMixed = (mode === 'mixed');
-  document.getElementById('topic-title').textContent = isMixed ? 'Wo willst du anfangen?' : 'Welches Thema?';
+  // Render the water topic picker (dynamic, same as book)
+  renderTopicPicker('water');
+  document.getElementById('topic-back-btn').onclick = goHome;
   showScreen('s-topics');
 }
 
@@ -2438,15 +2532,17 @@ function startQuiz(topic) {
   if (!currentProfile) { showScreen('s-profiles'); return; }
 
   // Build full pool for this mode
+  const activeQB    = getActiveQB();
+  const activeTKEYS = getActiveTKEYS();
   let pool = [];
   if (topic === 'mixed') {
-    TKEYS.forEach(k => QB[k].forEach(q => pool.push({...q, _topic: k})));
+    activeTKEYS.forEach(k => (activeQB[k]||[]).forEach(q => pool.push({...q, _topic: k})));
   } else {
-    (QB[topic] || []).forEach(q => pool.push({...q, _topic: topic}));
+    (activeQB[topic] || []).forEach(q => pool.push({...q, _topic: topic}));
   }
 
   if (!pool.length) {
-    alert('Noch keine Fragen geladen. (Phase 3 kommt gleich!)');
+    alert('Noch keine Fragen in diesem Thema.');
     return;
   }
 
@@ -2478,7 +2574,7 @@ function startQuiz(topic) {
   QS.retrying     = false;
   QS.wrongAnswers = [];
   QS.mode         = topic;
-  TKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
+  activeTKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
 
   document.getElementById('q-badge').textContent =
     topic === 'mixed' ? '🎲 Gemischte Runde' : topicLabel(topic);
@@ -2496,6 +2592,7 @@ const TLABELS = {
   sequence:    { de: 'Bringe in die richtige Reihenfolge', it: 'Metti in ordine corretto' },
   dragmatch:   { de: 'Verbinde richtig',                  it: 'Collega correttamente' },
   cycleDiagram:{ de: 'Welche Box fehlt im Kreislauf?',    it: 'Quale casella manca nel ciclo?' },
+  multiselect: { de: 'Wähle alle richtigen Antworten',    it: 'Scegli tutte le risposte giuste' },
 };
 
 // ── Water cycle step labels (DE + EN) ────────────
@@ -2545,7 +2642,7 @@ function renderQuestion() {
   area.innerHTML = '';
   resetArea(area);
 
-  const render = { mcq, truefalse, fitb, imageChoice, sequence, dragmatch, cycleDiagram };
+  const render = { mcq, truefalse, fitb, imageChoice, sequence, dragmatch, cycleDiagram, multiselect };
   if (render[q.type]) render[q.type](q, area);
   else area.innerHTML = '<p style="color:var(--soft)">Unbekannter Fragetyp</p>';
 }
@@ -2572,6 +2669,39 @@ function mcq(q, area) {
     };
     area.appendChild(btn);
   });
+}
+
+// ── Multi-Select ──────────────────────────────────
+function multiselect(q, area) {
+  area.style.background = 'transparent';
+  area.style.border = 'none';
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'width:100%;display:flex;flex-direction:column;gap:8px;';
+  q.options.forEach((opt, idx) => {
+    const lbl = document.createElement('label');
+    lbl.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;border:2px solid var(--border,#ddd);border-radius:12px;cursor:pointer;background:#fff;font-size:0.92rem;line-height:1.35;';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.value = opt;
+    cb.style.cssText = 'width:18px;height:18px;flex-shrink:0;accent-color:var(--accent,#0277BD);cursor:pointer;';
+    const txt = document.createElement('span');
+    txt.innerHTML = escHTML(opt);
+    if (q.options_it?.[idx]) {
+      txt.innerHTML += `<div class="it" style="display:none;font-size:0.77em;margin-top:2px;">${escHTML(q.options_it[idx])}</div>`;
+    }
+    lbl.appendChild(cb); lbl.appendChild(txt); wrap.appendChild(lbl);
+  });
+  area.appendChild(wrap);
+  const submitBtn = document.createElement('button');
+  submitBtn.className = 'btn btn-accent ms-submit';
+  submitBtn.style.cssText = 'margin-top:12px;width:100%;';
+  submitBtn.textContent = '✓ Überprüfen';
+  submitBtn.onclick = () => {
+    const sel = Array.from(wrap.querySelectorAll('input:checked')).map(c => c.value);
+    wrap.querySelectorAll('input').forEach(c => c.disabled = true);
+    submitBtn.disabled = true;
+    checkAnswer(q, sel, submitBtn, area);
+  };
+  area.appendChild(submitBtn);
 }
 
 // ── True / False ──────────────────────────────────
@@ -2938,6 +3068,11 @@ function evalAnswer(q, answer) {
   if (q.type === 'sequence')     return JSON.stringify(answer) === JSON.stringify(q.correctOrder);
   if (q.type === 'dragmatch')    return answer === true;
   if (q.type === 'cycleDiagram') return answer === q.correct;
+  if (q.type === 'multiselect') {
+    if (!Array.isArray(answer)) return false;
+    const a = [...answer].sort(), c = [...(q.correct||[])].sort();
+    return JSON.stringify(a) === JSON.stringify(c);
+  }
   return false;
 }
 
@@ -2946,6 +3081,10 @@ function reactivate(q, area, wrongBtn) {
     area.querySelectorAll('input, button').forEach(el => el.disabled = false);
     const inp = area.querySelector('input');
     if (inp) { inp.value = ''; setTimeout(() => inp.focus(), 100); }
+  } else if (q.type === 'multiselect') {
+    area.querySelectorAll('input[type=checkbox]').forEach(cb => cb.disabled = false);
+    const sub = area.querySelector('.ms-submit');
+    if (sub) sub.disabled = false;
   } else if (q.type === 'sequence' || q.type === 'dragmatch') {
     area.innerHTML = '';
     resetArea(area);
@@ -2982,17 +3121,23 @@ function nextQuestion() {
 
 // ── Results screen ────────────────────────────────
 function showResults() {
+  const activeTKEYS = getActiveTKEYS();
+  const isWater = (currentModuleKey === 'water');
+  document.getElementById('results-drops').style.display = isWater ? '' : 'none';
+
   const weak = [];
-  TKEYS.forEach(k => {
-    const { pts, max } = QS.topicPts[k];
-    const pct = max > 0 ? pts / max : -1;
-    fillDroplets(k, pct < 0 ? -1 : Math.round(pct * 5));
+  activeTKEYS.forEach(k => {
+    const pts = QS.topicPts[k];
+    if (!pts) return;
+    const { pts: p, max } = pts;
+    const pct = max > 0 ? p / max : -1;
+    if (isWater) fillDroplets(k, pct < 0 ? -1 : Math.round(pct * 5));
     if (pct >= 0 && pct < 0.7) weak.push(k);
   });
   QS.weakTopics = weak;
 
-  const totalPts = TKEYS.reduce((a, k) => a + QS.topicPts[k].pts, 0);
-  const totalMax = TKEYS.reduce((a, k) => a + QS.topicPts[k].max, 0);
+  const totalPts = activeTKEYS.reduce((a, k) => a + (QS.topicPts[k]?.pts || 0), 0);
+  const totalMax = activeTKEYS.reduce((a, k) => a + (QS.topicPts[k]?.max || 0), 0);
   const pct = totalMax > 0 ? Math.round(totalPts / totalMax * 100) : 0;
 
   const msgs = [
@@ -3023,7 +3168,7 @@ function showResults() {
   } else {
     const items = QS.wrongAnswers.map(w => {
       const icon = TOPICS[w.topic]?.icon || '📝';
-      const label = TOPICS[w.topic]?.de || w.topic;
+      const label = topicLabel(w.topic);
       return `
         <div style="border-left:3px solid var(--coral);padding:9px 11px;margin-bottom:8px;background:#fff8f7;border-radius:0 10px 10px 0;">
           <div style="font-size:0.73rem;color:var(--soft);margin-bottom:3px;">${icon} ${label}</div>
@@ -3063,14 +3208,16 @@ function fillDroplets(key, count) {
 
 // ── Retry weak topics ─────────────────────────────
 function retryWeak() {
-  const keys = QS.weakTopics?.length ? QS.weakTopics : TKEYS;
+  const activeTKEYS = getActiveTKEYS();
+  const activeQB    = getActiveQB();
+  const keys = QS.weakTopics?.length ? QS.weakTopics : activeTKEYS;
   const pool = [];
-  keys.forEach(k => QB[k].forEach(q => pool.push({...q, _topic: k})));
+  keys.forEach(k => (activeQB[k]||[]).forEach(q => pool.push({...q, _topic: k})));
   if (!pool.length) { startQuiz('mixed'); return; }
   QS.questions = pool.sort(() => Math.random() - 0.5).slice(0, 10);
   QS.index = 0;
   QS.retrying = false;
-  TKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
+  activeTKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
   document.getElementById('q-badge').textContent = '🔁 Schwache Themen';
   showScreen('s-quiz');
   renderQuestion();
@@ -3086,7 +3233,8 @@ function saveScore(pct) {
     time:   new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'}),
     mode:   QS.mode,
     pct,
-    topics: Object.fromEntries(TKEYS.map(k => [k, {...QS.topicPts[k]}]))
+    module: currentModuleKey,
+    topics: Object.fromEntries(getActiveTKEYS().map(k => [k, {...QS.topicPts[k]}]))
   });
   if (data.length > 10) data.shift();
   localStorage.setItem(key, JSON.stringify(data));
@@ -3154,6 +3302,13 @@ function assignQuestionIds() {
       if (!q.id) q.id = `${k}-${i}`;
     });
   });
+  if (typeof QB_BOOK !== 'undefined') {
+    Object.keys(QB_BOOK).forEach(topic => {
+      QB_BOOK[topic].forEach((q, i) => {
+        if (!q.id) q.id = `book_${topic}-${i}`;
+      });
+    });
+  }
 }
 
 // ── Deck helpers (per-profile, per-mode seen-question tracking) ──
@@ -4143,6 +4298,389 @@ QB.niederschlag.push(
 assignQuestionIds();
 
 // ── Load editor-saved custom questions, replacing any stored topics (Phase 9) ──
+editorLoadFromStorage();
+</script>
+
+<!-- ════════════════════════════════════════════
+     PHASE 4 — Book Question Bank (Der Krokodildieb)
+     Populates QB_BOOK used by the book module
+════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+const QB_BOOK = {
+
+// ── Kapitel 1 ─────────────────────────────────────
+kap01: [
+  { type:'mcq', question:'Welche Superkraft hätte Odd am liebsten?',
+    options:['fliegen','unsichtbar sein','teleportieren','super schnell rennen'],
+    correct:'fliegen',
+    hint:'Odd träumt von etwas ganz Bestimmtem...',
+    answer_text:'Odd hätte am liebsten die Superkraft zu fliegen.' },
+  { type:'mcq', question:'Wie heißt der Hund der Nachbarin?',
+    options:['Hektor','Rex','Bello','Buster'],
+    correct:'Hektor',
+    hint:'Der Name klingt ein bisschen wie ein Heldenname.',
+    answer_text:'Der Hund der Nachbarin heißt Hektor.' },
+  { type:'mcq', question:'Was ist Schnuppi?',
+    options:['ein Hamster','eine Schildkröte','ein Hund','ein Meerschweinchen'],
+    correct:'ein Hamster',
+    hint:'Schnuppi ist ein kleines Nagetier.',
+    answer_text:'Schnuppi ist Odds Hamster.' },
+],
+
+// ── Kapitel 2 ─────────────────────────────────────
+kap02: [
+  { type:'mcq', question:'Was ist Nussi?',
+    options:['ein Kuscheltier','ein Hund','ein Hamster','ein Fußball'],
+    correct:'ein Kuscheltier',
+    hint:'Nussi ist etwas, womit man kuschelt und schläft.',
+    answer_text:'Nussi ist Odds Kuscheltier.' },
+  { type:'mcq', question:'Welchen Sport spielen die Kinder im Unterricht?',
+    options:['Völkerball','Fußball','Basketball','Handball'],
+    correct:'Völkerball',
+    hint:'Ein Spiel, bei dem man Bälle auf die andere Mannschaft wirft.',
+    answer_text:'Die Kinder spielen Völkerball.' },
+  { type:'mcq', question:'Wie viele Tore schießt Petter beim Sport?',
+    options:['zwei','drei','eins','keins'],
+    correct:'zwei',
+    hint:'Petter trifft ein paarmal.',
+    answer_text:'Petter schießt zwei Tore.' },
+],
+
+// ── Kapitel 3 ─────────────────────────────────────
+kap03: [
+  { type:'fitb', question:'Wer setzt sich neben Odd in der Schule?',
+    prefix:'Neben Odd setzt sich', suffix:'.',
+    answer:['mette'],
+    hint:'Es ist ein Mädchen, das nett zu Odd ist.',
+    answer_text:'Mette setzt sich neben Odd.' },
+  { type:'mcq', question:'Wonach riecht Mettes Haar?',
+    options:['nach Äpfeln','nach Erdbeeren','nach Schokolade','nach Blumen'],
+    correct:'nach Äpfeln',
+    hint:'Es ist ein Obst, das Odd besonders auffällt.',
+    answer_text:'Mettes Haar riecht nach Äpfeln.' },
+  { type:'mcq', question:'Wer sitzt hinter Odd in der Klasse?',
+    options:['Lene','Kine','Nova','Mette'],
+    correct:'Lene',
+    hint:'Es ist ein weiteres Mädchen in der Klasse.',
+    answer_text:'Lene sitzt hinter Odd.' },
+  { type:'multiselect', question:'Über welche zwei Tiere sprechen die Kinder in Kapitel 3?',
+    options:['Schlangen','Haie','Krokodile','Hamster'],
+    correct:['Schlangen','Haie'],
+    hint:'Beide Tiere wirken gefährlich.',
+    answer_text:'Die Kinder sprechen über Schlangen und Haie.' },
+],
+
+// ── Kapitel 4 ─────────────────────────────────────
+kap04: [
+  { type:'multiselect', question:'Welche drei Wörter passen zu Rolf, dem Tierflüsterer?',
+    options:['cool','mutig','tätowiert','ängstlich','langweilig'],
+    correct:['cool','mutig','tätowiert'],
+    hint:'Rolf ist ein Tierflüsterer — denke daran, wie er wirkt.',
+    answer_text:'Rolf ist cool, mutig und tätowiert.' },
+  { type:'mcq', question:'Welches Tier zeigt Rolf den Kindern zuerst?',
+    options:['Pfeilschwanzkrebse','Krokodile','Schlangen','Piranhas'],
+    correct:'Pfeilschwanzkrebse',
+    hint:'Es ist ein Tier mit einem ungewöhnlichen Namen.',
+    answer_text:'Rolf zeigt den Kindern zuerst die Pfeilschwanzkrebse.' },
+],
+
+// ── Kapitel 5 ─────────────────────────────────────
+kap05: [
+  { type:'multiselect', question:'Welche zwei Aussagen über Krokodile sind richtig?',
+    options:['Ihre Zähne wachsen immer wieder nach','Odd streichelt ein Krokodil','Sie können nicht schwimmen','Sie schlafen den ganzen Winter'],
+    correct:['Ihre Zähne wachsen immer wieder nach','Odd streichelt ein Krokodil'],
+    hint:'Eine Aussage ist ein Fakt über Krokodile, eine passiert im Buch.',
+    answer_text:'Krokodilzähne wachsen nach — und Odd streichelt tatsächlich ein Krokodil.' },
+  { type:'mcq', question:'Warum sind Krokodile bedroht?',
+    options:['wegen der Menschen','wegen anderer Tiere','wegen der Kälte','wegen Krankheiten'],
+    correct:'wegen der Menschen',
+    hint:'Es ist leider etwas, das wir selbst verursachen.',
+    answer_text:'Krokodile sind wegen der Menschen bedroht.' },
+],
+
+// ── Kapitel 6 ─────────────────────────────────────
+kap06: [
+  { type:'dragmatch', question:'Wer sagt was in Kapitel 6?',
+    pairs:[
+      { left:'Kine',  right:'Das ist ekelig!' },
+      { left:'Odd',   right:'Ich habe es gestreichelt.' },
+      { left:'Mama',  right:'Beeil dich!' }
+    ],
+    hint:'Jede Person hat eine typische Reaktion.',
+    answer_text:'Kine → ekelig, Odd → gestreichelt, Mama → Beeil dich.' },
+  { type:'multiselect', question:'Was denkt Odd nach dem Zoobesuch?',
+    options:['Er möchte ein Krokodil als Freund haben','Zack hätte es bei ihm gut','Er will nie wieder in den Zoo','Er mag keine Krokodile'],
+    correct:['Er möchte ein Krokodil als Freund haben','Zack hätte es bei ihm gut'],
+    hint:'Odds Gedanken drehen sich um Zack und Freundschaft.',
+    answer_text:'Odd möchte ein Krokodil als Freund und denkt, Zack hätte es bei ihm gut.' },
+],
+
+// ── Kapitel 7 ─────────────────────────────────────
+kap07: [
+  { type:'fitb', question:'Wie ist Odds Spitzname in der Schule?',
+    prefix:'Odds Spitzname ist', suffix:'.',
+    answer:['odd-birnenkompott'],
+    hint:'Der Spitzname hat etwas mit Obst zu tun.',
+    answer_text:'Odds Spitzname ist Odd-Birnenkompott.' },
+  { type:'mcq', question:'Warum kauft Odd Schinken?',
+    options:['für Zack das Krokodil','für seinen Hamster Schnuppi','für das Abendessen','für seinen Freund Petter'],
+    correct:'für Zack das Krokodil',
+    hint:'Odd denkt an jemanden, der viel Fleisch braucht.',
+    answer_text:'Odd kauft den Schinken für Zack, das Krokodil.' },
+],
+
+// ── Kapitel 8 ─────────────────────────────────────
+kap08: [
+  { type:'mcq', question:'Wo versteckt Odd das Krokodil?',
+    options:['im Keller','auf dem Dachboden','in der Garage','im Badezimmer'],
+    correct:'im Keller',
+    hint:'Es ist ein dunkler Ort im Haus.',
+    answer_text:'Odd versteckt das Krokodil im Keller.' },
+  { type:'fitb', question:'Wie viele Krokodile sind auf dem Zooplan eingezeichnet?',
+    prefix:'Auf dem Zooplan sind', suffix:'Krokodile eingezeichnet.',
+    answer:['5'],
+    hint:'Es ist eine einstellige Zahl.',
+    answer_text:'Auf dem Zooplan sind 5 Krokodile eingezeichnet.' },
+],
+
+// ── Kapitel 9 ─────────────────────────────────────
+kap09: [
+  { type:'mcq', question:'Was sucht Odd angeblich im Zoo?',
+    options:['sein Federmäppchen','seinen Rucksack','sein Handy','seine Jacke'],
+    correct:'sein Federmäppchen',
+    hint:'Odd erfindet eine Ausrede...',
+    answer_text:'Odd sagt, er suche sein Federmäppchen.' },
+  { type:'mcq', question:'Wie viele Personen spielen in Kapitel 9 eine wichtige Rolle?',
+    options:['zwei','drei','vier','eine'],
+    correct:'zwei',
+    hint:'Es ist eine kleine Zahl.',
+    answer_text:'In Kapitel 9 spielen zwei Personen eine wichtige Rolle.' },
+  { type:'mcq', question:'Welches Tier sieht Odd in Kapitel 9 im Zoo?',
+    options:['einen Waran','einen Leguan','eine Schlange','ein Krokodil'],
+    correct:'einen Waran',
+    hint:'Es ist eine sehr große Eidechse.',
+    answer_text:'Odd sieht einen Waran im Zoo.' },
+],
+
+// ── Kapitel 10 ────────────────────────────────────
+kap10: [
+  { type:'fitb', question:'Wie viele Krokodile gibt es insgesamt im Zoo?',
+    prefix:'Im Zoo gibt es insgesamt', suffix:'Krokodile.',
+    answer:['26'],
+    hint:'Es ist eine zweistellige Zahl.',
+    answer_text:'Im Zoo gibt es insgesamt 26 Krokodile.' },
+  { type:'mcq', question:'Wovon ernähren sich Krokodile hauptsächlich?',
+    options:['von Fischen','von Pflanzen','von Insekten','von anderen Reptilien'],
+    correct:'von Fischen',
+    hint:'Krokodile sind Fleischfresser und leben am Wasser.',
+    answer_text:'Krokodile ernähren sich hauptsächlich von Fischen.' },
+],
+
+// ── Kapitel 11 ────────────────────────────────────
+kap11: [
+  { type:'sequence', question:'Bringe Odds Plan in die richtige Reihenfolge.',
+    items:['Odd besucht den Zoo mit der Schule','Odd sieht Zack und verliebt sich in das Krokodil','Odd geht nachts heimlich zurück in den Zoo','Odd stiehlt Zack','Odd versteckt Zack im Keller'],
+    correctOrder:[0,1,2,3,4],
+    hint:'Denke daran, was Odd Schritt für Schritt geplant hat.',
+    answer_text:'Zoobesuch → Zack sehen → nachts zurück → Zack stehlen → Zack im Keller verstecken.' },
+],
+
+// ── Kapitel 12 ────────────────────────────────────
+kap12: [
+  { type:'mcq', question:'Wie nennt die Klasse Odd jetzt?',
+    options:['Krokodil-Odd','Tier-Odd','Zoo-Odd','Odd der Große'],
+    correct:'Krokodil-Odd',
+    hint:'Der neue Spitzname hat etwas mit Krokodilen zu tun.',
+    answer_text:'Die Klasse nennt Odd jetzt Krokodil-Odd.' },
+  { type:'mcq', question:'Welche Superkraft würde Odd in Kapitel 12 immer noch am liebsten haben?',
+    options:['fliegen','unsichtbar sein','Gedanken lesen','super stark sein'],
+    correct:'fliegen',
+    hint:'Odds Wunsch ist seit Kapitel 1 derselbe geblieben.',
+    answer_text:'Odd möchte immer noch am liebsten fliegen.' },
+],
+
+// ── Kapitel 13 ────────────────────────────────────
+kap13: [
+  { type:'mcq', question:'Was steht auf dem Schild im Zoo?',
+    options:['ZUGANG VERBOTEN','GEFÄHRLICH','BETRETEN VERBOTEN','VORSICHT KROKODILE'],
+    correct:'ZUGANG VERBOTEN',
+    hint:'Es ist ein klares Verbotsschild.',
+    answer_text:'Auf dem Schild steht ZUGANG VERBOTEN.' },
+  { type:'mcq', question:'Wo hält sich Zack im Haus auf?',
+    options:['auf dem Boden','auf dem Sofa','unter dem Bett','in der Badewanne'],
+    correct:'auf dem Boden',
+    hint:'Krokodile mögen es bodenständig.',
+    answer_text:'Zack hält sich auf dem Boden auf.' },
+],
+
+// ── Kapitel 14 ────────────────────────────────────
+kap14: [
+  { type:'mcq', question:'Wo versteckt sich Zack in Odds Zimmer?',
+    options:['unter der Kommode','unter dem Bett','hinter dem Schrank','im Schrank'],
+    correct:'unter der Kommode',
+    hint:'Es ist ein schweres Möbelstück.',
+    answer_text:'Zack versteckt sich unter der Kommode.' },
+],
+
+// ── Kapitel 15 ────────────────────────────────────
+kap15: [
+  { type:'mcq', question:'Welchen Sport machen die Kinder in Kapitel 15?',
+    options:['Sitzfußball','Rollstuhlbasketball','Völkerball','Blindenfußball'],
+    correct:'Sitzfußball',
+    hint:'Es ist eine besondere Art, Fußball zu spielen.',
+    answer_text:'Die Kinder spielen Sitzfußball.' },
+  { type:'multiselect', question:'Wer ist nett zu Odd in Kapitel 15?',
+    options:['Nova','Mette','Knut','Bjarne'],
+    correct:['Nova','Mette'],
+    hint:'Zwei Personen zeigen Odd Freundlichkeit.',
+    answer_text:'Nova und Mette sind nett zu Odd.' },
+  { type:'mcq', question:'Wann soll die Hausaufgabe abgegeben werden?',
+    options:['am Montag','am Dienstag','am Mittwoch','am Freitag'],
+    correct:'am Montag',
+    hint:'Es ist der erste Schultag der Woche.',
+    answer_text:'Die Hausaufgabe soll am Montag abgegeben werden.' },
+],
+
+// ── Kapitel 16 ────────────────────────────────────
+kap16: [
+  { type:'multiselect', question:'Was passiert in Kapitel 16?',
+    options:['Schnuppi ist verschwunden','Odd sucht Zack','Mama findet den Zoo-Schlüssel','Petter besucht Odd'],
+    correct:['Schnuppi ist verschwunden','Odd sucht Zack'],
+    hint:'Zwei Dinge geschehen — eines mit Schnuppi, eines mit Zack.',
+    answer_text:'Schnuppi ist verschwunden und Odd sucht Zack.' },
+],
+
+// ── Kapitel 17 ────────────────────────────────────
+kap17: [
+  { type:'multiselect', question:'Was brauchen Krokodile zum Leben?',
+    options:['Wärme','richtiges Futter','viel Wasser zum Schwimmen','Sonnenlicht jeden Tag'],
+    correct:['Wärme','richtiges Futter'],
+    hint:'Zwei wichtige Bedürfnisse werden in Kapitel 17 erklärt.',
+    answer_text:'Krokodile brauchen Wärme und richtiges Futter.' },
+],
+
+// ── Kapitel 18 ────────────────────────────────────
+kap18: [
+  { type:'sequence', question:'Bringe die Ereignisse aus Kapitel 18 in die richtige Reihenfolge.',
+    items:['Mama kommt nach Hause','Kines Handy klingelt','Zack frisst etwas','Zack wird in die Wanne gelegt','Zack bewegt sich nicht mehr'],
+    correctOrder:[0,1,2,3,4],
+    hint:'Denke daran, was zuerst, dann danach passiert.',
+    answer_text:'Mama kommt → Kines Handy klingelt → Zack frisst → Wanne → Zack bewegt sich nicht mehr.' },
+],
+
+// ── Kapitel 19 ────────────────────────────────────
+kap19: [
+  { type:'mcq', question:'Wo trifft Odd die älteren Jugendlichen?',
+    options:['an der Tankstelle','im Park','vor der Schule','im Supermarkt'],
+    correct:'an der Tankstelle',
+    hint:'Es ist ein Ort, wo man Autos betankt.',
+    answer_text:'Odd trifft die Jugendlichen an der Tankstelle.' },
+],
+
+// ── Kapitel 20 ────────────────────────────────────
+kap20: [
+  { type:'multiselect', question:'Warum hat Odd das Krokodil gestohlen?',
+    options:['Er wollte nicht mehr allein sein','Er wollte cool sein','Er brauchte Geld','Er wollte Mette beeindrucken'],
+    correct:['Er wollte nicht mehr allein sein','Er wollte cool sein'],
+    hint:'Zwei Gründe werden im Buch erklärt.',
+    answer_text:'Odd hat das Krokodil gestohlen, weil er nicht mehr allein sein und cool sein wollte.' },
+],
+
+// ── Kapitel 21 ────────────────────────────────────
+kap21: [
+  { type:'mcq', question:'Wer besucht Odd am Ende des Buches?',
+    options:['Mette','Nova','Petter','Kine'],
+    correct:'Mette',
+    hint:'Es ist jemand, der von Anfang an nett zu Odd war.',
+    answer_text:'Mette besucht Odd am Ende des Buches.' },
+  { type:'dragmatch', question:'Wer sagt was am Ende des Buches?',
+    pairs:[
+      { left:'Mette', right:'Ich hatte Angst um dich.' },
+      { left:'Mama',  right:'Zum Glück ist alles gut gegangen.' },
+      { left:'Odd',   right:'Ja, kann schon sein.' }
+    ],
+    hint:'Denk daran, wie jede Person am Ende reagiert.',
+    answer_text:'Mette → Angst, Mama → zum Glück, Odd → kann schon sein.' },
+],
+
+// ── Personen & Charaktere ─────────────────────────
+personen: [
+  { type:'multiselect', question:'Wer ärgert Odd in der Schule?',
+    options:['Nova','Knut','Bjarne','Mette','Petter'],
+    correct:['Nova','Knut','Bjarne'],
+    hint:'Drei Kinder machen Odd das Leben schwer.',
+    answer_text:'Nova, Knut und Bjarne ärgern Odd.' },
+  { type:'multiselect', question:'Wie ist Mettes Charakter?',
+    options:['freundlich','schreckhaft','gemein','arrogant'],
+    correct:['freundlich','schreckhaft'],
+    hint:'Zwei Eigenschaften beschreiben Mette am besten.',
+    answer_text:'Mette ist freundlich und schreckhaft.' },
+  { type:'fitb', question:'Wie heißt Odds Kuscheltier?',
+    prefix:'Odds Kuscheltier heißt', suffix:'.',
+    answer:['nussi'],
+    hint:'Es ist ein gemütlicher Name für ein Kuscheltier.',
+    answer_text:'Odds Kuscheltier heißt Nussi.' },
+  { type:'dragmatch', question:'Verbinde jede Person mit ihrer Eigenschaft.',
+    pairs:[
+      { left:'Odd',   right:'einsam und tierlieb' },
+      { left:'Mette', right:'freundlich und mutig' },
+      { left:'Rolf',  right:'cool und tätowiert' },
+      { left:'Nova',  right:'gemein und frech' }
+    ],
+    hint:'Denk daran, wie sich jede Person im Buch verhält.',
+    answer_text:'Odd → einsam/tierlieb, Mette → freundlich/mutig, Rolf → cool/tätowiert, Nova → gemein/frech.' },
+],
+
+// ── Handlung & Ereignisse ─────────────────────────
+handlung: [
+  { type:'sequence', question:'Bringe Odds Plan, ein Krokodil zu stehlen, in die richtige Reihenfolge.',
+    items:['Odd besucht den Zoo mit der Schule','Odd sieht Zack zum ersten Mal','Odd geht nachts allein in den Zoo','Odd stiehlt Zack','Odd versteckt Zack im Keller'],
+    correctOrder:[0,1,2,3,4],
+    hint:'Denke daran, wie Odds Plan Schritt für Schritt ablief.',
+    answer_text:'Zoobesuch → Zack sehen → nachts zurück → Zack stehlen → im Keller verstecken.' },
+  { type:'mcq', question:'Was stiehlt Odd aus dem Zoo?',
+    options:['ein Krokodil','eine Schlange','einen Pfeilschwanzkrebs','einen Waran'],
+    correct:'ein Krokodil',
+    hint:'Es ist das wichtigste Tier im Buch.',
+    answer_text:'Odd stiehlt ein Krokodil aus dem Zoo.' },
+  { type:'mcq', question:'Wie nennt Odd das gestohlene Krokodil?',
+    options:['Zack','Rex','Max','Koko'],
+    correct:'Zack',
+    hint:'Der Name klingt wie ein Menschenname.',
+    answer_text:'Odd nennt das Krokodil Zack.' },
+],
+
+// ── Tierwissen ────────────────────────────────────
+tierwissen: [
+  { type:'dragmatch', question:'Verbinde jedes Tier mit dem richtigen Fakt.',
+    pairs:[
+      { left:'Pfeilschwanzkrebs', right:'hat blaues Blut' },
+      { left:'Piranha',           right:'ist auch ein Pflanzenfresser' },
+      { left:'Krokodil',          right:'lebt so lange wie Dinosaurier' },
+      { left:'Rattenschlange',    right:'ist nicht giftig' }
+    ],
+    hint:'Jedes Tier hat eine überraschende Eigenschaft.',
+    answer_text:'Pfeilschwanzkrebs → blaues Blut, Piranha → Pflanzenfresser, Krokodil → wie Dinosaurier, Rattenschlange → nicht giftig.' },
+  { type:'mcq', question:'Wovon ernähren sich Krokodile hauptsächlich?',
+    options:['von Fischen','von Pflanzen','von Insekten','von anderen Krokodilen'],
+    correct:'von Fischen',
+    hint:'Krokodile sind Wassertiere, die Fleisch fressen.',
+    answer_text:'Krokodile ernähren sich hauptsächlich von Fischen.' },
+  { type:'mcq', question:'Was ist besonders an Krokodilzähnen?',
+    options:['Sie wachsen immer wieder nach','Sie sind extra hart','Sie können nicht ausfallen','Sie leuchten im Dunkeln'],
+    correct:'Sie wachsen immer wieder nach',
+    hint:'Das macht Krokodile zu sehr guten Jägern.',
+    answer_text:'Krokodilzähne wachsen immer wieder nach.' },
+],
+
+}; // end QB_BOOK
+
+// ── Assign IDs to book questions ──
+assignQuestionIds();
+
+// ── Load any editor-saved book questions ──
 editorLoadFromStorage();
 </script>
 </body>
