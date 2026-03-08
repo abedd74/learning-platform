@@ -825,9 +825,9 @@
       <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🔒 Kommt bald</button>
     </div>
 
-    <!-- Grade 1 first reader — coming soon -->
-    <div class="module-card coming-soon" style="--module-color:#2E7D32;" data-grade="1">
-      <span class="module-icon">🌱</span>
+    <!-- Grade 1 — first reader (coming soon, Marta) -->
+    <div class="module-card coming-soon" style="--module-color:#E91E63;" data-grade="1">
+      <span class="module-icon">🌸</span>
       <div class="module-title">Mein erstes Lesebuch
         <div class="it" style="font-size:0.78em;">Il mio primo libro</div>
       </div>
@@ -838,7 +838,23 @@
       <div class="module-progress">
         <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
       </div>
-      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🔒 Kommt bald</button>
+      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🌸 Kommt bald, Marta!</button>
+    </div>
+
+    <!-- Grade 1 — math (coming soon, Marta) -->
+    <div class="module-card coming-soon" style="--module-color:#FF9800;" data-grade="1">
+      <span class="module-icon">🔢</span>
+      <div class="module-title">Rechnen macht Spaß!
+        <div class="it" style="font-size:0.78em;">Matematica divertente</div>
+      </div>
+      <div class="module-meta">
+        <span class="module-grade-tag">Klasse 1</span>
+        <span class="module-subject-tag">Mathe</span>
+      </div>
+      <div class="module-progress">
+        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      </div>
+      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🌸 Kommt bald, Marta!</button>
     </div>
 
   </div>
@@ -1717,9 +1733,12 @@ function editorPopulateTopicDropdown() {
   const mod = EDITOR_MODULES[editorModuleKey];
   const sel = document.getElementById('editor-topic');
   if (!sel || !mod) return;
-  sel.innerHTML = mod.tkeys.map(k =>
-    `<option value="${k}" ${k === editorTopicKey ? 'selected' : ''}>${mod.topicLabels[k] || k}</option>`
-  ).join('');
+  const qb = editorGetModuleQB();
+  sel.innerHTML = mod.tkeys.map(k => {
+    const count = (qb[k] || []).length;
+    const label = mod.topicLabels[k] || k;
+    return `<option value="${k}" ${k === editorTopicKey ? 'selected' : ''}>${label} (${count})</option>`;
+  }).join('');
 }
 
 function showEditor() {
@@ -1746,6 +1765,7 @@ function switchEditorTab(tab) {
 function editorRenderList() {
   const list = document.getElementById('editor-q-list');
   if (!list) return;
+  editorPopulateTopicDropdown();   // keep counts live on every render
   const qs = editorGetModuleQB()[editorTopicKey] || [];
   if (!qs.length) {
     list.innerHTML = `<p style="text-align:center;color:var(--plat-soft);font-size:0.85rem;padding:16px 8px;">
