@@ -1345,6 +1345,11 @@ function showScreen(id) {
 
 function goHome() {
   if (!currentProfile) { showScreen('s-profiles'); return; }
+  // Non-water modules have their own home inside s-platform, not s-home
+  if (currentModuleKey !== 'water') {
+    backToPlatform();
+    return;
+  }
   swapMascot('water');
   document.getElementById('home-name').textContent = currentProfile.name;
   document.body.classList.add('theme-water');
@@ -4366,17 +4371,22 @@ const QB_BOOK = {
 // ── Kapitel 1 ─────────────────────────────────────
 kap01: [
   { type:'mcq', question:'Welche Superkraft hätte Odd am liebsten?',
+    question_it:'Quale superpotere vorrebbe Odd?',
     options:['fliegen','unsichtbar sein','teleportieren','super schnell rennen'],
+    options_it:['volare','diventare invisibile','teletrasportarsi','correre velocissimo'],
     correct:'fliegen',
     hint:'Odd träumt von etwas ganz Bestimmtem...',
     answer_text:'Odd hätte am liebsten die Superkraft zu fliegen.' },
   { type:'mcq', question:'Wie heißt der Hund der Nachbarin?',
+    question_it:'Come si chiama il cane della vicina?',
     options:['Hektor','Rex','Bello','Buster'],
     correct:'Hektor',
     hint:'Der Name klingt ein bisschen wie ein Heldenname.',
     answer_text:'Der Hund der Nachbarin heißt Hektor.' },
   { type:'mcq', question:'Was ist Schnuppi?',
+    question_it:"Cos'è Schnuppi?",
     options:['ein Hamster','eine Schildkröte','ein Hund','ein Meerschweinchen'],
+    options_it:['un criceto','una tartaruga','un cane',"un porcellino d'India"],
     correct:'ein Hamster',
     hint:'Schnuppi ist ein kleines Nagetier.',
     answer_text:'Schnuppi ist Odds Hamster.' },
@@ -4385,17 +4395,23 @@ kap01: [
 // ── Kapitel 2 ─────────────────────────────────────
 kap02: [
   { type:'mcq', question:'Was ist Nussi?',
+    question_it:"Cos'è Nussi?",
     options:['ein Kuscheltier','ein Hund','ein Hamster','ein Fußball'],
+    options_it:['un peluche','un cane','un criceto','un pallone da calcio'],
     correct:'ein Kuscheltier',
     hint:'Nussi ist etwas, womit man kuschelt und schläft.',
     answer_text:'Nussi ist Odds Kuscheltier.' },
   { type:'mcq', question:'Welchen Sport spielen die Kinder im Unterricht?',
+    question_it:'Quale sport fanno i bambini a scuola?',
     options:['Volleyball','Fußball','Basketball','Handball'],
+    options_it:['pallavolo','calcio','pallacanestro','pallamano'],
     correct:'Volleyball',
     hint:'Ein Ballspiel, bei dem man den Ball über ein Netz schlägt.',
     answer_text:'Die Kinder spielen Volleyball.' },
   { type:'mcq', question:'Wie viele Tore schießt Petter beim Sport?',
+    question_it:'Quanti gol segna Petter durante lo sport?',
     options:['vier','drei','zwei','keins'],
+    options_it:['quattro','tre','due','zero'],
     correct:'vier',
     hint:'Petter trifft mehrmals — es ist eine gerade Zahl größer als drei.',
     answer_text:'Petter schießt vier Tore.' },
@@ -4404,22 +4420,29 @@ kap02: [
 // ── Kapitel 3 ─────────────────────────────────────
 kap03: [
   { type:'fitb', question:'Wer setzt sich neben Odd in der Schule?',
+    question_it:'Chi si siede vicino a Odd a scuola?',
     prefix:'Neben Odd setzt sich', suffix:'.',
+    prefix_it:'Vicino a Odd si siede', suffix_it:'.',
     answer:['mette'],
     hint:'Es ist ein Mädchen, das nett zu Odd ist.',
     answer_text:'Mette setzt sich neben Odd.' },
   { type:'mcq', question:'Wonach riecht Mettes Haar?',
+    question_it:'Di cosa profumano i capelli di Mette?',
     options:['nach Kirschen','nach Erdbeeren','nach Schokolade','nach Blumen'],
+    options_it:['di ciliegie','di fragole','di cioccolato','di fiori'],
     correct:'nach Kirschen',
     hint:'Es ist ein kleines rotes Obst, das Odd besonders auffällt.',
     answer_text:'Mettes Haar riecht nach Kirschen.' },
   { type:'mcq', question:'Wer sitzt hinter Odd in der Klasse?',
+    question_it:'Chi siede dietro Odd in classe?',
     options:['Nova','Kine','Lene','Mette'],
     correct:'Nova',
     hint:'Es ist ein Mädchen, das oft nicht nett zu Odd ist.',
     answer_text:'Nova sitzt hinter Odd.' },
   { type:'multiselect', question:'Über welche zwei Tiere sprechen die Kinder in Kapitel 3?',
+    question_it:'Di quali due animali parlano i bambini nel capitolo 3?',
     options:['Schlangen','Krokodile','Haie','Hamster'],
+    options_it:['serpenti','coccodrilli','squali','criceti'],
     correct:['Schlangen','Krokodile'],
     hint:'Beide Tiere wirken gefährlich — eines kriecht, eines lebt im Wasser.',
     answer_text:'Die Kinder sprechen über Schlangen und Krokodile.' },
@@ -4428,11 +4451,14 @@ kap03: [
 // ── Kapitel 4 ─────────────────────────────────────
 kap04: [
   { type:'multiselect', question:'Welche zwei Wörter passen zu Rolf, dem Tierflüsterer?',
+    question_it:"Quali due aggettivi descrivono Rolf, l'ammansitore di animali?",
     options:['mutig','humorvoll','ängstlich','langweilig'],
+    options_it:['coraggioso','divertente','pauroso','noioso'],
     correct:['mutig','humorvoll'],
     hint:'Rolf ist ein Tierflüsterer — denke daran, wie er wirkt und spricht.',
     answer_text:'Rolf ist mutig und humorvoll.' },
   { type:'mcq', question:'Welches Tier zeigt Rolf den Kindern zuerst?',
+    question_it:'Quale animale mostra Rolf ai bambini per primo?',
     options:['Pfeilschwanzkrebse','Krokodile','Schlangen','Piranhas'],
     correct:'Pfeilschwanzkrebse',
     hint:'Es ist ein Tier mit einem ungewöhnlichen Namen.',
@@ -4442,12 +4468,16 @@ kap04: [
 // ── Kapitel 5 ─────────────────────────────────────
 kap05: [
   { type:'multiselect', question:'Welche zwei Aussagen über Krokodile sind richtig?',
+    question_it:'Quali due affermazioni sui coccodrilli sono corrette?',
     options:['Ihre Zähne wachsen immer wieder nach','Odd streichelt ein Krokodil','Sie können nicht schwimmen','Sie schlafen den ganzen Winter'],
+    options_it:['I denti ricrescono sempre','Odd accarezza un coccodrillo','Non sanno nuotare',"Dormono tutto l'inverno"],
     correct:['Ihre Zähne wachsen immer wieder nach','Odd streichelt ein Krokodil'],
     hint:'Eine Aussage ist ein Fakt über Krokodile, eine passiert im Buch.',
     answer_text:'Krokodilzähne wachsen nach — und Odd streichelt tatsächlich ein Krokodil.' },
   { type:'mcq', question:'Warum sind Krokodile bedroht?',
+    question_it:'Perché i coccodrilli sono minacciati?',
     options:['wegen der Menschen','wegen anderer Tiere','wegen der Kälte','wegen Krankheiten'],
+    options_it:['per colpa degli esseri umani','per colpa di altri animali','per il freddo','per le malattie'],
     correct:'wegen der Menschen',
     hint:'Es ist leider etwas, das wir selbst verursachen.',
     answer_text:'Krokodile sind wegen der Menschen bedroht.' },
@@ -4456,6 +4486,7 @@ kap05: [
 // ── Kapitel 6 ─────────────────────────────────────
 kap06: [
   { type:'dragmatch', question:'Wer sagt was in Kapitel 6?',
+    question_it:'Chi dice cosa nel capitolo 6?',
     pairs:[
       { left:'Kine',  right:'Äh, Krokodile sind ekelig!' },
       { left:'Odd',   right:'Ich habe ein Krokodil gestreichelt.' },
@@ -4464,7 +4495,9 @@ kap06: [
     hint:'Jede Person hat eine typische Reaktion.',
     answer_text:'Kine → ekelig, Odd → gestreichelt, Mama → Beeil dich.' },
   { type:'multiselect', question:'Was denkt Odd nach dem Zoobesuch?',
+    question_it:'Cosa pensa Odd dopo la visita allo zoo?',
     options:['Er möchte ein Krokodil als Freund haben','Zack hätte es bei ihm gut','Er will nie wieder in den Zoo','Er mag keine Krokodile'],
+    options_it:['Vuole un coccodrillo come amico','Zack starebbe bene con lui','Non vuole più andare allo zoo','Non gli piacciono i coccodrilli'],
     correct:['Er möchte ein Krokodil als Freund haben','Zack hätte es bei ihm gut'],
     hint:'Odds Gedanken drehen sich um Zack und Freundschaft.',
     answer_text:'Odd möchte ein Krokodil als Freund und denkt, Zack hätte es bei ihm gut.' },
@@ -4473,12 +4506,16 @@ kap06: [
 // ── Kapitel 7 ─────────────────────────────────────
 kap07: [
   { type:'fitb', question:'Wie ist Odds Spitzname in der Schule?',
+    question_it:'Qual è il soprannome di Odd a scuola?',
     prefix:'Odds Spitzname ist', suffix:'.',
+    prefix_it:'Il soprannome di Odd è', suffix_it:'.',
     answer:['odd-birnenkompott'],
     hint:'Der Spitzname hat etwas mit Obst zu tun.',
     answer_text:'Odds Spitzname ist Odd-Birnenkompott.' },
   { type:'mcq', question:'Warum kauft Odd Schinken?',
+    question_it:'Perché Odd compra del prosciutto?',
     options:['für Zack das Krokodil','für seinen Hamster Schnuppi','für das Abendessen','für seinen Freund Petter'],
+    options_it:['per Zack il coccodrillo','per il suo criceto Schnuppi','per la cena','per il suo amico Petter'],
     correct:'für Zack das Krokodil',
     hint:'Odd denkt an jemanden, der viel Fleisch braucht.',
     answer_text:'Odd kauft den Schinken für Zack, das Krokodil.' },
@@ -4487,12 +4524,16 @@ kap07: [
 // ── Kapitel 8 ─────────────────────────────────────
 kap08: [
   { type:'mcq', question:'Wo versteckt Odd das Krokodil?',
+    question_it:'Dove nasconde Odd il coccodrillo?',
     options:['im Keller','auf dem Dachboden','in der Garage','im Badezimmer'],
+    options_it:['in cantina','in soffitta','in garage','in bagno'],
     correct:'im Keller',
     hint:'Es ist ein dunkler Ort im Haus.',
     answer_text:'Odd versteckt das Krokodil im Keller.' },
   { type:'fitb', question:'Wie viele Krokodile sind auf dem Zooplan eingezeichnet?',
+    question_it:'Quanti coccodrilli sono segnati sulla mappa dello zoo?',
     prefix:'Auf dem Zooplan sind', suffix:'Krokodile eingezeichnet.',
+    prefix_it:'Sulla mappa dello zoo ci sono', suffix_it:'coccodrilli segnati.',
     answer:['5'],
     hint:'Es ist eine einstellige Zahl.',
     answer_text:'Auf dem Zooplan sind 5 Krokodile eingezeichnet.' },
@@ -4501,17 +4542,23 @@ kap08: [
 // ── Kapitel 9 ─────────────────────────────────────
 kap09: [
   { type:'mcq', question:'Was sucht Odd angeblich im Zoo?',
+    question_it:'Cosa dice Odd di cercare allo zoo?',
     options:['sein Federmäppchen','seinen Rucksack','sein Handy','seine Jacke'],
+    options_it:['il suo astuccio','il suo zaino','il suo cellulare','la sua giacca'],
     correct:'sein Federmäppchen',
     hint:'Odd erfindet eine Ausrede...',
     answer_text:'Odd sagt, er suche sein Federmäppchen.' },
   { type:'mcq', question:'Wie viele Personen spielen in Kapitel 9 eine wichtige Rolle?',
+    question_it:'Quante persone hanno un ruolo importante nel capitolo 9?',
     options:['zwei','drei','vier','eine'],
+    options_it:['due','tre','quattro','una'],
     correct:'zwei',
     hint:'Es ist eine kleine Zahl.',
     answer_text:'In Kapitel 9 spielen zwei Personen eine wichtige Rolle.' },
   { type:'mcq', question:'Welches Tier sieht Odd in Kapitel 9 im Zoo?',
+    question_it:'Quale animale vede Odd allo zoo nel capitolo 9?',
     options:['eine Boa Constrictor','einen Leguan','einen Waran','ein Krokodil'],
+    options_it:['un boa constrictor','un iguana','un varano','un coccodrillo'],
     correct:'eine Boa Constrictor',
     hint:'Es ist eine sehr große Schlange.',
     answer_text:'Odd sieht eine Boa Constrictor im Zoo.' },
@@ -4520,12 +4567,16 @@ kap09: [
 // ── Kapitel 10 ────────────────────────────────────
 kap10: [
   { type:'fitb', question:'Wie viele Krokodile gibt es insgesamt im Zoo?',
+    question_it:'Quanti coccodrilli ci sono in totale allo zoo?',
     prefix:'Im Zoo gibt es insgesamt', suffix:'Krokodile.',
+    prefix_it:'Allo zoo ci sono in totale', suffix_it:'coccodrilli.',
     answer:['26'],
     hint:'Es ist eine zweistellige Zahl.',
     answer_text:'Im Zoo gibt es insgesamt 26 Krokodile.' },
   { type:'mcq', question:'Wovon ernähren sich Krokodile hauptsächlich?',
+    question_it:'Di cosa si nutrono principalmente i coccodrilli?',
     options:['von Fleisch','von Pflanzen','von Insekten','von Fischen'],
+    options_it:['di carne','di piante','di insetti','di pesce'],
     correct:'von Fleisch',
     hint:'Krokodile sind Fleischfresser.',
     answer_text:'Krokodile ernähren sich hauptsächlich von Fleisch.' },
@@ -4534,6 +4585,7 @@ kap10: [
 // ── Kapitel 11 ────────────────────────────────────
 kap11: [
   { type:'sequence', question:'Bringe die Sätze aus Kapitel 11 in die richtige Reihenfolge.',
+    question_it:'Metti in ordine le frasi del capitolo 11.',
     items:['Odd findet Zack und tippt gegen die Glasscheibe.','Odd steigt auf einen Eimer.','Odd fällt vom Eimer herunter.','Odd steckt das Krokodil in den Rucksack.'],
     correctOrder:[0,1,2,3],
     hint:'Denke daran, was Odd Schritt für Schritt in der Nacht gemacht hat.',
@@ -4543,12 +4595,15 @@ kap11: [
 // ── Kapitel 12 ────────────────────────────────────
 kap12: [
   { type:'mcq', question:'Wie nennt die Klasse Odd jetzt?',
+    question_it:'Come chiama ora la classe Odd?',
     options:['Krokodil-Odd','Tier-Odd','Zoo-Odd','Odd der Große'],
     correct:'Krokodil-Odd',
     hint:'Der neue Spitzname hat etwas mit Krokodilen zu tun.',
     answer_text:'Die Klasse nennt Odd jetzt Krokodil-Odd.' },
   { type:'mcq', question:'Welche Superkraft würde Odd in Kapitel 12 immer noch am liebsten haben?',
+    question_it:'Quale superpotere vorrebbe ancora Odd nel capitolo 12?',
     options:['fliegen','unsichtbar sein','Gedanken lesen','super stark sein'],
+    options_it:['volare','diventare invisibile','leggere il pensiero','essere super forte'],
     correct:'fliegen',
     hint:'Odds Wunsch ist seit Kapitel 1 derselbe geblieben.',
     answer_text:'Odd möchte immer noch am liebsten fliegen.' },
@@ -4557,12 +4612,15 @@ kap12: [
 // ── Kapitel 13 ────────────────────────────────────
 kap13: [
   { type:'mcq', question:'Was steht auf dem Schild im Zoo?',
+    question_it:"Cosa c'è scritto sul cartello allo zoo?",
     options:['ZUGANG VERBOTEN','GEFÄHRLICH','BETRETEN VERBOTEN','VORSICHT KROKODILE'],
     correct:'ZUGANG VERBOTEN',
     hint:'Es ist ein klares Verbotsschild.',
     answer_text:'Auf dem Schild steht ZUGANG VERBOTEN.' },
   { type:'mcq', question:'Was beansprucht Zack als sein Revier im Haus?',
+    question_it:'Cosa rivendica Zack come suo territorio in casa?',
     options:['alles','nur den Keller','nur das Zimmer','die Badewanne'],
+    options_it:['tutto','solo la cantina','solo la stanza','il bagno'],
     correct:'alles',
     hint:'Zack übernimmt mehr und mehr — er lässt keinen Bereich aus!',
     answer_text:'Zack beansprucht alles als sein Revier.' },
@@ -4571,7 +4629,9 @@ kap13: [
 // ── Kapitel 14 ────────────────────────────────────
 kap14: [
   { type:'mcq', question:'Wo versteckt sich Zack in Odds Zimmer?',
+    question_it:'Dove si nasconde Zack nella stanza di Odd?',
     options:['hinter der Kommode','unter dem Bett','hinter dem Schrank','im Schrank'],
+    options_it:['dietro la cassettiera','sotto il letto',"dietro l'armadio","nell'armadio"],
     correct:'hinter der Kommode',
     hint:'Es ist ein schweres Möbelstück — und Zack ist dahinter, nicht darunter!',
     answer_text:'Zack versteckt sich hinter der Kommode.' },
@@ -4580,17 +4640,22 @@ kap14: [
 // ── Kapitel 15 ────────────────────────────────────
 kap15: [
   { type:'mcq', question:'Welchen Sport machen die Kinder in Kapitel 15?',
+    question_it:'Quale sport fanno i bambini nel capitolo 15?',
     options:['Fußball','Sitzfußball','Völkerball','Basketball'],
+    options_it:['calcio','calcio da seduti','palla avvelenata','pallacanestro'],
     correct:'Fußball',
     hint:'Es ist der beliebteste Sport in vielen Ländern.',
     answer_text:'Die Kinder spielen Fußball.' },
   { type:'mcq', question:'Wer ist nett zu Odd in Kapitel 15?',
+    question_it:'Chi è gentile con Odd nel capitolo 15?',
     options:['Nova','Mette','Knut','Bjarne'],
     correct:'Nova',
     hint:'Es ist eine Person, die sonst oft nicht nett zu Odd ist — eine Überraschung!',
     answer_text:'Nova ist nett zu Odd.' },
   { type:'mcq', question:'Wann soll die Hausaufgabe abgegeben werden?',
+    question_it:'Quando va consegnato il compito?',
     options:['am Montag','am Dienstag','am Mittwoch','am Freitag'],
+    options_it:['lunedì','martedì','mercoledì','venerdì'],
     correct:'am Montag',
     hint:'Es ist der erste Schultag der Woche.',
     answer_text:'Die Hausaufgabe soll am Montag abgegeben werden.' },
@@ -4599,7 +4664,9 @@ kap15: [
 // ── Kapitel 16 ────────────────────────────────────
 kap16: [
   { type:'multiselect', question:'Was passiert in Kapitel 16?',
+    question_it:'Cosa succede nel capitolo 16?',
     options:['Schnuppi ist verschwunden','Odd sucht Zack','Mama findet den Zoo-Schlüssel','Petter besucht Odd'],
+    options_it:['Schnuppi è sparito','Odd cerca Zack','Mama trova la chiave dello zoo','Petter visita Odd'],
     correct:['Schnuppi ist verschwunden','Odd sucht Zack'],
     hint:'Zwei Dinge geschehen — eines mit Schnuppi, eines mit Zack.',
     answer_text:'Schnuppi ist verschwunden und Odd sucht Zack.' },
@@ -4608,7 +4675,9 @@ kap16: [
 // ── Kapitel 17 ────────────────────────────────────
 kap17: [
   { type:'multiselect', question:'Was brauchen Krokodile zum Leben?',
+    question_it:'Di cosa hanno bisogno i coccodrilli per vivere?',
     options:['Wärme','richtiges Futter','viel Wasser zum Schwimmen','Sonnenlicht jeden Tag'],
+    options_it:['calore','cibo adeguato','molta acqua per nuotare','sole ogni giorno'],
     correct:['Wärme','richtiges Futter','viel Wasser zum Schwimmen'],
     hint:'Drei wichtige Bedürfnisse werden in Kapitel 17 erklärt.',
     answer_text:'Krokodile brauchen Wärme, richtiges Futter und viel Wasser zum Schwimmen.' },
@@ -4617,6 +4686,7 @@ kap17: [
 // ── Kapitel 18 ────────────────────────────────────
 kap18: [
   { type:'sequence', question:'Bringe die Ereignisse aus Kapitel 18 in die richtige Reihenfolge.',
+    question_it:'Metti in ordine gli eventi del capitolo 18.',
     items:['Zack frisst Nussi.','Mama ruft: „Gute Nacht!"','Zack bewegt sich nicht mehr.','Odd stellt eine Plastikwanne mit Wasser in sein Zimmer.','Kines Handy klingelt.'],
     correctOrder:[1,3,0,4,2],
     hint:'Denke daran: erst sagt Mama Gute Nacht, dann passieren die Dinge nacheinander.',
@@ -4626,7 +4696,9 @@ kap18: [
 // ── Kapitel 19 ────────────────────────────────────
 kap19: [
   { type:'mcq', question:'Wo trifft Odd die älteren Jugendlichen?',
+    question_it:'Dove incontra Odd i ragazzi più grandi?',
     options:['an der Tankstelle','im Park','vor der Schule','im Supermarkt'],
+    options_it:['alla stazione di servizio','al parco','davanti alla scuola','al supermercato'],
     correct:'an der Tankstelle',
     hint:'Es ist ein Ort, wo man Autos betankt.',
     answer_text:'Odd trifft die Jugendlichen an der Tankstelle.' },
@@ -4635,7 +4707,9 @@ kap19: [
 // ── Kapitel 20 ────────────────────────────────────
 kap20: [
   { type:'multiselect', question:'Warum hat Odd das Krokodil gestohlen?',
+    question_it:'Perché Odd ha rubato il coccodrillo?',
     options:['Er wollte nicht mehr allein sein','Er wollte cool sein','Er brauchte Geld','Er wollte Mette beeindrucken'],
+    options_it:['Non voleva più essere solo','Voleva essere figo','Aveva bisogno di soldi','Voleva impressionare Mette'],
     correct:['Er wollte nicht mehr allein sein','Er wollte cool sein'],
     hint:'Zwei Gründe werden im Buch erklärt.',
     answer_text:'Odd hat das Krokodil gestohlen, weil er nicht mehr allein sein und cool sein wollte.' },
@@ -4644,11 +4718,13 @@ kap20: [
 // ── Kapitel 21 ────────────────────────────────────
 kap21: [
   { type:'mcq', question:'Wer besucht Odd am Ende des Buches?',
+    question_it:'Chi visita Odd alla fine del libro?',
     options:['Mette','Nova','Petter','Kine'],
     correct:'Mette',
     hint:'Es ist jemand, der von Anfang an nett zu Odd war.',
     answer_text:'Mette besucht Odd am Ende des Buches.' },
   { type:'dragmatch', question:'Wer sagt was am Ende des Buches?',
+    question_it:'Chi dice cosa alla fine del libro?',
     pairs:[
       { left:'Mette', right:'Hast du keine Angst?' },
       { left:'Mama',  right:'Zum Glück ist es wieder zurück.' },
@@ -4661,21 +4737,27 @@ kap21: [
 // ── Personen & Charaktere ─────────────────────────
 personen: [
   { type:'multiselect', question:'Wer ärgert Odd in der Schule?',
+    question_it:'Chi dà fastidio a Odd a scuola?',
     options:['Nova','Knut','Bjarne','Mette','Petter'],
     correct:['Nova','Knut','Bjarne'],
     hint:'Drei Kinder machen Odd das Leben schwer.',
     answer_text:'Nova, Knut und Bjarne ärgern Odd.' },
   { type:'multiselect', question:'Wie ist Mettes Charakter?',
+    question_it:"Com'è il carattere di Mette?",
     options:['freundlich','schreckhaft','gemein','arrogant'],
+    options_it:['gentile','timorosa','cattiva','arrogante'],
     correct:['freundlich','schreckhaft'],
     hint:'Zwei Eigenschaften beschreiben Mette am besten.',
     answer_text:'Mette ist freundlich und schreckhaft.' },
   { type:'fitb', question:'Wie heißt Odds Kuscheltier?',
+    question_it:'Come si chiama il peluche di Odd?',
     prefix:'Odds Kuscheltier heißt', suffix:'.',
+    prefix_it:'Il peluche di Odd si chiama', suffix_it:'.',
     answer:['nussi'],
     hint:'Es ist ein gemütlicher Name für ein Kuscheltier.',
     answer_text:'Odds Kuscheltier heißt Nussi.' },
   { type:'dragmatch', question:'Verbinde jede Person mit ihrer Eigenschaft.',
+    question_it:'Collega ogni persona con la sua caratteristica.',
     pairs:[
       { left:'Odd',   right:'einsam und tierlieb' },
       { left:'Mette', right:'freundlich und mutig' },
@@ -4689,16 +4771,20 @@ personen: [
 // ── Handlung & Ereignisse ─────────────────────────
 handlung: [
   { type:'sequence', question:'Bringe Odds Plan, ein Krokodil zu stehlen, in die richtige Reihenfolge.',
+    question_it:'Metti in ordine il piano di Odd per rubare un coccodrillo.',
     items:['Odd besucht den Zoo mit der Schule','Odd sieht Zack zum ersten Mal','Odd geht nachts allein in den Zoo','Odd stiehlt Zack','Odd versteckt Zack im Keller'],
     correctOrder:[0,1,2,3,4],
     hint:'Denke daran, wie Odds Plan Schritt für Schritt ablief.',
     answer_text:'Zoobesuch → Zack sehen → nachts zurück → Zack stehlen → im Keller verstecken.' },
   { type:'mcq', question:'Was stiehlt Odd aus dem Zoo?',
+    question_it:'Cosa ruba Odd dallo zoo?',
     options:['ein Krokodil','eine Schlange','einen Pfeilschwanzkrebs','einen Waran'],
+    options_it:['un coccodrillo','un serpente','un granchio ferro di cavallo','un varano'],
     correct:'ein Krokodil',
     hint:'Es ist das wichtigste Tier im Buch.',
     answer_text:'Odd stiehlt ein Krokodil aus dem Zoo.' },
   { type:'mcq', question:'Wie nennt Odd das gestohlene Krokodil?',
+    question_it:'Come chiama Odd il coccodrillo rubato?',
     options:['Zack','Rex','Max','Koko'],
     correct:'Zack',
     hint:'Der Name klingt wie ein Menschenname.',
@@ -4708,6 +4794,7 @@ handlung: [
 // ── Tierwissen ────────────────────────────────────
 tierwissen: [
   { type:'dragmatch', question:'Verbinde jedes Tier mit dem richtigen Fakt.',
+    question_it:'Collega ogni animale con il fatto corretto.',
     pairs:[
       { left:'Pfeilschwanzkrebs', right:'hat blaues Blut' },
       { left:'Piranha',           right:'ist auch ein Pflanzenfresser' },
@@ -4719,12 +4806,16 @@ tierwissen: [
     hint:'Jedes Tier hat eine überraschende Eigenschaft.',
     answer_text:'Pfeilschwanzkrebs → blaues Blut, Piranha → Pflanzenfresser, Karpfen → Dinosaurier, Boa → 3 Meter, Rattenschlange → nicht giftig, Krokodil → Schnuller.' },
   { type:'mcq', question:'Wovon ernähren sich Krokodile hauptsächlich?',
+    question_it:'Di cosa si nutrono principalmente i coccodrilli?',
     options:['von Fleisch','von Pflanzen','von Insekten','von anderen Krokodilen'],
+    options_it:['di carne','di piante','di insetti','di altri coccodrilli'],
     correct:'von Fleisch',
     hint:'Krokodile sind Fleischfresser.',
     answer_text:'Krokodile ernähren sich hauptsächlich von Fleisch.' },
   { type:'mcq', question:'Was ist besonders an Krokodilzähnen?',
+    question_it:"Cosa c'è di speciale nei denti dei coccodrilli?",
     options:['Sie wachsen immer wieder nach','Sie sind extra hart','Sie können nicht ausfallen','Sie leuchten im Dunkeln'],
+    options_it:['Ricrescono sempre','Sono extra duri','Non cadono mai','Brillano al buio'],
     correct:'Sie wachsen immer wieder nach',
     hint:'Das macht Krokodile zu sehr guten Jägern.',
     answer_text:'Krokodilzähne wachsen immer wieder nach.' },
