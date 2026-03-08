@@ -1345,6 +1345,7 @@ function showScreen(id) {
 
 function goHome() {
   if (!currentProfile) { showScreen('s-profiles'); return; }
+  swapMascot('water');
   document.getElementById('home-name').textContent = currentProfile.name;
   document.body.classList.add('theme-water');
   // Update hero score from history
@@ -1397,9 +1398,11 @@ function backToPlatform() {
 function enterModule(moduleId) {
   if (moduleId === 'water') {
     currentModuleKey = 'water';
+    swapMascot('water');
     goHome();
   } else {
     currentModuleKey = moduleId;
+    swapMascot(moduleId);
     document.getElementById('topic-back-btn').onclick = () => {
       document.body.classList.remove('theme-water');
       showScreen('s-platform');
@@ -2431,6 +2434,56 @@ function nextQuestion() {
 }
 
 // ── Animations (called by Phase 2 engine) ───────
+// ── Per-module mascot SVG templates ──────────────
+// Each function receives a gradient-ID string so the same mascot
+// can safely be injected into all three SVG slots without ID clashes.
+const MASCOTS = {
+
+  // Tropfi — water droplet (original mascot, water cycle module)
+  water: gid => `
+    <defs><linearGradient id="${gid}" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#81D4FA"/><stop offset="100%" stop-color="#0288D1"/>
+    </linearGradient></defs>
+    <path d="M50 8C50 8,14 58,14 76C14 97,30 112,50 112C70 112,86 97,86 76C86 58,50 8,50 8Z" fill="url(#${gid})"/>
+    <ellipse cx="37" cy="54" rx="7" ry="11" fill="rgba(255,255,255,0.28)" transform="rotate(-20 37 54)"/>
+    <circle cx="39" cy="76" r="7" fill="white"/><circle cx="61" cy="76" r="7" fill="white"/>
+    <circle cx="41" cy="76" r="4" fill="#01579B"/><circle cx="63" cy="76" r="4" fill="#01579B"/>
+    <circle cx="43" cy="74" r="1.5" fill="white"/><circle cx="65" cy="74" r="1.5" fill="white"/>
+    <path d="M40 89Q50 98,60 89" stroke="#01579B" stroke-width="2.5" fill="none" stroke-linecap="round" id="q-mouth"/>
+  `,
+
+  // Zacki — cartoon crocodile (book module: Der Krokodildieb)
+  book: gid => `
+    <defs><linearGradient id="${gid}" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#A5D6A7"/><stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient></defs>
+    <ellipse cx="50" cy="80" rx="34" ry="34" fill="url(#${gid})"/>
+    <circle cx="33" cy="40" r="16" fill="#66BB6A"/>
+    <circle cx="67" cy="40" r="16" fill="#66BB6A"/>
+    <ellipse cx="28" cy="33" rx="5" ry="7" fill="rgba(255,255,255,0.28)" transform="rotate(-15 28 33)"/>
+    <circle cx="33" cy="40" r="10" fill="white"/><circle cx="67" cy="40" r="10" fill="white"/>
+    <ellipse cx="34" cy="42" rx="5" ry="6" fill="#1B5E20"/><ellipse cx="68" cy="42" rx="5" ry="6" fill="#1B5E20"/>
+    <circle cx="36" cy="39" r="2" fill="white"/><circle cx="70" cy="39" r="2" fill="white"/>
+    <ellipse cx="50" cy="100" rx="25" ry="14" fill="#66BB6A"/>
+    <circle cx="43" cy="94" r="3.5" fill="#388E3C"/><circle cx="57" cy="94" r="3.5" fill="#388E3C"/>
+    <path d="M33 108 Q50 118 67 108" stroke="#1B5E20" stroke-width="2.5" fill="none" stroke-linecap="round" id="q-mouth"/>
+  `,
+
+};
+
+// Replace all three mascot SVG slots with the template for the given module.
+// Called when entering any module so the character always matches the theme.
+function swapMascot(moduleKey) {
+  if (swapMascot._last === moduleKey) return;   // no-op if already correct
+  swapMascot._last = moduleKey;
+  const fn = MASCOTS[moduleKey] || MASCOTS.water;
+  [['tropfi-home','mg-1'], ['tropfi-quiz','mg-2'], ['tropfi-results','mg-3']]
+    .forEach(([svgId, gid]) => {
+      const el = document.getElementById(svgId);
+      if (el) el.innerHTML = fn(gid);
+    });
+}
+
 function tropfiJump(id) {
   const el = document.getElementById(id);
   if (!el) return;
