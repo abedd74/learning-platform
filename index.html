@@ -925,7 +925,7 @@
       📚 Themen üben
       <div class="it" style="font-size:0.75em;margin-top:2px">Esercita un tema</div>
     </button>
-    <button class="btn btn-soft w-full" onclick="showScreen('s-history')">
+    <button class="btn btn-soft w-full" onclick="showHistoryForModule('water')">
       ⭐ Meine Ergebnisse
       <div class="it" style="font-size:0.75em;margin-top:2px">I miei risultati</div>
     </button>
@@ -1174,6 +1174,7 @@
     📊 Eltern-Dashboard
     <div class="it" style="font-size:0.8rem;color:var(--plat-soft);">Pannello genitori</div>
   </h2>
+  <div id="dash-module-sub" style="font-size:0.82rem;color:var(--plat-soft);margin-top:-4px;margin-bottom:8px;"></div>
 
   <!-- Profile tabs -->
   <div class="dash-profile-tabs" id="dash-profile-tabs"></div>
@@ -1451,8 +1452,10 @@ function goToHistory() {
 
 // ── Parent Dashboard ─────────────────────────────
 let dashProfile = 'chiara';   // key in PROFILES currently shown in dashboard
+let dashModuleFilter = null;  // null = all modules; 'water'/'book' = filtered
 
-function showDashboard() {
+function showDashboard(moduleFilter = null) {
+  dashModuleFilter = moduleFilter;
   document.body.classList.remove('theme-water');
   // Default to the tab matching the current profile
   dashProfile = Object.keys(PROFILES).find(
@@ -1477,25 +1480,50 @@ function renderDashboard(profileKey) {
     }).join('');
   }
 
-  const stats   = JSON.parse(localStorage.getItem(`wq_stats_${name}`)   || '{}');
-  const history = JSON.parse(localStorage.getItem(`wq_${name}`)         || '[]');
+  const stats      = JSON.parse(localStorage.getItem(`wq_stats_${name}`) || '{}');
+  const allHistory = JSON.parse(localStorage.getItem(`wq_${name}`)       || '[]');
 
-  renderDashHeatmap(stats);
-  renderDashHistory(history);
-  renderDashQuestions(stats);
+  const filteredHistory = dashModuleFilter
+    ? allHistory.filter(s => s.module === dashModuleFilter)
+    : allHistory;
+  const activeTkeys = dashModuleFilter
+    ? (EDITOR_MODULES[dashModuleFilter]?.tkeys || TKEYS)
+    : TKEYS;
+
+  // Update module subtitle
+  const sub = document.getElementById('dash-module-sub');
+  if (sub) {
+    const mod = dashModuleFilter && EDITOR_MODULES[dashModuleFilter];
+    sub.textContent = mod ? (mod.icon + ' ' + mod.name) : '';
+  }
+
+  renderDashHeatmap(stats, activeTkeys);
+  renderDashHistory(filteredHistory);
+  renderDashQuestions(stats, activeTkeys);
+}
+
+// ── Topic display helper (module-aware) ──────────
+function topicDisplayInfo(k) {
+  if (dashModuleFilter === 'book') {
+    const lbl = EDITOR_MODULES.book?.topicLabels?.[k] || k;
+    return { icon: lbl.match(/^\S+/)?.[0] || '📖', de: lbl.replace(/^\S+\s*/, '') };
+  }
+  return TOPICS[k] || { icon: '❓', de: k };
 }
 
 // ① Heatmap — topic-level correct %
-function renderDashHeatmap(stats) {
+function renderDashHeatmap(stats, tkeys) {
+  tkeys = tkeys || TKEYS;
   const el = document.getElementById('dash-heatmap');
   if (!el) return;
 
-  // Aggregate stats per topic
+  // Aggregate stats per topic (strip book_ prefix for matching)
   const agg = {};
-  TKEYS.forEach(k => agg[k] = { correct: 0, total: 0 });
+  tkeys.forEach(k => agg[k] = { correct: 0, total: 0 });
   Object.keys(stats).forEach(id => {
-    const dash  = id.lastIndexOf('-');
-    const topic = dash >= 0 ? id.substring(0, dash) : id;
+    const dash     = id.lastIndexOf('-');
+    const rawTopic = dash >= 0 ? id.substring(0, dash) : id;
+    const topic    = rawTopic.startsWith('book_') ? rawTopic.slice(5) : rawTopic;
     if (!agg[topic]) return;
     agg[topic].correct += (stats[id].correct || 0);
     agg[topic].total   += (stats[id].shown   || 0);
@@ -1508,8 +1536,8 @@ function renderDashHeatmap(stats) {
     return;
   }
 
-  el.innerHTML = TKEYS.map(k => {
-    const t   = TOPICS[k];
+  el.innerHTML = tkeys.map(k => {
+    const t   = topicDisplayInfo(k);
     const a   = agg[k];
     const pct = a.total ? Math.round((a.correct / a.total) * 100) : null;
     let bg, badge;
@@ -1550,8 +1578,11 @@ function renderDashHistory(history) {
     col.className   = 'hist-col';
     const barClass  = e.pct >= 80 ? 'bar-great' : e.pct >= 60 ? 'bar-good' : e.pct >= 40 ? 'bar-ok' : 'bar-low';
     const barPx     = Math.max(6, Math.round(e.pct * 1.48));
-    const modeIcon  = (!e.mode || e.mode === 'mixed') ? '🎲' : (TOPICS[e.mode]?.icon || '📝');
-    const modeTitle = (!e.mode || e.mode === 'mixed') ? 'Gemischte Runde' : (TOPICS[e.mode]?.de || e.mode);
+    const eMod      = e.module && EDITOR_MODULES[e.module];
+    const modeIcon  = (!e.mode || e.mode === 'mixed') ? '🎲'
+      : (TOPICS[e.mode]?.icon || eMod?.topicLabels?.[e.mode]?.match(/^\S+/)?.[0] || '📖');
+    const modeTitle = (!e.mode || e.mode === 'mixed') ? 'Gemischte Runde'
+      : (TOPICS[e.mode]?.de || eMod?.topicLabels?.[e.mode] || e.mode);
     col.innerHTML = `
       <div class="hist-pct">${e.pct}%</div>
       <div class="hist-bar ${barClass}" style="height:${barPx}px;"></div>
@@ -1564,7 +1595,8 @@ function renderDashHistory(history) {
 }
 
 // ③ Questions — per-topic accordion, sorted by wrong %
-function renderDashQuestions(stats) {
+function renderDashQuestions(stats, tkeys) {
+  tkeys = tkeys || TKEYS;
   const el = document.getElementById('dash-questions');
   if (!el) return;
   if (!Object.keys(stats).length) {
@@ -1573,12 +1605,18 @@ function renderDashQuestions(stats) {
     return;
   }
 
-  // Group by topic
+  // QB reference for readable question text
+  const activeQB = dashModuleFilter === 'book'
+    ? (typeof QB_BOOK !== 'undefined' ? QB_BOOK : {})
+    : (typeof QB     !== 'undefined' ? QB      : {});
+
+  // Group by topic (strip book_ prefix for matching)
   const byTopic = {};
-  TKEYS.forEach(k => byTopic[k] = []);
+  tkeys.forEach(k => byTopic[k] = []);
   Object.keys(stats).forEach(id => {
-    const dash  = id.lastIndexOf('-');
-    const topic = dash >= 0 ? id.substring(0, dash) : id;
+    const dash     = id.lastIndexOf('-');
+    const rawTopic = dash >= 0 ? id.substring(0, dash) : id;
+    const topic    = rawTopic.startsWith('book_') ? rawTopic.slice(5) : rawTopic;
     if (!byTopic[topic]) return;
     const s        = stats[id];
     const shown    = s.shown   || 0;
@@ -1588,17 +1626,17 @@ function renderDashQuestions(stats) {
     byTopic[topic].push({ id, shown, correct, wrong, wrongPct, lastSeen: s.lastSeen || '' });
   });
 
-  el.innerHTML = TKEYS.map((k, idx) => {
+  el.innerHTML = tkeys.map((k, idx) => {
     const rows = byTopic[k];
     if (!rows.length) return '';
     rows.sort((a, b) => b.wrongPct - a.wrongPct);
 
-    const t        = TOPICS[k];
+    const t        = topicDisplayInfo(k);
     const accordId = `dash-acc-${k}`;
     const tableRows = rows.map(r => {
       const isWeak = r.wrongPct > 50;
-      // Try to find readable question text from QB
-      const qObj  = (typeof QB !== 'undefined' && QB[k]) ? QB[k].find(q => q.id === r.id) : null;
+      // Try to find readable question text from active QB
+      const qObj  = activeQB[k] ? activeQB[k].find(q => q.id === r.id) : null;
       const rawTx = qObj
         ? (qObj.question || qObj.prompt || qObj.statement || r.id)
         : r.id;
@@ -2393,6 +2431,16 @@ function renderTopicPicker(moduleKey) {
 
   container.innerHTML = html;
   document.getElementById('topic-title').textContent = isBook ? 'Welches Kapitel?' : 'Welches Thema?';
+
+  // "Meine Ergebnisse" button for this module
+  container.insertAdjacentHTML('beforeend',
+    `<div style="width:100%;max-width:360px;margin:12px auto 0;display:flex;justify-content:center;">
+      <button class="btn btn-soft" style="width:100%;"
+        onclick="showHistoryForModule('${moduleKey}')">
+        ⭐ Meine Ergebnisse
+        <div class="it" style="font-size:0.75em;margin-top:2px">I miei risultati</div>
+      </button>
+    </div>`);
 }
 
 function showTopicSelect(mode) {
@@ -3298,12 +3346,35 @@ function saveScore(pct) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-function renderHistory() {
+function showHistoryForModule(moduleKey) {
+  if (!currentProfile) { showScreen('s-profiles'); return; }
+  renderHistory(moduleKey);
+  showScreen('s-history');
+}
+
+function renderHistory(moduleFilter) {
   if (!currentProfile) return;
   const key = `wq_${currentProfile.name}`;
-  document.getElementById('hist-profile').textContent =
-    `${currentProfile.avatar} ${currentProfile.name}`;
-  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  const profileEl = document.getElementById('hist-profile');
+  profileEl.textContent = `${currentProfile.avatar} ${currentProfile.name}`;
+
+  // Show module subtitle when filtered
+  let subEl = document.getElementById('hist-module-sub');
+  if (!subEl) {
+    subEl = document.createElement('div');
+    subEl.id = 'hist-module-sub';
+    subEl.style.cssText = 'font-size:0.8rem;color:var(--soft);margin-top:2px;';
+    profileEl.parentNode.insertBefore(subEl, profileEl.nextSibling);
+  }
+  if (moduleFilter && EDITOR_MODULES[moduleFilter]) {
+    const mod = EDITOR_MODULES[moduleFilter];
+    subEl.textContent = mod.icon + ' ' + mod.name;
+  } else {
+    subEl.textContent = '';
+  }
+
+  const allData = JSON.parse(localStorage.getItem(key) || '[]');
+  const data = moduleFilter ? allData.filter(e => e.module === moduleFilter) : allData;
   const bars = document.getElementById('hist-bars');
   if (!data.length) {
     bars.innerHTML = `<p style="color:var(--soft);font-size:0.85rem;font-style:italic;text-align:center;width:100%;">
@@ -3314,10 +3385,13 @@ function renderHistory() {
   data.slice(-5).forEach(e => {
     const col = document.createElement('div');
     col.className = 'hist-col';
-    const barClass   = e.pct >= 80 ? 'bar-great' : e.pct >= 60 ? 'bar-good' : e.pct >= 40 ? 'bar-ok' : 'bar-low';
-    const barPx      = Math.max(6, Math.round(e.pct * 1.48));
-    const modeIcon   = (!e.mode || e.mode === 'mixed') ? '🎲' : (TOPICS[e.mode]?.icon || '📝');
-    const modeTitle  = (!e.mode || e.mode === 'mixed') ? 'Gemischte Runde' : (TOPICS[e.mode]?.de || e.mode);
+    const barClass  = e.pct >= 80 ? 'bar-great' : e.pct >= 60 ? 'bar-good' : e.pct >= 40 ? 'bar-ok' : 'bar-low';
+    const barPx     = Math.max(6, Math.round(e.pct * 1.48));
+    const eMod      = e.module && EDITOR_MODULES[e.module];
+    const modeIcon  = (!e.mode || e.mode === 'mixed') ? '🎲'
+      : (TOPICS[e.mode]?.icon || eMod?.topicLabels?.[e.mode]?.match(/^\S+/)?.[0] || '📖');
+    const modeTitle = (!e.mode || e.mode === 'mixed') ? 'Gemischte Runde'
+      : (TOPICS[e.mode]?.de || eMod?.topicLabels?.[e.mode] || e.mode);
     col.innerHTML = `
       <div class="hist-pct">${e.pct}%</div>
       <div class="hist-bar ${barClass}" style="height:${barPx}px;"></div>
