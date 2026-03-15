@@ -2253,22 +2253,30 @@ function editorSaveTopicToStorage() {
   localStorage.setItem(mod.storageKey, JSON.stringify(stored));
 }
 
+// ── QB schema version — bump whenever built-in questions are added/changed ──
+const QB_SCHEMA_VERSION = '2026-03-15-v2';
+
 function editorLoadFromStorage() {
   if (typeof QB === 'undefined') return;
-  // Load stored questions for every active module
   Object.values(EDITOR_MODULES).forEach(mod => {
     if (!mod.active) return;
+    const versionKey = mod.storageKey + '_ver';
+    // If stored schema version is outdated, wipe stale data and stamp new version
+    if (localStorage.getItem(versionKey) !== QB_SCHEMA_VERSION) {
+      localStorage.removeItem(mod.storageKey);
+      localStorage.setItem(versionKey, QB_SCHEMA_VERSION);
+      return; // nothing to load — built-in questions are used as-is
+    }
     const stored = JSON.parse(localStorage.getItem(mod.storageKey) || '{}');
     const qb = mod.getQB();
     mod.tkeys.forEach(k => {
-      if (stored[k] && Array.isArray(stored[k])) {
-        // Only override built-in if stored has AT LEAST as many questions.
-        // This ensures code-side additions always win over stale cached data.
-        if (stored[k].length >= (qb[k] || []).length) qb[k] = stored[k];
+      // Only override built-in if stored has at least as many questions
+      if (stored[k] && Array.isArray(stored[k]) && stored[k].length >= (qb[k] || []).length) {
+        qb[k] = stored[k];
       }
     });
   });
-  assignQuestionIds();   // re-run to cover any IDs missing from stored questions
+  assignQuestionIds();
 }
 
 // ── JSON import / export ──────────────────────────
