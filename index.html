@@ -2261,7 +2261,11 @@ function editorLoadFromStorage() {
     const stored = JSON.parse(localStorage.getItem(mod.storageKey) || '{}');
     const qb = mod.getQB();
     mod.tkeys.forEach(k => {
-      if (stored[k] && Array.isArray(stored[k])) qb[k] = stored[k];
+      if (stored[k] && Array.isArray(stored[k])) {
+        // Only override built-in if stored has AT LEAST as many questions.
+        // This ensures code-side additions always win over stale cached data.
+        if (stored[k].length >= (qb[k] || []).length) qb[k] = stored[k];
+      }
     });
   });
   assignQuestionIds();   // re-run to cover any IDs missing from stored questions
