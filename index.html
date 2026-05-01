@@ -773,95 +773,8 @@
     <button class="grade-pill" id="pill-4" onclick="filterGrade(4,this)">Klasse 4</button>
   </div>
 
-  <!-- Module cards -->
-  <div class="modules-grid" id="modules-grid">
-
-    <!-- Water Cycle — active, grade 3 -->
-    <div class="module-card" style="--module-color:#0277BD;" data-grade="3" onclick="enterModule('water')">
-      <span class="module-icon">💧</span>
-      <div class="module-title">Der Wasserkreislauf
-        <div class="it" style="font-size:0.78em;">Il ciclo dell'acqua</div>
-      </div>
-      <div class="module-meta">
-        <span class="module-grade-tag">Klasse 3</span>
-        <span class="module-subject-tag">Sachunterricht</span>
-      </div>
-      <div class="module-progress" id="module-prog-water">
-        <div class="prog-dot"></div>
-        <div class="prog-dot"></div>
-        <div class="prog-dot"></div>
-        <div class="prog-dot"></div>
-        <div class="prog-dot"></div>
-      </div>
-      <button class="module-btn">Spielen! 🎮</button>
-    </div>
-
-    <!-- Book comprehension — Der Krokodildieb, grade 3 -->
-    <div class="module-card" style="--module-color:#FF7043;cursor:pointer;" data-grade="3"
-         onclick="enterModule('book')">
-      <span class="module-icon">📖</span>
-      <div class="module-title">Der Krokodildieb
-        <div class="it" style="font-size:0.78em;">Comprensione del testo</div>
-      </div>
-      <div class="module-meta">
-        <span class="module-grade-tag">Klasse 3</span>
-        <span class="module-subject-tag">Deutsch</span>
-      </div>
-      <div class="module-progress" id="module-prog-book">
-        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
-      </div>
-      <button class="module-btn" style="background:#FF7043;">Spielen! 📖</button>
-    </div>
-
-    <!-- Math — coming soon, grade 3 -->
-    <div class="module-card coming-soon" style="--module-color:#7B1FA2;" data-grade="3">
-      <span class="module-icon">➕</span>
-      <div class="module-title">Mathematik
-        <div class="it" style="font-size:0.78em;">Matematica</div>
-      </div>
-      <div class="module-meta">
-        <span class="module-grade-tag">Klasse 3</span>
-        <span class="module-subject-tag">Mathe</span>
-      </div>
-      <div class="module-progress">
-        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
-      </div>
-      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🔒 Kommt bald</button>
-    </div>
-
-    <!-- Grade 1 — first reader (coming soon, Marta) -->
-    <div class="module-card coming-soon" style="--module-color:#E91E63;" data-grade="1">
-      <span class="module-icon">🌸</span>
-      <div class="module-title">Mein erstes Lesebuch
-        <div class="it" style="font-size:0.78em;">Il mio primo libro</div>
-      </div>
-      <div class="module-meta">
-        <span class="module-grade-tag">Klasse 1</span>
-        <span class="module-subject-tag">Deutsch</span>
-      </div>
-      <div class="module-progress">
-        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
-      </div>
-      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🌸 Kommt bald, Marta!</button>
-    </div>
-
-    <!-- Grade 1 — math (coming soon, Marta) -->
-    <div class="module-card coming-soon" style="--module-color:#FF9800;" data-grade="1">
-      <span class="module-icon">🔢</span>
-      <div class="module-title">Rechnen macht Spaß!
-        <div class="it" style="font-size:0.78em;">Matematica divertente</div>
-      </div>
-      <div class="module-meta">
-        <span class="module-grade-tag">Klasse 1</span>
-        <span class="module-subject-tag">Mathe</span>
-      </div>
-      <div class="module-progress">
-        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
-      </div>
-      <button class="module-btn" style="background:#ccc;cursor:default;" disabled>🌸 Kommt bald, Marta!</button>
-    </div>
-
-  </div>
+  <!-- Module cards (rendered from EDITOR_MODULES registry by renderModuleCards()) -->
+  <div class="modules-grid" id="modules-grid"></div>
 
   <!-- Footer -->
   <div class="plat-footer">
@@ -1330,6 +1243,25 @@ let currentProfile  = null;    // { name, avatar, grade }
 let quizMode        = 'mixed'; // 'mixed' | topic key
 let currentModuleKey = 'water';
 
+// ── Safe localStorage helpers ───────────────────
+// Wrap JSON.parse so a single corrupt entry can never crash the app.
+// On parse failure: log once, drop the bad value, return the fallback.
+function safeLoad(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw === null || raw === '') return fallback;
+    return JSON.parse(raw);
+  } catch (err) {
+    console.warn(`[safeLoad] corrupt entry "${key}" — resetting to fallback`, err);
+    try { localStorage.removeItem(key); } catch {}
+    return fallback;
+  }
+}
+function safeSave(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); }
+  catch (err) { console.warn(`[safeSave] failed for "${key}"`, err); }
+}
+
 // ── Profile config ───────────────────────────────
 const PROFILES = {
   chiara: { name: 'Chiara', avatar: '🌺', grade: 3 },
@@ -1344,29 +1276,101 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
+// ── Module theme helpers ────────────────────────
+// Remove every theme-* class registered in EDITOR_MODULES, then optionally
+// apply the new module's themeClass. Used wherever we enter/leave a module
+// so theming never leaks between modules.
+function clearModuleTheme() {
+  Object.values(EDITOR_MODULES).forEach(m => {
+    if (m.themeClass) document.body.classList.remove(m.themeClass);
+  });
+}
+function applyModuleTheme(moduleKey) {
+  clearModuleTheme();
+  const m = EDITOR_MODULES[moduleKey];
+  if (m?.themeClass) document.body.classList.add(m.themeClass);
+}
+
+// ── Question-ID prefix helpers ──────────────────
+// Strip whichever module's idPrefix is on the front of a raw topic key,
+// so the dashboard can aggregate stats by bare topic name regardless of
+// which module the question came from.
+function stripModulePrefix(rawTopic) {
+  for (const m of Object.values(EDITOR_MODULES)) {
+    if (m.idPrefix && rawTopic.startsWith(m.idPrefix)) {
+      return rawTopic.slice(m.idPrefix.length);
+    }
+  }
+  return rawTopic;
+}
+
 function goHome() {
   if (!currentProfile) { showScreen('s-profiles'); return; }
-  // Non-water modules have their own home inside s-platform, not s-home
-  if (currentModuleKey !== 'water') {
+  const mod = EDITOR_MODULES[currentModuleKey];
+  // Modules without a dedicated intro screen land on the platform grid instead.
+  if (!mod?.hasIntroHome) {
     backToPlatform();
     return;
   }
-  swapMascot('water');
+  swapMascot(currentModuleKey);
+  applyModuleTheme(currentModuleKey);
   document.getElementById('home-name').textContent = currentProfile.name;
-  document.body.classList.add('theme-water');
   // Update hero score from history
   const key = `wq_${currentProfile.name}`;
-  const history = JSON.parse(localStorage.getItem(key) || '[]');
+  const history = safeLoad(key, []);
   const heroScore = document.getElementById('hero-score');
   if (heroScore) {
     if (history.length > 0) {
       const last = history[history.length - 1];
       heroScore.textContent = `⭐ Letztes Ergebnis: ${last.pct}%`;
     } else {
-      heroScore.textContent = 'Sachunterricht · Klasse 3';
+      heroScore.textContent = `${mod.subject || ''} · Klasse ${mod.grade}`;
     }
   }
   showScreen('s-home');
+}
+
+// ── Render module cards from registry ────────────
+// Builds the platform home grid entirely from EDITOR_MODULES so adding
+// a module is a single config change. Active modules are clickable;
+// coming-soon entries render disabled with their custom label.
+function renderModuleCards() {
+  const grid = document.getElementById('modules-grid');
+  if (!grid) return;
+  grid.innerHTML = Object.keys(EDITOR_MODULES).map(key => {
+    const m = EDITOR_MODULES[key];
+    const itName = m.nameIt
+      ? `<div class="it" style="font-size:0.78em;">${m.nameIt}</div>`
+      : '';
+    if (!m.active) {
+      return `
+        <div class="module-card coming-soon" style="--module-color:${m.color};" data-grade="${m.grade}">
+          <span class="module-icon">${m.icon}</span>
+          <div class="module-title">${m.name}${itName}</div>
+          <div class="module-meta">
+            <span class="module-grade-tag">Klasse ${m.grade}</span>
+            <span class="module-subject-tag">${m.subject || ''}</span>
+          </div>
+          <div class="module-progress">
+            <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+          </div>
+          <button class="module-btn" style="background:#ccc;cursor:default;" disabled>${m.comingSoonLabel || '🔒 Kommt bald'}</button>
+        </div>`;
+    }
+    return `
+      <div class="module-card" style="--module-color:${m.color};" data-grade="${m.grade}" onclick="enterModule('${key}')">
+        <span class="module-icon">${m.icon}</span>
+        <div class="module-title">${m.name}${itName}</div>
+        <div class="module-meta">
+          <span class="module-grade-tag">Klasse ${m.grade}</span>
+          <span class="module-subject-tag">${m.subject || ''}</span>
+        </div>
+        <div class="module-progress" id="module-prog-${key}">
+          <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+        </div>
+        <button class="module-btn" style="background:${m.color};">${m.playLabel || 'Spielen!'}</button>
+      </div>`;
+  }).join('');
 }
 
 // ── Navigate to platform home ────────────────────
@@ -1374,6 +1378,11 @@ function goToPlatform() {
   if (!currentProfile) { showScreen('s-profiles'); return; }
   document.getElementById('welcome-avatar').textContent = currentProfile.avatar;
   document.getElementById('welcome-name').textContent   = `Hallo, ${currentProfile.name}! 🌟`;
+
+  // Render module cards from the registry every time we enter the platform.
+  // This keeps the home page in sync if EDITOR_MODULES changes (e.g. a module
+  // becomes active) and ensures progress-dot containers exist for updateModuleProgress.
+  renderModuleCards();
 
   // Apply grade filter based on profile
   const grade = currentProfile.grade;
@@ -1388,7 +1397,7 @@ function goToPlatform() {
     filterGradeByValue('all');
   }
 
-  // Update water module progress dots from history
+  // Update progress dots for every active module
   updateModuleProgress();
 
   showScreen('s-platform');
@@ -1396,21 +1405,26 @@ function goToPlatform() {
 
 // ── Navigate back to platform from module ────────
 function backToPlatform() {
-  document.body.classList.remove('theme-water');
+  clearModuleTheme();
   showScreen('s-platform');
 }
 
 // ── Enter a module ───────────────────────────────
+// All module entry flows through here; behaviour is driven entirely by
+// the module's registry entry. Modules with hasIntroHome show their
+// dedicated s-home screen; everyone else goes straight to the topic picker.
 function enterModule(moduleId) {
-  if (moduleId === 'water') {
-    currentModuleKey = 'water';
-    swapMascot('water');
+  const mod = EDITOR_MODULES[moduleId];
+  if (!mod?.active) return;
+  currentModuleKey = moduleId;
+  swapMascot(moduleId);
+  applyModuleTheme(moduleId);
+
+  if (mod.hasIntroHome) {
     goHome();
   } else {
-    currentModuleKey = moduleId;
-    swapMascot(moduleId);
     document.getElementById('topic-back-btn').onclick = () => {
-      document.body.classList.remove('theme-water');
+      clearModuleTheme();
       showScreen('s-platform');
     };
     renderTopicPicker(moduleId);
@@ -1432,15 +1446,22 @@ function filterGradeByValue(grade) {
   });
 }
 
-// ── Update water module progress dots ────────────
+// ── Update module progress dots ──────────────────
+// For each active module, fill up to 5 dots based on the number of completed
+// rounds in that module's history. Each module uses its own accent color.
 function updateModuleProgress() {
   if (!currentProfile) return;
-  const key = `wq_${currentProfile.name}`;
-  const history = JSON.parse(localStorage.getItem(key) || '[]');
-  const dots = document.querySelectorAll('#module-prog-water .prog-dot');
-  const filled = Math.min(history.length, 5);
-  dots.forEach((dot, i) => {
-    dot.style.background = i < filled ? '#0277BD' : '#e0e0e0';
+  const history = safeLoad(`wq_${currentProfile.name}`, []);
+  Object.keys(EDITOR_MODULES).forEach(key => {
+    const m = EDITOR_MODULES[key];
+    if (!m.active) return;
+    const dots = document.querySelectorAll(`#module-prog-${key} .prog-dot`);
+    if (!dots.length) return;
+    const count = history.filter(h => h.module === key).length;
+    const filled = Math.min(count, 5);
+    dots.forEach((dot, i) => {
+      dot.style.background = i < filled ? m.color : '#e0e0e0';
+    });
   });
 }
 
@@ -1456,7 +1477,7 @@ let dashModuleFilter = null;  // null = all modules; 'water'/'book' = filtered
 
 function showDashboard(moduleFilter = null) {
   dashModuleFilter = moduleFilter;
-  document.body.classList.remove('theme-water');
+  clearModuleTheme();
   // Default to the tab matching the current profile
   dashProfile = Object.keys(PROFILES).find(
     k => PROFILES[k].name === (currentProfile?.name || 'Chiara')
@@ -1480,8 +1501,8 @@ function renderDashboard(profileKey) {
     }).join('');
   }
 
-  const stats      = JSON.parse(localStorage.getItem(`wq_stats_${name}`) || '{}');
-  const allHistory = JSON.parse(localStorage.getItem(`wq_${name}`)       || '[]');
+  const stats      = safeLoad(`wq_stats_${name}`, {});
+  const allHistory = safeLoad(`wq_${name}`,       []);
 
   const filteredHistory = dashModuleFilter
     ? allHistory.filter(s => s.module === dashModuleFilter)
@@ -1517,13 +1538,13 @@ function renderDashHeatmap(stats, tkeys) {
   const el = document.getElementById('dash-heatmap');
   if (!el) return;
 
-  // Aggregate stats per topic (strip book_ prefix for matching)
+  // Aggregate stats per topic (strip any module's idPrefix for matching)
   const agg = {};
   tkeys.forEach(k => agg[k] = { correct: 0, total: 0 });
   Object.keys(stats).forEach(id => {
     const dash     = id.lastIndexOf('-');
     const rawTopic = dash >= 0 ? id.substring(0, dash) : id;
-    const topic    = rawTopic.startsWith('book_') ? rawTopic.slice(5) : rawTopic;
+    const topic    = stripModulePrefix(rawTopic);
     if (!agg[topic]) return;
     agg[topic].correct += (stats[id].correct || 0);
     agg[topic].total   += (stats[id].shown   || 0);
@@ -1610,13 +1631,13 @@ function renderDashQuestions(stats, tkeys) {
     ? (typeof QB_BOOK !== 'undefined' ? QB_BOOK : {})
     : (typeof QB     !== 'undefined' ? QB      : {});
 
-  // Group by topic (strip book_ prefix for matching)
+  // Group by topic (strip any module's idPrefix for matching)
   const byTopic = {};
   tkeys.forEach(k => byTopic[k] = []);
   Object.keys(stats).forEach(id => {
     const dash     = id.lastIndexOf('-');
     const rawTopic = dash >= 0 ? id.substring(0, dash) : id;
-    const topic    = rawTopic.startsWith('book_') ? rawTopic.slice(5) : rawTopic;
+    const topic    = stripModulePrefix(rawTopic);
     if (!byTopic[topic]) return;
     const s        = stats[id];
     const shown    = s.shown   || 0;
@@ -1681,17 +1702,41 @@ function toggleDashAccordion(id) {
   if (icon) icon.textContent = isOpen ? '▼' : '▲';
 }
 
-// ── Phase 9: In-app Question Editor ──────────────
-
-// Module registry — add new modules here when content arrives
-// getQB uses a lazy getter so QB (Phase 2) doesn't need to be defined yet
+// ── Module Registry ───────────────────────────────
+// Single source of truth for every learning module.
+// To add a new module: append an entry here. The platform home cards,
+// editor tabs, themes, mascots, and results screens all derive from this.
+//
+// Required fields:
+//   name, icon, grade, active                — core identity
+//   subject, subjectIt                       — tag shown on the card (e.g. "Sachunterricht")
+//   color                                    — accent color (top stripe + button + theme tint)
+//   themeClass                               — CSS body class (e.g. "theme-water"); '' = no theme
+//   successTitle, successTitleIt             — results-screen winner title
+//   playLabel                                — call-to-action button text
+//   showDroplets                             — true to render water-droplet topic feedback
+//   tkeys, topicLabels, getQB, storageKey    — question bank wiring (active modules only)
+//
+// Inactive (coming-soon) modules need only: name, icon, grade, subject, color,
+// active:false, comingSoonLabel.
 const EDITOR_MODULES = {
   water: {
-    name:        'Wasserkreislauf',
-    icon:        '💧',
-    grade:       3,
-    active:      true,
-    tkeys:       ['wissenswertes','teilchen','formen','kreislauf','niederschlag','sparen'],
+    name:           'Wasserkreislauf',
+    nameIt:         "Il ciclo dell'acqua",
+    icon:           '💧',
+    grade:          3,
+    subject:        'Sachunterricht',
+    subjectIt:      'Scienze',
+    active:         true,
+    color:          '#0277BD',
+    themeClass:     'theme-water',
+    successTitle:   'Wasser-Expertin',
+    successTitleIt: "esperta dell'acqua",
+    playLabel:      'Spielen! 🎮',
+    showDroplets:   true,
+    hasIntroHome:   true,        // shows the Tropfi-mascot s-home screen before topic picker
+    idPrefix:       '',          // legacy: water IDs are bare ("formen-3"); preserve for stats compatibility
+    tkeys:          ['wissenswertes','teilchen','formen','kreislauf','niederschlag','sparen'],
     topicLabels: {
       wissenswertes: '🌍 Wissenswertes über Wasser',
       teilchen:      '🔬 Wasserteilchen',
@@ -1704,14 +1749,24 @@ const EDITOR_MODULES = {
     storageKey:  'wq_editor_QB',
   },
   book: {
-    name:        'Der Krokodildieb',
-    icon:        '📖',
-    grade:       3,
-    active:      true,
-    tkeys:       ['kap01','kap02','kap03','kap04','kap05','kap06','kap07','kap08',
-                  'kap09','kap10','kap11','kap12','kap13','kap14','kap15','kap16',
-                  'kap17','kap18','kap19','kap20','kap21',
-                  'personen','handlung','tierwissen'],
+    name:           'Der Krokodildieb',
+    nameIt:         'Comprensione del testo',
+    icon:           '📖',
+    grade:          3,
+    subject:        'Deutsch',
+    subjectIt:      'Tedesco',
+    active:         true,
+    color:          '#FF7043',
+    themeClass:     '',          // no dedicated theme yet — uses platform default
+    successTitle:   'Buch-Expertin',
+    successTitleIt: 'esperta del libro',
+    playLabel:      'Spielen! 📖',
+    showDroplets:   false,
+    idPrefix:       'book_',     // existing bank uses "book_kap01-0" style IDs
+    tkeys:          ['kap01','kap02','kap03','kap04','kap05','kap06','kap07','kap08',
+                     'kap09','kap10','kap11','kap12','kap13','kap14','kap15','kap16',
+                     'kap17','kap18','kap19','kap20','kap21',
+                     'personen','handlung','tierwissen'],
     topicLabels: {
       kap01:'📖 Kapitel 1',  kap02:'📖 Kapitel 2',  kap03:'📖 Kapitel 3',
       kap04:'📖 Kapitel 4',  kap05:'📖 Kapitel 5',  kap06:'📖 Kapitel 6',
@@ -1727,7 +1782,40 @@ const EDITOR_MODULES = {
     getQB:      () => typeof QB_BOOK !== 'undefined' ? QB_BOOK : {},
     storageKey: 'wq_editor_QB_book',
   },
-  // math: { name:'Mathematik', icon:'🔢', grade:3, active:false, tkeys:[], ... },
+  // ── Coming-soon placeholders (no question bank yet) ──
+  math3: {
+    name:           'Mathematik',
+    nameIt:         'Matematica',
+    icon:           '➕',
+    grade:          3,
+    subject:        'Mathe',
+    subjectIt:      'Matematica',
+    active:         false,
+    color:          '#7B1FA2',
+    comingSoonLabel:'🔒 Kommt bald',
+  },
+  reader1: {
+    name:           'Mein erstes Lesebuch',
+    nameIt:         'Il mio primo libro',
+    icon:           '🌸',
+    grade:          1,
+    subject:        'Deutsch',
+    subjectIt:      'Tedesco',
+    active:         false,
+    color:          '#E91E63',
+    comingSoonLabel:'🌸 Kommt bald, Marta!',
+  },
+  math1: {
+    name:           'Rechnen macht Spaß!',
+    nameIt:         'Matematica divertente',
+    icon:           '🔢',
+    grade:          1,
+    subject:        'Mathe',
+    subjectIt:      'Matematica',
+    active:         false,
+    color:          '#FF9800',
+    comingSoonLabel:'🌸 Kommt bald, Marta!',
+  },
 };
 
 let editorModuleKey = 'water';
@@ -1742,16 +1830,13 @@ function editorGetModuleQB() {
 }
 
 // ── Render module selector tabs ───────────────────
+// Only active modules get tabs — coming-soon entries have no question bank
+// to edit, so showing them here would just be noise.
 function editorRenderModuleTabs() {
   const el = document.getElementById('editor-module-tabs');
   if (!el) return;
-  el.innerHTML = Object.keys(EDITOR_MODULES).map(k => {
+  el.innerHTML = Object.keys(EDITOR_MODULES).filter(k => EDITOR_MODULES[k].active).map(k => {
     const m = EDITOR_MODULES[k];
-    if (!m.active) {
-      return `<button class="editor-tab" style="opacity:0.45;cursor:not-allowed;font-size:0.78rem;" disabled>
-        ${m.icon} ${m.name}<br><span style="font-weight:700;font-size:0.65rem;">Kommt bald</span>
-      </button>`;
-    }
     return `<button class="editor-tab${k === editorModuleKey ? ' active' : ''}"
       onclick="editorLoadModule('${k}')">${m.icon} ${m.name}</button>`;
   }).join('');
@@ -1783,7 +1868,7 @@ function editorPopulateTopicDropdown() {
 }
 
 function showEditor() {
-  document.body.classList.remove('theme-water');
+  clearModuleTheme();
   editorLoadModule(editorModuleKey || 'water');
   showScreen('s-editor');
 }
@@ -2248,9 +2333,9 @@ function editorSaveQuestion() {
 function editorSaveTopicToStorage() {
   const mod = EDITOR_MODULES[editorModuleKey];
   if (!mod) return;
-  const stored = JSON.parse(localStorage.getItem(mod.storageKey) || '{}');
+  const stored = safeLoad(mod.storageKey, {});
   stored[editorTopicKey] = editorGetModuleQB()[editorTopicKey] || [];
-  localStorage.setItem(mod.storageKey, JSON.stringify(stored));
+  safeSave(mod.storageKey, stored);
 }
 
 // ── QB schema version — bump whenever built-in questions are added/changed ──
@@ -2267,7 +2352,7 @@ function editorLoadFromStorage() {
       localStorage.setItem(versionKey, QB_SCHEMA_VERSION);
       return; // nothing to load — built-in questions are used as-is
     }
-    const stored = JSON.parse(localStorage.getItem(mod.storageKey) || '{}');
+    const stored = safeLoad(mod.storageKey, {});
     const qb = mod.getQB();
     mod.tkeys.forEach(k => {
       // Only override built-in if stored has at least as many questions
@@ -2586,7 +2671,7 @@ function renderHistory() {
   const profile = currentProfile?.name || 'Chiara';
   document.getElementById('hist-profile').textContent = profile;
   const key = `wq_${profile}`;
-  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  const data = safeLoad(key, []);
   const container = document.getElementById('hist-bars');
   if (!data.length) {
     container.innerHTML = `<p style="color:var(--soft);font-size:0.85rem;font-style:italic;text-align:center;width:100%;">
@@ -3240,8 +3325,9 @@ function nextQuestion() {
 // ── Results screen ────────────────────────────────
 function showResults() {
   const activeTKEYS = getActiveTKEYS();
-  const isWater = (currentModuleKey === 'water');
-  document.getElementById('results-drops').style.display = isWater ? '' : 'none';
+  const mod = EDITOR_MODULES[currentModuleKey];
+  const showDroplets = !!mod?.showDroplets;
+  document.getElementById('results-drops').style.display = showDroplets ? '' : 'none';
 
   const weak = [];
   activeTKEYS.forEach(k => {
@@ -3249,7 +3335,7 @@ function showResults() {
     if (!pts) return;
     const { pts: p, max } = pts;
     const pct = max > 0 ? p / max : -1;
-    if (isWater) fillDroplets(k, pct < 0 ? -1 : Math.round(pct * 5));
+    if (showDroplets) fillDroplets(k, pct < 0 ? -1 : Math.round(pct * 5));
     if (pct >= 0 && pct < 0.7) weak.push(k);
   });
   QS.weakTopics = weak;
@@ -3258,8 +3344,11 @@ function showResults() {
   const totalMax = activeTKEYS.reduce((a, k) => a + (QS.topicPts[k]?.max || 0), 0);
   const pct = totalMax > 0 ? Math.round(totalPts / totalMax * 100) : 0;
 
+  // Top-tier success message uses the module's own "expert" title.
+  const successDe = mod?.successTitle   ? `Du bist eine ${mod.successTitle}! 🏆` : 'Super gemacht! 🏆';
+  const successIt = mod?.successTitleIt ? `Sei una vera ${mod.successTitleIt}!` : 'Bravissima!';
   const msgs = [
-    ['Du bist eine Wasser-Expertin! 🏆',    'Sei una vera esperta dell\'acqua!'],
+    [successDe, successIt],
     ['Sehr gut! Noch ein bisschen üben! 💪', 'Molto bene! Ancora un po\'!'],
     ['Gut gemacht! Weiter so! 🌟',           'Ben fatto! Continua così!'],
     ['Fast da! Üben macht den Meister! 🌈',  'Quasi! La pratica rende perfetti!'],
@@ -3345,7 +3434,7 @@ function retryWeak() {
 function saveScore(pct) {
   if (!currentProfile) return;
   const key = `wq_${currentProfile.name}`;
-  const data = JSON.parse(localStorage.getItem(key) || '[]');
+  const data = safeLoad(key, []);
   data.push({
     date:   new Date().toLocaleDateString('de-DE'),
     time:   new Date().toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'}),
@@ -3355,7 +3444,7 @@ function saveScore(pct) {
     topics: Object.fromEntries(getActiveTKEYS().map(k => [k, {...QS.topicPts[k]}]))
   });
   if (data.length > 10) data.shift();
-  localStorage.setItem(key, JSON.stringify(data));
+  safeSave(key, data);
 }
 
 function showHistoryForModule(moduleKey) {
@@ -3385,7 +3474,7 @@ function renderHistory(moduleFilter) {
     subEl.textContent = '';
   }
 
-  const allData = JSON.parse(localStorage.getItem(key) || '[]');
+  const allData = safeLoad(key, []);
   const data = moduleFilter ? allData.filter(e => e.module === moduleFilter) : allData;
   const bars = document.getElementById('hist-bars');
   if (!data.length) {
@@ -3440,39 +3529,43 @@ function clearHistory() {
 }
 
 // ── Question ID assignment (called after QB is fully populated) ──
+// Iterates every active module's question bank and stamps each question
+// with a stable ID. The ID prefix comes from the module's registry entry
+// (defaulting to "<moduleKey>_") — water uses idPrefix:'' to preserve its
+// legacy bare IDs so existing per-question stats keep working.
 function assignQuestionIds() {
-  TKEYS.forEach(k => {
-    QB[k].forEach((q, i) => {
-      if (!q.id) q.id = `${k}-${i}`;
-    });
-  });
-  if (typeof QB_BOOK !== 'undefined') {
-    Object.keys(QB_BOOK).forEach(topic => {
-      QB_BOOK[topic].forEach((q, i) => {
-        if (!q.id) q.id = `book_${topic}-${i}`;
+  Object.keys(EDITOR_MODULES).forEach(modKey => {
+    const mod = EDITOR_MODULES[modKey];
+    if (!mod.active) return;
+    const qb = mod.getQB();
+    if (!qb) return;
+    const prefix = mod.idPrefix !== undefined ? mod.idPrefix : `${modKey}_`;
+    Object.keys(qb).forEach(topic => {
+      (qb[topic] || []).forEach((q, i) => {
+        if (!q.id) q.id = `${prefix}${topic}-${i}`;
       });
     });
-  }
+  });
 }
 
 // ── Deck helpers (per-profile, per-mode seen-question tracking) ──
 function loadDeck() {
   if (!currentProfile) return {};
-  return JSON.parse(localStorage.getItem(`wq_deck_${currentProfile.name}`) || '{}');
+  return safeLoad(`wq_deck_${currentProfile.name}`, {});
 }
 function saveDeck(deck) {
   if (!currentProfile) return;
-  localStorage.setItem(`wq_deck_${currentProfile.name}`, JSON.stringify(deck));
+  safeSave(`wq_deck_${currentProfile.name}`, deck);
 }
 
 // ── Per-question stats helpers ───────────────────
 function loadStats() {
   if (!currentProfile) return {};
-  return JSON.parse(localStorage.getItem(`wq_stats_${currentProfile.name}`) || '{}');
+  return safeLoad(`wq_stats_${currentProfile.name}`, {});
 }
 function saveStats(stats) {
   if (!currentProfile) return;
-  localStorage.setItem(`wq_stats_${currentProfile.name}`, JSON.stringify(stats));
+  safeSave(`wq_stats_${currentProfile.name}`, stats);
 }
 </script>
 
