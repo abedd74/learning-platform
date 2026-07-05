@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦉 Der-Die-Das Trainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg1: #b2dfdb; --bg2: #d9f2ef; --bg3: #f0faf9;
+  --prime: #00796B; --mid: #26A69A; --light: #d3efec;
+  --text: #0e3f39; --soft: #4f7f79;
+  --card: rgba(255,255,255,0.95);
+  --r: 18px;
+  --shadow: 0 4px 20px rgba(0,121,107,0.16);
+  --green: #66BB6A; --coral: #FF7043; --gold: #FFB300;
+  /* Genus-Farben (wie in der Schule): der=blau, die=rot, das=grün */
+  --c-der: #1E88E5; --c-die: #E53935; --c-das: #43A047;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+  min-height: 100vh; color: var(--text);
+}
+
+.screen { display: none; max-width: 520px; margin: 0 auto; padding: 18px 16px 40px; }
+.screen.active { display: block; }
+
+h1 { font-size: 1.5rem; font-weight: 900; text-align: center; }
+h2 { font-size: 1.15rem; font-weight: 800; }
+
+.card {
+  background: var(--card); border-radius: var(--r);
+  box-shadow: var(--shadow); padding: 18px; margin: 12px 0;
+}
+
+button { font-family: inherit; border: none; cursor: pointer; }
+
+.btn {
+  display: block; width: 100%; padding: 15px; margin: 10px 0;
+  border-radius: var(--r); font-size: 1.05rem; font-weight: 800;
+  background: var(--prime); color: #fff; box-shadow: var(--shadow);
+  transition: transform .12s;
+}
+.btn:active { transform: scale(0.97); }
+.btn.secondary { background: #fff; color: var(--prime); border: 2.5px solid var(--mid); box-shadow: none; }
+.btn.locked { background: #b7c4c2; cursor: default; }
+.btn:disabled { opacity: .6; cursor: default; }
+
+.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.backlink {
+  text-decoration: none; color: var(--soft); font-weight: 800; font-size: 0.9rem;
+  background: var(--card); padding: 8px 13px; border-radius: 999px; box-shadow: var(--shadow);
+}
+.it-toggle {
+  background: var(--card); border-radius: 999px; padding: 8px 13px;
+  font-size: 0.95rem; font-weight: 800; box-shadow: var(--shadow); color: var(--soft);
+  opacity: .55;
+}
+.it-toggle.on { opacity: 1; outline: 2.5px solid var(--gold); }
+
+/* Italian additive text — never replaces German */
+.it { color: #8a7f56; font-style: italic; font-weight: 600; display: none; }
+body.show-it .it { display: block; }
+body.show-it .it.inline { display: inline; }
+
+.mascot { font-size: 3.2rem; text-align: center; }
+.mascot-line {
+  background: var(--light); border-radius: 14px; padding: 10px 14px;
+  font-weight: 700; text-align: center; margin-top: 8px; font-size: 0.98rem;
+}
+
+/* ── Home stats ── */
+.stat-row { display: flex; gap: 10px; }
+.stat-box {
+  flex: 1; background: var(--card); border-radius: var(--r); box-shadow: var(--shadow);
+  padding: 12px 8px; text-align: center;
+}
+.stat-num { font-size: 1.5rem; font-weight: 900; color: var(--prime); }
+.stat-lbl { font-size: 0.72rem; font-weight: 700; color: var(--soft); }
+
+.goalbar-wrap { background: #e2ecea; border-radius: 999px; height: 14px; overflow: hidden; margin-top: 8px; }
+.goalbar { background: linear-gradient(90deg, var(--mid), var(--prime)); height: 100%; width: 0%; border-radius: 999px; transition: width .5s; }
+
+/* ── Quiz ── */
+.q-progress { display: flex; gap: 5px; margin-bottom: 14px; }
+.q-dot { flex: 1; height: 7px; border-radius: 4px; background: #d5e4e2; }
+.q-dot.done { background: var(--mid); }
+.q-dot.now { background: var(--gold); }
+
+.q-emoji { font-size: 4rem; text-align: center; margin: 6px 0; }
+.q-word { font-size: 2rem; font-weight: 900; text-align: center; letter-spacing: 0.5px; }
+.q-sentence { font-size: 1.35rem; font-weight: 800; text-align: center; line-height: 1.5; margin: 10px 0; }
+.q-sentence .gap {
+  display: inline-block; min-width: 68px; border-bottom: 3px solid var(--mid);
+  color: var(--prime); font-weight: 900; text-align: center;
+}
+.q-hint-cat { text-align: center; color: var(--soft); font-size: .85rem; font-weight: 700; }
+
+.answers { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.ans {
+  flex: 1 1 28%; padding: 16px 6px; border-radius: var(--r); font-size: 1.25rem; font-weight: 900;
+  background: #fff; border: 3px solid #d5e4e2; color: var(--text);
+  transition: transform .1s;
+}
+.ans:active { transform: scale(0.95); }
+.ans.small { font-size: 1.05rem; padding: 13px 4px; flex: 1 1 17%; }
+.ans.correct { background: var(--green); border-color: var(--green); color: #fff; animation: pop .4s; }
+.ans.wrong { background: var(--coral); border-color: var(--coral); color: #fff; animation: shake .4s; }
+.ans.der { border-color: var(--c-der); color: var(--c-der); }
+.ans.die { border-color: var(--c-die); color: var(--c-die); }
+.ans.das { border-color: var(--c-das); color: var(--c-das); }
+.ans.der.correct, .ans.die.correct, .ans.das.correct { background: var(--green); color:#fff; border-color: var(--green); }
+.ans.der.wrong, .ans.die.wrong, .ans.das.wrong { background: var(--coral); color:#fff; border-color: var(--coral); }
+
+@keyframes pop   { 50% { transform: scale(1.12); } }
+@keyframes shake { 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
+
+.typebox { display: flex; gap: 8px; margin-top: 18px; }
+.typebox input {
+  flex: 1; padding: 14px; font-family: inherit; font-size: 1.2rem; font-weight: 800;
+  border: 3px solid var(--mid); border-radius: var(--r); text-align: center; color: var(--text);
+  background: #fff; outline: none;
+}
+.typebox button { padding: 14px 20px; border-radius: var(--r); background: var(--prime); color:#fff; font-size:1.1rem; font-weight:900; }
+
+.feedback {
+  margin-top: 14px; padding: 13px; border-radius: 14px; font-weight: 700;
+  font-size: 0.98rem; display: none; line-height: 1.45;
+}
+.feedback.show { display: block; }
+.feedback.good { background: #e4f6e5; color: #1B5E20; }
+.feedback.hint { background: #FFF3E0; color: #B45309; }
+.feedback.bad  { background: #fdeae3; color: #B3401F; }
+.feedback .it  { margin-top: 6px; font-size: 0.9rem; }
+
+.solution {
+  text-align: center; font-size: 1.35rem; font-weight: 900; margin-top: 10px; display: none;
+}
+.solution.show { display: block; }
+.solution .art-der { color: var(--c-der); }
+.solution .art-die { color: var(--c-die); }
+.solution .art-das { color: var(--c-das); }
+.solution .plural { display: block; font-size: 0.9rem; color: var(--soft); font-weight: 700; }
+
+.next-btn { margin-top: 14px; display: none; }
+.next-btn.show { display: block; }
+
+/* ── Schatzkiste / progress ── */
+.chest-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+.chest-lbl { width: 110px; font-weight: 800; font-size: 0.9rem; }
+.chest-bar-wrap { flex: 1; background: #e2ecea; border-radius: 999px; height: 16px; overflow: hidden; }
+.chest-bar { height: 100%; border-radius: 999px; transition: width .5s; }
+.chest-num { width: 36px; text-align: right; font-weight: 900; color: var(--prime); }
+
+.trap-list { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.trap-chip {
+  background: #fff; border: 2px solid var(--coral); border-radius: 999px;
+  padding: 5px 11px; font-weight: 800; font-size: 0.85rem;
+}
+
+/* ── Result ── */
+.result-big { font-size: 3rem; text-align: center; }
+.result-score { font-size: 1.6rem; font-weight: 900; text-align: center; color: var(--prime); }
+
+.profil-btn {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  background: var(--card); border-radius: var(--r); box-shadow: var(--shadow);
+  padding: 16px; margin: 10px 0; font-size: 1.1rem; font-weight: 800; color: var(--text);
+}
+.profil-btn span.av { font-size: 2rem; }
+
+.lock-note { text-align:center; font-size:.8rem; color:var(--soft); font-weight:700; margin-top:-4px; }
+
+/* ── Wochen-Streifen (letzte 7 Tage) ── */
+.week-strip { display: flex; justify-content: space-between; gap: 6px; }
+.wday { flex: 1; text-align: center; }
+.wday .circ {
+  width: 34px; height: 34px; border-radius: 50%; margin: 0 auto 4px;
+  display: flex; align-items: center; justify-content: center;
+  background: #e2ecea; font-size: 1rem; border: 2.5px solid transparent;
+}
+.wday.today .circ { border-color: var(--prime); }
+.wday.met .circ    { background: var(--green); }
+.wday.part .circ   { background: #ffe9b3; }
+.wday .lbl { font-size: .68rem; font-weight: 800; color: var(--soft); }
+
+/* ── Abzeichen ── */
+.badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.badge { text-align: center; }
+.badge .b-em {
+  font-size: 1.9rem; width: 54px; height: 54px; margin: 0 auto 4px;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; border-radius: 50%; border: 3px solid var(--gold);
+  box-shadow: 0 2px 8px rgba(255,179,0,.25);
+}
+.badge.locked .b-em { filter: grayscale(1) opacity(.35); border-color: #d5e4e2; box-shadow: none; }
+.badge .b-lbl { font-size: .62rem; font-weight: 800; color: var(--soft); line-height: 1.25; }
+
+/* ── Fortschritts-Diagramm ── */
+.chart-wrap { display: flex; align-items: flex-end; gap: 4px; height: 110px; margin-top: 10px; }
+.chart-bar {
+  flex: 1; background: linear-gradient(180deg, var(--mid), var(--prime));
+  border-radius: 5px 5px 0 0; min-height: 3px; position: relative;
+}
+.chart-bar .cb-val {
+  position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+  font-size: .62rem; font-weight: 900; color: var(--prime);
+}
+.chart-lbls { display: flex; justify-content: space-between; font-size: .65rem; font-weight: 700; color: var(--soft); margin-top: 4px; }
+
+/* ── Runden-Rückblick ── */
+.recap-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.recap-chip {
+  border-radius: 999px; padding: 6px 12px; font-weight: 800; font-size: .85rem;
+  background: #e4f6e5; border: 2px solid var(--green);
+}
+.recap-chip.retry { background: #FFF3E0; border-color: var(--gold); }
+.recap-chip.wrong { background: #fdeae3; border-color: var(--coral); }
+
+/* ── Eltern-Cockpit ── */
+.el-tabs { display:flex; gap:8px; margin:10px 0; }
+.el-tab {
+  flex:1; padding:10px; border-radius:999px; font-weight:800; font-size:.95rem;
+  background:#fff; border:2.5px solid var(--mid); color:var(--prime);
+}
+.el-tab.active { background:var(--prime); border-color:var(--prime); color:#fff; }
+.el-pills { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; }
+.el-pill {
+  padding:6px 11px; border-radius:999px; font-weight:800; font-size:.78rem;
+  background:#fff; border:2px solid #d5e4e2; color:var(--soft);
+}
+.el-pill.active { border-color:var(--prime); color:var(--prime); background:var(--light); }
+.el-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.el-table th {
+  text-align:left; font-size:.72rem; color:var(--soft); font-weight:800;
+  padding:6px 4px; border-bottom:2px solid #d5e4e2; position:sticky; top:0; background:var(--card);
+}
+.el-table td { padding:7px 4px; border-bottom:1px solid #e8f0ef; font-weight:700; }
+.el-status { font-size:.75rem; font-weight:800; white-space:nowrap; }
+.el-case-row { margin:10px 0; }
+.el-case-bar-wrap { background:#e2ecea; border-radius:999px; height:14px; overflow:hidden; margin-top:4px; }
+.el-case-bar { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--mid),var(--prime)); }
+.el-err { display:flex; gap:8px; margin-top:6px; font-size:.78rem; font-weight:700; color:var(--soft); flex-wrap:wrap; }
+.el-err span { background:#fff; border:2px solid #e2ecea; border-radius:999px; padding:3px 9px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ Profil wählen ══════════ -->
+<div class="screen" id="s-profil">
+  <h1 style="margin:24px 0 4px;">🦉 Der-Die-Das Trainer</h1>
+  <p class="it" style="text-align:center;">Allenatore di articoli e casi tedeschi</p>
+  <p style="text-align:center; font-weight:700; color:var(--soft); margin:10px 0 20px;">Wer übt heute?</p>
+  <div id="profil-list"></div>
+</div>
+
+<!-- ══════════ Home ══════════ -->
+<div class="screen" id="s-home">
+  <div class="topbar">
+    <a class="backlink" href="index.html">← Alle Themen</a>
+    <button class="it-toggle" id="it-toggle" onclick="toggleIt()">🇮🇹</button>
+  </div>
+
+  <div class="mascot">🦉</div>
+  <h1 id="home-greet">Hallo!</h1>
+  <div class="mascot-line" id="home-line">Ich bin Ella die Eule. Zusammen lernen wir der, die und das!</div>
+  <p class="it" style="text-align:center; margin-top:4px;">Sono Ella la civetta. Insieme impariamo gli articoli tedeschi!</p>
+
+  <div class="stat-row" style="margin-top:16px;">
+    <div class="stat-box"><div class="stat-num" id="stat-streak">0</div><div class="stat-lbl">🔥 Tage in Folge<span class="it">giorni di fila</span></div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-mastered">0</div><div class="stat-lbl">💎 Gemeisterte Wörter<span class="it">parole conquistate</span></div></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; font-weight:800; font-size:0.9rem;">
+      <span>Tagesziel <span class="it inline">obiettivo di oggi</span></span>
+      <span id="goal-num">0 / 20</span>
+    </div>
+    <div class="goalbar-wrap"><div class="goalbar" id="goalbar"></div></div>
+    <div class="week-strip" id="week-strip" style="margin-top:14px;"></div>
+  </div>
+
+  <button class="btn" id="btn-daily" onclick="startSession('mixed')">🎯 Tägliches Training</button>
+  <button class="btn secondary" onclick="startSession('gender')">🔤 Der-Die-Das üben</button>
+  <button class="btn secondary" id="btn-akk" onclick="startSession('akk')">✍️ Sätze üben (Akkusativ)</button>
+  <div class="lock-note" id="note-akk"></div>
+  <button class="btn secondary" id="btn-dat" onclick="startSession('dat')">✉️ Sätze üben (Dativ)</button>
+  <div class="lock-note" id="note-dat"></div>
+  <button class="btn secondary" onclick="showProgress()">💎 Meine Schatzkiste</button>
+  <button class="btn secondary" onclick="showEltern()">📊 Für Eltern <span class="it inline">per i genitori</span></button>
+  <button class="btn secondary" style="border-style:dashed;" onclick="switchProfile()">👤 Profil wechseln</button>
+</div>
+
+<!-- ══════════ Quiz ══════════ -->
+<div class="screen" id="s-quiz">
+  <div class="topbar">
+    <button class="backlink" style="border:none;" onclick="quitSession()">✕ Beenden</button>
+    <button class="it-toggle" id="it-toggle-2" onclick="toggleIt()">🇮🇹</button>
+  </div>
+  <div class="q-progress" id="q-progress"></div>
+
+  <div class="card">
+    <div class="q-emoji" id="q-emoji"></div>
+    <div class="q-word" id="q-word"></div>
+    <div class="q-sentence" id="q-sentence" style="display:none;"></div>
+    <div class="q-hint-cat" id="q-task"></div>
+    <div class="answers" id="answers"></div>
+    <div class="typebox" id="typebox" style="display:none;">
+      <input id="type-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="der / die / das">
+      <button onclick="submitTyped()">OK</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="solution" id="solution"></div>
+    <button class="btn next-btn" id="next-btn" onclick="nextQuestion()">Weiter →</button>
+  </div>
+</div>
+
+<!-- ══════════ Ergebnis ══════════ -->
+<div class="screen" id="s-result">
+  <div class="result-big" id="result-emoji">🎉</div>
+  <h1 id="result-title">Super gemacht!</h1>
+  <div class="result-score" id="result-score"></div>
+  <div class="card" id="result-detail"></div>
+  <button class="btn" onclick="startSession(lastSessionType)">Nochmal üben! 🔁</button>
+  <button class="btn secondary" onclick="goHome()">🏠 Fertig für jetzt</button>
+</div>
+
+<!-- ══════════ Eltern-Cockpit ══════════ -->
+<div class="screen" id="s-eltern">
+  <div class="topbar">
+    <button class="backlink" style="border:none;" onclick="goHome()">← Zurück</button>
+    <button class="it-toggle" id="it-toggle-4" onclick="toggleIt()">🇮🇹</button>
+  </div>
+  <h1>📊 Eltern-Cockpit</h1>
+  <p class="it" style="text-align:center;">Pannello per i genitori — tutti i dettagli sull'apprendimento</p>
+  <div class="el-tabs" id="el-tabs"></div>
+  <div class="card" id="el-sync">
+    <h2 style="margin-bottom:6px;">☁️ Synchronisation & Backup</h2>
+    <div id="el-sync-status" style="font-weight:700; font-size:.9rem; margin-bottom:10px;"></div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn secondary" style="margin:0; padding:10px; font-size:.9rem;" onclick="FamilySync.exportAll()">💾 Backup speichern</button>
+      <button class="btn secondary" style="margin:0; padding:10px; font-size:.9rem;" onclick="document.getElementById('el-import-file').click()">📂 Backup laden</button>
+      <input type="file" id="el-import-file" accept=".json,application/json" style="display:none;" onchange="elImportBackup(this)">
+    </div>
+  </div>
+  <div class="card" id="el-summary"></div>
+  <div class="card" id="el-case"></div>
+  <div class="card">
+    <h2 style="margin-bottom:4px;">Alle Wörter im Detail</h2>
+    <div class="el-pills" id="el-status-pills"></div>
+    <div class="el-pills" id="el-cat-pills"></div>
+    <div style="max-height:420px; overflow-y:auto;">
+      <table class="el-table" id="el-table"></table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ Schatzkiste ══════════ -->
+<div class="screen" id="s-progress">
+  <div class="topbar">
+    <button class="backlink" style="border:none;" onclick="goHome()">← Zurück</button>
+    <button class="it-toggle" id="it-toggle-3" onclick="toggleIt()">🇮🇹</button>
+  </div>
+  <h1>💎 Meine Schatzkiste</h1>
+  <p class="it" style="text-align:center;">Il mio forziere del tesoro</p>
+  <div class="card" id="chest-card"></div>
+  <div class="card" id="growth-card"></div>
+  <div class="card" id="badges-card"></div>
+  <div class="card" id="unlock-card"></div>
+  <div class="card" id="trap-card"></div>
+</div>
+
+<script src="sync.js"></script>
+<script>
+/* ═════════════════════════════════════════════════════════════════
+   DATEN — Nomen aus dem Grundwortschatz Rheinland-Pfalz (Kl. 3/4)
+   g: Genus | pl: Plural (null = kein üblicher Plural)
+   it: italienische Übersetzung MIT Artikel | itG: ital. Genus
+   em: Emoji | cat: Themenfeld
+   „Falle" (Italienisch führt in die Irre) wird berechnet, nicht gespeichert.
+═════════════════════════════════════════════════════════════════ */
+const NOUNS = [
+// ── Tiere ──
+{de:'Affe',g:'der',pl:'Affen',it:'la scimmia',itG:'f',em:'🐒',cat:'tiere',obl:'Affen'},
+{de:'Ameise',g:'die',pl:'Ameisen',it:'la formica',itG:'f',em:'🐜',cat:'tiere'},
+{de:'Biene',g:'die',pl:'Bienen',it:"l'ape",itG:'f',em:'🐝',cat:'tiere'},
+{de:'Bär',g:'der',pl:'Bären',it:"l'orso",itG:'m',em:'🐻',cat:'tiere',obl:'Bären'},
+{de:'Dachs',g:'der',pl:'Dachse',it:'il tasso',itG:'m',em:'🦡',cat:'tiere'},
+{de:'Ente',g:'die',pl:'Enten',it:"l'anatra",itG:'f',em:'🦆',cat:'tiere'},
+{de:'Eule',g:'die',pl:'Eulen',it:'il gufo',itG:'m',em:'🦉',cat:'tiere'},
+{de:'Fisch',g:'der',pl:'Fische',it:'il pesce',itG:'m',em:'🐟',cat:'tiere'},
+{de:'Fuchs',g:'der',pl:'Füchse',it:'la volpe',itG:'f',em:'🦊',cat:'tiere'},
+{de:'Hase',g:'der',pl:'Hasen',it:'la lepre',itG:'f',em:'🐰',cat:'tiere',obl:'Hasen'},
+{de:'Huhn',g:'das',pl:'Hühner',it:'la gallina',itG:'f',em:'🐔',cat:'tiere'},
+{de:'Hund',g:'der',pl:'Hunde',it:'il cane',itG:'m',em:'🐕',cat:'tiere'},
+{de:'Igel',g:'der',pl:'Igel',it:'il riccio',itG:'m',em:'🦔',cat:'tiere'},
+{de:'Katze',g:'die',pl:'Katzen',it:'il gatto',itG:'m',em:'🐱',cat:'tiere'},
+{de:'Kuh',g:'die',pl:'Kühe',it:'la mucca',itG:'f',em:'🐄',cat:'tiere'},
+{de:'Käfer',g:'der',pl:'Käfer',it:'lo scarabeo',itG:'m',em:'🪲',cat:'tiere'},
+{de:'Maus',g:'die',pl:'Mäuse',it:'il topo',itG:'m',em:'🐭',cat:'tiere'},
+{de:'Ochse',g:'der',pl:'Ochsen',it:'il bue',itG:'m',em:'🐂',cat:'tiere',obl:'Ochsen'},
+{de:'Pferd',g:'das',pl:'Pferde',it:'il cavallo',itG:'m',em:'🐴',cat:'tiere'},
+{de:'Pony',g:'das',pl:'Ponys',it:'il pony',itG:'m',em:'🐴',cat:'tiere'},
+{de:'Qualle',g:'die',pl:'Quallen',it:'la medusa',itG:'f',em:'🪼',cat:'tiere'},
+{de:'Raupe',g:'die',pl:'Raupen',it:'il bruco',itG:'m',em:'🐛',cat:'tiere'},
+{de:'Reh',g:'das',pl:'Rehe',it:'il capriolo',itG:'m',em:'🦌',cat:'tiere'},
+{de:'Schlange',g:'die',pl:'Schlangen',it:'il serpente',itG:'m',em:'🐍',cat:'tiere'},
+{de:'Spinne',g:'die',pl:'Spinnen',it:'il ragno',itG:'m',em:'🕷️',cat:'tiere'},
+{de:'Tiger',g:'der',pl:'Tiger',it:'la tigre',itG:'f',em:'🐯',cat:'tiere'},
+{de:'Tier',g:'das',pl:'Tiere',it:"l'animale",itG:'m',em:'🐾',cat:'tiere'},
+{de:'Vogel',g:'der',pl:'Vögel',it:"l'uccello",itG:'m',em:'🐦',cat:'tiere'},
+{de:'Wurm',g:'der',pl:'Würmer',it:'il verme',itG:'m',em:'🪱',cat:'tiere'},
+// ── Menschen & Familie ──
+{de:'Frau',g:'die',pl:'Frauen',it:'la donna',itG:'f',em:'👩',cat:'menschen'},
+{de:'Mann',g:'der',pl:'Männer',it:"l'uomo",itG:'m',em:'👨',cat:'menschen'},
+{de:'Junge',g:'der',pl:'Jungen',it:'il ragazzo',itG:'m',em:'👦',cat:'menschen',obl:'Jungen'},
+{de:'Mädchen',g:'das',pl:'Mädchen',it:'la ragazza',itG:'f',em:'👧',cat:'menschen'},
+{de:'Kind',g:'das',pl:'Kinder',it:'il bambino / la bambina',itG:'m',em:'🧒',cat:'menschen'},
+{de:'Baby',g:'das',pl:'Babys',it:'il neonato',itG:'m',em:'👶',cat:'menschen'},
+{de:'Bruder',g:'der',pl:'Brüder',it:'il fratello',itG:'m',em:'👦',cat:'menschen'},
+{de:'Schwester',g:'die',pl:'Schwestern',it:'la sorella',itG:'f',em:'👧',cat:'menschen'},
+{de:'Mutter',g:'die',pl:'Mütter',it:'la mamma',itG:'f',em:'👩',cat:'menschen'},
+{de:'Vater',g:'der',pl:'Väter',it:'il papà',itG:'m',em:'👨',cat:'menschen'},
+{de:'Tante',g:'die',pl:'Tanten',it:'la zia',itG:'f',em:'👩',cat:'menschen'},
+{de:'Onkel',g:'der',pl:'Onkel',it:'lo zio',itG:'m',em:'👨',cat:'menschen'},
+{de:'Tochter',g:'die',pl:'Töchter',it:'la figlia',itG:'f',em:'👧',cat:'menschen'},
+{de:'Herr',g:'der',pl:'Herren',it:'il signore',itG:'m',em:'🎩',cat:'menschen',obl:'Herrn'},
+{de:'Mensch',g:'der',pl:'Menschen',it:'la persona',itG:'f',em:'🧍',cat:'menschen',obl:'Menschen'},
+{de:'Nachbar',g:'der',pl:'Nachbarn',it:'il vicino',itG:'m',em:'🏘️',cat:'menschen',obl:'Nachbarn'},
+{de:'Freund',g:'der',pl:'Freunde',it:"l'amico",itG:'m',em:'🤝',cat:'menschen'},
+{de:'Arzt',g:'der',pl:'Ärzte',it:'il medico',itG:'m',em:'👨‍⚕️',cat:'menschen'},
+{de:'Lehrer',g:'der',pl:'Lehrer',it:'il maestro',itG:'m',em:'👨‍🏫',cat:'menschen'},
+{de:'Lehrerin',g:'die',pl:'Lehrerinnen',it:'la maestra',itG:'f',em:'👩‍🏫',cat:'menschen'},
+{de:'Verkäufer',g:'der',pl:'Verkäufer',it:'il venditore',itG:'m',em:'🛒',cat:'menschen'},
+{de:'König',g:'der',pl:'Könige',it:'il re',itG:'m',em:'👑',cat:'menschen'},
+{de:'Hexe',g:'die',pl:'Hexen',it:'la strega',itG:'f',em:'🧙‍♀️',cat:'menschen'},
+{de:'Riese',g:'der',pl:'Riesen',it:'il gigante',itG:'m',em:'🗻',cat:'menschen',obl:'Riesen'},
+{de:'Clown',g:'der',pl:'Clowns',it:'il pagliaccio',itG:'m',em:'🤡',cat:'menschen'},
+{de:'Chef',g:'der',pl:'Chefs',it:'il capo',itG:'m',em:'💼',cat:'menschen'},
+// ── Körper ──
+{de:'Arm',g:'der',pl:'Arme',it:'il braccio',itG:'m',em:'💪',cat:'koerper'},
+{de:'Auge',g:'das',pl:'Augen',it:"l'occhio",itG:'m',em:'👁️',cat:'koerper'},
+{de:'Bein',g:'das',pl:'Beine',it:'la gamba',itG:'f',em:'🦵',cat:'koerper'},
+{de:'Finger',g:'der',pl:'Finger',it:'il dito',itG:'m',em:'☝️',cat:'koerper'},
+{de:'Fuß',g:'der',pl:'Füße',it:'il piede',itG:'m',em:'🦶',cat:'koerper'},
+{de:'Hals',g:'der',pl:'Hälse',it:'il collo',itG:'m',em:'🧣',cat:'koerper'},
+{de:'Hand',g:'die',pl:'Hände',it:'la mano',itG:'f',em:'✋',cat:'koerper'},
+{de:'Herz',g:'das',pl:'Herzen',it:'il cuore',itG:'m',em:'❤️',cat:'koerper'},
+{de:'Knie',g:'das',pl:'Knie',it:'il ginocchio',itG:'m',em:'🦵',cat:'koerper'},
+{de:'Kopf',g:'der',pl:'Köpfe',it:'la testa',itG:'f',em:'🗣️',cat:'koerper'},
+{de:'Körper',g:'der',pl:'Körper',it:'il corpo',itG:'m',em:'🧍',cat:'koerper'},
+{de:'Mund',g:'der',pl:'Münder',it:'la bocca',itG:'f',em:'👄',cat:'koerper'},
+{de:'Nase',g:'die',pl:'Nasen',it:'il naso',itG:'m',em:'👃',cat:'koerper'},
+{de:'Ohr',g:'das',pl:'Ohren',it:"l'orecchio",itG:'m',em:'👂',cat:'koerper'},
+{de:'Rücken',g:'der',pl:'Rücken',it:'la schiena',itG:'f',em:'🧍',cat:'koerper'},
+{de:'Zahn',g:'der',pl:'Zähne',it:'il dente',itG:'m',em:'🦷',cat:'koerper'},
+{de:'Zeh',g:'der',pl:'Zehen',it:'il dito del piede',itG:'m',em:'🦶',cat:'koerper'},
+{de:'Gesicht',g:'das',pl:'Gesichter',it:'il viso',itG:'m',em:'🙂',cat:'koerper'},
+{de:'Haar',g:'das',pl:'Haare',it:'il capello',itG:'m',em:'💇',cat:'koerper'},
+{de:'Träne',g:'die',pl:'Tränen',it:'la lacrima',itG:'f',em:'😢',cat:'koerper'},
+// ── Essen & Trinken ──
+{de:'Apfel',g:'der',pl:'Äpfel',it:'la mela',itG:'f',em:'🍎',cat:'essen'},
+{de:'Beere',g:'die',pl:'Beeren',it:'la bacca',itG:'f',em:'🫐',cat:'essen'},
+{de:'Birne',g:'die',pl:'Birnen',it:'la pera',itG:'f',em:'🍐',cat:'essen'},
+{de:'Brot',g:'das',pl:'Brote',it:'il pane',itG:'m',em:'🍞',cat:'essen'},
+{de:'Butter',g:'die',pl:null,it:'il burro',itG:'m',em:'🧈',cat:'essen'},
+{de:'Ei',g:'das',pl:'Eier',it:"l'uovo",itG:'m',em:'🥚',cat:'essen'},
+{de:'Eis',g:'das',pl:null,it:'il gelato',itG:'m',em:'🍦',cat:'essen'},
+{de:'Gemüse',g:'das',pl:null,it:'la verdura',itG:'f',em:'🥦',cat:'essen'},
+{de:'Gurke',g:'die',pl:'Gurken',it:'il cetriolo',itG:'m',em:'🥒',cat:'essen'},
+{de:'Käse',g:'der',pl:null,it:'il formaggio',itG:'m',em:'🧀',cat:'essen'},
+{de:'Kirsche',g:'die',pl:'Kirschen',it:'la ciliegia',itG:'f',em:'🍒',cat:'essen'},
+{de:'Kuchen',g:'der',pl:'Kuchen',it:'la torta',itG:'f',em:'🍰',cat:'essen'},
+{de:'Milch',g:'die',pl:null,it:'il latte',itG:'m',em:'🥛',cat:'essen'},
+{de:'Nudel',g:'die',pl:'Nudeln',it:'la pasta',itG:'f',em:'🍝',cat:'essen'},
+{de:'Nuss',g:'die',pl:'Nüsse',it:'la noce',itG:'f',em:'🥜',cat:'essen'},
+{de:'Obst',g:'das',pl:null,it:'la frutta',itG:'f',em:'🍇',cat:'essen'},
+{de:'Pflaume',g:'die',pl:'Pflaumen',it:'la prugna',itG:'f',em:'🟣',cat:'essen'},
+{de:'Pilz',g:'der',pl:'Pilze',it:'il fungo',itG:'m',em:'🍄',cat:'essen'},
+{de:'Pizza',g:'die',pl:'Pizzen',it:'la pizza',itG:'f',em:'🍕',cat:'essen'},
+{de:'Quark',g:'der',pl:null,it:'il formaggio fresco',itG:'m',em:'🥣',cat:'essen'},
+{de:'Saft',g:'der',pl:'Säfte',it:'il succo',itG:'m',em:'🧃',cat:'essen'},
+{de:'Salz',g:'das',pl:null,it:'il sale',itG:'m',em:'🧂',cat:'essen'},
+{de:'Soße',g:'die',pl:'Soßen',it:'la salsa',itG:'f',em:'🥣',cat:'essen'},
+{de:'Tee',g:'der',pl:null,it:'il tè',itG:'m',em:'🍵',cat:'essen'},
+{de:'Wurst',g:'die',pl:'Würste',it:'la salsiccia',itG:'f',em:'🌭',cat:'essen'},
+{de:'Zucker',g:'der',pl:null,it:'lo zucchero',itG:'m',em:'🍬',cat:'essen'},
+{de:'Zwiebel',g:'die',pl:'Zwiebeln',it:'la cipolla',itG:'f',em:'🧅',cat:'essen'},
+{de:'Frühstück',g:'das',pl:null,it:'la colazione',itG:'f',em:'🥐',cat:'essen'},
+// ── Schule & Lernen ──
+{de:'Buch',g:'das',pl:'Bücher',it:'il libro',itG:'m',em:'📖',cat:'schule'},
+{de:'Heft',g:'das',pl:'Hefte',it:'il quaderno',itG:'m',em:'📓',cat:'schule'},
+{de:'Stift',g:'der',pl:'Stifte',it:'la matita',itG:'f',em:'✏️',cat:'schule'},
+{de:'Füller',g:'der',pl:'Füller',it:'la stilografica',itG:'f',em:'🖊️',cat:'schule'},
+{de:'Kleber',g:'der',pl:'Kleber',it:'la colla',itG:'f',em:'🧴',cat:'schule'},
+{de:'Lineal',g:'das',pl:'Lineale',it:'il righello',itG:'m',em:'📏',cat:'schule'},
+{de:'Papier',g:'das',pl:'Papiere',it:'la carta',itG:'f',em:'📄',cat:'schule'},
+{de:'Pinsel',g:'der',pl:'Pinsel',it:'il pennello',itG:'m',em:'🖌️',cat:'schule'},
+{de:'Schere',g:'die',pl:'Scheren',it:'le forbici',itG:'f',em:'✂️',cat:'schule'},
+{de:'Schrift',g:'die',pl:'Schriften',it:'la scrittura',itG:'f',em:'✍️',cat:'schule'},
+{de:'Schule',g:'die',pl:'Schulen',it:'la scuola',itG:'f',em:'🏫',cat:'schule'},
+{de:'Tafel',g:'die',pl:'Tafeln',it:'la lavagna',itG:'f',em:'🖼️',cat:'schule'},
+{de:'Tasche',g:'die',pl:'Taschen',it:'la borsa',itG:'f',em:'👜',cat:'schule'},
+{de:'Text',g:'der',pl:'Texte',it:'il testo',itG:'m',em:'📝',cat:'schule'},
+{de:'Klasse',g:'die',pl:'Klassen',it:'la classe',itG:'f',em:'🏫',cat:'schule'},
+{de:'Zeugnis',g:'das',pl:'Zeugnisse',it:'la pagella',itG:'f',em:'📜',cat:'schule'},
+{de:'Ergebnis',g:'das',pl:'Ergebnisse',it:'il risultato',itG:'m',em:'✅',cat:'schule'},
+{de:'Wort',g:'das',pl:'Wörter',it:'la parola',itG:'f',em:'💬',cat:'schule'},
+{de:'Satz',g:'der',pl:'Sätze',it:'la frase',itG:'f',em:'💬',cat:'schule'},
+{de:'Zahl',g:'die',pl:'Zahlen',it:'il numero',itG:'m',em:'🔢',cat:'schule'},
+{de:'Nummer',g:'die',pl:'Nummern',it:'il numero',itG:'m',em:'🔢',cat:'schule'},
+{de:'Name',g:'der',pl:'Namen',it:'il nome',itG:'m',em:'🏷️',cat:'schule',obl:'Namen'},
+{de:'Seite',g:'die',pl:'Seiten',it:'la pagina',itG:'f',em:'📄',cat:'schule'},
+{de:'Thema',g:'das',pl:'Themen',it:'il tema',itG:'m',em:'💭',cat:'schule'},
+{de:'Lexikon',g:'das',pl:'Lexika',it:"l'enciclopedia",itG:'f',em:'📚',cat:'schule'},
+{de:'Computer',g:'der',pl:'Computer',it:'il computer',itG:'m',em:'💻',cat:'schule'},
+{de:'Internet',g:'das',pl:null,it:'internet',itG:'m',em:'🌐',cat:'schule'},
+{de:'Handy',g:'das',pl:'Handys',it:'il cellulare',itG:'m',em:'📱',cat:'schule'},
+{de:'E-Mail',g:'die',pl:'E-Mails',it:"l'email",itG:'f',em:'📧',cat:'schule'},
+{de:'Radio',g:'das',pl:'Radios',it:'la radio',itG:'f',em:'📻',cat:'schule'},
+{de:'Telefon',g:'das',pl:'Telefone',it:'il telefono',itG:'m',em:'☎️',cat:'schule'},
+{de:'Fehler',g:'der',pl:'Fehler',it:"l'errore",itG:'m',em:'❌',cat:'schule'},
+{de:'Comic',g:'der',pl:'Comics',it:'il fumetto',itG:'m',em:'💥',cat:'schule'},
+// ── Haus & Alltag ──
+{de:'Bad',g:'das',pl:'Bäder',it:'il bagno',itG:'m',em:'🛁',cat:'haus'},
+{de:'Bett',g:'das',pl:'Betten',it:'il letto',itG:'m',em:'🛏️',cat:'haus'},
+{de:'Bild',g:'das',pl:'Bilder',it:'il quadro',itG:'m',em:'🖼️',cat:'haus'},
+{de:'Brille',g:'die',pl:'Brillen',it:'gli occhiali',itG:'m',em:'👓',cat:'haus'},
+{de:'Decke',g:'die',pl:'Decken',it:'la coperta',itG:'f',em:'🧺',cat:'haus'},
+{de:'Fenster',g:'das',pl:'Fenster',it:'la finestra',itG:'f',em:'🪟',cat:'haus'},
+{de:'Feuer',g:'das',pl:'Feuer',it:'il fuoco',itG:'m',em:'🔥',cat:'haus'},
+{de:'Flur',g:'der',pl:'Flure',it:'il corridoio',itG:'m',em:'🚪',cat:'haus'},
+{de:'Gabel',g:'die',pl:'Gabeln',it:'la forchetta',itG:'f',em:'🍴',cat:'haus'},
+{de:'Haus',g:'das',pl:'Häuser',it:'la casa',itG:'f',em:'🏠',cat:'haus'},
+{de:'Küche',g:'die',pl:'Küchen',it:'la cucina',itG:'f',em:'🍳',cat:'haus'},
+{de:'Löffel',g:'der',pl:'Löffel',it:'il cucchiaio',itG:'m',em:'🥄',cat:'haus'},
+{de:'Messer',g:'das',pl:'Messer',it:'il coltello',itG:'m',em:'🔪',cat:'haus'},
+{de:'Müll',g:'der',pl:null,it:'la spazzatura',itG:'f',em:'🗑️',cat:'haus'},
+{de:'Puppe',g:'die',pl:'Puppen',it:'la bambola',itG:'f',em:'🪆',cat:'haus'},
+{de:'Raum',g:'der',pl:'Räume',it:'la stanza',itG:'f',em:'🚪',cat:'haus'},
+{de:'Schlüssel',g:'der',pl:'Schlüssel',it:'la chiave',itG:'f',em:'🔑',cat:'haus'},
+{de:'Schrank',g:'der',pl:'Schränke',it:"l'armadio",itG:'m',em:'🗄️',cat:'haus'},
+{de:'Sessel',g:'der',pl:'Sessel',it:'la poltrona',itG:'f',em:'🛋️',cat:'haus'},
+{de:'Spiegel',g:'der',pl:'Spiegel',it:'lo specchio',itG:'m',em:'🪞',cat:'haus'},
+{de:'Stuhl',g:'der',pl:'Stühle',it:'la sedia',itG:'f',em:'🪑',cat:'haus'},
+{de:'Tasse',g:'die',pl:'Tassen',it:'la tazza',itG:'f',em:'☕',cat:'haus'},
+{de:'Teller',g:'der',pl:'Teller',it:'il piatto',itG:'m',em:'🍽️',cat:'haus'},
+{de:'Tisch',g:'der',pl:'Tische',it:'il tavolo',itG:'m',em:'🍽️',cat:'haus'},
+{de:'Tür',g:'die',pl:'Türen',it:'la porta',itG:'f',em:'🚪',cat:'haus'},
+{de:'Uhr',g:'die',pl:'Uhren',it:"l'orologio",itG:'m',em:'⏰',cat:'haus'},
+{de:'Vase',g:'die',pl:'Vasen',it:'il vaso',itG:'m',em:'🏺',cat:'haus'},
+{de:'Zimmer',g:'das',pl:'Zimmer',it:'la stanza',itG:'f',em:'🛋️',cat:'haus'},
+{de:'Kalender',g:'der',pl:'Kalender',it:'il calendario',itG:'m',em:'📅',cat:'haus'},
+{de:'Seife',g:'die',pl:'Seifen',it:'il sapone',itG:'m',em:'🧼',cat:'haus'},
+{de:'Windel',g:'die',pl:'Windeln',it:'il pannolino',itG:'m',em:'👶',cat:'haus'},
+{de:'Lampe',g:'die',pl:'Lampen',it:'la lampada',itG:'f',em:'💡',cat:'haus'},
+{de:'Teddy',g:'der',pl:'Teddys',it:"l'orsacchiotto",itG:'m',em:'🧸',cat:'haus'},
+{de:'Würfel',g:'der',pl:'Würfel',it:'il dado',itG:'m',em:'🎲',cat:'haus'},
+{de:'Kamm',g:'der',pl:'Kämme',it:'il pettine',itG:'m',em:'💈',cat:'haus'},
+{de:'Block',g:'der',pl:'Blöcke',it:'il blocco',itG:'m',em:'🗒️',cat:'haus'},
+{de:'Pflaster',g:'das',pl:'Pflaster',it:'il cerotto',itG:'m',em:'🩹',cat:'haus'},
+// ── Kleidung ──
+{de:'Hemd',g:'das',pl:'Hemden',it:'la camicia',itG:'f',em:'👔',cat:'kleidung'},
+{de:'Hose',g:'die',pl:'Hosen',it:'i pantaloni',itG:'m',em:'👖',cat:'kleidung'},
+{de:'Hut',g:'der',pl:'Hüte',it:'il cappello',itG:'m',em:'🎩',cat:'kleidung'},
+{de:'Jacke',g:'die',pl:'Jacken',it:'la giacca',itG:'f',em:'🧥',cat:'kleidung'},
+{de:'Kleid',g:'das',pl:'Kleider',it:'il vestito',itG:'m',em:'👗',cat:'kleidung'},
+{de:'Mütze',g:'die',pl:'Mützen',it:'il berretto',itG:'m',em:'🧢',cat:'kleidung'},
+{de:'Rock',g:'der',pl:'Röcke',it:'la gonna',itG:'f',em:'🩳',cat:'kleidung'},
+{de:'Schal',g:'der',pl:'Schals',it:'la sciarpa',itG:'f',em:'🧣',cat:'kleidung'},
+{de:'Schuh',g:'der',pl:'Schuhe',it:'la scarpa',itG:'f',em:'👟',cat:'kleidung'},
+{de:'Pullover',g:'der',pl:'Pullover',it:'il maglione',itG:'m',em:'👕',cat:'kleidung'},
+{de:'Stoff',g:'der',pl:'Stoffe',it:'la stoffa',itG:'f',em:'🧵',cat:'kleidung'},
+{de:'Knopf',g:'der',pl:'Knöpfe',it:'il bottone',itG:'m',em:'🔘',cat:'kleidung'},
+// ── Natur & Wetter ──
+{de:'Ast',g:'der',pl:'Äste',it:'il ramo',itG:'m',em:'🌿',cat:'natur'},
+{de:'Baum',g:'der',pl:'Bäume',it:"l'albero",itG:'m',em:'🌳',cat:'natur'},
+{de:'Berg',g:'der',pl:'Berge',it:'la montagna',itG:'f',em:'⛰️',cat:'natur'},
+{de:'Blatt',g:'das',pl:'Blätter',it:'la foglia',itG:'f',em:'🍃',cat:'natur'},
+{de:'Blitz',g:'der',pl:'Blitze',it:'il fulmine',itG:'m',em:'⚡',cat:'natur'},
+{de:'Blume',g:'die',pl:'Blumen',it:'il fiore',itG:'m',em:'🌸',cat:'natur'},
+{de:'Blüte',g:'die',pl:'Blüten',it:'il bocciolo',itG:'m',em:'🌺',cat:'natur'},
+{de:'Erde',g:'die',pl:null,it:'la terra',itG:'f',em:'🌍',cat:'natur'},
+{de:'Feld',g:'das',pl:'Felder',it:'il campo',itG:'m',em:'🌾',cat:'natur'},
+{de:'Fluss',g:'der',pl:'Flüsse',it:'il fiume',itG:'m',em:'🏞️',cat:'natur'},
+{de:'Garten',g:'der',pl:'Gärten',it:'il giardino',itG:'m',em:'🌷',cat:'natur'},
+{de:'Gras',g:'das',pl:'Gräser',it:"l'erba",itG:'f',em:'🌱',cat:'natur'},
+{de:'Himmel',g:'der',pl:null,it:'il cielo',itG:'m',em:'☁️',cat:'natur'},
+{de:'Höhle',g:'die',pl:'Höhlen',it:'la grotta',itG:'f',em:'🕳️',cat:'natur'},
+{de:'Insel',g:'die',pl:'Inseln',it:"l'isola",itG:'f',em:'🏝️',cat:'natur'},
+{de:'Land',g:'das',pl:'Länder',it:'il paese',itG:'m',em:'🗺️',cat:'natur'},
+{de:'Licht',g:'das',pl:'Lichter',it:'la luce',itG:'f',em:'💡',cat:'natur'},
+{de:'Loch',g:'das',pl:'Löcher',it:'il buco',itG:'m',em:'🕳️',cat:'natur'},
+{de:'Luft',g:'die',pl:null,it:"l'aria",itG:'f',em:'🌬️',cat:'natur'},
+{de:'Meer',g:'das',pl:'Meere',it:'il mare',itG:'m',em:'🌊',cat:'natur'},
+{de:'Mond',g:'der',pl:'Monde',it:'la luna',itG:'f',em:'🌙',cat:'natur'},
+{de:'Nebel',g:'der',pl:null,it:'la nebbia',itG:'f',em:'🌫️',cat:'natur'},
+{de:'Quelle',g:'die',pl:'Quellen',it:'la sorgente',itG:'f',em:'💧',cat:'natur'},
+{de:'Rasen',g:'der',pl:null,it:'il prato',itG:'m',em:'🌱',cat:'natur'},
+{de:'Regen',g:'der',pl:null,it:'la pioggia',itG:'f',em:'🌧️',cat:'natur'},
+{de:'Sand',g:'der',pl:null,it:'la sabbia',itG:'f',em:'🏖️',cat:'natur'},
+{de:'Schnee',g:'der',pl:null,it:'la neve',itG:'f',em:'❄️',cat:'natur'},
+{de:'See',g:'der',pl:'Seen',it:'il lago',itG:'m',em:'🏞️',cat:'natur'},
+{de:'Sonne',g:'die',pl:null,it:'il sole',itG:'m',em:'☀️',cat:'natur'},
+{de:'Stein',g:'der',pl:'Steine',it:'la pietra',itG:'f',em:'🪨',cat:'natur'},
+{de:'Stern',g:'der',pl:'Sterne',it:'la stella',itG:'f',em:'⭐',cat:'natur'},
+{de:'Strand',g:'der',pl:'Strände',it:'la spiaggia',itG:'f',em:'🏖️',cat:'natur'},
+{de:'Strauch',g:'der',pl:'Sträucher',it:'il cespuglio',itG:'m',em:'🌳',cat:'natur'},
+{de:'Sturm',g:'der',pl:'Stürme',it:'la tempesta',itG:'f',em:'🌪️',cat:'natur'},
+{de:'Tal',g:'das',pl:'Täler',it:'la valle',itG:'f',em:'🏞️',cat:'natur'},
+{de:'Tanne',g:'die',pl:'Tannen',it:"l'abete",itG:'m',em:'🌲',cat:'natur'},
+{de:'Vulkan',g:'der',pl:'Vulkane',it:'il vulcano',itG:'m',em:'🌋',cat:'natur'},
+{de:'Wald',g:'der',pl:'Wälder',it:'il bosco',itG:'m',em:'🌲',cat:'natur'},
+{de:'Wasser',g:'das',pl:null,it:"l'acqua",itG:'f',em:'💧',cat:'natur'},
+{de:'Welt',g:'die',pl:null,it:'il mondo',itG:'m',em:'🌍',cat:'natur'},
+{de:'Wiese',g:'die',pl:'Wiesen',it:'il prato',itG:'m',em:'🌼',cat:'natur'},
+{de:'Wind',g:'der',pl:null,it:'il vento',itG:'m',em:'💨',cat:'natur'},
+{de:'Wurzel',g:'die',pl:'Wurzeln',it:'la radice',itG:'f',em:'🌱',cat:'natur'},
+{de:'Zaun',g:'der',pl:'Zäune',it:'il recinto',itG:'m',em:'🚧',cat:'natur'},
+{de:'Stamm',g:'der',pl:'Stämme',it:'il tronco',itG:'m',em:'🪵',cat:'natur'},
+{de:'Hitze',g:'die',pl:null,it:'il caldo',itG:'m',em:'🥵',cat:'natur'},
+{de:'Kälte',g:'die',pl:null,it:'il freddo',itG:'m',em:'🥶',cat:'natur'},
+{de:'Wärme',g:'die',pl:null,it:'il calore',itG:'m',em:'♨️',cat:'natur'},
+{de:'Temperatur',g:'die',pl:'Temperaturen',it:'la temperatura',itG:'f',em:'🌡️',cat:'natur'},
+// ── Stadt & Verkehr ──
+{de:'Ampel',g:'die',pl:'Ampeln',it:'il semaforo',itG:'m',em:'🚦',cat:'stadt'},
+{de:'Auto',g:'das',pl:'Autos',it:"l'auto",itG:'f',em:'🚗',cat:'stadt'},
+{de:'Bahn',g:'die',pl:'Bahnen',it:'il treno',itG:'m',em:'🚆',cat:'stadt'},
+{de:'Bank',g:'die',pl:'Bänke',it:'la panchina',itG:'f',em:'🪑',cat:'stadt'},
+{de:'Boot',g:'das',pl:'Boote',it:'la barca',itG:'f',em:'🛶',cat:'stadt'},
+{de:'Brücke',g:'die',pl:'Brücken',it:'il ponte',itG:'m',em:'🌉',cat:'stadt'},
+{de:'Bus',g:'der',pl:'Busse',it:"l'autobus",itG:'m',em:'🚌',cat:'stadt'},
+{de:'Fahrrad',g:'das',pl:'Fahrräder',it:'la bicicletta',itG:'f',em:'🚲',cat:'stadt'},
+{de:'Flugzeug',g:'das',pl:'Flugzeuge',it:"l'aereo",itG:'m',em:'✈️',cat:'stadt'},
+{de:'Kirche',g:'die',pl:'Kirchen',it:'la chiesa',itG:'f',em:'⛪',cat:'stadt'},
+{de:'Platz',g:'der',pl:'Plätze',it:'la piazza',itG:'f',em:'🏙️',cat:'stadt'},
+{de:'Stadt',g:'die',pl:'Städte',it:'la città',itG:'f',em:'🏙️',cat:'stadt'},
+{de:'Straße',g:'die',pl:'Straßen',it:'la strada',itG:'f',em:'🛣️',cat:'stadt'},
+{de:'Taxi',g:'das',pl:'Taxis',it:'il taxi',itG:'m',em:'🚕',cat:'stadt'},
+{de:'Tor',g:'das',pl:'Tore',it:'il portone',itG:'m',em:'🥅',cat:'stadt'},
+{de:'Verkehr',g:'der',pl:null,it:'il traffico',itG:'m',em:'🚦',cat:'stadt'},
+{de:'Weg',g:'der',pl:'Wege',it:'il sentiero',itG:'m',em:'🛤️',cat:'stadt'},
+{de:'Zug',g:'der',pl:'Züge',it:'il treno',itG:'m',em:'🚂',cat:'stadt'},
+{de:'Zoo',g:'der',pl:'Zoos',it:'lo zoo',itG:'m',em:'🦁',cat:'stadt'},
+{de:'Theater',g:'das',pl:'Theater',it:'il teatro',itG:'m',em:'🎭',cat:'stadt'},
+{de:'Schiff',g:'das',pl:'Schiffe',it:'la nave',itG:'f',em:'🚢',cat:'stadt'},
+{de:'Gebäude',g:'das',pl:'Gebäude',it:"l'edificio",itG:'m',em:'🏢',cat:'stadt'},
+{de:'Turm',g:'der',pl:'Türme',it:'la torre',itG:'f',em:'🗼',cat:'stadt'},
+// ── Zeit ──
+{de:'Abend',g:'der',pl:'Abende',it:'la sera',itG:'f',em:'🌆',cat:'zeit'},
+{de:'Jahr',g:'das',pl:'Jahre',it:"l'anno",itG:'m',em:'📅',cat:'zeit'},
+{de:'Monat',g:'der',pl:'Monate',it:'il mese',itG:'m',em:'📅',cat:'zeit'},
+{de:'Minute',g:'die',pl:'Minuten',it:'il minuto',itG:'m',em:'⏱️',cat:'zeit'},
+{de:'Sekunde',g:'die',pl:'Sekunden',it:'il secondo',itG:'m',em:'⏱️',cat:'zeit'},
+{de:'Stunde',g:'die',pl:'Stunden',it:"l'ora",itG:'f',em:'🕐',cat:'zeit'},
+{de:'Woche',g:'die',pl:'Wochen',it:'la settimana',itG:'f',em:'🗓️',cat:'zeit'},
+{de:'Tag',g:'der',pl:'Tage',it:'il giorno',itG:'m',em:'🌞',cat:'zeit'},
+{de:'Nacht',g:'die',pl:'Nächte',it:'la notte',itG:'f',em:'🌙',cat:'zeit'},
+{de:'Mittag',g:'der',pl:'Mittage',it:'il mezzogiorno',itG:'m',em:'🕛',cat:'zeit'},
+{de:'Zeit',g:'die',pl:null,it:'il tempo',itG:'m',em:'⏳',cat:'zeit'},
+{de:'Herbst',g:'der',pl:'Herbste',it:"l'autunno",itG:'m',em:'🍂',cat:'zeit'},
+{de:'Frühling',g:'der',pl:'Frühlinge',it:'la primavera',itG:'f',em:'🌷',cat:'zeit'},
+{de:'Sommer',g:'der',pl:'Sommer',it:"l'estate",itG:'f',em:'☀️',cat:'zeit'},
+{de:'Winter',g:'der',pl:'Winter',it:"l'inverno",itG:'m',em:'⛄',cat:'zeit'},
+{de:'Geburtstag',g:'der',pl:'Geburtstage',it:'il compleanno',itG:'m',em:'🎂',cat:'zeit'},
+{de:'Urlaub',g:'der',pl:'Urlaube',it:'la vacanza',itG:'f',em:'🏖️',cat:'zeit'},
+{de:'Morgen',g:'der',pl:'Morgen',it:'il mattino',itG:'m',em:'🌅',cat:'zeit'},
+// ── Dinge & Begriffe ──
+{de:'Angst',g:'die',pl:'Ängste',it:'la paura',itG:'f',em:'😨',cat:'dinge'},
+{de:'Ball',g:'der',pl:'Bälle',it:'la palla',itG:'f',em:'⚽',cat:'dinge'},
+{de:'Brief',g:'der',pl:'Briefe',it:'la lettera',itG:'f',em:'✉️',cat:'dinge'},
+{de:'Dach',g:'das',pl:'Dächer',it:'il tetto',itG:'m',em:'🏠',cat:'dinge'},
+{de:'Draht',g:'der',pl:'Drähte',it:'il filo',itG:'m',em:'🔗',cat:'dinge'},
+{de:'Durst',g:'der',pl:null,it:'la sete',itG:'f',em:'🥤',cat:'dinge'},
+{de:'Ende',g:'das',pl:'Enden',it:'la fine',itG:'f',em:'🏁',cat:'dinge'},
+{de:'Entfernung',g:'die',pl:'Entfernungen',it:'la distanza',itG:'f',em:'📏',cat:'dinge'},
+{de:'Fach',g:'das',pl:'Fächer',it:'la materia',itG:'f',em:'📚',cat:'dinge'},
+{de:'Fahrzeug',g:'das',pl:'Fahrzeuge',it:'il veicolo',itG:'m',em:'🚗',cat:'dinge'},
+{de:'Farbe',g:'die',pl:'Farben',it:'il colore',itG:'m',em:'🎨',cat:'dinge'},
+{de:'Freude',g:'die',pl:null,it:'la gioia',itG:'f',em:'😄',cat:'dinge'},
+{de:'Frieden',g:'der',pl:null,it:'la pace',itG:'f',em:'🕊️',cat:'dinge'},
+{de:'Gefahr',g:'die',pl:'Gefahren',it:'il pericolo',itG:'m',em:'⚠️',cat:'dinge'},
+{de:'Gepäck',g:'das',pl:null,it:'il bagaglio',itG:'m',em:'🧳',cat:'dinge'},
+{de:'Glas',g:'das',pl:'Gläser',it:'il bicchiere',itG:'m',em:'🥛',cat:'dinge'},
+{de:'Glück',g:'das',pl:null,it:'la fortuna',itG:'f',em:'🍀',cat:'dinge'},
+{de:'Grund',g:'der',pl:'Gründe',it:'il motivo',itG:'m',em:'🤔',cat:'dinge'},
+{de:'Heizung',g:'die',pl:'Heizungen',it:'il riscaldamento',itG:'m',em:'♨️',cat:'dinge'},
+{de:'Hunger',g:'der',pl:null,it:'la fame',itG:'f',em:'🍽️',cat:'dinge'},
+{de:'Idee',g:'die',pl:'Ideen',it:"l'idea",itG:'f',em:'💡',cat:'dinge'},
+{de:'Kampf',g:'der',pl:'Kämpfe',it:'la lotta',itG:'f',em:'🥊',cat:'dinge'},
+{de:'Kreis',g:'der',pl:'Kreise',it:'il cerchio',itG:'m',em:'⭕',cat:'dinge'},
+{de:'Lärm',g:'der',pl:null,it:'il rumore',itG:'m',em:'📢',cat:'dinge'},
+{de:'Lied',g:'das',pl:'Lieder',it:'la canzone',itG:'f',em:'🎵',cat:'dinge'},
+{de:'Liter',g:'der',pl:'Liter',it:'il litro',itG:'m',em:'🧴',cat:'dinge'},
+{de:'Meter',g:'der',pl:'Meter',it:'il metro',itG:'m',em:'📏',cat:'dinge'},
+{de:'Musik',g:'die',pl:null,it:'la musica',itG:'f',em:'🎶',cat:'dinge'},
+{de:'Ordnung',g:'die',pl:null,it:"l'ordine",itG:'m',em:'🧹',cat:'dinge'},
+{de:'Paket',g:'das',pl:'Pakete',it:'il pacco',itG:'m',em:'📦',cat:'dinge'},
+{de:'Pass',g:'der',pl:'Pässe',it:'il passaporto',itG:'m',em:'🛂',cat:'dinge'},
+{de:'Programm',g:'das',pl:'Programme',it:'il programma',itG:'m',em:'📺',cat:'dinge'},
+{de:'Punkt',g:'der',pl:'Punkte',it:'il punto',itG:'m',em:'⚫',cat:'dinge'},
+{de:'Quadrat',g:'das',pl:'Quadrate',it:'il quadrato',itG:'m',em:'⬜',cat:'dinge'},
+{de:'Rad',g:'das',pl:'Räder',it:'la ruota',itG:'f',em:'🛞',cat:'dinge'},
+{de:'Reihe',g:'die',pl:'Reihen',it:'la fila',itG:'f',em:'🔢',cat:'dinge'},
+{de:'Ring',g:'der',pl:'Ringe',it:"l'anello",itG:'m',em:'💍',cat:'dinge'},
+{de:'Ruhe',g:'die',pl:null,it:'la calma',itG:'f',em:'🤫',cat:'dinge'},
+{de:'Sache',g:'die',pl:'Sachen',it:'la cosa',itG:'f',em:'📦',cat:'dinge'},
+{de:'Schatz',g:'der',pl:'Schätze',it:'il tesoro',itG:'m',em:'💎',cat:'dinge'},
+{de:'Schloss',g:'das',pl:'Schlösser',it:'il castello',itG:'m',em:'🏰',cat:'dinge'},
+{de:'Schnur',g:'die',pl:'Schnüre',it:'la corda',itG:'f',em:'🪢',cat:'dinge'},
+{de:'Schutz',g:'der',pl:null,it:'la protezione',itG:'f',em:'🛡️',cat:'dinge'},
+{de:'Seil',g:'das',pl:'Seile',it:'la corda',itG:'f',em:'🪢',cat:'dinge'},
+{de:'Spaß',g:'der',pl:null,it:'il divertimento',itG:'m',em:'🎉',cat:'dinge'},
+{de:'Spaziergang',g:'der',pl:'Spaziergänge',it:'la passeggiata',itG:'f',em:'🚶',cat:'dinge'},
+{de:'Sport',g:'der',pl:null,it:'lo sport',itG:'m',em:'🏃',cat:'dinge'},
+{de:'Stimme',g:'die',pl:'Stimmen',it:'la voce',itG:'f',em:'🗣️',cat:'dinge'},
+{de:'Stück',g:'das',pl:'Stücke',it:'il pezzo',itG:'m',em:'🧩',cat:'dinge'},
+{de:'Versuch',g:'der',pl:'Versuche',it:'il tentativo',itG:'m',em:'🧪',cat:'dinge'},
+{de:'Zeitung',g:'die',pl:'Zeitungen',it:'il giornale',itG:'m',em:'📰',cat:'dinge'},
+{de:'Null',g:'die',pl:'Nullen',it:'lo zero',itG:'m',em:'0️⃣',cat:'dinge'},
+{de:'Verein',g:'der',pl:'Vereine',it:"l'associazione",itG:'f',em:'⚽',cat:'dinge'},
+{de:'Chance',g:'die',pl:'Chancen',it:"l'occasione",itG:'f',em:'🎯',cat:'dinge'},
+{de:'Chor',g:'der',pl:'Chöre',it:'il coro',itG:'m',em:'🎤',cat:'dinge'},
+{de:'Euro',g:'der',pl:'Euros',it:"l'euro",itG:'m',em:'💶',cat:'dinge'},
+{de:'Cent',g:'der',pl:'Cents',it:'il centesimo',itG:'m',em:'🪙',cat:'dinge'},
+];
+
+/* Monats- und Wochentagsnamen: alle DER — als Regel-Lektion */
+const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const DAYS   = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+MONTHS.forEach(m => NOUNS.push({de:m,g:'der',pl:null,it:m==='März'?'marzo':null,itG:'m',em:'📅',cat:'zeit',rule:'monat'}));
+DAYS.forEach(d => NOUNS.push({de:d,g:'der',pl:null,it:null,itG:'m',em:'🗓️',cat:'zeit',rule:'tag'}));
+
+const byDe = {};
+NOUNS.forEach(n => byDe[n.de] = n);
+
+/* „Falle": Italienisch würde in die Irre führen */
+function isTrap(n) {
+  return !((n.g === 'der' && n.itG === 'm') || (n.g === 'die' && n.itG === 'f'));
+}
+
+/* Genus-Regeln für Hinweise */
+function genderRule(n) {
+  if (n.rule === 'monat' || MONTHS.includes(n.de)) return 'Alle Monate sind DER! 📅';
+  if (n.rule === 'tag'   || DAYS.includes(n.de))   return 'Alle Wochentage sind DER! 🗓️';
+  const w = n.de;
+  if (/(ung)$/.test(w))          return 'Wörter auf -ung sind immer DIE!';
+  if (/(heit|keit)$/.test(w))    return 'Wörter auf -heit und -keit sind immer DIE!';
+  if (/(chen|lein)$/.test(w))    return 'Wörter auf -chen sind immer DAS — auch das Mädchen!';
+  if (/(nis)$/.test(w))          return 'Wörter auf -nis sind meistens DAS!';
+  if (/in$/.test(w) && n.cat === 'menschen' && n.g === 'die') return 'Frauen-Wörter auf -in sind DIE!';
+  if (['Frühling','Sommer','Herbst','Winter'].includes(w)) return 'Alle Jahreszeiten sind DER! 🍂';
+  return null;
+}
+
+/* ═════════ Satz-Vorlagen für Kasus-Übungen ═════════
+   %A = Artikel-Lücke, %N = Nomen (Singular).
+   cats ODER only schränken die passenden Nomen ein.       */
+const TEMPLATES_AKK = [
+  {t:'Ich sehe %A %N.',            it:'Io vedo...',    cats:['tiere','menschen','haus','stadt','natur','dinge','kleidung','schule']},
+  {t:'Chiara hat %A %N.',          it:'Chiara ha...',  cats:['tiere','haus','kleidung','schule','dinge','essen']},
+  {t:'Wir suchen %A %N.',          it:'Cerchiamo...',  cats:['tiere','haus','kleidung','schule','dinge']},
+  {t:'Er malt %A %N.',             it:'Lui disegna...',cats:['tiere','natur','haus','stadt','essen']},
+  {t:'Sie kauft %A %N.',           it:'Lei compra...', cats:['essen','kleidung','schule','haus','dinge']},
+  {t:'Ich esse %A %N.',            it:'Io mangio...',  only:['Apfel','Birne','Brot','Ei','Kuchen','Pizza','Wurst','Gurke','Kirsche','Pflaume','Nuss','Pilz','Beere']},
+  {t:'Ich trinke %A %N.',          it:'Io bevo...',    only:['Saft','Tee','Milch']},
+  {t:'Wir besuchen %A %N.',        it:'Visitiamo...',  cats:['menschen'], also:['Zoo','Schloss','Stadt','Theater','Insel']},
+  {t:'Sie füttert %A %N.',         it:'Lei dà da mangiare a...', cats:['tiere']},
+  {t:'Ich brauche %A %N.',         it:'Ho bisogno di...', cats:['schule','kleidung','haus','dinge']},
+  {t:'Findest du %A %N?',          it:'Trovi...?',     cats:['tiere','schule','dinge','kleidung','haus']},
+  {t:'Marta möchte %A %N.',        it:'Marta vuole...', cats:['essen','dinge','kleidung','tiere']},
+];
+const TEMPLATES_DAT = [
+  {t:'Ich spiele mit %A %N.',      it:'Gioco con...',  cats:['tiere','menschen'], also:['Ball','Puppe','Teddy','Würfel','Computer']},
+  {t:'Sie fährt mit %A %N.',       it:'Lei viaggia con...', only:['Auto','Bus','Zug','Fahrrad','Bahn','Schiff','Boot','Taxi']},
+  {t:'Wir wohnen bei %A %N.',      it:'Abitiamo da...', cats:['menschen']},
+  {t:'Das Geschenk ist von %A %N.',it:'Il regalo è di...', cats:['menschen']},
+  {t:'Ich helfe %A %N.',           it:'Io aiuto...',   cats:['menschen'], also:['Hund','Katze','Vogel','Igel']},
+  {t:'Wir danken %A %N.',          it:'Ringraziamo...', cats:['menschen']},
+  {t:'Das Buch gehört %A %N.',     it:'Il libro appartiene a...', cats:['menschen']},
+  {t:'Er kommt aus %A %N.',        it:'Lui esce da...', only:['Haus','Schule','Garten','Zimmer','Kirche','Wald','Stadt','Küche','Theater','Zoo']},
+];
+
+/* Artikel-Tabellen */
+const ART = {
+  nom: { def: {der:'der', die:'die', das:'das'}, indef: {der:'ein',   die:'eine',  das:'ein'} },
+  akk: { def: {der:'den', die:'die', das:'das'}, indef: {der:'einen', die:'eine',  das:'ein'} },
+  dat: { def: {der:'dem', die:'der', das:'dem'}, indef: {der:'einem', die:'einer', das:'einem'} },
+};
+const OPTIONS_DEF   = ['der','die','das','den','dem'];
+const OPTIONS_INDEF = ['ein','eine','einen','einer','einem'];
+
+/* ═════════ Zustand & Speicher ═════════ */
+const PROFILES = [
+  { name: 'Chiara', avatar: '🌺' },
+  { name: 'Marta',  avatar: '🌸' },
+  { name: 'Eltern', avatar: '👨‍👩‍👧' },
+];
+let profile = null;
+
+const GOAL_PER_DAY = 30;          // beantwortete Fragen pro Tag ≈ 15 Minuten
+const NEW_PER_SESSION = 3;        // neue Wörter pro Runde
+const MAX_NEW_PER_DAY = 6;        // Deckel: hält die Wiederhol-Last dauerhaft bei ~15 min/Tag
+const THROTTLE_DUE = 20;          // ab so vielen fälligen Wiederholungen: erst Rückstau abbauen
+const SESSION_LEN = 10;
+const UNLOCK_AKK = 30;            // gemeisterte Wörter für Akkusativ
+const UNLOCK_DAT = 70;            // ... für Dativ
+const INTERVALS = [0, 1, 2, 4, 8, 16];  // Tage pro Leitner-Box
+
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function addDays(dateStr, d) {
+  const dt = new Date(dateStr + 'T12:00:00');
+  dt.setDate(dt.getDate() + d);
+  return dt.toISOString().slice(0, 10);
+}
+
+function safeLoad(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw === null || raw === '') return fallback;
+    return JSON.parse(raw);
+  } catch { try { localStorage.removeItem(key); } catch {} return fallback; }
+}
+function safeSave(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+  window.FamilySync?.markDirty(key);
+}
+
+function srsKey()  { return `gram_srs_${profile}`; }
+function daysKey() { return `gram_days_${profile}`; }
+function caseKey() { return `gram_case_${profile}`; }
+let srs = {};        // { de: {b, due, s, r, w, k} }
+let days = {};       // { 'YYYY-MM-DD': {a, c, n} }  n = neu eingeführte Wörter
+let caseStats = {};  // { akk: {a, c, gErr, cErr, bothErr}, dat: {...} }
+
+function loadState() {
+  srs       = safeLoad(srsKey(), {});
+  days      = safeLoad(daysKey(), {});
+  caseStats = safeLoad(caseKey(), {});
+}
+function saveState() { safeSave(srsKey(), srs); safeSave(daysKey(), days); safeSave(caseKey(), caseStats); }
+
+function masteredCount() {
+  return Object.values(srs).filter(e => e.b >= 3).length;
+}
+function streakCount() {
+  let n = 0, d = todayStr();
+  if (!days[d] || days[d].a === 0) d = addDays(d, -1);  // heute zählt, sobald geübt
+  while (days[d] && days[d].a > 0) { n++; d = addDays(d, -1); }
+  return n;
+}
+
+/* ═════════ Italienisch-Umschalter (für Eltern) ═════════ */
+function applyIt() {
+  const on = safeLoad('gram_it_on', false);
+  document.body.classList.toggle('show-it', on);
+  document.querySelectorAll('.it-toggle').forEach(b => b.classList.toggle('on', on));
+}
+function toggleIt() {
+  safeSave('gram_it_on', !safeLoad('gram_it_on', false));
+  applyIt();
+}
+
+/* ═════════ Navigation ═════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  const g = document.getElementById('home-greet');
+  g.textContent = `Hallo, ${profile}! 🦉`;
+  document.getElementById('stat-streak').textContent = streakCount();
+  document.getElementById('stat-mastered').textContent = masteredCount();
+
+  const t = days[todayStr()] || { a: 0 };
+  document.getElementById('goal-num').textContent = `${Math.min(t.a, GOAL_PER_DAY)} / ${GOAL_PER_DAY}`;
+  document.getElementById('goalbar').style.width = Math.min(100, t.a / GOAL_PER_DAY * 100) + '%';
+  renderWeekStrip();
+
+  const m = masteredCount();
+  const bAkk = document.getElementById('btn-akk'), nAkk = document.getElementById('note-akk');
+  const bDat = document.getElementById('btn-dat'), nDat = document.getElementById('note-dat');
+  if (m < UNLOCK_AKK) {
+    bAkk.classList.add('locked'); bAkk.disabled = true;
+    nAkk.textContent = `🔒 Noch ${UNLOCK_AKK - m} Wörter meistern, dann geht's los!`;
+  } else { bAkk.classList.remove('locked'); bAkk.disabled = false; nAkk.textContent = ''; }
+  if (m < UNLOCK_DAT) {
+    bDat.classList.add('locked'); bDat.disabled = true;
+    nDat.textContent = m >= UNLOCK_AKK ? `🔒 Noch ${UNLOCK_DAT - m} Wörter bis zum Dativ!` : '';
+  } else { bDat.classList.remove('locked'); bDat.disabled = false; nDat.textContent = ''; }
+
+  // Nach erreichtem Tagesziel: feiern + nur noch Extra-Runden (reine Wiederholung)
+  const goalDone = t.a >= GOAL_PER_DAY;
+  const daily = document.getElementById('btn-daily');
+  daily.textContent = goalDone ? '⭐ Extra-Runde (Wiederholung)' : '🎯 Tägliches Training';
+
+  const lines = goalDone ? [
+    'Tagesziel geschafft — super! 🎉 Morgen geht es weiter!',
+    'Genug für heute! Dein Gehirn lernt jetzt im Schlaf weiter. 😴✨',
+  ] : [
+    'Zusammen lernen wir der, die und das!',
+    'Jeden Tag ein bisschen — das ist das Geheimnis! 🤫',
+    'Blau ist DER, rot ist DIE, grün ist DAS!',
+    'Du schaffst das! Ich glaube an dich! 💪',
+  ];
+  document.getElementById('home-line').textContent = lines[Math.floor(Math.random() * lines.length)];
+  showScreen('s-home');
+}
+
+function switchProfile() {
+  localStorage.removeItem('gram_lastProfile');
+  initProfileScreen();
+}
+
+/* Letzte 7 Tage: 🔥 = Tagesziel geschafft, Punkt = geübt, leer = Pausentag */
+function renderWeekStrip() {
+  const today = todayStr();
+  const names = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+  let html = '';
+  for (let i = 6; i >= 0; i--) {
+    const ds = addDays(today, -i);
+    const d = days[ds];
+    const met = d && d.a >= GOAL_PER_DAY;
+    const part = d && d.a > 0 && !met;
+    const wd = names[new Date(ds + 'T12:00:00').getDay()];
+    html += `<div class="wday ${met ? 'met' : ''} ${part ? 'part' : ''} ${i === 0 ? 'today' : ''}">
+      <div class="circ">${met ? '🔥' : part ? '✏️' : ''}</div><div class="lbl">${wd}</div></div>`;
+  }
+  document.getElementById('week-strip').innerHTML = html;
+}
+
+/* ═════════ Abzeichen ═════════ */
+const BADGES = [
+  { id:'goal1',    em:'🎯', lbl:'Erstes Tagesziel',          cond: f => f.goalToday },
+  { id:'w10',      em:'🥉', lbl:'10 Wörter gemeistert',      cond: f => f.m >= 10 },
+  { id:'w25',      em:'🥈', lbl:'25 Wörter gemeistert',      cond: f => f.m >= 25 },
+  { id:'w50',      em:'🥇', lbl:'50 Wörter gemeistert',      cond: f => f.m >= 50 },
+  { id:'w100',     em:'💎', lbl:'100 Wörter gemeistert',     cond: f => f.m >= 100 },
+  { id:'w200',     em:'👑', lbl:'200 Wörter gemeistert',     cond: f => f.m >= 200 },
+  { id:'streak3',  em:'🔥', lbl:'3 Tage in Folge',           cond: f => f.streak >= 3 },
+  { id:'streak7',  em:'🚀', lbl:'7 Tage in Folge',           cond: f => f.streak >= 7 },
+  { id:'streak14', em:'🌟', lbl:'14 Tage in Folge',          cond: f => f.streak >= 14 },
+  { id:'traps10',  em:'🇮🇹', lbl:'10 Fallen-Wörter besiegt',  cond: f => f.traps >= 10 },
+  { id:'akk',      em:'✍️', lbl:'Akkusativ freigeschaltet',  cond: f => f.m >= UNLOCK_AKK },
+  { id:'dat',      em:'✉️', lbl:'Dativ freigeschaltet',      cond: f => f.m >= UNLOCK_DAT },
+  { id:'perfect',  em:'🏆', lbl:'Perfekte Runde',            cond: (f, x) => !!x.perfect },
+];
+function badgesKey() { return `gram_badges_${profile}`; }
+
+// Prüft alle Bedingungen und vergibt neue Abzeichen; gibt die frisch
+// verdienten zurück (für die Feier am Rundenende).
+function checkBadges(extra = {}) {
+  const earned = safeLoad(badgesKey(), {});
+  const t = days[todayStr()] || { a: 0 };
+  const facts = {
+    m: masteredCount(),
+    streak: streakCount(),
+    goalToday: t.a >= GOAL_PER_DAY,
+    traps: NOUNS.filter(n => isTrap(n) && srs[n.de] && srs[n.de].b >= 3).length,
+  };
+  const fresh = [];
+  BADGES.forEach(b => {
+    if (!earned[b.id] && b.cond(facts, extra)) { earned[b.id] = todayStr(); fresh.push(b); }
+  });
+  if (fresh.length) safeSave(badgesKey(), earned);
+  return fresh;
+}
+
+/* ═════════ Sitzungsaufbau ═════════ */
+let session = [];        // Fragen der aktuellen Runde
+let sIdx = 0;
+let sCorrect = 0;
+let sNewWords = [];
+let attempt = 0;         // 0 = erster Versuch, 1 = Wiederholung
+let lastSessionType = 'mixed';
+let sessionStartMastered = 0;
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function dueWords() {
+  const t = todayStr();
+  return NOUNS.filter(n => {
+    const e = srs[n.de];
+    return e && e.b < 5 && e.due <= t;
+  }).sort((a, b) => {
+    const ea = srs[a.de], eb = srs[b.de];
+    if (ea.b !== eb.b) return ea.b - eb.b;
+    return (isTrap(b) ? 1 : 0) - (isTrap(a) ? 1 : 0);
+  });
+}
+function newWords(count) {
+  if (count <= 0) return [];
+  const fresh = NOUNS.filter(n => !srs[n.de]);
+  // Tier 1: Fallen-Wörter (Italienisch führt in die Irre) zuerst einführen —
+  // gemischt mit leichteren Wörtern (2:1), damit es nicht frustriert.
+  const traps = shuffle(fresh.filter(isTrap));
+  const safe  = shuffle(fresh.filter(n => !isTrap(n)));
+  const out = [];
+  while (out.length < count && (traps.length || safe.length)) {
+    if (traps.length) out.push(traps.shift());
+    if (out.length < count && traps.length) out.push(traps.shift());
+    if (out.length < count && safe.length)  out.push(safe.shift());
+  }
+  return out;
+}
+
+function genderQuestion(n) {
+  const e = srs[n.de];
+  const typed = e && e.k >= 3;   // 3× in Folge richtig → Artikel selbst schreiben
+  return { kind: 'gender', noun: n, typed };
+}
+
+function caseQuestion(kase) {
+  const templates = kase === 'akk' ? TEMPLATES_AKK : TEMPLATES_DAT;
+  // Nomen, die schon etwas sitzen (Box ≥ 2), sonst irgendein bekanntes
+  const known = NOUNS.filter(n => srs[n.de] && srs[n.de].b >= 2);
+  const pool = known.length >= 10 ? known : NOUNS.filter(n => srs[n.de]);
+  for (let tries = 0; tries < 40; tries++) {
+    const tpl = templates[Math.floor(Math.random() * templates.length)];
+    const fits = pool.filter(n =>
+      (tpl.cats && tpl.cats.includes(n.cat)) ||
+      (tpl.only && tpl.only.includes(n.de)) ||
+      (tpl.also && tpl.also.includes(n.de))
+    ).filter(n => !MONTHS.includes(n.de) && !DAYS.includes(n.de) && n.pl !== undefined);
+    if (fits.length) {
+      const n = fits[Math.floor(Math.random() * fits.length)];
+      const defArt = Math.random() < 0.6 ? 'def' : 'indef';
+      return { kind: 'case', kase, tpl, noun: n, defArt };
+    }
+  }
+  return null;
+}
+
+function startSession(type) {
+  lastSessionType = type;
+  session = [];
+  sIdx = 0; sCorrect = 0; sNewWords = [];
+  sessionStartMastered = masteredCount();
+
+  if (type === 'gender' || type === 'mixed') {
+    const m = masteredCount();
+    const caseCount = (type === 'mixed' && m >= UNLOCK_AKK) ? 4 : 0;
+    const genderCount = SESSION_LEN - caseCount;
+
+    // Wie viele neue Wörter sind heute noch erlaubt? Drossel gegen Überlastung:
+    // – Tagesdeckel MAX_NEW_PER_DAY
+    // – kein neues Wort, solange der Wiederhol-Rückstau zu groß ist
+    // – nach erreichtem Tagesziel nur noch Wiederholung (Extra-Runde)
+    const tKey = todayStr();
+    const introducedToday = (days[tKey] && days[tKey].n) || 0;
+    const answeredToday   = (days[tKey] && days[tKey].a) || 0;
+    let allowNew = Math.max(0, MAX_NEW_PER_DAY - introducedToday);
+    if (dueWords().length > THROTTLE_DUE) allowNew = 0;
+    if (answeredToday >= GOAL_PER_DAY)    allowNew = 0;
+
+    // Wiederholungen zuerst, dann neue Wörter; Lücken mit bekannten Wörtern
+    // auffüllen. Ganz neue Profile dürfen die Runde mit neuen Wörtern füllen.
+    const fresh = newWords(Math.min(NEW_PER_SESSION, allowNew));
+    let picks = dueWords().slice(0, genderCount - fresh.length).concat(fresh);
+    if (picks.length < genderCount) {
+      const extra = NOUNS.filter(n => srs[n.de] && !picks.includes(n)).slice(0, genderCount - picks.length);
+      picks = picks.concat(extra);
+    }
+    if (picks.length < genderCount) {
+      const moreFresh = NOUNS.filter(n => !srs[n.de] && !picks.includes(n));
+      picks = picks.concat(shuffle(moreFresh.slice()).slice(0, genderCount - picks.length));
+    }
+    sNewWords = picks.filter(n => !srs[n.de]).map(n => n.de);
+    session = shuffle(picks).map(genderQuestion);
+
+    for (let i = 0; i < caseCount; i++) {
+      const useDat = masteredCount() >= UNLOCK_DAT && Math.random() < 0.4;
+      const q = caseQuestion(useDat ? 'dat' : 'akk');
+      if (q) session.push(q);
+    }
+  } else {
+    // reine Satz-Runde
+    for (let i = 0; i < SESSION_LEN; i++) {
+      const q = caseQuestion(type);
+      if (q) session.push(q);
+    }
+  }
+
+  if (!session.length) { alert('Erst ein paar Wörter lernen! 🦉'); return; }
+  showScreen('s-quiz');
+  renderQuestion();
+}
+
+function quitSession() { goHome(); }
+
+/* ═════════ Frage anzeigen ═════════ */
+function renderProgress() {
+  const el = document.getElementById('q-progress');
+  el.innerHTML = session.map((_, i) =>
+    `<div class="q-dot ${i < sIdx ? 'done' : i === sIdx ? 'now' : ''}"></div>`).join('');
+}
+
+function renderQuestion() {
+  attempt = 0;
+  renderProgress();
+  const q = session[sIdx];
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback'; fb.innerHTML = '';
+  document.getElementById('solution').className = 'solution';
+  document.getElementById('solution').innerHTML = '';
+  document.getElementById('next-btn').classList.remove('show');
+  const sent = document.getElementById('q-sentence');
+  const word = document.getElementById('q-word');
+  const answers = document.getElementById('answers');
+  const typebox = document.getElementById('typebox');
+
+  if (q.kind === 'gender') {
+    document.getElementById('q-emoji').textContent = q.noun.em;
+    word.style.display = 'block';
+    word.textContent = q.noun.de;
+    sent.style.display = 'none';
+    document.getElementById('q-task').innerHTML =
+      'Der, die oder das? <span class="it inline">Qual è l\'articolo giusto?</span>';
+    if (q.typed) {
+      answers.innerHTML = '';
+      typebox.style.display = 'flex';
+      const inp = document.getElementById('type-input');
+      inp.value = ''; inp.disabled = false;
+      setTimeout(() => inp.focus(), 100);
+    } else {
+      typebox.style.display = 'none';
+      answers.innerHTML = ['der', 'die', 'das'].map(a =>
+        `<button class="ans ${a}" onclick="answerGender('${a}', this)">${a}</button>`).join('');
+    }
+  } else {
+    const art = ART[q.kase][q.defArt][q.noun.g];
+    // n-Deklination: „einen Bären", „mit dem Hasen" — Beugungsform im Satz verwenden
+    q.nounForm = (q.kase !== 'nom' && q.noun.obl) ? q.noun.obl : q.noun.de;
+    document.getElementById('q-emoji').textContent = q.noun.em;
+    word.style.display = 'none';
+    sent.style.display = 'block';
+    sent.innerHTML = q.tpl.t
+      .replace('%A', '<span class="gap" id="gap">___</span>')
+      .replace('%N', q.nounForm);
+    document.getElementById('q-task').innerHTML =
+      `Welches Wort passt in die Lücke? <span class="it inline">${q.tpl.it || ''}</span>`;
+    typebox.style.display = 'none';
+    const opts = q.defArt === 'def' ? OPTIONS_DEF : OPTIONS_INDEF;
+    answers.innerHTML = opts.map(a =>
+      `<button class="ans small" onclick="answerCase('${a}', this)">${a}</button>`).join('');
+    q.solution = art;
+  }
+}
+
+/* ═════════ Genus beantworten ═════════ */
+function updateSrs(de, firstTryCorrect) {
+  const t = todayStr();
+  let e = srs[de];
+  const isNew = !e;
+  if (!e) e = srs[de] = { b: 0, due: t, s: 0, r: 0, w: 0, k: 0 };
+  e.s++;
+  if (firstTryCorrect) {
+    e.r++; e.k++;
+    e.b = Math.min(5, e.b + 1);
+  } else {
+    e.w++; e.k = 0;
+    e.b = Math.max(0, e.b - 1);
+  }
+  e.due = addDays(t, INTERVALS[e.b]);
+  const d = days[t] || (days[t] = { a: 0, c: 0 });
+  d.a++; if (firstTryCorrect) d.c++;
+  if (isNew) d.n = (d.n || 0) + 1;
+  d.m = masteredCount();   // Tages-Schnappschuss für das Fortschritts-Diagramm
+  saveState();
+}
+
+/* Kasus-Statistik für das Eltern-Cockpit: pro Kasus Versuche, Ersttreffer
+   und Fehlerart (Genus- vs. Kasus-Fehler beim ERSTEN Instinkt). */
+function recordCase(kase, { c = 0, errType = null } = {}) {
+  const s = caseStats[kase] || (caseStats[kase] = { a: 0, c: 0, gErr: 0, cErr: 0, bothErr: 0 });
+  s.a++; s.c += c;
+  if (errType === 'gender') s.gErr++;
+  else if (errType === 'case') s.cErr++;
+  else if (errType === 'both') s.bothErr++;
+  saveState();
+}
+
+const PRAISE = ['Super! 🎉', 'Genau richtig! ⭐', 'Toll gemacht! 💪', 'Perfekt! 🌟', 'Klasse! 🎊', 'Richtig gut! 🥳'];
+
+function trapNote(n) {
+  if (!isTrap(n) || !n.it) return '';
+  return `<span class="it">Attenzione: in italiano si dice <b>${n.it}</b> — ma in tedesco è <b>${n.g} ${n.de}</b>!</span>`;
+}
+
+function showSolutionGender(n) {
+  const sol = document.getElementById('solution');
+  sol.innerHTML = `<span class="art-${n.g}">${n.g}</span> ${n.de}` +
+    (n.pl ? `<span class="plural">Mehrzahl: die ${n.pl}</span>` : '');
+  sol.classList.add('show');
+}
+
+function answerGender(choice, btn) {
+  const q = session[sIdx];
+  const n = q.noun;
+  const fb = document.getElementById('feedback');
+
+  if (choice === n.g) {
+    if (btn) btn.classList.add('correct');
+    const first = attempt === 0;
+    if (first) sCorrect++;
+    q.result = first ? 'right' : 'retry';
+    updateSrs(n.de, first);
+    fb.className = 'feedback show good';
+    fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] +
+      (genderRule(n) ? `<br>💡 ${genderRule(n)}` : '') + trapNote(n);
+    showSolutionGender(n);
+    lockAnswers();
+    document.getElementById('next-btn').classList.add('show');
+  } else if (attempt === 0) {
+    attempt = 1;
+    if (btn) { btn.classList.add('wrong'); setTimeout(() => btn.classList.remove('wrong'), 600); }
+    fb.className = 'feedback show hint';
+    const rule = genderRule(n);
+    fb.innerHTML = rule
+      ? `Fast! 💡 Tipp: ${rule} Versuch's nochmal!`
+      : `Hmm, das war's nicht. 🤔 Denk kurz nach — du schaffst das! Versuch's nochmal!`;
+  } else {
+    if (btn) btn.classList.add('wrong');
+    q.result = 'wrong';
+    updateSrs(n.de, false);
+    fb.className = 'feedback show bad';
+    fb.innerHTML = `Fast geschafft! Es heißt <b>${n.g} ${n.de}</b>. Das üben wir morgen nochmal — dann klappt's! 🦉` + trapNote(n);
+    showSolutionGender(n);
+    lockAnswers();
+    document.getElementById('next-btn').classList.add('show');
+  }
+}
+
+function submitTyped() {
+  const inp = document.getElementById('type-input');
+  const val = inp.value.trim().toLowerCase();
+  if (!val) return;
+  if (!['der', 'die', 'das'].includes(val)) {
+    const fb = document.getElementById('feedback');
+    fb.className = 'feedback show hint';
+    fb.innerHTML = 'Schreibe <b>der</b>, <b>die</b> oder <b>das</b>! ✏️';
+    return;
+  }
+  const wasRetry = attempt === 1;                 // vor answerGender festhalten
+  const correct  = val === session[sIdx].noun.g;
+  answerGender(val, null);
+  if (correct || wasRetry) inp.disabled = true;   // Frage gelöst (richtig oder 2. Fehlversuch)
+  else { inp.value = ''; inp.focus(); }           // erster Fehlversuch → nochmal
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('s-quiz').classList.contains('active')
+      && document.getElementById('typebox').style.display !== 'none'
+      && !document.getElementById('type-input').disabled) {
+    submitTyped();
+  }
+});
+
+/* ═════════ Kasus beantworten ═════════ */
+/* Diagnose: falsches Genus oder falscher Kasus? */
+function diagnoseCase(choice, q) {
+  const n = q.noun, table = ART;
+  const kasusOfChoice = [];
+  ['nom', 'akk', 'dat'].forEach(k => {
+    ['def', 'indef'].forEach(d => {
+      Object.keys(table[k][d]).forEach(g => {
+        if (table[k][d][g] === choice) kasusOfChoice.push({ k, g });
+      });
+    });
+  });
+  const rightGender = kasusOfChoice.some(x => x.g === n.g);
+  const rightCase   = kasusOfChoice.some(x => x.k === q.kase);
+  if (!rightGender && rightCase)  return 'gender';
+  if (rightGender && !rightCase)  return 'case';
+  return 'both';
+}
+
+const CASE_RULES = {
+  akk: 'Wen oder was? → Akkusativ. Nur DER wird zu DEN (ein → einen)!',
+  dat: 'Wem? → Dativ: dem (der), der (die), dem (das) — mit, bei, zu, von, aus wollen immer den Dativ!',
+};
+
+function answerCase(choice, btn) {
+  const q = session[sIdx];
+  const n = q.noun;
+  const fb = document.getElementById('feedback');
+  const gap = document.getElementById('gap');
+
+  if (choice === q.solution) {
+    if (btn) btn.classList.add('correct');
+    if (gap) { gap.textContent = choice; }
+    const first = attempt === 0;
+    if (first) sCorrect++;
+    q.result = first ? 'right' : 'retry';
+    // Kasus-Antworten pflegen auch das Nomen-Gedächtnis (halbe Wirkung: nur bei Fehler zurückstufen)
+    const t = todayStr();
+    const d = days[t] || (days[t] = { a: 0, c: 0 });
+    d.a++; if (first) d.c++;
+    d.m = masteredCount();
+    recordCase(q.kase, first ? { c: 1 } : { errType: q.errType });
+    fb.className = 'feedback show good';
+    fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] +
+      ` <b>${q.solution} ${q.nounForm}</b> — genau richtig!`;
+    lockAnswers();
+    document.getElementById('next-btn').classList.add('show');
+  } else if (attempt === 0) {
+    attempt = 1;
+    if (btn) { btn.classList.add('wrong'); setTimeout(() => btn.classList.remove('wrong'), 600); }
+    const why = diagnoseCase(choice, q);
+    q.errType = why;   // erster Instinkt zählt für die Eltern-Statistik
+    fb.className = 'feedback show hint';
+    if (why === 'gender') {
+      fb.innerHTML = `Fast! 💡 Denk dran: Es heißt <b>${n.g} ${n.de}</b>. Versuch's nochmal!`;
+    } else if (why === 'case') {
+      fb.innerHTML = `Fast! 💡 ${CASE_RULES[q.kase]} Versuch's nochmal!`;
+    } else {
+      fb.innerHTML = `Hmm! 💡 Es heißt <b>${n.g} ${n.de}</b> — und hier: ${CASE_RULES[q.kase]} Versuch's nochmal!`;
+    }
+  } else {
+    if (btn) btn.classList.add('wrong');
+    if (gap) gap.textContent = q.solution;
+    q.result = 'wrong';
+    const t = todayStr();
+    const d = days[t] || (days[t] = { a: 0, c: 0 });
+    d.a++;
+    // Genus-Fehler im Satz → das Nomen kommt zurück in die Wiederholung
+    if (diagnoseCase(choice, q) !== 'case' && srs[n.de]) {
+      srs[n.de].b = Math.max(0, srs[n.de].b - 1);
+      srs[n.de].due = todayStr();
+      srs[n.de].k = 0;
+    }
+    d.m = masteredCount();
+    recordCase(q.kase, { errType: q.errType || diagnoseCase(choice, q) });
+    fb.className = 'feedback show bad';
+    fb.innerHTML = `Gleich hast du's! Richtig ist: <b>${q.solution} ${q.nounForm}</b> (${n.g} ${n.de}). ${CASE_RULES[q.kase]}`;
+    lockAnswers();
+    document.getElementById('next-btn').classList.add('show');
+  }
+}
+
+function lockAnswers() {
+  document.querySelectorAll('#answers .ans').forEach(b => b.onclick = null);
+}
+
+function nextQuestion() {
+  sIdx++;
+  if (sIdx >= session.length) { finishSession(); return; }
+  renderQuestion();
+}
+
+/* ═════════ Runde beenden ═════════ */
+function finishSession() {
+  const total = session.length;
+  const pct = sCorrect / total;
+  const emoji = pct >= 0.9 ? '🏆' : pct >= 0.7 ? '🎉' : pct >= 0.5 ? '💪' : '🌱';
+  const title = pct >= 0.9 ? 'Fantastisch!' : pct >= 0.7 ? 'Super gemacht!' : pct >= 0.5 ? 'Gut gekämpft!' : 'Guter Anfang!';
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-score').textContent = `${sCorrect} von ${total} beim ersten Versuch!`;
+
+  const m = masteredCount();
+  const t = days[todayStr()] || { a: 0 };
+
+  // Neue Abzeichen prüfen (perfekte Runde zählt ab 8 Fragen)
+  const newBadges = checkBadges({ perfect: sCorrect === total && total >= 8 });
+
+  let detail = '';
+  if (newBadges.length) {
+    detail += newBadges.map(b =>
+      `<div style="text-align:center; font-weight:900; font-size:1.05rem; color:var(--prime); margin-bottom:8px;">
+        🏅 Neues Abzeichen: ${b.em} ${b.lbl}!</div>`).join('');
+  }
+
+  // Rückblick: jedes Wort der Runde mit Ampelfarbe (grün/gelb/rot)
+  detail += `<div style="font-weight:800; font-size:.9rem;">Das hast du geübt:</div><div class="recap-grid">` +
+    session.map(q => {
+      const txt = q.kind === 'gender' ? `${q.noun.em} ${q.noun.g} ${q.noun.de}` : `${q.noun.em} ${q.solution} ${q.nounForm}`;
+      const cls = q.result === 'right' ? '' : q.result === 'retry' ? ' retry' : ' wrong';
+      return `<span class="recap-chip${cls}">${txt}</span>`;
+    }).join('') + `</div>`;
+
+  detail += `<div style="font-weight:800; line-height:2; margin-top:12px;">`;
+  if (sNewWords.length) detail += `🆕 Neue Wörter: ${sNewWords.map(w => `${byDe[w].g} ${w}`).join(', ')}<br>`;
+  detail += `💎 Gemeisterte Wörter: ${m}<br>`;
+  detail += `📅 Heute geübt: ${t.a} von ${GOAL_PER_DAY}`;
+  if (t.a >= GOAL_PER_DAY) detail += ` — Tagesziel geschafft! 🔥`;
+  detail += `</div>`;
+  if (sessionStartMastered < UNLOCK_AKK && m >= UNLOCK_AKK) {
+    detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: Sätze üben (Akkusativ)!</div>`;
+  } else if (sessionStartMastered < UNLOCK_DAT && m >= UNLOCK_DAT) {
+    detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: Sätze üben (Dativ)!</div>`;
+  }
+  document.getElementById('result-detail').innerHTML = detail;
+  showScreen('s-result');
+}
+
+/* ═════════ Schatzkiste ═════════ */
+function showProgress() {
+  const buckets = { neu: 0, lernen: 0, fast: 0, gemeistert: 0 };
+  NOUNS.forEach(n => {
+    const e = srs[n.de];
+    if (!e) buckets.neu++;
+    else if (e.b <= 1) buckets.lernen++;
+    else if (e.b <= 2) buckets.fast++;
+    else buckets.gemeistert++;
+  });
+  const total = NOUNS.length;
+  const rows = [
+    ['💎 Gemeistert', buckets.gemeistert, 'var(--green)', 'conquistate'],
+    ['🌤 Fast sicher', buckets.fast, 'var(--gold)', 'quasi sicure'],
+    ['🌱 Am Lernen', buckets.lernen, 'var(--coral)', 'in corso'],
+    ['📦 Noch neu', buckets.neu, '#b7c4c2', 'ancora nuove'],
+  ];
+  document.getElementById('chest-card').innerHTML =
+    `<h2 style="margin-bottom:8px;">Dein Wörter-Schatz (${total} Wörter)</h2>` +
+    rows.map(([lbl, num, color, it]) => `
+      <div class="chest-row">
+        <div class="chest-lbl">${lbl}<span class="it" style="font-size:.7rem;">${it}</span></div>
+        <div class="chest-bar-wrap"><div class="chest-bar" style="width:${num / total * 100}%; background:${color};"></div></div>
+        <div class="chest-num">${num}</div>
+      </div>`).join('');
+
+  // ── Fortschritts-Diagramm: gemeisterte Wörter, letzte 14 Tage ──
+  const today = todayStr();
+  let carry = 0;
+  Object.keys(days).sort().forEach(ds => {
+    if (ds < addDays(today, -13) && days[ds].m != null) carry = days[ds].m;
+  });
+  const pts = [];
+  for (let i = 13; i >= 0; i--) {
+    const ds = addDays(today, -i);
+    if (days[ds] && days[ds].m != null) carry = days[ds].m;
+    pts.push({ ds, m: carry });
+  }
+  const maxM = Math.max(10, ...pts.map(p => p.m));
+  const fmtD = ds => `${ds.slice(8, 10)}.${ds.slice(5, 7)}.`;
+  document.getElementById('growth-card').innerHTML =
+    `<h2 style="margin-bottom:2px;">📈 Dein Wörter-Berg wächst!</h2>
+     <p class="it" style="font-size:.85rem;">Parole conquistate negli ultimi 14 giorni</p>
+     <div class="chart-wrap">` +
+    pts.map((p, i) => `<div class="chart-bar" style="height:${Math.max(3, p.m / maxM * 100)}%;">
+      ${i === pts.length - 1 ? `<span class="cb-val">${p.m}</span>` : ''}</div>`).join('') +
+    `</div><div class="chart-lbls"><span>${fmtD(pts[0].ds)}</span><span>heute</span></div>`;
+
+  // ── Abzeichen ──
+  const earnedBadges = safeLoad(badgesKey(), {});
+  const earnedCount = Object.keys(earnedBadges).length;
+  document.getElementById('badges-card').innerHTML =
+    `<h2 style="margin-bottom:10px;">🏅 Meine Abzeichen (${earnedCount}/${BADGES.length})</h2>
+     <div class="badge-grid">` +
+    BADGES.map(b => `<div class="badge ${earnedBadges[b.id] ? '' : 'locked'}">
+      <div class="b-em">${b.em}</div><div class="b-lbl">${b.lbl}</div></div>`).join('') +
+    `</div>`;
+
+  const m = masteredCount();
+  let unlock = `<h2 style="margin-bottom:8px;">🔓 Nächste Abenteuer</h2><div style="font-weight:700; line-height:1.9;">`;
+  unlock += m >= UNLOCK_AKK
+    ? `✅ Akkusativ-Sätze — freigeschaltet!<br>`
+    : `🔒 Akkusativ-Sätze: noch ${UNLOCK_AKK - m} Wörter<br>`;
+  unlock += m >= UNLOCK_DAT
+    ? `✅ Dativ-Sätze — freigeschaltet!`
+    : `🔒 Dativ-Sätze: noch ${UNLOCK_DAT - m} Wörter`;
+  unlock += `</div>`;
+  document.getElementById('unlock-card').innerHTML = unlock;
+
+  // Fallen-Wörter, die noch wackeln (Box < 3, mindestens einmal falsch)
+  const wobbly = NOUNS.filter(n => {
+    const e = srs[n.de];
+    return e && e.w > 0 && e.b < 3 && isTrap(n);
+  }).slice(0, 12);
+  document.getElementById('trap-card').innerHTML = wobbly.length
+    ? `<h2 style="margin-bottom:4px;">🇮🇹→🇩🇪 Achtung, Fallen-Wörter!</h2>
+       <p class="it" style="font-size:.85rem;">Parole con genere diverso dall'italiano — le più insidiose!</p>
+       <div class="trap-list">` +
+      wobbly.map(n => `<span class="trap-chip">${n.g} ${n.de}${n.it ? `<span class="it inline" style="font-size:.75rem;"> · ${n.it}</span>` : ''}</span>`).join('') +
+      `</div>`
+    : `<h2>🦉 Keine Fallen-Wörter offen — stark!</h2>`;
+
+  showScreen('s-progress');
+}
+
+/* ═════════ Eltern-Cockpit ═════════ */
+const CAT_LABELS = {
+  tiere:'🐾 Tiere', menschen:'👨‍👩‍👧 Menschen', koerper:'💪 Körper', essen:'🍎 Essen',
+  schule:'🏫 Schule', haus:'🏠 Haus', kleidung:'👕 Kleidung', natur:'🌳 Natur',
+  stadt:'🏙️ Stadt', zeit:'⏰ Zeit', dinge:'📦 Dinge',
+};
+const STATUS_ORDER = ['hilfe', 'arbeit', 'fast', 'sicher', 'neu'];
+const STATUS_LABELS = {
+  hilfe:  '🔴 Braucht Hilfe', arbeit: '🌱 In Arbeit', fast: '🌤 Fast sicher',
+  sicher: '✅ Sicher',        neu:    '⬜ Noch neu',
+};
+
+let elChild  = 'Chiara';
+let elStatus = 'alle';
+let elCat    = 'alle';
+
+function nounStatus(e) {
+  if (!e) return 'neu';
+  if (e.w >= 3 && e.b <= 1) return 'hilfe';
+  if (e.b >= 4) return 'sicher';
+  if (e.b === 3) return 'fast';
+  return 'arbeit';
+}
+
+function showEltern() { elternRender(); showScreen('s-eltern'); }
+
+const SYNC_STATUS_TEXT = {
+  aus:     '⚪ Cloud-Sync ist auf diesem Gerät nicht eingerichtet. Einmal den Familien-Link öffnen, dann läuft alles automatisch.',
+  sync:    '🔄 Synchronisiert gerade …',
+  ok:      '✅ Mit der Familien-Cloud verbunden — Fortschritt wird automatisch auf allen Geräten abgeglichen.',
+  offline: '📡 Gerade offline — Fortschritt ist lokal sicher und wird beim nächsten Internet-Kontakt abgeglichen.',
+};
+function elRenderSyncStatus() {
+  const el = document.getElementById('el-sync-status');
+  if (el) el.textContent = SYNC_STATUS_TEXT[window.FamilySync?.status || 'aus'];
+}
+window.addEventListener('familysync-status', elRenderSyncStatus);
+
+function elImportBackup(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const n = FamilySync.importAll(reader.result);
+      alert(`✅ Backup geladen — ${n} Datensätze übernommen (bestehender Fortschritt bleibt erhalten).`);
+      loadState(); elternRender();
+    } catch (e) { alert('❌ ' + e.message); }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+function elSetChild(name)  { elChild = name;  elternRender(); }
+function elSetStatus(s)    { elStatus = s;    elternRender(); }
+function elSetCat(c)       { elCat = c;       elternRender(); }
+
+function elternRender() {
+  elRenderSyncStatus();
+  const kids = ['Chiara', 'Marta'];
+  document.getElementById('el-tabs').innerHTML = kids.map(k =>
+    `<button class="el-tab ${k === elChild ? 'active' : ''}" onclick="elSetChild('${k}')">${k}</button>`).join('');
+
+  const kSrs  = safeLoad(`gram_srs_${elChild}`, {});
+  const kCase = safeLoad(`gram_case_${elChild}`, {});
+  const kDays = safeLoad(`gram_days_${elChild}`, {});
+
+  // ── Überblick ──
+  const counts = { hilfe: 0, arbeit: 0, fast: 0, sicher: 0, neu: 0 };
+  NOUNS.forEach(n => counts[nounStatus(kSrs[n.de])]++);
+  const activeDays = Object.values(kDays).filter(d => d.a > 0).length;
+  const totalAnswers = Object.values(kDays).reduce((s, d) => s + d.a, 0);
+  const totalCorrect = Object.values(kDays).reduce((s, d) => s + (d.c || 0), 0);
+  document.getElementById('el-summary').innerHTML =
+    `<h2 style="margin-bottom:6px;">Überblick</h2>
+     <div style="font-weight:700; line-height:1.9; font-size:.92rem;">
+       ✅ Sicher: <b>${counts.sicher}</b> · 🌤 Fast: <b>${counts.fast}</b> ·
+       🌱 In Arbeit: <b>${counts.arbeit}</b> · 🔴 Braucht Hilfe: <b>${counts.hilfe}</b> · ⬜ Neu: <b>${counts.neu}</b><br>
+       📅 Übungstage: <b>${activeDays}</b> · Antworten gesamt: <b>${totalAnswers}</b> ·
+       Ersttreffer-Quote: <b>${totalAnswers ? Math.round(totalCorrect / totalAnswers * 100) : 0}%</b>
+     </div>`;
+
+  // ── Kasus-Panel: Wo hakt es — Genus oder Deklination? ──
+  const caseNames = { akk: 'Akkusativ', dat: 'Dativ' };
+  let caseHtml = '<h2 style="margin-bottom:4px;">Kasus-Übungen</h2>';
+  let any = false;
+  ['akk', 'dat'].forEach(k => {
+    const s = kCase[k];
+    if (!s || !s.a) return;
+    any = true;
+    const pct = Math.round(s.c / s.a * 100);
+    caseHtml += `
+      <div class="el-case-row">
+        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:.9rem;">
+          <span>${caseNames[k]}</span><span>${pct}% richtig (${s.c}/${s.a})</span>
+        </div>
+        <div class="el-case-bar-wrap"><div class="el-case-bar" style="width:${pct}%;"></div></div>
+        <div class="el-err">
+          <span>Genus-Fehler: <b>${s.gErr}</b></span>
+          <span>Kasus-Fehler: <b>${s.cErr}</b></span>
+          <span>Beides: <b>${s.bothErr}</b></span>
+        </div>
+      </div>`;
+  });
+  if (!any) caseHtml += `<p style="font-weight:700; color:var(--soft); font-size:.9rem;">Noch keine Satz-Übungen gemacht.</p>`;
+  else caseHtml += `<p class="it" style="font-size:.8rem; margin-top:6px;">Molti errori di genere → ripassare gli articoli. Molti errori di caso → spiegare la regola (es. il dativo) aiuta di più.</p>`;
+  document.getElementById('el-case').innerHTML = caseHtml;
+
+  // ── Filter-Pills ──
+  const statuses = ['alle', ...STATUS_ORDER];
+  document.getElementById('el-status-pills').innerHTML = statuses.map(s =>
+    `<button class="el-pill ${s === elStatus ? 'active' : ''}" onclick="elSetStatus('${s}')">${s === 'alle' ? 'Alle' : STATUS_LABELS[s]}</button>`).join('');
+  const cats = ['alle', ...Object.keys(CAT_LABELS)];
+  document.getElementById('el-cat-pills').innerHTML = cats.map(c =>
+    `<button class="el-pill ${c === elCat ? 'active' : ''}" onclick="elSetCat('${c}')">${c === 'alle' ? 'Alle Themen' : CAT_LABELS[c]}</button>`).join('');
+
+  // ── Tabelle: problematischste Wörter zuerst ──
+  let rows = NOUNS.map(n => ({ n, e: kSrs[n.de], st: nounStatus(kSrs[n.de]) }));
+  if (elStatus !== 'alle') rows = rows.filter(r => r.st === elStatus);
+  if (elCat !== 'alle')    rows = rows.filter(r => r.n.cat === elCat);
+  rows.sort((a, b) =>
+    STATUS_ORDER.indexOf(a.st) - STATUS_ORDER.indexOf(b.st) ||
+    ((b.e?.w || 0) - (a.e?.w || 0)));
+  document.getElementById('el-table').innerHTML =
+    `<tr><th>Wort</th><th>Status</th><th>✗</th><th>✓</th><th>🇮🇹 Falle</th></tr>` +
+    rows.map(r => `
+      <tr>
+        <td><span class="art-${r.n.g}" style="color:var(--c-${r.n.g}); font-weight:900;">${r.n.g}</span> ${r.n.de}</td>
+        <td class="el-status">${STATUS_LABELS[r.st]}</td>
+        <td>${r.e?.w || 0}</td>
+        <td>${r.e?.r || 0}</td>
+        <td>${isTrap(r.n) && r.n.it ? `⚠️ <span class="it inline">${r.n.it}</span>` : ''}</td>
+      </tr>`).join('');
+}
+
+/* ═════════ Start ═════════ */
+function initProfileScreen() {
+  document.getElementById('profil-list').innerHTML = PROFILES.map(p =>
+    `<button class="profil-btn" onclick="pickProfile('${p.name}')"><span class="av">${p.avatar}</span> ${p.name}</button>`
+  ).join('');
+  showScreen('s-profil');
+}
+function pickProfile(name) {
+  profile = name;
+  safeSave('gram_lastProfile', name);
+  loadState();
+  goHome();
+}
+
+/* Cloud-Sync: nach einem Pull frische Daten laden und die sichtbare
+   Ansicht auffrischen (mitten in einer Quiz-Runde stören wir nicht). */
+window.addEventListener('familysync-pulled', () => {
+  if (!profile) return;
+  loadState();
+  const active = document.querySelector('.screen.active')?.id;
+  if (active === 's-home')     goHome();
+  if (active === 's-eltern')   elternRender();
+  if (active === 's-progress') showProgress();
+});
+
+(function init() {
+  applyIt();
+  window.FamilySync?.init();
+  const urlProfile = new URLSearchParams(location.search).get('profil');
+  const saved = safeLoad('gram_lastProfile', null);
+  const known = PROFILES.map(p => p.name);
+  if (urlProfile && known.includes(urlProfile)) { pickProfile(urlProfile); }
+  else if (saved && known.includes(saved))       { pickProfile(saved); }
+  else initProfileScreen();
+})();
+</script>
+</body>
+</html>

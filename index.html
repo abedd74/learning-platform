@@ -1246,6 +1246,7 @@
      NAVIGATION & UI SHELL JS (Phase 1)
      Quiz engine added in Phase 2
 ════════════════════════════════════════════ -->
+<script src="sync.js"></script>
 <script>
 'use strict';
 
@@ -1271,6 +1272,7 @@ function safeLoad(key, fallback) {
 function safeSave(key, value) {
   try { localStorage.setItem(key, JSON.stringify(value)); }
   catch (err) { console.warn(`[safeSave] failed for "${key}"`, err); }
+  window.FamilySync?.markDirty(key);
 }
 
 // ── Profile config ───────────────────────────────
@@ -1368,8 +1370,9 @@ function renderModuleCards() {
           <button class="module-btn" style="background:#ccc;cursor:default;" disabled>${m.comingSoonLabel || '🔒 Kommt bald'}</button>
         </div>`;
     }
+    const entry = m.href ? `openExternalModule('${key}')` : `enterModule('${key}')`;
     return `
-      <div class="module-card" style="--module-color:${m.color};" data-grade="${m.grade}" onclick="enterModule('${key}')">
+      <div class="module-card" style="--module-color:${m.color};" data-grade="${m.grade}" onclick="${entry}">
         <span class="module-icon">${m.icon}</span>
         <div class="module-title">${m.name}${itName}</div>
         <div class="module-meta">
@@ -1418,6 +1421,15 @@ function goToPlatform() {
 function backToPlatform() {
   clearModuleTheme();
   showScreen('s-platform');
+}
+
+// ── Enter an external module (own page, e.g. grammatik.html) ─────
+// Passes the current profile along so the page can skip its picker.
+function openExternalModule(moduleId) {
+  const mod = EDITOR_MODULES[moduleId];
+  if (!mod?.href) return;
+  const name = currentProfile?.name || '';
+  location.href = mod.href + (name ? `?profil=${encodeURIComponent(name)}` : '');
 }
 
 // ── Enter a module ───────────────────────────────
@@ -1824,6 +1836,19 @@ const EDITOR_MODULES = {
     getQB:      () => typeof QB_MAGNETISM !== 'undefined' ? QB_MAGNETISM : {},
     storageKey: 'wq_editor_QB_magnetism',
   },
+  // ── Externe Module (eigene Seite, gleiche Profile via localStorage) ──
+  grammatik: {
+    name:           'Der-Die-Das Trainer',
+    nameIt:         'Articoli e casi tedeschi',
+    icon:           '🦉',
+    grade:          3,
+    subject:        'Deutsch',
+    subjectIt:      'Tedesco',
+    active:         true,
+    color:          '#00796B',
+    href:           'grammatik.html',   // link-out module: opens its own page
+    playLabel:      'Üben! 🦉',
+  },
   // ── Coming-soon placeholders (no question bank yet) ──
   math3: {
     name:           'Mathematik',
@@ -1877,7 +1902,8 @@ function editorGetModuleQB() {
 function editorRenderModuleTabs() {
   const el = document.getElementById('editor-module-tabs');
   if (!el) return;
-  el.innerHTML = Object.keys(EDITOR_MODULES).filter(k => EDITOR_MODULES[k].active).map(k => {
+  // href-Module (externe Seiten) haben keine Fragenbank — nicht editierbar.
+  el.innerHTML = Object.keys(EDITOR_MODULES).filter(k => EDITOR_MODULES[k].active && !EDITOR_MODULES[k].href).map(k => {
     const m = EDITOR_MODULES[k];
     return `<button class="editor-tab${k === editorModuleKey ? ' active' : ''}"
       onclick="editorLoadModule('${k}')">${m.icon} ${m.name}</button>`;
@@ -1887,7 +1913,7 @@ function editorRenderModuleTabs() {
 // ── Switch to a different module ──────────────────
 function editorLoadModule(key) {
   const mod = EDITOR_MODULES[key];
-  if (!mod?.active) return;
+  if (!mod?.active || mod.href) return;
   editorModuleKey = key;
   editorTopicKey  = mod.tkeys[0] || '';
   editorRenderModuleTabs();
@@ -2386,7 +2412,7 @@ const QB_SCHEMA_VERSION = '2026-03-15-v3';
 function editorLoadFromStorage() {
   if (typeof QB === 'undefined') return;
   Object.values(EDITOR_MODULES).forEach(mod => {
-    if (!mod.active) return;
+    if (!mod.active || mod.href) return;
     const versionKey = mod.storageKey + '_ver';
     // If stored schema version is outdated, wipe stale data and stamp new version
     if (localStorage.getItem(versionKey) !== QB_SCHEMA_VERSION) {
@@ -3594,7 +3620,7 @@ function clearHistory() {
 function assignQuestionIds() {
   Object.keys(EDITOR_MODULES).forEach(modKey => {
     const mod = EDITOR_MODULES[modKey];
-    if (!mod.active) return;
+    if (!mod.active || mod.href) return;
     const qb = mod.getQB();
     if (!qb) return;
     const prefix = mod.idPrefix !== undefined ? mod.idPrefix : `${modKey}_`;
@@ -6553,6 +6579,13 @@ assignQuestionIds();
 
 // ── Load any editor-saved book questions ──
 editorLoadFromStorage();
+
+// ── Familien-Cloud-Sync starten (lokal zuerst; Details in sync.js) ──
+window.addEventListener('familysync-pulled', () => {
+  // Nach einem Pull sichtbare Ansichten auffrischen
+  if (document.getElementById('s-platform')?.classList.contains('active')) updateModuleProgress();
+});
+window.FamilySync?.init();
 </script>
 </body>
 </html>
