@@ -10,48 +10,52 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --sky:    #E1F5FE;
-      --blue:   #4FC3F7;
-      --deep:   #0277BD;
-      --navy:   #01579B;
-      --sun:    #FFD54F;
-      --green:  #66BB6A;
-      --coral:  #FF7043;
-      --text:   #1A237E;
-      --soft:   #546E7A;
-      --card:   rgba(255,255,255,0.92);
+      /* Flaches, kräftiges Design („Duolingo-Stil") — weiße Flächen,
+         2px-Kanten, satte Akzente. Themes wechseln nur noch die Akzentfarbe. */
+      --sky:    #E3F5FD;
+      --blue:   #1CB0F6;
+      --deep:   #1899D6;
+      --navy:   #0E6C9E;
+      --sun:    #FFC800;
+      --green:  #58CC02;
+      --coral:  #FF4B4B;
+      --text:   #3C3C3C;
+      --soft:   #999999;
+      --line:   #E5E5E5;
+      --line-dark: #CFCFCF;
+      --card:   #FFFFFF;
       --r:      20px;
-      --shadow: 0 4px 20px rgba(2,119,189,0.15);
-      /* ── Platform shell (violet/indigo) ── */
-      --plat-bg1:    #d4b8ff;
-      --plat-bg2:    #e8d8ff;
-      --plat-bg3:    #f4eeff;
-      --plat-prime:  #6C3FC5;
-      --plat-mid:    #9B6DFF;
-      --plat-light:  #ede0ff;
-      --plat-text:   #2D1B69;
-      --plat-soft:   #7C6DAB;
-      --plat-shadow: 0 4px 20px rgba(108,63,197,0.18);
+      --shadow: none;
+      /* ── Platform shell (violet) ── */
+      --plat-bg1:    #FFFFFF;
+      --plat-bg2:    #FFFFFF;
+      --plat-bg3:    #FFFFFF;
+      --plat-prime:  #8549BA;
+      --plat-mid:    #A56EDB;
+      --plat-light:  #F3EAFB;
+      --plat-text:   #3C3C3C;
+      --plat-soft:   #999999;
+      --plat-shadow: none;
       /* ── Responsive content width ── */
       --content-w: 480px;
     }
 
     body {
       font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(160deg, var(--plat-bg1) 0%, var(--plat-bg2) 45%, var(--plat-bg3) 100%);
+      background: #FFFFFF;
       min-height: 100vh;
       color: var(--plat-text);
       overflow-x: hidden;
     }
     /* Water cycle module — applied when entering the module */
     body.theme-water {
-      background: linear-gradient(160deg, #b3e5fc 0%, #e1f5fe 45%, #f0f9ff 100%);
+      background: #FFFFFF;
       color: var(--text);
     }
 
     /* Magnetism module — applied when entering the module */
     body.theme-magnet {
-      background: linear-gradient(160deg, #ffcdd2 0%, #fff3e0 45%, #fff8f0 100%);
+      background: #FFFFFF;
       color: #B71C1C;
     }
     body.theme-magnet #it-toggle              { border-color: #EF5350; }
@@ -698,6 +702,72 @@
     @media (min-width: 900px) {
       :root { --content-w: 620px; }
     }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FLAT-RESTYLE („Duolingo-Stil") — Überschreibungs-Schicht.
+       Gewinnt per Kaskade gegen die Regeln oben: weiße Flächen mit
+       klaren 2px-Kanten statt Schatten/Verläufen, „3D-Press"-Buttons
+       mit dicker dunkler Unterkante, flache satte Farben.
+    ═══════════════════════════════════════════════════════════════ */
+
+    /* Buttons: eckiger, mit Press-Effekt. Die halbtransparente dunkle
+       Kante wirkt auf jeder Akzentfarbe wie ein dunklerer Rand. */
+    .btn {
+      border-radius: 16px;
+      border: 2px solid rgba(0,0,0,.14);
+      border-bottom-width: 5px;
+      box-shadow: none;
+      transition: transform .08s, border-bottom-width .08s;
+    }
+    .btn:hover  { transform: none; box-shadow: none; }
+    .btn:active { transform: translateY(3px); border-bottom-width: 2px; }
+    .btn:disabled { opacity: .5; }
+    .btn:disabled:active { transform: none; border-bottom-width: 5px; }
+    .btn-outline { border-color: var(--deep); background: #fff; }
+    body:not(.theme-water):not(.theme-magnet) .btn-outline { border-color: var(--plat-prime); color: var(--plat-prime); }
+
+    /* Flächen: Karten mit klarer Kante statt Schatten */
+    .card, .profile-card, .module-card, .topic-card, .bubble-speech,
+    .dash-section, .editor-form, .heatmap-card, .q-item, .dash-accord-body {
+      background: #fff;
+      box-shadow: none;
+      border: 2px solid var(--line);
+    }
+    .profile-card, .module-card, .topic-card {
+      border-bottom-width: 5px; border-bottom-color: var(--line-dark);
+      transition: transform .08s, border-bottom-width .08s;
+    }
+    .profile-card:hover, .module-card:hover:not(.coming-soon), .topic-card:hover {
+      transform: none; box-shadow: none;
+    }
+    .profile-card:active, .module-card:active:not(.coming-soon), .topic-card:active {
+      transform: translateY(3px); border-bottom-width: 2px;
+    }
+    .profile-card.selected { border-color: var(--plat-prime); border-bottom-color: var(--plat-prime); }
+
+    /* Fortschrittsbalken: fett, flach, mit Glanz-Streifen */
+    .prog-wrap { background: var(--line); height: 16px; }
+    .prog-fill { background: var(--deep); position: relative; }
+    .prog-fill::after {
+      content: ''; position: absolute; left: 8px; right: 6px; top: 4px; height: 4px;
+      background: rgba(255,255,255,.35); border-radius: 50px;
+    }
+    body:not(.theme-water):not(.theme-magnet) .prog-fill { background: var(--plat-prime); }
+
+    /* Verlaufs-Balken der Historie → flache Farben */
+    .hist-bar.bar-great { background: var(--green); }
+    .hist-bar.bar-good  { background: var(--blue); }
+    .hist-bar.bar-ok    { background: var(--sun); }
+    .hist-bar.bar-low   { background: var(--coral); }
+
+    /* Kleinkram */
+    #it-toggle { box-shadow: none; border-width: 2px; border-bottom-width: 4px; }
+    .grade-pill { border: 2px solid var(--line); border-bottom-width: 4px; box-shadow: none; background: #fff; }
+    .grade-pill.active { border-color: var(--plat-prime); }
+    .dash-tab, .editor-tab { border: 2px solid var(--line); border-bottom-width: 4px; box-shadow: none; }
+    .dash-tab.active, .editor-tab.active { border-color: var(--plat-prime); }
+    .footer-btn, .back-btn { box-shadow: none; }
+    .module-hero { background: var(--deep); box-shadow: none; }
   </style>
 </head>
 <body>
