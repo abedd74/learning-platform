@@ -85,7 +85,32 @@ button { font-family: inherit; border: none; cursor: pointer; }
 body.show-it .it { display: block; }
 body.show-it .it.inline { display: inline; }
 
-.mascot { font-size: 3.2rem; text-align: center; }
+.mascot { font-size: 3.2rem; text-align: center; animation: bob 3.2s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+
+.quiz-ella { text-align: center; font-size: 1.7rem; margin-bottom: 6px; }
+.quiz-ella.e-happy { animation: pop .5s; }
+.quiz-ella.e-sad   { animation: shake .5s; }
+
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
+.confetti span { position: absolute; top: -34px; animation: confetti-fall 2.7s ease-in forwards; }
+@keyframes confetti-fall { to { transform: translateY(108vh) rotate(540deg); opacity: .9; } }
+
+/* ── Wörter-Zoo ── */
+.zoo-cat { margin: 16px 0 6px; font-weight: 900; font-size: 1rem; }
+.zoo-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.zoo-chip {
+  width: 52px; height: 52px; border-radius: 14px; font-size: 1.6rem;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; border: 2px solid var(--line); border-bottom-width: 4px;
+  cursor: pointer; padding: 0;
+}
+.zoo-chip:active { transform: translateY(2px); border-bottom-width: 2px; }
+.zoo-chip.locked { background: #F4F4F4; filter: grayscale(1); opacity: .45; font-size: 1rem; }
+.zoo-name {
+  text-align: center; font-weight: 900; font-size: 1.1rem; margin: 8px 0 2px;
+  min-height: 1.5em; color: var(--prime);
+}
 .mascot-line {
   background: var(--light); border: 2px solid #A8E5DF; border-radius: 14px;
   padding: 10px 14px; font-weight: 800; text-align: center; margin-top: 8px;
@@ -296,7 +321,10 @@ body.show-it .it.inline { display: inline; }
 <div class="screen" id="s-home">
   <div class="topbar">
     <a class="backlink" href="index.html">← Alle Themen</a>
-    <button class="it-toggle" id="it-toggle" onclick="toggleIt()">🇮🇹</button>
+    <div style="display:flex; gap:8px;">
+      <button class="it-toggle snd" onclick="toggleSound()">🔊</button>
+      <button class="it-toggle" id="it-toggle" onclick="toggleIt()">🇮🇹</button>
+    </div>
   </div>
 
   <div class="mascot">🦉</div>
@@ -324,6 +352,7 @@ body.show-it .it.inline { display: inline; }
   <div class="lock-note" id="note-akk"></div>
   <button class="btn secondary" id="btn-dat" onclick="startSession('dat')">✉️ Sätze üben (Dativ)</button>
   <div class="lock-note" id="note-dat"></div>
+  <button class="btn secondary" onclick="showZoo()">🦁 Mein Wörter-Zoo</button>
   <button class="btn secondary" onclick="showProgress()">💎 Meine Schatzkiste</button>
   <button class="btn secondary" onclick="showEltern()">📊 Für Eltern <span class="it inline">per i genitori</span></button>
   <button class="btn secondary" style="border-style:dashed;" onclick="switchProfile()">👤 Profil wechseln</button>
@@ -333,9 +362,13 @@ body.show-it .it.inline { display: inline; }
 <div class="screen" id="s-quiz">
   <div class="topbar">
     <button class="backlink" style="border:none;" onclick="quitSession()">✕ Beenden</button>
-    <button class="it-toggle" id="it-toggle-2" onclick="toggleIt()">🇮🇹</button>
+    <div style="display:flex; gap:8px;">
+      <button class="it-toggle snd" onclick="toggleSound()">🔊</button>
+      <button class="it-toggle" id="it-toggle-2" onclick="toggleIt()">🇮🇹</button>
+    </div>
   </div>
   <div class="q-progress" id="q-progress"></div>
+  <div class="quiz-ella" id="quiz-ella">🦉</div>
 
   <div class="card">
     <div class="q-emoji" id="q-emoji"></div>
@@ -361,6 +394,18 @@ body.show-it .it.inline { display: inline; }
   <div class="card" id="result-detail"></div>
   <button class="btn" onclick="startSession(lastSessionType)">Nochmal üben! 🔁</button>
   <button class="btn secondary" onclick="goHome()">🏠 Fertig für jetzt</button>
+</div>
+
+<!-- ══════════ Wörter-Zoo ══════════ -->
+<div class="screen" id="s-zoo">
+  <div class="topbar">
+    <button class="backlink" style="border:none;" onclick="goHome()">← Zurück</button>
+    <button class="it-toggle snd" onclick="toggleSound()">🔊</button>
+  </div>
+  <h1>🦁 Mein Wörter-Zoo</h1>
+  <p class="it" style="text-align:center;">Lo zoo delle parole — ogni parola conquistata vive qui!</p>
+  <div class="zoo-name" id="zoo-name"></div>
+  <div id="zoo-content"></div>
 </div>
 
 <!-- ══════════ Eltern-Cockpit ══════════ -->
@@ -843,7 +888,11 @@ const THROTTLE_DUE = 20;          // ab so vielen fälligen Wiederholungen: erst
 const SESSION_LEN = 10;
 const UNLOCK_AKK = 30;            // gemeisterte Wörter für Akkusativ
 const UNLOCK_DAT = 70;            // ... für Dativ
-const INTERVALS = [0, 1, 2, 4, 8, 16];  // Tage pro Leitner-Box
+// Leitner-Leiter mit wachsenden Intervallen (Anki-inspiriert): reife Wörter
+// verschwinden allmählich aus der Tageslast statt ewig alle 16 Tage zu kommen.
+const INTERVALS = [0, 1, 2, 4, 8, 16, 32, 64, 90];
+const MAX_BOX = INTERVALS.length - 1;
+const LEECH_WRONG = 4;            // ab so vielen Fehlern gilt ein Wort als „Klette"
 
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 function addDays(dateStr, d) {
@@ -882,10 +931,122 @@ function masteredCount() {
   return Object.values(srs).filter(e => e.b >= 3).length;
 }
 function streakCount() {
-  let n = 0, d = todayStr();
+  // Ellas Streak-Schutz: höchstens EIN Fehltag pro 7 Tage wird still
+  // überbrückt — ein Ausflugstag oder Kranksein tötet die Serie nicht.
+  let n = 0, d = todayStr(), lastShield = null;
   if (!days[d] || days[d].a === 0) d = addDays(d, -1);  // heute zählt, sobald geübt
-  while (days[d] && days[d].a > 0) { n++; d = addDays(d, -1); }
+  while (true) {
+    if (days[d] && days[d].a > 0) {
+      n++;
+    } else {
+      if (n === 0) break;   // Serie muss mit einem Übungstag beginnen
+      if (lastShield && (new Date(lastShield) - new Date(d)) / 86400000 < 7) break;
+      lastShield = d;       // Schutz verbraucht — Tag wird überbrückt, zählt aber nicht
+    }
+    d = addDays(d, -1);
+  }
   return n;
+}
+
+// Wurde gestern vom Schutz überbrückt? (für Ellas Begrüßung)
+function streakWasShielded() {
+  const y = addDays(todayStr(), -1);
+  return streakCount() > 0 && !(days[y] && days[y].a > 0);
+}
+
+/* ═════════ Ton & Sprachausgabe ═════════
+   Effekte kommen aus einem Mini-Synthesizer (WebAudio, keine Dateien),
+   die Aussprache aus der eingebauten deutschen iPad-Stimme. Das gesprochene
+   „der Fuchs" trainiert nebenbei das Gehör — so lernen Muttersprachler Genus. */
+function soundOn() { return safeLoad('gram_sound_on', true); }
+function applySound() {
+  const on = soundOn();
+  document.querySelectorAll('.snd').forEach(b => {
+    b.textContent = on ? '🔊' : '🔇';
+    b.classList.toggle('on', on);
+  });
+}
+function toggleSound() {
+  safeSave('gram_sound_on', !soundOn());
+  applySound();
+  if (soundOn()) sfx('good');
+  else if ('speechSynthesis' in window) { try { speechSynthesis.cancel(); } catch {} }
+}
+
+let audioCtx = null;
+function sfx(kind) {
+  if (!soundOn()) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const seqs = {
+      good:    [[659, 0, .09], [880, .09, .14]],
+      bad:     [[220, 0, .16], [185, .14, .2]],
+      fanfare: [[523, 0, .1], [659, .1, .1], [784, .2, .1], [1047, .3, .26]],
+      badge:   [[880, 0, .09], [1175, .09, .09], [1568, .18, .2]],
+    };
+    (seqs[kind] || []).forEach(([f, at, dur]) => {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'triangle'; o.frequency.value = f;
+      o.connect(g); g.connect(audioCtx.destination);
+      const t0 = audioCtx.currentTime + at;
+      g.gain.setValueAtTime(.0001, t0);
+      g.gain.exponentialRampToValueAtTime(.22, t0 + .02);
+      g.gain.exponentialRampToValueAtTime(.0001, t0 + dur);
+      o.start(t0); o.stop(t0 + dur + .05);
+    });
+  } catch {}
+}
+
+let deVoice = null;
+function pickVoice() {
+  try {
+    const vs = speechSynthesis.getVoices();
+    deVoice = vs.find(v => v.lang === 'de-DE' && v.localService) ||
+              vs.find(v => (v.lang || '').startsWith('de')) || null;
+  } catch {}
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+
+function speak(text, delay = 0) {
+  if (!soundOn() || !('speechSynthesis' in window)) return;
+  const go = () => {
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'de-DE';
+      if (deVoice) u.voice = deVoice;
+      u.rate = 0.92;
+      speechSynthesis.speak(u);
+    } catch {}
+  };
+  delay ? setTimeout(go, delay) : go();
+}
+
+/* Ella reagiert im Quiz */
+function ellaReact(kind) {
+  const el = document.getElementById('quiz-ella');
+  if (!el) return;
+  el.classList.remove('e-happy', 'e-sad');
+  void el.offsetWidth;   // Animation neu starten
+  el.classList.add(kind === 'good' ? 'e-happy' : 'e-sad');
+}
+
+/* Konfetti-Regen für Abzeichen und perfekte Runden */
+function confetti() {
+  const c = document.createElement('div');
+  c.className = 'confetti';
+  const bits = ['🎉', '⭐', '💚', '💙', '💜', '🧡'];
+  for (let i = 0; i < 26; i++) {
+    const s = document.createElement('span');
+    s.textContent = bits[i % bits.length];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.animationDelay = (Math.random() * 0.7) + 's';
+    s.style.fontSize = (14 + Math.random() * 14) + 'px';
+    c.appendChild(s);
+  }
+  document.body.appendChild(c);
+  setTimeout(() => c.remove(), 3400);
 }
 
 /* ═════════ Italienisch-Umschalter (für Eltern) ═════════ */
@@ -937,13 +1098,20 @@ function goHome() {
   const lines = goalDone ? [
     'Tagesziel geschafft — super! 🎉 Morgen geht es weiter!',
     'Genug für heute! Dein Gehirn lernt jetzt im Schlaf weiter. 😴✨',
+  ] : t.a === 0 ? [
+    'Guten Tag! Bereit für neue Wörter? ☀️',
+    'Ich habe schon auf dich gewartet! 🦉',
+    'Blau ist DER, rot ist DIE, grün ist DAS!',
+    'Jeden Tag ein bisschen — das ist das Geheimnis! 🤫',
   ] : [
     'Zusammen lernen wir der, die und das!',
     'Jeden Tag ein bisschen — das ist das Geheimnis! 🤫',
     'Blau ist DER, rot ist DIE, grün ist DAS!',
     'Du schaffst das! Ich glaube an dich! 💪',
   ];
-  document.getElementById('home-line').textContent = lines[Math.floor(Math.random() * lines.length)];
+  document.getElementById('home-line').textContent = streakWasShielded()
+    ? 'Ich habe deinen Streak bewacht, während du weg warst! 🛡️🦉'
+    : lines[Math.floor(Math.random() * lines.length)];
   showScreen('s-home');
 }
 
@@ -1027,7 +1195,7 @@ function dueWords() {
   const t = todayStr();
   return NOUNS.filter(n => {
     const e = srs[n.de];
-    return e && e.b < 5 && e.due <= t;
+    return e && e.due <= t;
   }).sort((a, b) => {
     const ea = srs[a.de], eb = srs[b.de];
     if (ea.b !== eb.b) return ea.b - eb.b;
@@ -1173,6 +1341,7 @@ function renderQuestion() {
       answers.innerHTML = ['der', 'die', 'das'].map(a =>
         `<button class="ans ${a}" onclick="answerGender('${a}', this)">${a}</button>`).join('');
     }
+    speak(q.noun.de);   // Vorlesen ohne Artikel — Lesehilfe, verrät nichts
   } else {
     const art = ART[q.kase][q.defArt][q.noun.g];
     // n-Deklination: „einen Bären", „mit dem Hasen" — Beugungsform im Satz verwenden
@@ -1202,12 +1371,17 @@ function updateSrs(de, firstTryCorrect) {
   e.s++;
   if (firstTryCorrect) {
     e.r++; e.k++;
-    e.b = Math.min(5, e.b + 1);
+    e.b = Math.min(MAX_BOX, e.b + 1);
   } else {
     e.w++; e.k = 0;
     e.b = Math.max(0, e.b - 1);
   }
-  e.due = addDays(t, INTERVALS[e.b]);
+  let iv = INTERVALS[e.b];
+  // Kletten-Dämpfung: chronisch schwere Wörter kommen ~40% früher wieder
+  if (e.w >= LEECH_WRONG && iv > 2) iv = Math.max(2, Math.round(iv * 0.6));
+  // Fuzz (±1 Tag): verhindert, dass gemeinsam gelernte Wörter immer im Pulk zurückkehren
+  if (iv >= 4) iv += Math.floor(Math.random() * 3) - 1;
+  e.due = addDays(t, iv);
   const d = days[t] || (days[t] = { a: 0, c: 0 });
   d.a++; if (firstTryCorrect) d.c++;
   if (isNew) d.n = (d.n || 0) + 1;
@@ -1251,6 +1425,8 @@ function answerGender(choice, btn) {
     if (first) sCorrect++;
     q.result = first ? 'right' : 'retry';
     updateSrs(n.de, first);
+    sfx('good'); ellaReact('good');
+    speak(`${n.g} ${n.de}`, 350);   // Artikel + Nomen hören = Gehörtraining
     fb.className = 'feedback show good';
     fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] +
       (genderRule(n) ? `<br>💡 ${genderRule(n)}` : '') + trapNote(n);
@@ -1269,6 +1445,8 @@ function answerGender(choice, btn) {
     if (btn) btn.classList.add('wrong');
     q.result = 'wrong';
     updateSrs(n.de, false);
+    sfx('bad'); ellaReact('sad');
+    speak(`${n.g} ${n.de}`, 500);
     fb.className = 'feedback show bad';
     fb.innerHTML = `Fast geschafft! Es heißt <b>${n.g} ${n.de}</b>. Das üben wir morgen nochmal — dann klappt's! 🦉` + trapNote(n);
     showSolutionGender(n);
@@ -1343,6 +1521,8 @@ function answerCase(choice, btn) {
     d.a++; if (first) d.c++;
     d.m = masteredCount();
     recordCase(q.kase, first ? { c: 1 } : { errType: q.errType });
+    sfx('good'); ellaReact('good');
+    speak(`${q.solution} ${q.nounForm}`, 350);
     fb.className = 'feedback show good';
     fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] +
       ` <b>${q.solution} ${q.nounForm}</b> — genau richtig!`;
@@ -1376,6 +1556,8 @@ function answerCase(choice, btn) {
     }
     d.m = masteredCount();
     recordCase(q.kase, { errType: q.errType || diagnoseCase(choice, q) });
+    sfx('bad'); ellaReact('sad');
+    speak(`${q.solution} ${q.nounForm}`, 500);
     fb.className = 'feedback show bad';
     fb.innerHTML = `Gleich hast du's! Richtig ist: <b>${q.solution} ${q.nounForm}</b> (${n.g} ${n.de}). ${CASE_RULES[q.kase]}`;
     lockAnswers();
@@ -1407,7 +1589,10 @@ function finishSession() {
   const t = days[todayStr()] || { a: 0 };
 
   // Neue Abzeichen prüfen (perfekte Runde zählt ab 8 Fragen)
-  const newBadges = checkBadges({ perfect: sCorrect === total && total >= 8 });
+  const perfect = sCorrect === total && total >= 8;
+  const newBadges = checkBadges({ perfect });
+  sfx(newBadges.length ? 'badge' : 'fanfare');
+  if (newBadges.length || perfect) confetti();
 
   let detail = '';
   if (newBadges.length) {
@@ -1522,6 +1707,39 @@ function showProgress() {
     : `<h2>🦉 Keine Fallen-Wörter offen — stark!</h2>`;
 
   showScreen('s-progress');
+}
+
+/* ═════════ Wörter-Zoo ═════════
+   Jedes gemeisterte Wort (Box ≥ 3) erscheint als Sammelfigur in seinem
+   Themenfeld; der Rest zeigt sich als ❓-Silhouette. Antippen spricht
+   das Wort mit Artikel — sammeln UND hören. */
+function showZoo() {
+  let html = '', totalM = 0, totalN = 0;
+  Object.keys(CAT_LABELS).forEach(c => {
+    const nouns = NOUNS.filter(n => n.cat === c);
+    const won = nouns.filter(n => srs[n.de] && srs[n.de].b >= 3).length;
+    totalM += won; totalN += nouns.length;
+    html += `<div class="zoo-cat">${CAT_LABELS[c]} <span style="color:var(--soft); font-weight:800;">(${won}/${nouns.length})</span></div><div class="zoo-grid">`;
+    html += nouns.map(n =>
+      (srs[n.de] && srs[n.de].b >= 3)
+        ? `<button class="zoo-chip" onclick="zooTap('${n.de}')" aria-label="${n.g} ${n.de}">${n.em}</button>`
+        : `<span class="zoo-chip locked">❓</span>`
+    ).join('');
+    html += `</div>`;
+  });
+  document.getElementById('zoo-content').innerHTML = html;
+  document.getElementById('zoo-name').textContent = totalM
+    ? `Schon ${totalM} von ${totalN} gesammelt! Tippe eine Figur an — sie spricht! 🔊`
+    : 'Meistere Wörter im Training, um deinen Zoo zu füllen!';
+  showScreen('s-zoo');
+}
+function zooTap(de) {
+  const n = byDe[de];
+  if (!n) return;
+  document.getElementById('zoo-name').innerHTML =
+    `${n.em} <span style="color:var(--c-${n.g}); font-weight:900;">${n.g}</span> ${n.de}` +
+    (n.pl ? ` <span style="color:var(--soft); font-size:.85rem;">· die ${n.pl}</span>` : '');
+  speak(`${n.g} ${n.de}`);
 }
 
 /* ═════════ Eltern-Cockpit ═════════ */
@@ -1685,6 +1903,7 @@ window.addEventListener('familysync-pulled', () => {
 
 (function init() {
   applyIt();
+  applySound();
   window.FamilySync?.init();
   const urlProfile = new URLSearchParams(location.search).get('profil');
   const saved = safeLoad('gram_lastProfile', null);
