@@ -2906,28 +2906,25 @@ function startQuiz(topic) {
 
   const ROUND_SIZE = Math.min(10, pool.length);
 
-  // ── Deck: only show unseen questions until whole pool exhausted ──
-  const deck    = loadDeck();
-  const modeKey = topic;                        // 'mixed' or a topic key
-  const seen    = new Set(deck[modeKey] || []);
-  let   fresh   = pool.filter(q => !seen.has(q.id));
+  // ── SRS-Auswahl (ersetzt das alte Deck): fällige Wiederholungen zuerst
+  //    (schwächster Kasten vorn), dann nie gesehene Fragen, dann die am
+  //    längsten nicht gesehenen. So kommt genau das dran, was das Gedächtnis
+  //    gerade braucht — schwache Fragen oft, gemeisterte selten.
+  const srs   = loadSrs();
+  const today = srsDateStr(new Date());
+  const due = [], unseen = [], rest = [];
+  pool.forEach(q => {
+    const e = srs[q.id];
+    if (!e) unseen.push(q);
+    else if (e.due <= today) due.push(q);
+    else rest.push(q);
+  });
+  // shuffle vor stabilem sort → zufällige Reihenfolge innerhalb gleicher Stufe
+  const dueSorted  = shuffleArr(due).sort((a, b) => srs[a.id].b - srs[b.id].b);
+  const restSorted = shuffleArr(rest).sort((a, b) => srs[a.id].due < srs[b.id].due ? -1 : 1);
+  const selected = [...dueSorted, ...shuffleArr(unseen), ...restSorted].slice(0, ROUND_SIZE);
 
-  // Not enough fresh questions → reset this mode's deck and use full pool
-  if (fresh.length < ROUND_SIZE) {
-    seen.clear();
-    deck[modeKey] = [];
-    fresh = [...pool];
-  }
-
-  // Shuffle fresh pool and take round
-  const selected = shuffleArr(fresh).slice(0, ROUND_SIZE);
-
-  // Persist updated seen-set for this mode
-  selected.forEach(q => seen.add(q.id));
-  deck[modeKey] = [...seen];
-  saveDeck(deck);
-
-  QS.questions    = selected;
+  QS.questions    = shuffleArr(selected);
   QS.index        = 0;
   QS.retrying     = false;
   QS.wrongAnswers = [];
@@ -3725,10 +3722,18 @@ function clearHistory() {
 }
 
 // ── Question ID assignment (called after QB is fully populated) ──
-// Iterates every active module's question bank and stamps each question
-// with a stable ID. The ID prefix comes from the module's registry entry
-// (defaulting to "<moduleKey>_") — water uses idPrefix:'' to preserve its
-// legacy bare IDs so existing per-question stats keep working.
+// Stamps each question with a CONTENT-BASED ID (Hash über Typ + Fragetext).
+// Früher war die ID die Position im Array — dann verschob jede eingefügte
+// oder gelöschte Frage alle Statistiken und SRS-Einträge dahinter auf die
+// falsche Frage. Der Hash bleibt stabil, solange der Fragetext gleich bleibt.
+function qContentHash(q) {
+  const s = [q.type, q.question, q.statement, q.prefix, q.suffix]
+    .map(x => x || '').join('|');
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+  return h.toString(36);
+}
+
 function assignQuestionIds() {
   Object.keys(EDITOR_MODULES).forEach(modKey => {
     const mod = EDITOR_MODULES[modKey];
@@ -3736,22 +3741,51 @@ function assignQuestionIds() {
     const qb = mod.getQB();
     if (!qb) return;
     const prefix = mod.idPrefix !== undefined ? mod.idPrefix : `${modKey}_`;
+    const seen = new Set();
     Object.keys(qb).forEach(topic => {
       (qb[topic] || []).forEach((q, i) => {
-        if (!q.id) q.id = `${prefix}${topic}-${i}`;
+        if (q.id) { seen.add(q.id); return; }
+        let id = `${prefix}${topic}-h${qContentHash(q)}`;
+        while (seen.has(id)) id += 'x';   // identische Zwillinge trennen
+        seen.add(id);
+        q._legacyId = `${prefix}${topic}-${i}`;
+        q.id = id;
       });
     });
   });
 }
 
-// ── Deck helpers (per-profile, per-mode seen-question tracking) ──
-function loadDeck() {
-  if (!currentProfile) return {};
-  return safeLoad(`wq_deck_${currentProfile.name}`, {});
-}
-function saveDeck(deck) {
-  if (!currentProfile) return;
-  safeSave(`wq_deck_${currentProfile.name}`, deck);
+// Einmalige Wanderung: Statistiken, die noch unter den alten Positions-IDs
+// liegen, auf die neuen Inhalts-IDs umziehen (für alle Profile).
+function migrateStatsIds() {
+  const map = {};
+  Object.keys(EDITOR_MODULES).forEach(modKey => {
+    const mod = EDITOR_MODULES[modKey];
+    if (!mod.active || mod.href) return;
+    const qb = mod.getQB();
+    if (!qb) return;
+    Object.keys(qb).forEach(topic => (qb[topic] || []).forEach(q => {
+      if (q._legacyId && q._legacyId !== q.id) map[q._legacyId] = q.id;
+    }));
+  });
+  const keys = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (/^wq_(stats|srs)_/.test(k)) keys.push(k);
+  }
+  keys.forEach(key => {
+    const data = safeLoad(key, null);
+    if (!data || typeof data !== 'object') return;
+    let changed = false;
+    Object.keys(map).forEach(oldId => {
+      if (data[oldId] !== undefined) {
+        if (data[map[oldId]] === undefined) data[map[oldId]] = data[oldId];
+        delete data[oldId];
+        changed = true;
+      }
+    });
+    if (changed) safeSave(key, data);
+  });
 }
 
 // ── Per-question stats helpers ───────────────────
@@ -6679,6 +6713,7 @@ anwendungen: [
 
 // ── Assign IDs to book questions ──
 assignQuestionIds();
+migrateStatsIds();
 
 // ── Load any editor-saved book questions ──
 editorLoadFromStorage();

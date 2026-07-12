@@ -33,10 +33,11 @@
     { re: /^gram_days_.+$/,   merge: mergeMaxPerEntry },
     { re: /^gram_case_.+$/,   merge: mergeMaxPerEntry },
     { re: /^gram_badges_.+$/, merge: mergeDeepUnion },
+    { re: /^wq_srs_.+$/,    merge: mergeSrs },
     { re: /^wq_stats_.+$/,  merge: mergeMaxPerEntry },
     { re: /^wq_deck_.+$/,   merge: mergeDeepUnion },
     { re: /^wq_editor_QB\w*$/, merge: null },
-    { re: /^wq_(?!deck_|stats_|editor)\S+$/, merge: mergeHistory },
+    { re: /^wq_(?!deck_|stats_|editor|srs_)\S+$/, merge: mergeHistory },
   ];
   // Bewusst NICHT synchronisiert: gram_lastProfile, gram_it_on (gerätelokal).
 
