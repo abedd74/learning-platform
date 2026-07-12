@@ -1172,6 +1172,7 @@
 
   <!-- Profile tabs -->
   <div class="dash-profile-tabs" id="dash-profile-tabs"></div>
+  <div class="dash-profile-tabs" id="dash-module-tabs"></div>
 
   <!-- ① Topic heatmap -->
   <div class="dash-section">
@@ -1567,10 +1568,14 @@ function goToHistory() {
 
 // ── Parent Dashboard ─────────────────────────────
 let dashProfile = 'chiara';   // key in PROFILES currently shown in dashboard
-let dashModuleFilter = null;  // null = all modules; 'water'/'book' = filtered
+let dashModuleFilter = 'water';  // module whose topics/stats are shown
 
 function showDashboard(moduleFilter = null) {
-  dashModuleFilter = moduleFilter;
+  // Bevorzugt: explizit übergebenes Modul → aktuelles Modul (falls es eine
+  // Fragenbank hat) → zuletzt gewähltes → Wasser.
+  dashModuleFilter = moduleFilter
+    || (EDITOR_MODULES[currentModuleKey]?.tkeys ? currentModuleKey : null)
+    || dashModuleFilter || 'water';
   clearModuleTheme();
   // Default to the tab matching the current profile
   dashProfile = Object.keys(PROFILES).find(
@@ -1595,11 +1600,25 @@ function renderDashboard(profileKey) {
     }).join('');
   }
 
+  // ── Module tabs (alle Module mit Fragenbank) ──
+  const mtabsEl = document.getElementById('dash-module-tabs');
+  if (mtabsEl) {
+    const mods = Object.keys(EDITOR_MODULES).filter(k => {
+      const m = EDITOR_MODULES[k];
+      return m.active && !m.href && m.tkeys && m.getQB;
+    });
+    mtabsEl.innerHTML = mods.map(k => {
+      const m = EDITOR_MODULES[k];
+      return `<button class="dash-tab${k === dashModuleFilter ? ' active' : ''}"
+        onclick="dashModuleFilter='${k}';renderDashboard(dashProfile)">${m.icon} ${m.name}</button>`;
+    }).join('');
+  }
+
   const stats      = safeLoad(`wq_stats_${name}`, {});
   const allHistory = safeLoad(`wq_${name}`,       []);
 
   const filteredHistory = dashModuleFilter
-    ? allHistory.filter(s => s.module === dashModuleFilter)
+    ? allHistory.filter(s => (s.module || 'water') === dashModuleFilter)
     : allHistory;
   const activeTkeys = dashModuleFilter
     ? (EDITOR_MODULES[dashModuleFilter]?.tkeys || TKEYS)
@@ -1619,10 +1638,8 @@ function renderDashboard(profileKey) {
 
 // ── Topic display helper (module-aware) ──────────
 function topicDisplayInfo(k) {
-  if (dashModuleFilter === 'book') {
-    const lbl = EDITOR_MODULES.book?.topicLabels?.[k] || k;
-    return { icon: lbl.match(/^\S+/)?.[0] || '📖', de: lbl.replace(/^\S+\s*/, '') };
-  }
+  const lbl = EDITOR_MODULES[dashModuleFilter]?.topicLabels?.[k];
+  if (lbl) return { icon: lbl.match(/^\S+/)?.[0] || '❓', de: lbl.replace(/^\S+\s*/, '') };
   return TOPICS[k] || { icon: '❓', de: k };
 }
 
