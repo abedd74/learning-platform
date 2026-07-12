@@ -2920,7 +2920,7 @@ function startQuiz(topic) {
   }
 
   // Shuffle fresh pool and take round
-  const selected = fresh.sort(() => Math.random() - 0.5).slice(0, ROUND_SIZE);
+  const selected = shuffleArr(fresh).slice(0, ROUND_SIZE);
 
   // Persist updated seen-set for this mode
   selected.forEach(q => seen.add(q.id));
@@ -3010,10 +3010,25 @@ function resetArea(area) {
 }
 
 // ── MCQ ──────────────────────────────────────────
+// Fisher-Yates — gleichverteilt, im Gegensatz zu sort(() => Math.random()-0.5)
+function shuffleArr(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+// Antwortpositionen mischen: in den Fragenbanken steht die richtige Antwort
+// überproportional oft an derselben Stelle — ohne Mischen lernt das Kind
+// die Knopfposition statt des Inhalts.
+function shuffledOptionIdx(q) { return shuffleArr(q.options.map((_, i) => i)); }
+
 function mcq(q, area) {
   area.style.background = 'transparent';
   area.style.border = 'none';
-  q.options.forEach((opt, idx) => {
+  shuffledOptionIdx(q).forEach(idx => {
+    const opt = q.options[idx];
     const btn = document.createElement('button');
     btn.className = 'btn btn-outline';
     btn.style.cssText = 'flex:1 1 calc(50% - 5px);min-width:120px;padding:12px;font-size:0.92rem;border-radius:14px;text-align:center;line-height:1.35;';
@@ -3035,7 +3050,8 @@ function multiselect(q, area) {
   area.style.border = 'none';
   const wrap = document.createElement('div');
   wrap.style.cssText = 'width:100%;display:flex;flex-direction:column;gap:8px;';
-  q.options.forEach((opt, idx) => {
+  shuffledOptionIdx(q).forEach(idx => {
+    const opt = q.options[idx];
     const lbl = document.createElement('label');
     lbl.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;border:2px solid var(--border,#ddd);border-radius:12px;cursor:pointer;background:#fff;font-size:0.92rem;line-height:1.35;';
     const cb = document.createElement('input');
@@ -3121,19 +3137,36 @@ function fitb(q, area) {
   setTimeout(() => input.focus(), 200);
 }
 
+// Antworten großzügig normalisieren: Artikel und Satzzeichen weg, ß→ss,
+// Umlaute→ae/oe/ue, Bindestriche→Leerzeichen. Ein Kind, das "die Kraft",
+// "abstossen" oder "Aluminium." schreibt, hat die Sache verstanden —
+// die Schreibvariante darf nicht als Fehler zählen.
+function fitbNorm(s) {
+  return s.trim().toLowerCase()
+    .replace(/[.,!?;:'"„“”‚‘’]/g, '')
+    .replace(/-/g, ' ')
+    .replace(/ß/g, 'ss')
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')
+    .replace(/^(der|die|das|den|dem|ein|eine|einen|the|a|an|il|la|lo|l')\s+/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function doFitb(q, input, area) {
-  const val = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
-  const ok = (q.answer || []).map(a => a.toLowerCase()).includes(val);
+  const raw = input.value.trim();
+  if (!raw) { input.focus(); return; }   // leere Eingabe verbraucht keinen Versuch
+  const val = fitbNorm(raw);
+  const ok = (q.answer || []).map(fitbNorm).includes(val);
   input.disabled = true;
   area.querySelectorAll('button').forEach(b => b.disabled = true);
-  checkAnswer(q, ok, null, area, val);
+  checkAnswer(q, ok, null, area);
 }
 
 // ── Image Choice (English +heat/-heat) ───────────
 function imageChoice(q, area) {
   area.style.background = 'transparent';
   area.style.border = 'none';
-  q.options.forEach((opt, i) => {
+  shuffleArr(q.options.map((opt, i) => ({ opt, i }))).forEach(({ opt, i }) => {
     const card = document.createElement('button');
     card.style.cssText = 'flex:1 1 calc(50% - 5px);min-width:100px;background:white;border:2.5px solid var(--blue);border-radius:16px;padding:14px 8px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all 0.2s;';
     card.innerHTML = `<span style="font-size:2.3rem;">${opt.emoji}</span><span style="font-size:0.83rem;font-weight:800;color:var(--navy);">${opt.label}</span>`;
@@ -3158,7 +3191,7 @@ function sequence(q, area) {
   area.appendChild(hint);
 
   const order = [];
-  const shuffled = [...q.items.map((text, i) => ({text, i}))].sort(() => Math.random() - 0.5);
+  const shuffled = shuffleArr(q.items.map((text, i) => ({text, i})));
   const container = document.createElement('div');
   container.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
 
@@ -3213,7 +3246,7 @@ function dragmatch(q, area) {
   area.appendChild(hint);
 
   const pairs = q.pairs;
-  const shuffledR = [...pairs.map((p, i) => ({...p, oi: i}))].sort(() => Math.random() - 0.5);
+  const shuffledR = shuffleArr(pairs.map((p, i) => ({...p, oi: i})));
   const matched = {};
   let selLeft = null;
   const lCards = [];
@@ -3337,7 +3370,8 @@ function cycleDiagram(q, area) {
   // MCQ buttons below the diagram
   const btnWrap = document.createElement('div');
   btnWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;';
-  q.options.forEach((opt, idx) => {
+  shuffledOptionIdx(q).forEach(idx => {
+    const opt = q.options[idx];
     const btn = document.createElement('button');
     btn.className = 'btn btn-outline';
     btn.style.cssText = 'flex:1 1 calc(50% - 4px);min-width:120px;padding:11px;font-size:0.9rem;border-radius:13px;text-align:center;';
@@ -3358,10 +3392,13 @@ function cycleDiagram(q, area) {
 function checkAnswer(q, answer, btn, area) {
   const correct = evalAnswer(q, answer);
   const topic = q._topic;
-  QS.topicPts[topic].max += 2;
+  const wasRetry = QS.retrying;
+  // max zählt pro Frage, nicht pro Versuch — sonst bestraft der zweite
+  // Versuch die Runde doppelt (1/4 statt 1/2)
+  if (!wasRetry) QS.topicPts[topic].max += 2;
 
   if (correct) {
-    QS.topicPts[topic].pts += QS.retrying ? 1 : 2;
+    QS.topicPts[topic].pts += wasRetry ? 1 : 2;
     if (btn) { btn.style.background='#e8f5e9'; btn.style.borderColor='#66BB6A'; btn.style.color='#2E7D32'; }
     showFeedback('correct',
       (q.msg_ok || '✅ Super! Das ist richtig!') + ' 🎉',
@@ -3371,15 +3408,18 @@ function checkAnswer(q, answer, btn, area) {
     spawnBubbles();
     document.getElementById('q-next').style.display = '';
     QS.retrying = false;
-    // ── Stats: record correct outcome ──
+    // ── Stats: shown = Präsentationen, correct = beim ersten Versuch richtig,
+    //    wrong = Wiederholung gebraucht oder falsch — so sieht das Eltern-
+    //    Cockpit auch die Fragen, die erst im zweiten Anlauf klappten ──
     (function() {
       const st = loadStats();
       if (!st[q.id]) st[q.id] = { shown: 0, correct: 0, wrong: 0, lastSeen: '' };
       st[q.id].shown++;
-      st[q.id].correct++;
+      if (wasRetry) st[q.id].wrong++; else st[q.id].correct++;
       st[q.id].lastSeen = new Date().toLocaleDateString('de-DE');
       saveStats(st);
     })();
+    srsRecord(q, !wasRetry);
 
   } else if (!QS.retrying) {
     QS.retrying = true;
@@ -3415,6 +3455,7 @@ function checkAnswer(q, answer, btn, area) {
       st[q.id].lastSeen = new Date().toLocaleDateString('de-DE');
       saveStats(st);
     })();
+    srsRecord(q, false);
   }
 }
 
@@ -3576,7 +3617,7 @@ function retryWeak() {
   const pool = [];
   keys.forEach(k => (activeQB[k]||[]).forEach(q => pool.push({...q, _topic: k})));
   if (!pool.length) { startQuiz('mixed'); return; }
-  QS.questions = pool.sort(() => Math.random() - 0.5).slice(0, 10);
+  QS.questions = shuffleArr(pool).slice(0, 10);
   QS.index = 0;
   QS.retrying = false;
   activeTKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
@@ -3721,6 +3762,52 @@ function loadStats() {
 function saveStats(stats) {
   if (!currentProfile) return;
   safeSave(`wq_stats_${currentProfile.name}`, stats);
+}
+
+// ── SRS (Leitner-Kästen) — Gedächtnis pro Frage, wie im Der-Die-Das-Trainer.
+//    Eintrag: { b: Kasten 0..5, due: 'YYYY-MM-DD', s: gezeigt, r: richtig,
+//    w: falsch, k: Serie richtig }. Kurze Intervalle, weil hier für Tests
+//    gelernt wird, nicht für Jahres-Vokabular. ──
+const SRS_INTERVALS   = [0, 1, 2, 4, 7, 14];
+const SRS_MAX_BOX     = SRS_INTERVALS.length - 1;
+const SRS_LEECH_WRONG = 4;   // ab so vielen Fehlern gilt die Frage als "Klette"
+
+function srsDateStr(d) { return d.toISOString().slice(0, 10); }
+function srsAddDays(dateStr, n) {
+  const d = new Date(dateStr + 'T12:00:00');
+  d.setDate(d.getDate() + n);
+  return srsDateStr(d);
+}
+function loadSrs() {
+  if (!currentProfile) return {};
+  return safeLoad(`wq_srs_${currentProfile.name}`, {});
+}
+function saveSrs(srs) {
+  if (!currentProfile) return;
+  safeSave(`wq_srs_${currentProfile.name}`, srs);
+}
+
+// Nach jeder endgültig beantworteten Frage aufrufen:
+// firstTryCorrect = beim ersten Versuch richtig.
+function srsRecord(q, firstTryCorrect) {
+  if (!q.id || !currentProfile) return;
+  const srs = loadSrs();
+  const today = srsDateStr(new Date());
+  let e = srs[q.id];
+  if (!e) e = srs[q.id] = { b: 0, due: today, s: 0, r: 0, w: 0, k: 0 };
+  e.s++;
+  if (firstTryCorrect) {
+    e.r++; e.k++;
+    e.b = Math.min(SRS_MAX_BOX, e.b + 1);
+  } else {
+    e.w++; e.k = 0;
+    e.b = Math.max(0, e.b - 1);
+  }
+  let iv = SRS_INTERVALS[e.b];
+  // Kletten-Dämpfung: chronisch schwere Fragen kommen früher wieder
+  if (e.w >= SRS_LEECH_WRONG && iv > 2) iv = Math.max(2, Math.round(iv * 0.6));
+  e.due = srsAddDays(today, iv);
+  saveSrs(srs);
 }
 </script>
 
@@ -4376,7 +4463,7 @@ QB.formen.push(
     question_it: 'Quando l\'acqua si raffredda a 0°C, _____.',
     prefix: 'Wenn Wasser auf 0°C abgekühlt wird,', suffix: 'es.',
     prefix_it: 'Quando l\'acqua si raffredda a 0°C,', suffix_it: '.',
-    answer: ['gefriert'],
+    answer: ['gefriert', 'friert', 'erstarrt'],
     hint: 'Das Wasser wird zu Eis! Der Vorgang heißt "Gefrieren" — welche Form passt im Satz?',
     hint_it: 'L\'acqua diventa ghiaccio! Il processo si chiama "Gefrieren" — quale forma si usa nella frase?',
     answer_text: 'gefriert — bei 0°C gefriert flüssiges Wasser zu Eis (Gefrieren).',
@@ -4927,7 +5014,7 @@ kap07: [
     question_it:'Qual è il soprannome di Odd a scuola?',
     prefix:'Odds Spitzname ist', suffix:'.',
     prefix_it:'Il soprannome di Odd è', suffix_it:'.',
-    answer:['odd-birnenkompott'],
+    answer:['odd-birnenkompott','birnenkompott'],
     hint:'Der Spitzname hat etwas mit Obst zu tun.',
     answer_text:'Odds Spitzname ist Odd-Birnenkompott.' },
   { type:'mcq', question:'Für wen nimmt Odd den Schinken mit?',
@@ -4987,7 +5074,7 @@ kap08: [
     question_it:'Quanti coccodrilli sono segnati sulla mappa dello zoo?',
     prefix:'Auf dem Zooplan sind', suffix:'Krokodile eingezeichnet.',
     prefix_it:'Sulla mappa dello zoo ci sono', suffix_it:'coccodrilli segnati.',
-    answer:['5'],
+    answer:['5','fünf'],
     hint:'Es ist eine einstellige Zahl.',
     answer_text:'Auf dem Zooplan sind 5 Krokodile eingezeichnet.' },
 ],
@@ -5030,7 +5117,7 @@ kap10: [
     question_it:'Quanti coccodrilli ci sono in totale allo zoo?',
     prefix:'Im Zoo gibt es insgesamt', suffix:'Krokodile.',
     prefix_it:'Allo zoo ci sono in totale', suffix_it:'coccodrilli.',
-    answer:['26'],
+    answer:['26','sechsundzwanzig'],
     hint:'Es ist eine zweistellige Zahl.',
     answer_text:'Im Zoo gibt es insgesamt 26 Krokodile.' },
   { type:'mcq', question:'Wovon ernähren sich Krokodile hauptsächlich?',
@@ -5258,7 +5345,7 @@ kap17: [
     question_it:'Chi afferma in televisione di aver visto il presunto ladro di coccodrilli?',
     prefix:'Die Zeugin heißt', suffix:'.',
     prefix_it:'Il nome della testimone è', suffix_it:'.',
-    answer:['gunfrid askildsen'],
+    answer:['gunfrid askildsen','gunfrid','askildsen'],
     hint:'Es ist eine ältere Dame mit einem sehr ungewöhnlichen Namen.',
     answer_text:'Gunfrid Askildsen sagt, sie habe einen Mann bei den Büschen gesehen.' },
   { type:'mcq', question:'Was gesteht Odd Kine am Ende des Kapitels unter Tränen?',
@@ -5755,7 +5842,7 @@ materialien: [
     suffix:'.<br>"temporary magnet" is called ___ in German.',
     prefix_it:'"temporary magnet" in tedesco si dice',
     suffix_it:'.',
-    answer:['temporärer magnet','temporärer magnet'],
+    answer:['temporärer magnet','temporärmagnet','temporary magnet'],
     hint:'"temporär" klingt ähnlich wie auf Englisch — und "Magnet" kennst du schon! / "temporär" sounds similar to English — and "Magnet" you already know!',
     hint_it:'"temporär" suona simile all\'inglese — e "Magnet" lo conosci già!',
     answer_text:'"temporary magnet" heißt auf Deutsch TEMPORÄRER MAGNET.',
@@ -5913,7 +6000,7 @@ sortieren: [
     suffix:'und ist deshalb NICHT magnetisch.<br>A drinks can (e.g. Coke) is made of ___ and is therefore NOT magnetic.',
     prefix_it:'Una lattina di bibita (es. Cola) è fatta di',
     suffix_it:'e quindi NON è magnetica.',
-    answer:['aluminium','aluminum','aluminium'],
+    answer:['aluminium','aluminum','alu'],
     hint:'Es ist ein leichtes, silbernes Metall — aber KEIN magnetisches Material! / It\'s a light, silver-coloured metal — but NOT a magnetic material!',
     hint_it:"È un metallo leggero e argentato — ma NON un materiale magnetico!",
     answer_text:'Getränkedosen bestehen aus Aluminium — und Aluminium ist nicht eines der 4 magnetischen Materialien.',
@@ -5967,7 +6054,7 @@ kraefte: [
     suffix:'eines Magneten.<br>Magnetic force is the push or ___ created by a magnet.',
     prefix_it:'La forza magnetica è la spinta o',
     suffix_it:'creata da un magnete.',
-    answer:['pull','schub'],
+    answer:['pull','schub','druck','stoß','push'],
     hint:'A magnet can push things away — and it can also…?',
     hint_it:'Un magnete può respingere — ma può anche…?',
     answer_text:'Die Kraft = Zug oder SCHUB. / Magnetic force is the push or PULL created by a magnet.',
@@ -6302,7 +6389,7 @@ erde: [
     suffix:'anzeigt.<br>A compass is a tool we use to find ___ .',
     prefix_it:'Una bussola è uno strumento che ci mostra i',
     suffix_it:'.',
-    answer:['himmelsrichtungen','direction','directions'],
+    answer:['himmelsrichtungen','himmelsrichtung','richtungen','richtung','direction','directions'],
     hint:'Nord, Süd, Ost, West — das sind die vier ___ ! / North, South, East, West — those are the four ___ !',
     hint_it:'Nord, Sud, Est, Ovest — sono i quattro punti cardinali!',
     answer_text:'Ein Kompass zeigt uns die HIMMELSRICHTUNGEN — Nord, Süd, Ost und West.',
