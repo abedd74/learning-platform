@@ -2054,7 +2054,7 @@ function editorRenderList() {
       Noch keine Fragen in diesem Thema. <span class="it">/ Ancora nessuna domanda.</span></p>`;
     return;
   }
-  const TYPE_ICONS = { fitb:'📝', truefalse:'✅', mcq:'🔘', imageChoice:'🖼️', sequence:'🔢', dragmatch:'🔗' };
+  const TYPE_ICONS = { fitb:'📝', truefalse:'✅', mcq:'🔘', imageChoice:'🖼️', sequence:'🔢', dragmatch:'🔗', multiselect:'☑️', cycleDiagram:'🔄' };
   list.innerHTML = qs.map((q, i) => {
     const icon  = TYPE_ICONS[q.type] || '❓';
     const text  = (q.question || q.statement || '(kein Text)').substring(0, 55);
@@ -2092,6 +2092,14 @@ function editorEditQuestion(idx) {
   editorEditIdx = idx;
   const q = (editorGetModuleQB()[editorTopicKey] || [])[idx];
   if (!q) return;
+  // Fragetypen, die das Formular nicht abbilden kann, nicht öffnen —
+  // Speichern würde die Frage sonst still zerstören (leerer Typ).
+  const editable = ['fitb','truefalse','mcq','imageChoice','sequence','dragmatch','multiselect'];
+  if (!editable.includes(q.type)) {
+    alert(`Dieser Fragetyp (${q.type}) kann im Editor noch nicht bearbeitet werden.`);
+    editorEditIdx = -1;
+    return;
+  }
   document.getElementById('ef-form-title').textContent = `Frage ${idx + 1} bearbeiten`;
   document.getElementById('ef-type').value = q.type || 'fitb';
   document.getElementById('ef-hint').value         = q.hint         || '';
@@ -2399,13 +2407,19 @@ function editorSaveQuestion() {
 
     } else if (type === 'mcq') {
       const question = document.getElementById('ef-main-question').value.trim();
-      const corEl    = document.querySelector('input[name="ef-mcq-cor"]:checked');
-      const options  = Array.from(document.querySelectorAll('.ef-opt-input'))
-        .map(el => el.value.trim()).filter(Boolean);
+      // Option und Richtig-Markierung aus DERSELBEN Zeile lesen — gelöschte
+      // oder leere Zeilen dürfen die Zuordnung nicht verschieben
+      const options = [];
+      let correct = null;
+      document.querySelectorAll('.ef-opt-input').forEach(el => {
+        const v = el.value.trim();
+        if (!v) return;
+        options.push(v);
+        if (el.closest('.options-row')?.querySelector('input[name="ef-mcq-cor"]')?.checked) correct = v;
+      });
       if (!question)        throw new Error('Frage darf nicht leer sein!');
       if (options.length < 2) throw new Error('Mindestens 2 Optionen angeben!');
-      if (!corEl)           throw new Error('Bitte eine richtige Antwort auswählen!');
-      const correct = options[parseInt(corEl.value)] || options[0];
+      if (correct === null) throw new Error('Bitte eine richtige Antwort auswählen! (Die markierte Option darf nicht leer sein.)');
       Object.assign(q, { question, options, correct });
       const optsIt = (document.getElementById('ef-opts-it')?.value || '')
         .split('\n').map(s => s.trim()).filter(Boolean);
@@ -2413,16 +2427,21 @@ function editorSaveQuestion() {
 
     } else if (type === 'imageChoice') {
       const question = document.getElementById('ef-main-question').value.trim();
-      const corEl    = document.querySelector('input[name="ef-img-cor"]:checked');
-      const emojis   = Array.from(document.querySelectorAll('.ef-img-emoji'));
-      const labels   = Array.from(document.querySelectorAll('.ef-img-label'));
-      const options  = emojis.map((e, i) => ({
-        emoji: e.value.trim(), label: labels[i]?.value.trim() || ''
-      })).filter(o => o.emoji || o.label);
+      // Zeilenweise lesen: correct ist ein Index in die GEFILTERTE Optionsliste
+      const options = [];
+      let correct = -1;
+      document.querySelectorAll('.ef-img-emoji').forEach(e => {
+        const row   = e.closest('.options-row');
+        const emoji = e.value.trim();
+        const label = row?.querySelector('.ef-img-label')?.value.trim() || '';
+        if (!emoji && !label) return;
+        if (row?.querySelector('input[name="ef-img-cor"]')?.checked) correct = options.length;
+        options.push({ emoji, label });
+      });
       if (!question)        throw new Error('Frage darf nicht leer sein!');
       if (options.length < 2) throw new Error('Mindestens 2 Optionen angeben!');
-      if (!corEl)           throw new Error('Bitte eine richtige Antwort auswählen!');
-      Object.assign(q, { question, options, correct: parseInt(corEl.value) });
+      if (correct < 0)      throw new Error('Bitte eine richtige Antwort auswählen! (Die markierte Option darf nicht leer sein.)');
+      Object.assign(q, { question, options, correct });
 
     } else if (type === 'sequence') {
       const question = document.getElementById('ef-main-question').value.trim();
@@ -2454,10 +2473,14 @@ function editorSaveQuestion() {
 
     } else if (type === 'multiselect') {
       const question = document.getElementById('ef-main-question').value.trim();
-      const options  = Array.from(document.querySelectorAll('.ef-ms-opt-input'))
-        .map(el => el.value.trim()).filter(Boolean);
-      const correct  = Array.from(document.querySelectorAll('.ef-ms-cor-cb:checked'))
-        .map(cb => options[parseInt(cb.dataset.idx)]).filter(Boolean);
+      // Option und Häkchen aus derselben Zeile — Index-Verschiebung unmöglich
+      const options = [], correct = [];
+      document.querySelectorAll('.ef-ms-opt-input').forEach(el => {
+        const v = el.value.trim();
+        if (!v) return;
+        options.push(v);
+        if (el.closest('.options-row')?.querySelector('.ef-ms-cor-cb')?.checked) correct.push(v);
+      });
       if (!question)         throw new Error('Frage darf nicht leer sein!');
       if (options.length < 2) throw new Error('Mindestens 2 Optionen angeben!');
       if (!correct.length)   throw new Error('Mindestens eine richtige Antwort wählen!');
@@ -2602,22 +2625,41 @@ function selectProfile(key, el) {
   document.getElementById('btn-go').disabled = false;
 }
 
+// Eigene Profile überleben jetzt den Neustart (früher nur DOM, weg nach
+// Reload — und die Statistiken des Profils waren verwaist). Gerätelokal.
+function loadCustomProfiles() { return safeLoad('custom_profiles', []); }
+
+function addProfileCard(p) {
+  const grid = document.getElementById('profile-grid');
+  const addBtn = grid?.querySelector('.profile-add');
+  if (!grid || !addBtn) return;
+  const key = 'custom_' + p.name;
+  PROFILES[key] = { name: p.name, avatar: p.avatar || '🌱', grade: null };
+  const card = document.createElement('div');
+  card.className = 'profile-card';
+  card.innerHTML = `<div class="profile-avatar">${escHTML(p.avatar || '🌱')}</div><div class="profile-name">${escHTML(p.name)}</div>`;
+  card.onclick = () => selectProfile(key, card);
+  grid.insertBefore(card, addBtn);
+}
+
+function renderCustomProfiles() {
+  loadCustomProfiles().forEach(p => {
+    if (p?.name && !PROFILES['custom_' + p.name]) addProfileCard(p);
+  });
+}
+
 function addProfile() {
   const name = prompt('Name des neuen Profils:\n(Nome del nuovo profilo:)');
   if (!name || !name.trim()) return;
   const n = name.trim();
-  const grid = document.getElementById('profile-grid');
-  const addBtn = grid.querySelector('.profile-add');
-  const card = document.createElement('div');
-  card.className = 'profile-card';
-  card.innerHTML = `<div class="profile-avatar">🌱</div><div class="profile-name">${n}</div>`;
-  card.onclick = function() {
-    currentProfile = { name: n, avatar: '🌱', grade: null };
-    document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
-    card.classList.add('selected');
-    document.getElementById('btn-go').disabled = false;
-  };
-  grid.insertBefore(card, addBtn);
+  if (Object.values(PROFILES).some(p => p.name === n)) {
+    alert('Dieses Profil gibt es schon!');
+    return;
+  }
+  const list = loadCustomProfiles();
+  list.push({ name: n, avatar: '🌱' });
+  safeSave('custom_profiles', list);
+  addProfileCard({ name: n, avatar: '🌱' });
 }
 
 // ── Topic helpers ───────────────────────────────
@@ -3016,7 +3058,12 @@ function renderQuestion() {
 
   const render = { mcq, truefalse, fitb, imageChoice, sequence, dragmatch, cycleDiagram, multiselect };
   if (render[q.type]) render[q.type](q, area);
-  else area.innerHTML = '<p style="color:var(--soft)">Unbekannter Fragetyp</p>';
+  else {
+    // Nie ohne Ausweg: bei unbekanntem Typ Weiter-Knopf zeigen,
+    // sonst steckt die Runde fest
+    area.innerHTML = '<p style="color:var(--soft)">Unbekannter Fragetyp — weiter zur nächsten Frage!</p>';
+    document.getElementById('q-next').style.display = '';
+  }
 }
 
 function resetArea(area) {
@@ -3634,6 +3681,8 @@ function retryWeak() {
   QS.questions = shuffleArr(pool).slice(0, 10);
   QS.index = 0;
   QS.retrying = false;
+  QS.wrongAnswers = [];              // sonst erbt die Runde die Fehlerliste der vorigen
+  QS.mode = 'schwache-themen';       // eigener Verlaufs-Eintrag statt altem Modus
   activeTKEYS.forEach(k => QS.topicPts[k] = { pts: 0, max: 0 });
   document.getElementById('q-badge').textContent = '🔁 Schwache Themen';
   showScreen('s-quiz');
@@ -6731,6 +6780,7 @@ anwendungen: [
 // ── Assign IDs to book questions ──
 assignQuestionIds();
 migrateStatsIds();
+renderCustomProfiles();
 
 // ── Load any editor-saved book questions ──
 editorLoadFromStorage();

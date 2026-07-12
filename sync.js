@@ -110,8 +110,16 @@
 
   function familyId() {
     try {
-      const fromUrl = new URLSearchParams(location.search).get('familie');
-      if (fromUrl) localStorage.setItem(FAMILY_KEY, fromUrl);
+      const params = new URLSearchParams(location.search);
+      const fromUrl = params.get('familie');
+      if (fromUrl) {
+        localStorage.setItem(FAMILY_KEY, fromUrl);
+        // Geheimcode sofort aus der Adresszeile entfernen — sonst bleibt er
+        // in Browser-Verlauf, Lesezeichen und Screenshots sichtbar
+        params.delete('familie');
+        const clean = location.pathname + (params.toString() ? '?' + params.toString() : '') + location.hash;
+        history.replaceState(null, '', clean);
+      }
       return localStorage.getItem(FAMILY_KEY);
     } catch { return null; }
   }
