@@ -7,6 +7,13 @@
    Änderungen (entprellt) geschoben. Konflikte werden pro Schlüsseltyp
    gemischt — „mehr Fortschritt gewinnt".
 
+   Löschungen: die App löscht über FamilySync.remove(key). Das entfernt
+   lokal UND hinterlässt einen Grabstein (Tombstone), der als eigenes
+   Dokument ({deleted:true, ts}) hochgeschoben wird. So wird eine
+   Löschung auf alle Geräte übertragen, statt dass der nächste Pull die
+   Daten wiederbelebt. Neuere Daten (ts über dem Grabstein) gewinnen
+   wieder — absichtliches Neu-Anlegen bleibt also möglich.
+
    Einrichtung pro Gerät: einmal den Familien-Link öffnen
    (…/index.html?familie=GEHEIMER-CODE). Der Code wird lokal gespeichert
    und darf NICHT ins Repository committet werden — er ist das Passwort.
@@ -23,6 +30,7 @@
 
   const FAMILY_KEY = 'family_sync_id';
   const META_KEY   = 'family_sync_meta';   // { <storageKey>: zuletzt gesehener ts } für LWW
+  const TOMB_KEY   = 'family_sync_tombstones'; // { <storageKey>: Löschzeitpunkt (ms) }
   const PUSH_DEBOUNCE_MS = 5000;
   const PULL_MIN_INTERVAL_MS = 60000;
 
@@ -36,7 +44,7 @@
     { re: /^wq_srs_.+$/,    merge: mergeSrs },
     { re: /^wq_stats_.+$/,  merge: mergeMaxPerEntry },
     { re: /^wq_deck_.+$/,   merge: mergeDeepUnion },
-    { re: /^wq_editor_QB\w*$/, merge: null },
+    { re: /^wq_editor_QB\w*$/, merge: mergeEditorBank },
     { re: /^wq_(?!deck_|stats_|editor|srs_)\S+$/, merge: mergeHistory },
   ];
   // Bewusst NICHT synchronisiert: gram_lastProfile, gram_it_on (gerätelokal).
@@ -105,6 +113,40 @@
     return merged.slice(-10);
   }
 
+  // Editor-Fragenbank { thema: [fragen], __meta:{topics:{ thema:{ts} }} }:
+  // Themen einzeln mischen — pro Thema gewinnt der jüngere Speicherstand
+  // (Zeitstempel aus __meta, gestempelt von editorSaveTopicToStorage).
+  // So überschreiben zwei Geräte, die VERSCHIEDENE Themen bearbeiten,
+  // einander nicht mehr, und ein frisch bearbeitetes Thema kann nicht von
+  // einer älteren Cloud-Kopie verdrängt werden. Altbestände ohne __meta:
+  // das Thema mit mehr Fragen gewinnt, bei Gleichstand das lokale (a).
+  function mergeEditorBank(a, b) {
+    a = (a && typeof a === 'object') ? a : {};
+    b = (b && typeof b === 'object') ? b : {};
+    const metaA = a.__meta?.topics || {};
+    const metaB = b.__meta?.topics || {};
+    const out = {}, outMeta = {};
+    for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+      if (k === '__meta') continue;
+      const va = a[k], vb = b[k];
+      const ta = Number(metaA[k]?.ts || 0), tb = Number(metaB[k]?.ts || 0);
+      let takeA;
+      if (va === undefined)      takeA = false;
+      else if (vb === undefined) takeA = true;
+      else if (ta !== tb)        takeA = ta > tb;
+      else {
+        const la = Array.isArray(va) ? va.length : -1;
+        const lb = Array.isArray(vb) ? vb.length : -1;
+        takeA = la >= lb;
+      }
+      out[k] = takeA ? va : vb;
+      const m = takeA ? metaA[k] : metaB[k];
+      if (m) outMeta[k] = m;
+    }
+    if (Object.keys(outMeta).length) out.__meta = { topics: outMeta };
+    return out;
+  }
+
   /* ── Firestore REST ───────────────────────────────────────────── */
   const enabled = () => !CONFIG.projectId.startsWith('PASTE') && !!familyId();
 
@@ -134,9 +176,10 @@
     if (!res.ok) throw new Error(`list ${res.status}`);
     const data = await res.json();
     return (data.documents || []).map(d => ({
-      key:  decodeURIComponent(d.name.split('/').pop()),
-      json: d.fields?.json?.stringValue ?? null,
-      ts:   Number(d.fields?.ts?.integerValue || 0),
+      key:     decodeURIComponent(d.name.split('/').pop()),
+      json:    d.fields?.json?.stringValue ?? null,
+      ts:      Number(d.fields?.ts?.integerValue || 0),
+      deleted: d.fields?.deleted?.booleanValue === true,
     }));
   }
 
@@ -146,22 +189,38 @@
     if (!res.ok) throw new Error(`get ${res.status}`);
     const d = await res.json();
     return {
-      json: d.fields?.json?.stringValue ?? null,
-      ts:   Number(d.fields?.ts?.integerValue || 0),
+      json:    d.fields?.json?.stringValue ?? null,
+      ts:      Number(d.fields?.ts?.integerValue || 0),
+      deleted: d.fields?.deleted?.booleanValue === true,
     };
   }
 
-  async function patchDoc(key, raw) {
-    const ts = Date.now();
-    const body = JSON.stringify({ fields: {
-      json: { stringValue: raw },
-      ts:   { integerValue: String(ts) },
-    }});
-    const res = await fetch(`${baseUrl()}/${encodeURIComponent(key)}?key=${CONFIG.apiKey}`, {
-      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body,
-    });
+  // PATCH ohne updateMask ersetzt das ganze Dokument — ein Daten-Patch
+  // räumt also ein evtl. vorhandenes deleted-Feld weg und umgekehrt.
+  // keepalive: beim Wegblättern (pagehide) überlebt der Request das
+  // Entladen der Seite — nur bis ~64 KB Body, größere gehen normal raus.
+  async function patchFields(key, fields, ts, keepalive) {
+    const body = JSON.stringify({ fields });
+    const init = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body };
+    if (keepalive && body.length < 60000) init.keepalive = true;
+    const res = await fetch(`${baseUrl()}/${encodeURIComponent(key)}?key=${CONFIG.apiKey}`, init);
     if (!res.ok) throw new Error(`patch ${res.status}`);
     metaSet(key, ts);
+  }
+
+  function patchDoc(key, raw, keepalive) {
+    const ts = Date.now();
+    return patchFields(key, {
+      json: { stringValue: raw },
+      ts:   { integerValue: String(ts) },
+    }, ts, keepalive);
+  }
+
+  function patchTombstone(key, ts, keepalive) {
+    return patchFields(key, {
+      deleted: { booleanValue: true },
+      ts:      { integerValue: String(ts) },
+    }, ts, keepalive);
   }
 
   /* ── Meta (zuletzt gesehener Zeitstempel je Schlüssel) ───────── */
@@ -169,6 +228,19 @@
   function metaSet(key, ts) {
     const m = metaAll(); m[key] = ts;
     try { localStorage.setItem(META_KEY, JSON.stringify(m)); } catch {}
+  }
+
+  /* ── Grabsteine (lokal ausgeführte Löschungen, noch gültig) ───── */
+  function tombAll() { return parse(localStorage.getItem(TOMB_KEY)) || {}; }
+  function tombSet(key, ts) {
+    const t = tombAll(); t[key] = ts;
+    try { localStorage.setItem(TOMB_KEY, JSON.stringify(t)); } catch {}
+  }
+  function tombClear(key) {
+    const t = tombAll();
+    if (!(key in t)) return;
+    delete t[key];
+    try { localStorage.setItem(TOMB_KEY, JSON.stringify(t)); } catch {}
   }
 
   /* ── Status für die UI ────────────────────────────────────────── */
@@ -190,12 +262,38 @@
       for (const d of docs) {
         remoteKeys.add(d.key);
         const rule = ruleFor(d.key);
-        if (!rule || d.json === null) continue;
+        if (!rule) continue;
         const localRaw = localStorage.getItem(d.key);
+        const seenTs   = metaAll()[d.key] || 0;
+
+        // Entfernter Grabstein: Löschung von einem anderen Gerät übernehmen —
+        // außer der Schlüssel hat lokale, noch nicht hochgeschobene Änderungen
+        // (dirty), dann gewinnen die und der nächste Push belebt ihn wieder.
+        if (d.deleted) {
+          if (d.ts > seenTs) {
+            if (localRaw !== null && !dirty.has(d.key)) {
+              localStorage.removeItem(d.key);
+              tombSet(d.key, d.ts);
+              changed.push(d.key);
+            }
+            metaSet(d.key, d.ts);
+          }
+          continue;
+        }
+        if (d.json === null) continue;
+
         let finalRaw;
-        if (localRaw === null) finalRaw = d.json;
-        else if (rule.merge)   finalRaw = JSON.stringify(rule.merge(parse(localRaw), parse(d.json)));
-        else                   finalRaw = d.ts > (metaAll()[d.key] || 0) ? d.json : localRaw;
+        if (localRaw === null) {
+          // Lokal gelöscht? Nur wiederbeleben, wenn die Cloud-Daten JÜNGER
+          // als unser Grabstein sind — sonst Grabstein hochschieben.
+          const tombTs = tombAll()[d.key] || 0;
+          if (tombTs >= d.ts) { dirty.add(d.key); continue; }
+          if (tombTs) tombClear(d.key);
+          finalRaw = d.json;
+        }
+        else if (rule.merge) finalRaw = JSON.stringify(rule.merge(parse(localRaw), parse(d.json)));
+        // LWW: lokale Daten nie verdrängen, solange sie ungesichert (dirty) sind
+        else finalRaw = (dirty.has(d.key) || d.ts <= seenTs) ? localRaw : d.json;
         if (finalRaw !== localRaw) { localStorage.setItem(d.key, finalRaw); changed.push(d.key); }
         // Wenn das Mischen lokal Neues ergab, muss es auch nach oben
         if (rule.merge && finalRaw !== d.json) dirty.add(d.key);
@@ -223,7 +321,22 @@
   let pushTimer = null;
 
   function markDirty(key) {
-    if (!enabled() || !ruleFor(key)) return;
+    if (!ruleFor(key)) return;
+    // Schlüssel wurde (wieder) beschrieben → ein evtl. alter Grabstein ist hinfällig
+    if (localStorage.getItem(key) !== null) tombClear(key);
+    if (!enabled()) return;
+    dirty.add(key);
+    schedulePush();
+  }
+
+  // Sync-bewusstes Löschen: lokal entfernen + Grabstein setzen, damit die
+  // Löschung auf die anderen Geräte übertragen wird. Die App ruft das statt
+  // localStorage.removeItem() für synchronisierte Schlüssel auf.
+  function remove(key) {
+    try { localStorage.removeItem(key); } catch {}
+    if (!ruleFor(key)) return;
+    tombSet(key, Date.now());
+    if (!enabled()) return;
     dirty.add(key);
     schedulePush();
   }
@@ -233,23 +346,48 @@
     pushTimer = setTimeout(pushDirty, PUSH_DEBOUNCE_MS);
   }
 
-  async function pushDirty() {
+  // flush=true: Seite wird gleich entladen (pagehide) — keine Vorab-GETs,
+  // nur noch schnelle keepalive-Schreiber. Ein dabei übersprungenes Mischen
+  // holt das andere Gerät bei seinem nächsten Pull nach (Mischen ist
+  // symmetrisch, seine lokalen Daten hat es ja noch).
+  async function pushDirty(flush) {
     if (!enabled() || !dirty.size) return;
     setStatus('sync');
     const keys = [...dirty]; dirty.clear();
     try {
       for (const key of keys) {
         const localRaw = localStorage.getItem(key);
-        if (localRaw === null) continue;
         const rule = ruleFor(key);
+        if (localRaw === null) {
+          // Gelöschter Schlüssel → Grabstein hochschieben. Vorher nachsehen,
+          // ob ein anderes Gerät NACH unserer Löschung neue Daten geschrieben
+          // hat — dann gewinnen die Daten und wir beleben lokal wieder.
+          const tombTs = tombAll()[key];
+          if (!tombTs) continue;
+          if (!flush) {
+            const remote = await getDoc(key);
+            if (remote && !remote.deleted && remote.json !== null && remote.ts > tombTs) {
+              localStorage.setItem(key, remote.json);
+              tombClear(key);
+              metaSet(key, remote.ts);
+              try { window.dispatchEvent(new CustomEvent('familysync-pulled', { detail: { keys: [key] } })); } catch {}
+              continue;
+            }
+          }
+          await patchTombstone(key, tombTs, flush);
+          continue;
+        }
         let finalRaw = localRaw;
         // Vor dem Schreiben kurz mischen, damit parallele Geräte nichts überschreiben
-        const remote = await getDoc(key);
-        if (remote && remote.json !== null && rule.merge) {
-          finalRaw = JSON.stringify(rule.merge(parse(localRaw), parse(remote.json)));
-          if (finalRaw !== localRaw) localStorage.setItem(key, finalRaw);
+        if (!flush && rule.merge) {
+          const remote = await getDoc(key);
+          if (remote && remote.json !== null) {
+            finalRaw = JSON.stringify(rule.merge(parse(localRaw), parse(remote.json)));
+            if (finalRaw !== localRaw) localStorage.setItem(key, finalRaw);
+          }
         }
-        await patchDoc(key, finalRaw);
+        await patchDoc(key, finalRaw, flush);
+        tombClear(key);   // Daten sind wieder da → Grabstein-Rest aufräumen
       }
       setStatus('ok');
     } catch (err) {
@@ -296,16 +434,31 @@
   /* ── Start ────────────────────────────────────────────────────── */
   function init() {
     if (!enabled()) { setStatus('aus'); return; }
+    // Schutz vor Verdrängung beim ersten Pull:
+    //  – nie synchronisierte lokale Schlüssel (kein Meta-Eintrag) gelten als
+    //    dirty, damit frisch erfasste Daten weder von einer alten Cloud-Kopie
+    //    (LWW) noch von einem alten Grabstein verdrängt werden
+    //  – LWW-Schlüssel mit lokalen Daten ebenso
+    //  – offene Grabsteine (Löschung kurz vor einem Neuladen) wieder anmelden
+    const meta = metaAll();
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      const r = ruleFor(k);
+      if (r && (!(k in meta) || !r.merge)) dirty.add(k);
+    }
+    for (const [k, ts] of Object.entries(tombAll())) {
+      if (ruleFor(k) && ts > (meta[k] || 0)) dirty.add(k);
+    }
     pullAll();
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible' && Date.now() - lastPull > PULL_MIN_INTERVAL_MS) pullAll();
-      if (document.visibilityState === 'hidden' && dirty.size) pushDirty();
+      if (document.visibilityState === 'hidden' && dirty.size) pushDirty(true);
     });
-    window.addEventListener('pagehide', () => { if (dirty.size) pushDirty(); });
+    window.addEventListener('pagehide', () => { if (dirty.size) pushDirty(true); });
   }
 
   window.FamilySync = {
-    init, markDirty, pullAll, exportAll, importAll,
+    init, markDirty, remove, pullAll, exportAll, importAll,
     get status() { return status; },
     get familyId() { return familyId(); },
     get enabled() { return enabled(); },
