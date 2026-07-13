@@ -1103,10 +1103,13 @@ function goHome() {
   const bDat = document.getElementById('btn-dat'), nDat = document.getElementById('note-dat');
   const bPath = document.getElementById('btn-path-akk'), nPath = document.getElementById('note-path-akk');
 
-  // Reihenfolge: Wörter meistern → Lernpfad (Erklärung!) → Satz-Übungen
+  // Reihenfolge: Wörter meistern → Lernpfad (Erklärung!) → Satz-Übungen.
+  // Eltern-Modus: alles offen, damit Erwachsene die Inhalte prüfen können,
+  // ohne erst 30 Wörter zu meistern.
+  const elternMode = profile === 'Eltern';
   const akkSt = pathState('akk');
   const akkPathDone = pathDone('akk');
-  if (m < UNLOCK_AKK) {
+  if (m < UNLOCK_AKK && !elternMode) {
     bPath.classList.add('locked'); bPath.disabled = true;
     nPath.textContent = `🔒 Noch ${UNLOCK_AKK - m} Wörter meistern, dann geht's los!`;
   } else {
@@ -1114,14 +1117,16 @@ function goHome() {
     bPath.innerHTML = akkPathDone
       ? '🎓 Lernpfad: Akkusativ ✓ <span style="opacity:.7; font-weight:700;">(nochmal ansehen)</span>'
       : `🎓 Lernpfad: Akkusativ <span style="opacity:.8;">(Schritt ${Math.min(akkSt.unit, PATH_AKK.length)}/${PATH_AKK.length})</span>`;
-    nPath.textContent = (!akkPathDone && akkSt.unit === 1 && !Object.keys(akkSt.passed).length)
-      ? '✨ Neu! Hier lernst du Schritt für Schritt, was der Akkusativ ist.' : '';
+    nPath.textContent = elternMode
+      ? '👨‍👩‍👧 Eltern-Modus: zum Ausprobieren offen — mit Schritt-Auswahl in der Lektion.'
+      : (!akkPathDone && akkSt.unit === 1 && !Object.keys(akkSt.passed).length)
+        ? '✨ Neu! Hier lernst du Schritt für Schritt, was der Akkusativ ist.' : '';
   }
-  if (m < UNLOCK_AKK || !akkPathDone) {
+  if ((m < UNLOCK_AKK || !akkPathDone) && !elternMode) {
     bAkk.classList.add('locked'); bAkk.disabled = true;
     nAkk.textContent = m >= UNLOCK_AKK ? '🔒 Erst den Lernpfad abschließen — dann wird das hier kinderleicht!' : '';
   } else { bAkk.classList.remove('locked'); bAkk.disabled = false; nAkk.textContent = ''; }
-  if (m < UNLOCK_DAT) {
+  if (m < UNLOCK_DAT && !elternMode) {
     bDat.classList.add('locked'); bDat.disabled = true;
     nDat.textContent = m >= UNLOCK_AKK ? `🔒 Noch ${UNLOCK_DAT - m} Wörter bis zum Dativ!` : '';
   } else { bDat.classList.remove('locked'); bDat.disabled = false; nDat.textContent = ''; }
@@ -1806,16 +1811,25 @@ function savePathPass(kase, unitN) {
 
 let pathCtx = null;   // { kase, unit } während einer Lernpfad-Runde
 
-function startPath(kase) {
+function startPath(kase, unitOverride) {
   const st = pathState(kase);
-  const unitN = Math.min(st.unit, PATH_AKK.length);
+  const unitN = unitOverride || Math.min(st.unit, PATH_AKK.length);
   const unit = PATH_AKK[unitN - 1];
   pathCtx = { kase, unit: unitN };
   lastSessionType = `path-${kase}`;
 
   // Lektion zeigen
   document.getElementById('lesson-title').textContent = `Schritt ${unitN} von ${PATH_AKK.length}: ${unit.title}`;
-  document.getElementById('lesson-body').innerHTML = unit.lesson;
+  let body = unit.lesson;
+  // Schritt-Auswahl: nach Abschluss (Wiederholung) und im Eltern-Modus
+  // darf man frei zwischen den Schritten springen
+  if (pathDone(kase) || profile === 'Eltern') {
+    body += `<div style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:14px;">` +
+      PATH_AKK.map(u =>
+        `<button class="el-pill ${u.n === unitN ? 'active' : ''}" onclick="startPath('${kase}', ${u.n})">Schritt ${u.n}</button>`).join('') +
+      `</div>`;
+  }
+  document.getElementById('lesson-body').innerHTML = body;
   document.getElementById('lesson-progress').innerHTML = PATH_AKK.map((u, i) =>
     `<div class="q-dot ${st.passed[u.n] ? 'done' : (i === unitN - 1 ? 'now' : '')}"></div>`).join('');
   document.getElementById('lesson-go').onclick = () => beginPathCheck();
