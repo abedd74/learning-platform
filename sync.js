@@ -33,6 +33,7 @@
     { re: /^gram_days_.+$/,   merge: mergeMaxPerEntry },
     { re: /^gram_case_.+$/,   merge: mergeMaxPerEntry },
     { re: /^gram_badges_.+$/, merge: mergeDeepUnion },
+    { re: /^gram_path_.+$/,   merge: mergeMaxPerEntry },   // Lernpfad: mehr Fortschritt gewinnt
     { re: /^wq_srs_.+$/,    merge: mergeSrs },
     { re: /^wq_stats_.+$/,  merge: mergeMaxPerEntry },
     { re: /^wq_deck_.+$/,   merge: mergeDeepUnion },

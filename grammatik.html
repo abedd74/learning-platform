@@ -348,6 +348,8 @@ body.show-it .it.inline { display: inline; }
 
   <button class="btn" id="btn-daily" onclick="startSession('mixed')">🎯 Tägliches Training</button>
   <button class="btn secondary" onclick="startSession('gender')">🔤 Der-Die-Das üben</button>
+  <button class="btn secondary" id="btn-path-akk" onclick="startPath('akk')">🎓 Lernpfad: Akkusativ</button>
+  <div class="lock-note" id="note-path-akk"></div>
   <button class="btn secondary" id="btn-akk" onclick="startSession('akk')">✍️ Sätze üben (Akkusativ)</button>
   <div class="lock-note" id="note-akk"></div>
   <button class="btn secondary" id="btn-dat" onclick="startSession('dat')">✉️ Sätze üben (Dativ)</button>
@@ -383,6 +385,24 @@ body.show-it .it.inline { display: inline; }
     <div class="feedback" id="feedback"></div>
     <div class="solution" id="solution"></div>
     <button class="btn next-btn" id="next-btn" onclick="nextQuestion()">Weiter →</button>
+  </div>
+</div>
+
+<!-- ══════════ Lernpfad-Lektion ══════════ -->
+<div class="screen" id="s-lesson">
+  <div class="topbar">
+    <button class="backlink" style="border:none;" onclick="goHome()">✕ Beenden</button>
+    <div style="display:flex; gap:8px;">
+      <button class="it-toggle snd" onclick="toggleSound()">🔊</button>
+      <button class="it-toggle" id="it-toggle-5" onclick="toggleIt()">🇮🇹</button>
+    </div>
+  </div>
+  <div class="q-progress" id="lesson-progress"></div>
+  <div class="quiz-ella">🦉</div>
+  <div class="card">
+    <h1 id="lesson-title" style="font-size:1.2rem; text-align:center; margin-bottom:12px;"></h1>
+    <div id="lesson-body" style="font-size:1rem; line-height:1.7;"></div>
+    <button class="btn" id="lesson-go" style="margin-top:16px;">Los geht's! 🚀</button>
   </div>
 </div>
 
@@ -1081,9 +1101,25 @@ function goHome() {
   const m = masteredCount();
   const bAkk = document.getElementById('btn-akk'), nAkk = document.getElementById('note-akk');
   const bDat = document.getElementById('btn-dat'), nDat = document.getElementById('note-dat');
+  const bPath = document.getElementById('btn-path-akk'), nPath = document.getElementById('note-path-akk');
+
+  // Reihenfolge: Wörter meistern → Lernpfad (Erklärung!) → Satz-Übungen
+  const akkSt = pathState('akk');
+  const akkPathDone = pathDone('akk');
   if (m < UNLOCK_AKK) {
+    bPath.classList.add('locked'); bPath.disabled = true;
+    nPath.textContent = `🔒 Noch ${UNLOCK_AKK - m} Wörter meistern, dann geht's los!`;
+  } else {
+    bPath.classList.remove('locked'); bPath.disabled = false;
+    bPath.innerHTML = akkPathDone
+      ? '🎓 Lernpfad: Akkusativ ✓ <span style="opacity:.7; font-weight:700;">(nochmal ansehen)</span>'
+      : `🎓 Lernpfad: Akkusativ <span style="opacity:.8;">(Schritt ${Math.min(akkSt.unit, PATH_AKK.length)}/${PATH_AKK.length})</span>`;
+    nPath.textContent = (!akkPathDone && akkSt.unit === 1 && !Object.keys(akkSt.passed).length)
+      ? '✨ Neu! Hier lernst du Schritt für Schritt, was der Akkusativ ist.' : '';
+  }
+  if (m < UNLOCK_AKK || !akkPathDone) {
     bAkk.classList.add('locked'); bAkk.disabled = true;
-    nAkk.textContent = `🔒 Noch ${UNLOCK_AKK - m} Wörter meistern, dann geht's los!`;
+    nAkk.textContent = m >= UNLOCK_AKK ? '🔒 Erst den Lernpfad abschließen — dann wird das hier kinderleicht!' : '';
   } else { bAkk.classList.remove('locked'); bAkk.disabled = false; nAkk.textContent = ''; }
   if (m < UNLOCK_DAT) {
     bDat.classList.add('locked'); bDat.disabled = true;
@@ -1150,6 +1186,7 @@ const BADGES = [
   { id:'streak14', em:'🌟', lbl:'14 Tage in Folge',          cond: f => f.streak >= 14 },
   { id:'traps10',  em:'🇮🇹', lbl:'10 Fallen-Wörter besiegt',  cond: f => f.traps >= 10 },
   { id:'akk',      em:'✍️', lbl:'Akkusativ freigeschaltet',  cond: f => f.m >= UNLOCK_AKK },
+  { id:'pathakk',  em:'🕵️‍♀️', lbl:'Akkusativ-Detektivin',      cond: f => f.pathAkkDone },
   { id:'dat',      em:'✉️', lbl:'Dativ freigeschaltet',      cond: f => f.m >= UNLOCK_DAT },
   { id:'perfect',  em:'🏆', lbl:'Perfekte Runde',            cond: (f, x) => !!x.perfect },
 ];
@@ -1165,6 +1202,7 @@ function checkBadges(extra = {}) {
     streak: streakCount(),
     goalToday: t.a >= GOAL_PER_DAY,
     traps: NOUNS.filter(n => isTrap(n) && srs[n.de] && srs[n.de].b >= 3).length,
+    pathAkkDone: pathDone('akk'),
   };
   const fresh = [];
   BADGES.forEach(b => {
@@ -1246,6 +1284,8 @@ function caseQuestion(kase) {
 }
 
 function startSession(type) {
+  if (type && type.startsWith('path-')) { startPath(type.slice(5)); return; }
+  pathCtx = null;
   lastSessionType = type;
   session = [];
   sIdx = 0; sCorrect = 0; sNewWords = [];
@@ -1253,7 +1293,10 @@ function startSession(type) {
 
   if (type === 'gender' || type === 'mixed') {
     const m = masteredCount();
-    const caseCount = (type === 'mixed' && m >= UNLOCK_AKK) ? 4 : 0;
+    // Satzfragen erst NACH dem Lernpfad — vorher wäre jede davon eine
+    // kalte Überraschung ohne Erklärung (genau das Problem, das der
+    // Lernpfad löst)
+    const caseCount = (type === 'mixed' && m >= UNLOCK_AKK && pathDone('akk')) ? 4 : 0;
     const genderCount = SESSION_LEN - caseCount;
 
     // Wie viele neue Wörter sind heute noch erlaubt? Drossel gegen Überlastung:
@@ -1287,6 +1330,18 @@ function startSession(type) {
       const q = caseQuestion(useDat ? 'dat' : 'akk');
       if (q) session.push(q);
     }
+
+    // Konzept-Auffrischung: Lernpfad angefangen (oder fertig) → ab und zu
+    // eine Verständnisfrage aus bestandenen Schritten einstreuen, damit
+    // „Wen oder was?" und „nur DER ändert sich" nicht verblassen
+    const akkPassed = Object.keys(pathState('akk').passed).map(Number);
+    if (type === 'mixed' && akkPassed.length && Math.random() < 0.6) {
+      const pool = PATH_AKK.filter(u => akkPassed.includes(u.n)).flatMap(u => u.items);
+      if (pool.length) {
+        session[Math.floor(Math.random() * session.length)] =
+          { ...pool[Math.floor(Math.random() * pool.length)] };
+      }
+    }
   } else {
     // reine Satz-Runde
     for (let i = 0; i < SESSION_LEN; i++) {
@@ -1300,7 +1355,7 @@ function startSession(type) {
   renderQuestion();
 }
 
-function quitSession() { goHome(); }
+function quitSession() { pathCtx = null; goHome(); }
 
 /* ═════════ Frage anzeigen ═════════ */
 function renderProgress() {
@@ -1342,6 +1397,30 @@ function renderQuestion() {
         `<button class="ans ${a}" onclick="answerGender('${a}', this)">${a}</button>`).join('');
     }
     speak(q.noun.de);   // Vorlesen ohne Artikel — Lesehilfe, verrät nichts
+  } else if (q.kind === 'pmcq') {
+    // Lernpfad: Verständnisfrage mit freien Antwortknöpfen
+    document.getElementById('q-emoji').textContent = q.em || '🎓';
+    word.style.display = 'none';
+    sent.style.display = 'block';
+    sent.textContent = q.sent;
+    document.getElementById('q-task').innerHTML =
+      q.task + (q.task_it ? ` <span class="it inline">${q.task_it}</span>` : '');
+    typebox.style.display = 'none';
+    answers.innerHTML = shuffle([...q.opts]).map(a =>
+      `<button class="ans small" onclick="answerPath('${a.replace(/'/g, "\\'")}', this)">${a}</button>`).join('');
+    speak(q.sent);
+  } else if (q.kind === 'pfill') {
+    // Lernpfad: Lückensatz mit festen Artikel-Knöpfen
+    document.getElementById('q-emoji').textContent = q.em || '🎓';
+    word.style.display = 'none';
+    sent.style.display = 'block';
+    sent.innerHTML = q.t.replace('___', '<span class="gap" id="gap">___</span>');
+    document.getElementById('q-task').innerHTML =
+      `Welches Wort passt? <span style="opacity:.75; font-weight:700;">(${q.base})</span>` +
+      ` <span class="it inline">Quale parola ci va?</span>`;
+    typebox.style.display = 'none';
+    answers.innerHTML = q.opts.map(a =>
+      `<button class="ans small" onclick="answerPath('${a}', this)">${a}</button>`).join('');
   } else {
     const art = ART[q.kase][q.defArt][q.noun.g];
     // n-Deklination: „einen Bären", „mit dem Hasen" — Beugungsform im Satz verwenden
@@ -1569,6 +1648,250 @@ function lockAnswers() {
   document.querySelectorAll('#answers .ans').forEach(b => b.onclick = null);
 }
 
+/* ═════════ Lernpfad (Akkusativ) ═════════
+   Kleine Lektionen VOR dem Üben: Novizen brauchen erst Erklärung und
+   Beispiele, dann Abruf — sonst wird jede Frage zur Überforderung.
+   Jede Einheit = EIN Gedanke + 4 Fragen. Bestehen = alle richtig,
+   höchstens einmal mit zweitem Versuch. Nicht bestanden gibt es nicht:
+   die Einheit kommt einfach beim nächsten Mal noch einmal. */
+
+const PATH_PASS_RETRIES = 1;      // erlaubte Zweitversuche pro Einheit
+const PATH_PASS_RETRIES_FINAL = 2;
+
+const PATH_AKK = [
+  { n: 1,
+    title: '🎯 Wer macht was?',
+    lesson: `
+      <p>Ella sagt: In vielen Sätzen gibt es jemanden, der etwas <b>macht</b> —
+      und ein <b>Ziel</b>, mit dem etwas passiert.</p>
+      <p class="it">In molte frasi c'è chi <b>fa</b> qualcosa — e un <b>bersaglio</b> a cui succede qualcosa.</p>
+      <div style="text-align:center; font-size:1.15rem; font-weight:800; margin:14px 0;">
+        Der Hund frisst <span style="border-bottom:3px solid var(--prime);">die Wurst</span>. 🐕➡️🌭
+      </div>
+      <p>Der Hund macht etwas (er frisst). Die Wurst ist das <b>Ziel</b>!</p>
+      <p class="it">Il cane fa qualcosa (mangia). La salsiccia è il bersaglio!</p>
+      <p style="margin-top:10px;">Findest du gleich selbst das Ziel? 🕵️‍♀️</p>`,
+    items: [
+      { kind:'pmcq', em:'🐕', sent:'Der Hund frisst die Wurst.', task:'Was ist das Ziel?', task_it:'Qual è il bersaglio?',
+        opts:['der Hund','die Wurst','frisst'], correct:'die Wurst',
+        hint:'Frag dich: MIT WEM oder WOMIT passiert etwas? Der Hund frisst — und was wird gefressen?',
+        explain:'Die Wurst wird gefressen — sie ist das Ziel!' },
+      { kind:'pmcq', em:'🍎', sent:'Mama kauft einen Apfel.', task:'Was ist das Ziel?', task_it:'Qual è il bersaglio?',
+        opts:['Mama','einen Apfel','kauft'], correct:'einen Apfel',
+        hint:'Mama macht etwas (sie kauft). Was wird gekauft?',
+        explain:'Der Apfel wird gekauft — er ist das Ziel!' },
+      { kind:'pmcq', em:'🐊', sent:'Odd stiehlt ein Krokodil.', task:'Was ist das Ziel?', task_it:'Qual è il bersaglio?',
+        opts:['Odd','ein Krokodil','stiehlt'], correct:'ein Krokodil',
+        hint:'Kennst du das Buch? 😄 Odd macht etwas — wer wird gestohlen?',
+        explain:'Das Krokodil wird gestohlen — es ist das Ziel! (Genau wie im Krokodildieb!)' },
+      { kind:'pmcq', em:'📖', sent:'Chiara liest ein Buch.', task:'Was ist das Ziel?', task_it:'Qual è il bersaglio?',
+        opts:['Chiara','liest','ein Buch'], correct:'ein Buch',
+        hint:'Chiara macht etwas (sie liest). Was wird gelesen?',
+        explain:'Das Buch wird gelesen — es ist das Ziel!' },
+    ] },
+  { n: 2,
+    title: '🪄 Die Zauberfrage: Wen oder was?',
+    lesson: `
+      <p>So findest du das Ziel <b>immer</b>: Stell die Zauberfrage</p>
+      <div style="text-align:center; font-size:1.3rem; font-weight:900; color:var(--prime); margin:12px 0;">
+        „Wen oder was?" 🪄
+      </div>
+      <p><b>Ich sehe den Ball.</b> → Wen oder was sehe ich? → <b>den Ball!</b></p>
+      <p class="it">Per trovare il bersaglio chiedi sempre: „Wen oder was?" (chi o che cosa?)</p>
+      <p style="margin-top:10px;">Und jetzt kommt der feine Name: Das Ziel steht im
+      <b style="color:var(--prime);">Akkusativ</b>. Das ist alles — nur ein Name für das Ziel! 🎓</p>
+      <p class="it">Il bersaglio si chiama <b>Akkusativ</b> — è solo un nome!</p>`,
+    items: [
+      { kind:'pmcq', em:'⚽', sent:'Ich sehe den Ball.', task:'Wen oder was sehe ich?', task_it:'Chi o che cosa vedo?',
+        opts:['ich','den Ball','sehe'], correct:'den Ball',
+        hint:'Die Zauberfrage zeigt immer auf das Ziel!',
+        explain:'Wen oder was sehe ich? → den Ball. Der Ball steht im Akkusativ!' },
+      { kind:'pmcq', em:'👓', sent:'Papa sucht die Brille.', task:'Wen oder was sucht Papa?', task_it:'Chi o che cosa cerca papà?',
+        opts:['Papa','sucht','die Brille'], correct:'die Brille',
+        hint:'Frag: Wen oder was wird gesucht?',
+        explain:'Wen oder was sucht Papa? → die Brille. Die Brille ist das Ziel — Akkusativ!' },
+      { kind:'pmcq', em:'👂', sent:'Was klingt richtig?', task:'Hör genau hin!', task_it:'Quale suona giusto?',
+        opts:['Ich sehe den Hund.','Ich sehe der Hund.'], correct:'Ich sehe den Hund.',
+        hint:'Sprich beide Sätze leise — dein Ohr kennt die Antwort schon!',
+        explain:'Dein Ohr wusste es! „Ich sehe DEN Hund" — gleich lernst du, warum.' },
+      { kind:'pmcq', em:'🎓', sent:'Das Ziel im Satz steht im …?', task:'Wie heißt der feine Name?', task_it:'Come si chiama il bersaglio?',
+        opts:['Akkusativ','Alphabet','Adjektiv'], correct:'Akkusativ',
+        hint:'Der Name beginnt mit A und endet mit -kkusativ 😉',
+        explain:'Genau! Ziel = Akkusativ. Du kennst jetzt das Geheimwort!' },
+    ] },
+  { n: 3,
+    title: '🔑 Das Geheimnis: Nur DER ändert sich!',
+    lesson: `
+      <p>Jetzt kommt das <b>ganze Geheimnis</b> des Akkusativs — bereit?</p>
+      <div style="background:var(--card2, #f4f1fa); border-radius:14px; padding:12px; margin:12px 0; text-align:center; font-weight:800; font-size:1.05rem; line-height:2;">
+        <span style="color:var(--c-der);">der</span> ➡️ <b style="font-size:1.2rem; color:var(--c-der);">DEN</b> &nbsp;(ein ➡️ <b>einen</b>)<br>
+        <span style="color:var(--c-die);">die</span> ➡️ <span style="color:var(--c-die);">die</span> &nbsp;<span style="opacity:.6;">(bleibt gleich!)</span><br>
+        <span style="color:var(--c-das);">das</span> ➡️ <span style="color:var(--c-das);">das</span> &nbsp;<span style="opacity:.6;">(bleibt gleich!)</span>
+      </div>
+      <div style="text-align:center; font-weight:900; font-size:1.1rem; color:var(--prime); margin:10px 0;">
+        Nur DER verändert sich! 🕵️‍♀️
+      </div>
+      <p>die Katze, das Buch — beim Ziel <b>alles wie immer</b>.
+      Nur der Hund wird zu „<b>den</b> Hund" und ein Apfel zu „<b>einen</b> Apfel".</p>
+      <p class="it">Cambia solo il maschile: der→den, ein→einen. Femminile e neutro restano uguali!</p>`,
+    items: [
+      { kind:'pfill', em:'🐕', t:'Ich sehe ___ Hund.', base:'der Hund', opts:['der','den','dem'], correct:'den',
+        hint:'Der Hund ist das Ziel — und nur DER ändert sich: der → …?',
+        explain:'der Hund → Ich sehe DEN Hund. Nur DER ändert sich!' },
+      { kind:'pfill', em:'🐈', t:'Ich sehe ___ Katze.', base:'die Katze', opts:['die','den','das'], correct:'die',
+        hint:'Die Katze — ändert sich DIE beim Ziel? Schau auf das Geheimnis!',
+        explain:'die Katze bleibt DIE Katze — nur DER ändert sich!' },
+      { kind:'pfill', em:'📖', t:'Chiara liest ___ Buch.', base:'das Buch', opts:['das','den','dem'], correct:'das',
+        hint:'Das Buch — ändert sich DAS beim Ziel?',
+        explain:'das Buch bleibt DAS Buch — nur DER ändert sich!' },
+      { kind:'pfill', em:'🍎', t:'Mama kauft ___ Apfel.', base:'ein Apfel (der Apfel)', opts:['ein','einen','einem'], correct:'einen',
+        hint:'Der Apfel ist ein DER-Wort — also wird „ein" zu …?',
+        explain:'ein Apfel → Mama kauft EINEN Apfel. Bei DER-Wörtern: ein → einen!' },
+    ] },
+  { n: 4,
+    title: '💛 Verben, die den Akkusativ lieben',
+    lesson: `
+      <p>Diese Verben haben <b>immer</b> ein Ziel — du benutzt sie jeden Tag:</p>
+      <div style="text-align:center; font-weight:800; font-size:1.05rem; line-height:2; margin:12px 0;">
+        haben 🤲 · sehen 👀 · brauchen 🙏<br>suchen 🔍 · kaufen 🛒 · essen 🍽️<br>und: <b>es gibt</b> ✨
+      </div>
+      <p><b>Ich habe einen Bruder.</b> — Wen oder was habe ich? → einen Bruder!</p>
+      <p class="it">Questi verbi vogliono sempre l'accusativo: avere, vedere, cercare, comprare, mangiare, „es gibt"…</p>
+      <p>Denk dran: Nur DER-Wörter ändern sich! 🔑</p>`,
+    items: [
+      { kind:'pfill', em:'👦', t:'Ich habe ___ Bruder.', base:'ein Bruder (der Bruder)', opts:['ein','einen','einem'], correct:'einen',
+        hint:'„haben" will ein Ziel — und der Bruder ist ein DER-Wort!',
+        explain:'Ich habe EINEN Bruder — haben will den Akkusativ, und DER-Wörter ändern sich!' },
+      { kind:'pfill', em:'⚽', t:'Wir brauchen ___ Ball.', base:'ein Ball (der Ball)', opts:['ein','einen','eine'], correct:'einen',
+        hint:'Der Ball — ein DER-Wort. Also: ein → …?',
+        explain:'Wir brauchen EINEN Ball. brauchen + DER-Wort → einen!' },
+      { kind:'pfill', em:'🎂', t:'Es gibt ___ Kuchen!', base:'ein Kuchen (der Kuchen)', opts:['ein','einen','einem'], correct:'einen',
+        hint:'„es gibt" will IMMER den Akkusativ — und der Kuchen ist ein DER-Wort!',
+        explain:'Es gibt EINEN Kuchen! „es gibt" will immer den Akkusativ.' },
+      { kind:'pfill', em:'🍕', t:'Sie isst ___ Pizza.', base:'eine Pizza (die Pizza)', opts:['eine','einen','einer'], correct:'eine',
+        hint:'Die Pizza ist ein DIE-Wort — ändert sich das beim Ziel?',
+        explain:'Sie isst EINE Pizza — DIE-Wörter bleiben gleich, nur DER ändert sich!' },
+    ] },
+  { n: 5,
+    title: '🏆 Alles zusammen!',
+    lesson: `
+      <p>Du kennst jetzt das ganze Geheimnis:</p>
+      <div style="font-weight:800; line-height:2; margin:12px 0;">
+        1️⃣ Finde das Ziel: <b>„Wen oder was?"</b> 🪄<br>
+        2️⃣ Nur <b>DER</b> ändert sich: der→den, ein→einen 🔑<br>
+        3️⃣ die und das bleiben wie immer 😊
+      </div>
+      <p>Jetzt kommen 6 echte Sätze mit deinen eigenen Wörtern.
+      Schaffst du sie, bist du offiziell <b>Akkusativ-Detektivin</b>! 🕵️‍♀️</p>
+      <p class="it">Ora 6 frasi vere con le TUE parole. Se ce la fai, sei ufficialmente una detective dell'accusativo!</p>`,
+    items: [] },   // wird live aus caseQuestion('akk') gebaut — ihre eigenen Wörter
+];
+
+function pathKey() { return `gram_path_${profile}`; }
+function loadPath() { return safeLoad(pathKey(), {}); }
+function pathState(kase) {
+  const p = loadPath();
+  return p[kase] || { unit: 1, passed: {} };
+}
+function pathDone(kase) { return pathState(kase).unit > PATH_AKK.length; }
+
+function savePathPass(kase, unitN) {
+  const p = loadPath();
+  const st = p[kase] || { unit: 1, passed: {} };
+  st.passed[unitN] = Date.now();
+  st.unit = Math.max(st.unit, unitN + 1);
+  p[kase] = st;
+  safeSave(pathKey(), p);
+}
+
+let pathCtx = null;   // { kase, unit } während einer Lernpfad-Runde
+
+function startPath(kase) {
+  const st = pathState(kase);
+  const unitN = Math.min(st.unit, PATH_AKK.length);
+  const unit = PATH_AKK[unitN - 1];
+  pathCtx = { kase, unit: unitN };
+  lastSessionType = `path-${kase}`;
+
+  // Lektion zeigen
+  document.getElementById('lesson-title').textContent = `Schritt ${unitN} von ${PATH_AKK.length}: ${unit.title}`;
+  document.getElementById('lesson-body').innerHTML = unit.lesson;
+  document.getElementById('lesson-progress').innerHTML = PATH_AKK.map((u, i) =>
+    `<div class="q-dot ${st.passed[u.n] ? 'done' : (i === unitN - 1 ? 'now' : '')}"></div>`).join('');
+  document.getElementById('lesson-go').onclick = () => beginPathCheck();
+  showScreen('s-lesson');
+  applyIt();
+}
+
+function beginPathCheck() {
+  const unit = PATH_AKK[pathCtx.unit - 1];
+  session = [];
+  sIdx = 0; sCorrect = 0; sNewWords = [];
+  sessionStartMastered = masteredCount();
+
+  if (unit.n === 5) {
+    // Finale: echte Satzfragen mit ihren eigenen gelernten Wörtern
+    for (let i = 0; i < 6; i++) {
+      const q = caseQuestion(pathCtx.kase);
+      if (q) session.push(q);
+    }
+    // Notnagel, falls zu wenige bekannte Nomen passen
+    if (session.length < 4) {
+      PATH_AKK[2].items.concat(PATH_AKK[3].items).forEach(it => session.push({ ...it }));
+      session = session.slice(0, 6);
+    }
+  } else {
+    session = shuffle(unit.items.map(it => ({ ...it })));
+  }
+  showScreen('s-quiz');
+  renderQuestion();
+}
+
+/* Antwort auf Lernpfad-Fragen (pmcq & pfill) — gleiche freundliche
+   Ein-Wiederholung-Mechanik wie überall in der App */
+function answerPath(choice, btn) {
+  const q = session[sIdx];
+  const fb = document.getElementById('feedback');
+  const gap = document.getElementById('gap');
+
+  if (choice === q.correct) {
+    if (btn) btn.classList.add('correct');
+    if (gap) gap.textContent = choice;
+    const first = attempt === 0;
+    if (first) sCorrect++;
+    q.result = first ? 'right' : 'retry';
+    const t = todayStr();
+    const d = days[t] || (days[t] = { a: 0, c: 0 });
+    d.a++; if (first) d.c++;
+    saveState();
+    sfx('good'); ellaReact('good');
+    if (q.kind === 'pfill') speak(q.t.replace('___', choice), 350);
+    fb.className = 'feedback show good';
+    fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] + ' ' + (q.explain || '');
+    lockAnswers();
+    document.getElementById('next-btn').classList.add('show');
+  } else if (attempt === 0) {
+    attempt = 1;
+    if (btn) { btn.classList.add('wrong'); setTimeout(() => btn.classList.remove('wrong'), 600); }
+    sfx('bad'); ellaReact('sad');
+    fb.className = 'feedback show hint';
+    fb.innerHTML = `Fast! 💡 ${q.hint} Versuch's nochmal!`;
+  } else {
+    if (btn) btn.classList.add('wrong');
+    if (gap) gap.textContent = q.correct;
+    q.result = 'wrong';
+    const t = todayStr();
+    const d = days[t] || (days[t] = { a: 0, c: 0 });
+    d.a++;
+    saveState();
+    sfx('bad'); ellaReact('sad');
+    fb.className = 'feedback show bad';
+    fb.innerHTML = `Kein Problem! Richtig ist: <b>${q.correct}</b>. ${q.explain || ''}`;
+    lockAnswers();
+    document.getElementById('next-btn').classList.add('show');
+  }
+}
+
 function nextQuestion() {
   sIdx++;
   if (sIdx >= session.length) { finishSession(); return; }
@@ -1576,7 +1899,69 @@ function nextQuestion() {
 }
 
 /* ═════════ Runde beenden ═════════ */
+/* Lernpfad-Rundenende: bestanden = alles richtig, höchstens ein (bzw. im
+   Finale zwei) zweiter Versuch. Nicht bestanden heißt nur: derselbe Schritt
+   kommt beim nächsten Mal noch einmal — nie ein Misserfolgs-Bildschirm. */
+function finishPathSession() {
+  const ctx = pathCtx; pathCtx = null;
+  const unit = PATH_AKK[ctx.unit - 1];
+  const wrong   = session.filter(q => q.result === 'wrong').length;
+  const retries = session.filter(q => q.result === 'retry').length;
+  const allowed = unit.n === PATH_AKK.length ? PATH_PASS_RETRIES_FINAL : PATH_PASS_RETRIES;
+  const passed  = wrong === 0 && retries <= allowed;
+
+  let detail = '';
+  if (passed) {
+    savePathPass(ctx.kase, unit.n);
+    const nowDone = pathDone(ctx.kase);
+    document.getElementById('result-emoji').textContent = nowDone ? '🕵️‍♀️' : '🎉';
+    document.getElementById('result-title').textContent = nowDone
+      ? 'Du bist Akkusativ-Detektivin!'
+      : `Schritt ${unit.n} geschafft!`;
+    document.getElementById('result-score').textContent =
+      `${sCorrect} von ${session.length} beim ersten Versuch!`;
+    if (nowDone) {
+      const newBadges = checkBadges({});
+      sfx('badge'); confetti();
+      if (newBadges.length) detail += newBadges.map(b =>
+        `<div style="text-align:center; font-weight:900; font-size:1.05rem; color:var(--prime); margin-bottom:8px;">
+          🏅 Neues Abzeichen: ${b.em} ${b.lbl}!</div>`).join('');
+      detail += `<div style="text-align:center; font-weight:800; color:var(--prime); margin:8px 0;">
+        🔓 „Sätze üben (Akkusativ)" ist jetzt frei — und du wirst es LIEBEN, wie leicht es ist!</div>`;
+      detail += `<p class="it" style="text-align:center;">Percorso completato — ora gli esercizi saranno facilissimi!</p>`;
+    } else {
+      sfx('fanfare');
+      detail += `<div style="text-align:center; font-weight:800; margin:8px 0;">
+        Weiter geht's mit Schritt ${unit.n + 1} von ${PATH_AKK.length} — wann immer du magst! 🚀</div>`;
+    }
+  } else {
+    document.getElementById('result-emoji').textContent = '🌱';
+    document.getElementById('result-title').textContent = 'Gut geübt!';
+    document.getElementById('result-score').textContent =
+      `${sCorrect} von ${session.length} beim ersten Versuch!`;
+    sfx('fanfare');
+    detail += `<div style="text-align:center; font-weight:800; margin:8px 0;">
+      Diesen Schritt schauen wir uns einfach nochmal an — beim nächsten Mal klappt's bestimmt! 💪</div>
+      <p class="it" style="text-align:center;">Rivediamo questo passo un'altra volta — nessun problema!</p>`;
+  }
+
+  // Rückblick-Chips (Lernpfad-Fragen haben eigene Texte)
+  detail += `<div style="font-weight:800; font-size:.9rem; margin-top:10px;">Das hast du geübt:</div><div class="recap-grid">` +
+    session.map(q => {
+      const txt = q.kind === 'case' ? `${q.noun.em} ${q.solution} ${q.nounForm}`
+                : q.kind === 'pfill' ? `${q.em} ${q.t.replace('___', q.correct)}`
+                : `${q.em} ${q.correct}`;
+      const cls = q.result === 'right' ? '' : q.result === 'retry' ? ' retry' : ' wrong';
+      return `<span class="recap-chip${cls}">${txt}</span>`;
+    }).join('') + `</div>`;
+
+  document.getElementById('result-detail').innerHTML = detail;
+  showScreen('s-result');
+  applyIt();
+}
+
 function finishSession() {
+  if (pathCtx) { finishPathSession(); return; }
   const total = session.length;
   const pct = sCorrect / total;
   const emoji = pct >= 0.9 ? '🏆' : pct >= 0.7 ? '🎉' : pct >= 0.5 ? '💪' : '🌱';
@@ -1604,7 +1989,10 @@ function finishSession() {
   // Rückblick: jedes Wort der Runde mit Ampelfarbe (grün/gelb/rot)
   detail += `<div style="font-weight:800; font-size:.9rem;">Das hast du geübt:</div><div class="recap-grid">` +
     session.map(q => {
-      const txt = q.kind === 'gender' ? `${q.noun.em} ${q.noun.g} ${q.noun.de}` : `${q.noun.em} ${q.solution} ${q.nounForm}`;
+      const txt = q.kind === 'gender' ? `${q.noun.em} ${q.noun.g} ${q.noun.de}`
+                : q.kind === 'case'   ? `${q.noun.em} ${q.solution} ${q.nounForm}`
+                : q.kind === 'pfill'  ? `${q.em} ${q.t.replace('___', q.correct)}`
+                : `${q.em} ${q.correct}`;   // pmcq (Konzept-Auffrischung)
       const cls = q.result === 'right' ? '' : q.result === 'retry' ? ' retry' : ' wrong';
       return `<span class="recap-chip${cls}">${txt}</span>`;
     }).join('') + `</div>`;
@@ -1616,7 +2004,7 @@ function finishSession() {
   if (t.a >= GOAL_PER_DAY) detail += ` — Tagesziel geschafft! 🔥`;
   detail += `</div>`;
   if (sessionStartMastered < UNLOCK_AKK && m >= UNLOCK_AKK) {
-    detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: Sätze üben (Akkusativ)!</div>`;
+    detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: 🎓 Lernpfad Akkusativ — entdecke das Geheimnis der Ziele!</div>`;
   } else if (sessionStartMastered < UNLOCK_DAT && m >= UNLOCK_DAT) {
     detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: Sätze üben (Dativ)!</div>`;
   }
@@ -1683,10 +2071,13 @@ function showProgress() {
     `</div>`;
 
   const m = masteredCount();
+  const akkP = pathState('akk');
   let unlock = `<h2 style="margin-bottom:8px;">🔓 Nächste Abenteuer</h2><div style="font-weight:700; line-height:1.9;">`;
-  unlock += m >= UNLOCK_AKK
-    ? `✅ Akkusativ-Sätze — freigeschaltet!<br>`
-    : `🔒 Akkusativ-Sätze: noch ${UNLOCK_AKK - m} Wörter<br>`;
+  unlock += m < UNLOCK_AKK
+    ? `🔒 Lernpfad Akkusativ: noch ${UNLOCK_AKK - m} Wörter<br>`
+    : pathDone('akk')
+      ? `✅ Lernpfad Akkusativ — geschafft! 🕵️‍♀️<br>✅ Akkusativ-Sätze — freigeschaltet!<br>`
+      : `🎓 Lernpfad Akkusativ: Schritt ${Math.min(akkP.unit, PATH_AKK.length)} von ${PATH_AKK.length}<br>🔒 Akkusativ-Sätze: erst den Lernpfad abschließen<br>`;
   unlock += m >= UNLOCK_DAT
     ? `✅ Dativ-Sätze — freigeschaltet!`
     : `🔒 Dativ-Sätze: noch ${UNLOCK_DAT - m} Wörter`;
@@ -1826,6 +2217,25 @@ function elternRender() {
   // ── Kasus-Panel: Wo hakt es — Genus oder Deklination? ──
   const caseNames = { akk: 'Akkusativ', dat: 'Dativ' };
   let caseHtml = '<h2 style="margin-bottom:4px;">Kasus-Übungen</h2>';
+
+  // Lernpfad-Fortschritt des Kindes (welcher Schritt, wann bestanden)
+  const kPath = safeLoad(`gram_path_${elChild}`, {});
+  const kAkk = kPath.akk || { unit: 1, passed: {} };
+  const kAkkDone = kAkk.unit > PATH_AKK.length;
+  const fmtP = ts => ts ? new Date(ts).toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' }) : '';
+  caseHtml += `
+    <div class="el-case-row">
+      <div style="display:flex; justify-content:space-between; font-weight:800; font-size:.9rem;">
+        <span>🎓 Lernpfad Akkusativ</span>
+        <span>${kAkkDone ? 'abgeschlossen 🕵️‍♀️' : `Schritt ${Math.min(kAkk.unit, PATH_AKK.length)} von ${PATH_AKK.length}`}</span>
+      </div>
+      <div class="el-case-bar-wrap"><div class="el-case-bar" style="width:${Math.round(Object.keys(kAkk.passed).length / PATH_AKK.length * 100)}%;"></div></div>
+      <div class="el-err">${PATH_AKK.map(u =>
+        kAkk.passed[u.n] ? `<span>✅ ${u.n} <b>(${fmtP(kAkk.passed[u.n])})</b></span>` : `<span>⬜ ${u.n}</span>`).join('')}
+      </div>
+    </div>
+    <p class="it" style="font-size:.8rem; margin:2px 0 10px;">Il percorso spiega l'accusativo passo per passo — gli esercizi si sbloccano alla fine.</p>`;
+
   let any = false;
   ['akk', 'dat'].forEach(k => {
     const s = kCase[k];
