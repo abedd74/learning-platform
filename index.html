@@ -1345,6 +1345,13 @@ function safeSave(key, value) {
   catch (err) { console.warn(`[safeSave] failed for "${key}"`, err); }
   window.FamilySync?.markDirty(key);
 }
+// Sync-bewusstes Löschen: FamilySync.remove() hinterlässt einen Grabstein,
+// damit die Löschung auch die anderen Geräte erreicht — sonst würde der
+// nächste Cloud-Pull die Daten einfach wiederbeleben.
+function syncRemove(key) {
+  if (window.FamilySync?.remove) { window.FamilySync.remove(key); return; }
+  try { localStorage.removeItem(key); } catch {}
+}
 
 // ── Profile config ───────────────────────────────
 const PROFILES = {
@@ -2514,6 +2521,11 @@ function editorSaveTopicToStorage() {
   if (!mod) return;
   const stored = safeLoad(mod.storageKey, {});
   stored[editorTopicKey] = editorGetModuleQB()[editorTopicKey] || [];
+  // Zeitstempel pro Thema: die Cloud-Synchronisation mischt die Bank
+  // themenweise (jüngeres Thema gewinnt), statt sie als Ganzes zu ersetzen
+  const meta = stored.__meta && typeof stored.__meta === 'object' ? stored.__meta : (stored.__meta = {});
+  const topics = meta.topics && typeof meta.topics === 'object' ? meta.topics : (meta.topics = {});
+  topics[editorTopicKey] = { ts: Date.now() };
   safeSave(mod.storageKey, stored);
 }
 
@@ -2525,9 +2537,11 @@ function editorLoadFromStorage() {
   Object.values(EDITOR_MODULES).forEach(mod => {
     if (!mod.active || mod.href) return;
     const versionKey = mod.storageKey + '_ver';
-    // If stored schema version is outdated, wipe stale data and stamp new version
+    // If stored schema version is outdated, wipe stale data and stamp new version.
+    // syncRemove only when data actually existed — a fresh device must not
+    // plant a tombstone that would delete the family's cloud copy.
     if (localStorage.getItem(versionKey) !== QB_SCHEMA_VERSION) {
-      localStorage.removeItem(mod.storageKey);
+      if (localStorage.getItem(mod.storageKey) !== null) syncRemove(mod.storageKey);
       localStorage.setItem(versionKey, QB_SCHEMA_VERSION);
       return; // nothing to load — built-in questions are used as-is
     }
@@ -2587,7 +2601,7 @@ function editorClearTopic() {
 
 function editorResetAll() {
   if (!confirm('Alle Editor-Änderungen zurücksetzen?\n\nDie Seite wird neu geladen und alle benutzerdefinierten Fragen werden entfernt.')) return;
-  Object.values(EDITOR_MODULES).forEach(mod => localStorage.removeItem(mod.storageKey));
+  Object.values(EDITOR_MODULES).forEach(mod => { if (mod.storageKey) syncRemove(mod.storageKey); });
   location.reload();
 }
 
@@ -3780,7 +3794,7 @@ function clearHistory() {
     }, 4000);
     return;
   }
-  localStorage.removeItem(`wq_${currentProfile.name}`);
+  syncRemove(`wq_${currentProfile.name}`);
   btn.dataset.confirm = '';
   btn.innerHTML = '🗑️ Verlauf löschen<div class="it" style="font-size:0.85em;margin-top:1px;">Cancella cronologia</div>';
   btn.style.background = '';
@@ -7032,9 +7046,11 @@ renderCustomProfiles();
 editorLoadFromStorage();
 
 // ── Familien-Cloud-Sync starten (lokal zuerst; Details in sync.js) ──
-window.addEventListener('familysync-pulled', () => {
+window.addEventListener('familysync-pulled', (ev) => {
   // Nach einem Pull sichtbare Ansichten auffrischen
   if (document.getElementById('s-platform')?.classList.contains('active')) updateModuleProgress();
+  // Frisch gezogene Editor-Fragen sofort in die geladene Fragenbank übernehmen
+  if ((ev.detail?.keys || []).some(k => k.startsWith('wq_editor_QB'))) editorLoadFromStorage();
 });
 window.FamilySync?.init();
 </script>
