@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🦉 Der-Die-Das Trainer</title>
+<title>🦉 Deutsch mit Ella</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -311,7 +311,7 @@ body.show-it .it.inline { display: inline; }
 
 <!-- ══════════ Profil wählen ══════════ -->
 <div class="screen" id="s-profil">
-  <h1 style="margin:24px 0 4px;">🦉 Der-Die-Das Trainer</h1>
+  <h1 style="margin:24px 0 4px;">🦉 Deutsch mit Ella</h1>
   <p class="it" style="text-align:center;">Allenatore di articoli e casi tedeschi</p>
   <p style="text-align:center; font-weight:700; color:var(--soft); margin:10px 0 20px;">Wer übt heute?</p>
   <div id="profil-list"></div>
@@ -346,21 +346,37 @@ body.show-it .it.inline { display: inline; }
     <div class="week-strip" id="week-strip" style="margin-top:14px;"></div>
   </div>
 
+  <!-- Eine Tür: der große Knopf ist die tägliche Antwort auf „Was soll
+       ich machen?" — alles andere ist Einladung, Belohnung oder Werkzeug -->
   <button class="btn" id="btn-daily" onclick="startSession('mixed')">🎯 Tägliches Training</button>
-  <button class="btn secondary" onclick="startSession('gender')">🔤 Der-Die-Das üben</button>
-  <button class="btn" id="btn-mc" style="display:none;"></button>
-  <button class="btn secondary" id="btn-path-akk" onclick="startPath('akk')">🎓 Lernpfad: Akkusativ</button>
-  <div class="lock-note" id="note-path-akk"></div>
-  <button class="btn secondary" id="btn-akk" onclick="startSession('akk')">✍️ Sätze üben (Akkusativ)</button>
-  <div class="lock-note" id="note-akk"></div>
-  <button class="btn secondary" id="btn-path-dat" onclick="startPath('dat')">🎓 Lernpfad: Dativ</button>
-  <div class="lock-note" id="note-path-dat"></div>
-  <button class="btn secondary" id="btn-dat" onclick="startSession('dat')">✉️ Sätze üben (Dativ)</button>
-  <div class="lock-note" id="note-dat"></div>
-  <button class="btn secondary" onclick="showZoo()">🦁 Mein Wörter-Zoo</button>
-  <button class="btn secondary" onclick="showProgress()">💎 Meine Schatzkiste</button>
-  <button class="btn secondary" onclick="showEltern()">📊 Für Eltern <span class="it inline">per i genitori</span></button>
-  <button class="btn secondary" style="border-style:dashed;" onclick="switchProfile()">👤 Profil wechseln</button>
+  <div class="lock-note" id="note-daily"></div>
+
+  <!-- Ereignis-Karte: erscheint NUR, wenn etwas Besonderes wartet
+       (Meister-Check bereit / neuer Lernpfad-Schritt) -->
+  <button class="btn" id="btn-event" style="display:none; background:#FFB800; border-color:#E5A600; color:#5d4a00;"></button>
+
+  <div style="display:flex; gap:10px;">
+    <button class="btn secondary" style="flex:1; margin:10px 0;" onclick="showZoo()">🦁 Wörter-Zoo</button>
+    <button class="btn secondary" style="flex:1; margin:10px 0;" onclick="showProgress()">💎 Schatzkiste</button>
+  </div>
+
+  <button class="btn secondary" id="btn-more" onclick="toggleMore()">🧰 Mehr üben …</button>
+  <div id="more-wrap" style="display:none;">
+    <button class="btn secondary" onclick="startSession('gender')">🔤 Der-Die-Das üben</button>
+    <button class="btn secondary" id="btn-path-akk" onclick="startPath('akk')">🎓 Lernpfad: Akkusativ</button>
+    <div class="lock-note" id="note-path-akk"></div>
+    <button class="btn secondary" id="btn-akk" onclick="startSession('akk')">✍️ Sätze üben (Akkusativ)</button>
+    <div class="lock-note" id="note-akk"></div>
+    <button class="btn secondary" id="btn-path-dat" onclick="startPath('dat')">🎓 Lernpfad: Dativ</button>
+    <div class="lock-note" id="note-path-dat"></div>
+    <button class="btn secondary" id="btn-dat" onclick="startSession('dat')">✉️ Sätze üben (Dativ)</button>
+    <div class="lock-note" id="note-dat"></div>
+  </div>
+
+  <div style="display:flex; justify-content:center; gap:22px; margin-top:14px;">
+    <button style="background:none; border:none; color:var(--soft); font-weight:700; font-size:.85rem; cursor:pointer; font-family:inherit;" onclick="showEltern()">📊 Für Eltern</button>
+    <button style="background:none; border:none; color:var(--soft); font-weight:700; font-size:.85rem; cursor:pointer; font-family:inherit;" onclick="switchProfile()">👤 Profil wechseln</button>
+  </div>
 </div>
 
 <!-- ══════════ Quiz ══════════ -->
@@ -1024,9 +1040,14 @@ function sfx(kind) {
 let deVoice = null;
 function pickVoice() {
   try {
-    const vs = speechSynthesis.getVoices();
-    deVoice = vs.find(v => v.lang === 'de-DE' && v.localService) ||
-              vs.find(v => (v.lang || '').startsWith('de')) || null;
+    const vs = speechSynthesis.getVoices().filter(v => (v.lang || '').startsWith('de'));
+    // Beste installierte Stimme bevorzugen: Premium > Enhanced/Erweitert > lokal
+    const score = v =>
+      /premium/i.test(v.name) ? 4 :
+      /enhanced|erweitert/i.test(v.name) ? 3 :
+      (v.lang === 'de-DE' && v.localService) ? 2 :
+      v.localService ? 1 : 0;
+    deVoice = vs.sort((a, b) => score(b) - score(a))[0] || null;
   } catch {}
 }
 if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
@@ -1045,6 +1066,36 @@ function speak(text, delay = 0) {
   };
   delay ? setTimeout(go, delay) : go();
 }
+
+/* ── Echte Audio-Aufnahmen (neuronale Stimme „Katja") für alle Nomen.
+   w_<slug>.mp3 = Nomen allein (Frage — verrät den Artikel nicht),
+   a_<slug>.mp3 = Artikel + Nomen (Antwort — das eigentliche Gehörtraining).
+   Fehlt eine Datei oder ist das Gerät offline, springt still die
+   Gerätestimme ein. Satzfragen bleiben Gerätestimme (live generiert). ── */
+function audioSlug(s) {
+  return s.toLowerCase()
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]/g, '');
+}
+let currentClip = null;
+function playClip(file, fallbackText, delay = 0) {
+  if (!soundOn()) return;
+  const go = () => {
+    try {
+      if (currentClip) { try { currentClip.pause(); } catch {} }
+      if ('speechSynthesis' in window) { try { speechSynthesis.cancel(); } catch {} }
+      const a = new Audio('audio/' + file);
+      currentClip = a;
+      let fell = false;
+      const fallback = () => { if (!fell) { fell = true; speak(fallbackText); } };
+      a.onerror = fallback;
+      a.play().catch(fallback);
+    } catch { speak(fallbackText); }
+  };
+  delay ? setTimeout(go, delay) : go();
+}
+function speakWord(n, delay = 0)    { playClip('w_' + audioSlug(n.de) + '.mp3', n.de, delay); }
+function speakArtWord(n, delay = 0) { playClip('a_' + audioSlug(n.de) + '.mp3', `${n.g} ${n.de}`, delay); }
 
 /* Ella reagiert im Quiz */
 function ellaReact(kind) {
@@ -1104,14 +1155,36 @@ function goHome() {
   const m = masteredCount();
   const elternMode = profile === 'Eltern';
 
-  // ── Meister-Check-Knopf (höchstens ein Konzept ist gleichzeitig bereit) ──
+  // ── Ereignis-Karte: genau EIN besonderes Ding, wenn eines wartet.
+  //    Priorität: Meister-Check bereit > nächster Lernpfad-Schritt. ──
+  const bEvent = document.getElementById('btn-event');
+  const nDaily = document.getElementById('note-daily');
   const mcK = Object.keys(CONCEPTS).find(mcReady);
-  const bMc = document.getElementById('btn-mc');
+  const stepK = Object.keys(CONCEPTS).find(k =>
+    conceptPathOpen(k) && !pathDone(k) &&
+    (k !== 'akk' || m >= UNLOCK_AKK || elternMode));
   if (mcK) {
-    bMc.style.display = '';
-    bMc.textContent = `🏆 Meister-Check: ${CONCEPTS[mcK].name}!`;
-    bMc.onclick = () => startMeisterCheck(mcK);
-  } else bMc.style.display = 'none';
+    bEvent.style.display = '';
+    bEvent.textContent = `🏆 Meister-Check: ${CONCEPTS[mcK].name}!`;
+    bEvent.onclick = () => startMeisterCheck(mcK);
+  } else if (stepK) {
+    const stS = pathState(stepK);
+    bEvent.style.display = '';
+    bEvent.textContent = `🎓 Lernpfad ${CONCEPTS[stepK].name}: Schritt ${Math.min(stS.unit, pathUnits(stepK).length)} von ${pathUnits(stepK).length}`;
+    bEvent.onclick = () => startPath(stepK);
+  } else bEvent.style.display = 'none';
+
+  // Festigen-Status als kleine Zeile unter dem Tages-Knopf
+  const festHome = Object.keys(CONCEPTS).find(conceptInFest);
+  nDaily.textContent = (festHome && !mcK)
+    ? `🔨 ${CONCEPTS[festHome].name}-Training läuft: Tag ${festDaysCount(festHome)} von ${FEST_MIN_DAYS} — dann kommt der Meister-Check!`
+    : '';
+
+  // „Mehr üben"-Bereich: für Eltern immer offen
+  if (elternMode) {
+    document.getElementById('more-wrap').style.display = '';
+    document.getElementById('btn-more').style.display = 'none';
+  }
 
   // ── Pro Konzept: Lernpfad-Knopf + Satzübungs-Knopf.
   //    Reihenfolge: (Wörter meistern) → Lernpfad → Festigen → Meister-Check
@@ -1435,6 +1508,13 @@ function startSession(type) {
 
 function quitSession() { pathCtx = null; mcCtx = null; goHome(); }
 
+function toggleMore() {
+  const w = document.getElementById('more-wrap');
+  const open = w.style.display !== 'none';
+  w.style.display = open ? 'none' : '';
+  document.getElementById('btn-more').textContent = open ? '🧰 Mehr üben …' : '🧰 Weniger zeigen';
+}
+
 /* ═════════ Frage anzeigen ═════════ */
 function renderProgress() {
   const el = document.getElementById('q-progress');
@@ -1474,7 +1554,7 @@ function renderQuestion() {
       answers.innerHTML = ['der', 'die', 'das'].map(a =>
         `<button class="ans ${a}" onclick="answerGender('${a}', this)">${a}</button>`).join('');
     }
-    speak(q.noun.de);   // Vorlesen ohne Artikel — Lesehilfe, verrät nichts
+    speakWord(q.noun);   // Vorlesen ohne Artikel — Lesehilfe, verrät nichts
   } else if (q.kind === 'pmcq') {
     // Lernpfad: Verständnisfrage mit freien Antwortknöpfen
     document.getElementById('q-emoji').textContent = q.em || '🎓';
@@ -1583,7 +1663,7 @@ function answerGender(choice, btn) {
     q.result = first ? 'right' : 'retry';
     updateSrs(n.de, first);
     sfx('good'); ellaReact('good');
-    speak(`${n.g} ${n.de}`, 350);   // Artikel + Nomen hören = Gehörtraining
+    speakArtWord(n, 350);   // Artikel + Nomen hören = Gehörtraining
     fb.className = 'feedback show good';
     fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] +
       (genderRule(n) ? `<br>💡 ${genderRule(n)}` : '') + trapNote(n);
@@ -1603,7 +1683,7 @@ function answerGender(choice, btn) {
     q.result = 'wrong';
     updateSrs(n.de, false);
     sfx('bad'); ellaReact('sad');
-    speak(`${n.g} ${n.de}`, 500);
+    speakArtWord(n, 500);
     fb.className = 'feedback show bad';
     fb.innerHTML = `Fast geschafft! Es heißt <b>${n.g} ${n.de}</b>. Das üben wir morgen nochmal — dann klappt's! 🦉` + trapNote(n);
     showSolutionGender(n);
@@ -2533,7 +2613,7 @@ function zooTap(de) {
   document.getElementById('zoo-name').innerHTML =
     `${n.em} <span style="color:var(--c-${n.g}); font-weight:900;">${n.g}</span> ${n.de}` +
     (n.pl ? ` <span style="color:var(--soft); font-size:.85rem;">· die ${n.pl}</span>` : '');
-  speak(`${n.g} ${n.de}`);
+  speakArtWord(n);
 }
 
 /* ═════════ Eltern-Cockpit ═════════ */
