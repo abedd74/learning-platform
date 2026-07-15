@@ -348,10 +348,13 @@ body.show-it .it.inline { display: inline; }
 
   <button class="btn" id="btn-daily" onclick="startSession('mixed')">🎯 Tägliches Training</button>
   <button class="btn secondary" onclick="startSession('gender')">🔤 Der-Die-Das üben</button>
+  <button class="btn" id="btn-mc" style="display:none;"></button>
   <button class="btn secondary" id="btn-path-akk" onclick="startPath('akk')">🎓 Lernpfad: Akkusativ</button>
   <div class="lock-note" id="note-path-akk"></div>
   <button class="btn secondary" id="btn-akk" onclick="startSession('akk')">✍️ Sätze üben (Akkusativ)</button>
   <div class="lock-note" id="note-akk"></div>
+  <button class="btn secondary" id="btn-path-dat" onclick="startPath('dat')">🎓 Lernpfad: Dativ</button>
+  <div class="lock-note" id="note-path-dat"></div>
   <button class="btn secondary" id="btn-dat" onclick="startSession('dat')">✉️ Sätze üben (Dativ)</button>
   <div class="lock-note" id="note-dat"></div>
   <button class="btn secondary" onclick="showZoo()">🦁 Mein Wörter-Zoo</button>
@@ -1099,37 +1102,69 @@ function goHome() {
   renderWeekStrip();
 
   const m = masteredCount();
-  const bAkk = document.getElementById('btn-akk'), nAkk = document.getElementById('note-akk');
-  const bDat = document.getElementById('btn-dat'), nDat = document.getElementById('note-dat');
-  const bPath = document.getElementById('btn-path-akk'), nPath = document.getElementById('note-path-akk');
-
-  // Reihenfolge: Wörter meistern → Lernpfad (Erklärung!) → Satz-Übungen.
-  // Eltern-Modus: alles offen, damit Erwachsene die Inhalte prüfen können,
-  // ohne erst 30 Wörter zu meistern.
   const elternMode = profile === 'Eltern';
-  const akkSt = pathState('akk');
-  const akkPathDone = pathDone('akk');
-  if (m < UNLOCK_AKK && !elternMode) {
-    bPath.classList.add('locked'); bPath.disabled = true;
-    nPath.textContent = `🔒 Noch ${UNLOCK_AKK - m} Wörter meistern, dann geht's los!`;
-  } else {
-    bPath.classList.remove('locked'); bPath.disabled = false;
-    bPath.innerHTML = akkPathDone
-      ? '🎓 Lernpfad: Akkusativ ✓ <span style="opacity:.7; font-weight:700;">(nochmal ansehen)</span>'
-      : `🎓 Lernpfad: Akkusativ <span style="opacity:.8;">(Schritt ${Math.min(akkSt.unit, PATH_AKK.length)}/${PATH_AKK.length})</span>`;
-    nPath.textContent = elternMode
-      ? '👨‍👩‍👧 Eltern-Modus: zum Ausprobieren offen — mit Schritt-Auswahl in der Lektion.'
-      : (!akkPathDone && akkSt.unit === 1 && !Object.keys(akkSt.passed).length)
-        ? '✨ Neu! Hier lernst du Schritt für Schritt, was der Akkusativ ist.' : '';
+
+  // ── Meister-Check-Knopf (höchstens ein Konzept ist gleichzeitig bereit) ──
+  const mcK = Object.keys(CONCEPTS).find(mcReady);
+  const bMc = document.getElementById('btn-mc');
+  if (mcK) {
+    bMc.style.display = '';
+    bMc.textContent = `🏆 Meister-Check: ${CONCEPTS[mcK].name}!`;
+    bMc.onclick = () => startMeisterCheck(mcK);
+  } else bMc.style.display = 'none';
+
+  // ── Pro Konzept: Lernpfad-Knopf + Satzübungs-Knopf.
+  //    Reihenfolge: (Wörter meistern) → Lernpfad → Festigen → Meister-Check
+  //    → Gold. Eltern-Modus: alles offen zum Prüfen der Inhalte. ──
+  function renderConceptHome(kase, pathBtnId, pathNoteId, drillBtnId, drillNoteId) {
+    const con = CONCEPTS[kase];
+    const units = pathUnits(kase);
+    const st = pathState(kase);
+    const done = pathDone(kase);
+    const gold = conceptGold(kase);
+    const bP = document.getElementById(pathBtnId), nP = document.getElementById(pathNoteId);
+    const bD = document.getElementById(drillBtnId), nD = document.getElementById(drillNoteId);
+
+    // Zugang zum Lernpfad: Vorgänger-Konzept muss Gold sein;
+    // der Akkusativ zusätzlich erst ab UNLOCK_AKK gemeisterten Wörtern
+    let lockMsg = '';
+    if (!conceptPathOpen(kase)) lockMsg = `🔒 Erst ${CONCEPTS[con.requires].name} meistern — dann geht's hier weiter!`;
+    else if (kase === 'akk' && m < UNLOCK_AKK && !elternMode) lockMsg = `🔒 Noch ${UNLOCK_AKK - m} Wörter meistern, dann geht's los!`;
+
+    if (lockMsg) {
+      bP.classList.add('locked'); bP.disabled = true;
+      nP.textContent = lockMsg;
+    } else {
+      bP.classList.remove('locked'); bP.disabled = false;
+      bP.innerHTML = done
+        ? `🎓 Lernpfad: ${con.name} ✓ <span style="opacity:.7; font-weight:700;">(nochmal ansehen)</span>`
+        : `🎓 Lernpfad: ${con.name} <span style="opacity:.8;">(Schritt ${Math.min(st.unit, units.length)}/${units.length})</span>`;
+      if (elternMode) {
+        nP.textContent = '👨‍👩‍👧 Eltern-Modus: zum Ausprobieren offen — mit Schritt-Auswahl in der Lektion.';
+      } else if (gold) {
+        nP.textContent = `🏆 Gemeistert! Kleine Auffrischungen kommen von selbst im Training.`;
+      } else if (done) {
+        const d = festDaysCount(kase);
+        const waiting = st.mc && st.mc.nextTry && st.mc.nextTry > todayStr();
+        nP.textContent = waiting
+          ? `💪 Weiter üben — der Meister-Check wartet ab ${st.mc.nextTry.slice(8,10)}.${st.mc.nextTry.slice(5,7)}. wieder!`
+          : d < FEST_MIN_DAYS
+            ? `🔨 Training läuft: Tag ${d} von ${FEST_MIN_DAYS} — dann kommt der Meister-Check!`
+            : '';
+      } else {
+        nP.textContent = (st.unit === 1 && !Object.keys(st.passed).length)
+          ? `✨ Neu! Hier lernst du Schritt für Schritt, was der ${con.name} ist.` : '';
+      }
+    }
+
+    // Satzübung: frei nach abgeschlossenem Lernpfad
+    if (!done && !elternMode) {
+      bD.classList.add('locked'); bD.disabled = true;
+      nD.textContent = (!lockMsg) ? '🔒 Erst den Lernpfad abschließen — dann wird das hier kinderleicht!' : '';
+    } else { bD.classList.remove('locked'); bD.disabled = false; nD.textContent = ''; }
   }
-  if ((m < UNLOCK_AKK || !akkPathDone) && !elternMode) {
-    bAkk.classList.add('locked'); bAkk.disabled = true;
-    nAkk.textContent = m >= UNLOCK_AKK ? '🔒 Erst den Lernpfad abschließen — dann wird das hier kinderleicht!' : '';
-  } else { bAkk.classList.remove('locked'); bAkk.disabled = false; nAkk.textContent = ''; }
-  if (m < UNLOCK_DAT && !elternMode) {
-    bDat.classList.add('locked'); bDat.disabled = true;
-    nDat.textContent = m >= UNLOCK_AKK ? `🔒 Noch ${UNLOCK_DAT - m} Wörter bis zum Dativ!` : '';
-  } else { bDat.classList.remove('locked'); bDat.disabled = false; nDat.textContent = ''; }
+  renderConceptHome('akk', 'btn-path-akk', 'note-path-akk', 'btn-akk', 'note-akk');
+  renderConceptHome('dat', 'btn-path-dat', 'note-path-dat', 'btn-dat', 'note-dat');
 
   // Nach erreichtem Tagesziel: feiern + nur noch Extra-Runden (reine Wiederholung)
   const goalDone = t.a >= GOAL_PER_DAY;
@@ -1192,6 +1227,9 @@ const BADGES = [
   { id:'traps10',  em:'🇮🇹', lbl:'10 Fallen-Wörter besiegt',  cond: f => f.traps >= 10 },
   { id:'akk',      em:'✍️', lbl:'Akkusativ freigeschaltet',  cond: f => f.m >= UNLOCK_AKK },
   { id:'pathakk',  em:'🕵️‍♀️', lbl:'Akkusativ-Detektivin',      cond: f => f.pathAkkDone },
+  { id:'mcakk',    em:'🏆', lbl:'Akkusativ-Meisterin',       cond: f => f.mcAkk },
+  { id:'pathdat',  em:'🕵️', lbl:'Dativ-Detektivin',          cond: f => f.pathDatDone },
+  { id:'mcdat',    em:'🥇', lbl:'Dativ-Meisterin',           cond: f => f.mcDat },
   { id:'dat',      em:'✉️', lbl:'Dativ freigeschaltet',      cond: f => f.m >= UNLOCK_DAT },
   { id:'perfect',  em:'🏆', lbl:'Perfekte Runde',            cond: (f, x) => !!x.perfect },
 ];
@@ -1208,6 +1246,9 @@ function checkBadges(extra = {}) {
     goalToday: t.a >= GOAL_PER_DAY,
     traps: NOUNS.filter(n => isTrap(n) && srs[n.de] && srs[n.de].b >= 3).length,
     pathAkkDone: pathDone('akk'),
+    pathDatDone: pathDone('dat'),
+    mcAkk: conceptGold('akk'),
+    mcDat: conceptGold('dat'),
   };
   const fresh = [];
   BADGES.forEach(b => {
@@ -1290,7 +1331,8 @@ function caseQuestion(kase) {
 
 function startSession(type) {
   if (type && type.startsWith('path-')) { startPath(type.slice(5)); return; }
-  pathCtx = null;
+  if (type && type.startsWith('mc-'))   { startMeisterCheck(type.slice(3)); return; }
+  pathCtx = null; mcCtx = null;
   lastSessionType = type;
   session = [];
   sIdx = 0; sCorrect = 0; sNewWords = [];
@@ -1298,10 +1340,55 @@ function startSession(type) {
 
   if (type === 'gender' || type === 'mixed') {
     const m = masteredCount();
-    // Satzfragen erst NACH dem Lernpfad — vorher wäre jede davon eine
-    // kalte Überraschung ohne Erklärung (genau das Problem, das der
-    // Lernpfad löst)
-    const caseCount = (type === 'mixed' && m >= UNLOCK_AKK && pathDone('akk')) ? 4 : 0;
+    // ── Eine Tür, viele Räume: das Tägliche Training mischt Wörter-SRS
+    //    und Grammatik automatisch. Prioritäten für die Grammatik-Plätze
+    //    (max. 4 von 10, damit das Wörter-Lernen die Mehrheit behält):
+    //    1. Festigen (Konzept nach dem Lernpfad, vor dem Meister-Check)
+    //    2. fällige Auffrischung eines Gold-Konzepts
+    //    3. normale Satzübung für Gold-Konzepte
+    //    4. Konzept-Häppchen, wenn ein Lernpfad angefangen ist
+    const gramItems = [];
+    if (type === 'mixed') {
+      const conceptItem = (k) => {
+        const pool = pathUnits(k).flatMap(u => u.items);
+        return pool.length ? { ...pool[Math.floor(Math.random() * pool.length)], _concept: k } : null;
+      };
+      const caseItem = (k) => {
+        const q = caseQuestion(k);
+        if (q) q._concept = k;
+        return q;
+      };
+      // 1. Festigen: 2 Satzfragen + 1 Konzeptfrage
+      const festK = Object.keys(CONCEPTS).find(conceptInFest);
+      if (festK) {
+        [caseItem(festK), caseItem(festK), conceptItem(festK)]
+          .filter(Boolean).forEach(q => gramItems.push(q));
+      }
+      // 2. fällige Gold-Auffrischung: 1 Satz + 1 Konzept
+      Object.keys(CONCEPTS).filter(conceptDue).slice(0, 1).forEach(k => {
+        [caseItem(k), conceptItem(k)].filter(Boolean).forEach(q => {
+          if (gramItems.length < 4) gramItems.push(q);
+        });
+      });
+      // 3. Gold-Konzepte (nicht fällig): normale Satzübung
+      const goldKs = Object.keys(CONCEPTS).filter(k => conceptGold(k) && !conceptDue(k));
+      while (gramItems.length < 4 && goldKs.length) {
+        const q = caseItem(goldKs[Math.floor(Math.random() * goldKs.length)]);
+        if (!q) break;
+        gramItems.push(q);
+      }
+      // 4. Lernpfad in Arbeit: ab und zu ein Häppchen aus bestandenen Schritten
+      if (!festK && gramItems.length < 4 && Math.random() < 0.6) {
+        const progK = Object.keys(CONCEPTS).find(k =>
+          !pathDone(k) && Object.keys(pathState(k).passed).length);
+        if (progK) {
+          const passed = Object.keys(pathState(progK).passed).map(Number);
+          const pool = pathUnits(progK).filter(u => passed.includes(u.n)).flatMap(u => u.items);
+          if (pool.length) gramItems.push({ ...pool[Math.floor(Math.random() * pool.length)], _concept: progK });
+        }
+      }
+    }
+    const caseCount = gramItems.length;
     const genderCount = SESSION_LEN - caseCount;
 
     // Wie viele neue Wörter sind heute noch erlaubt? Drossel gegen Überlastung:
@@ -1330,23 +1417,9 @@ function startSession(type) {
     sNewWords = picks.filter(n => !srs[n.de]).map(n => n.de);
     session = shuffle(picks).map(genderQuestion);
 
-    for (let i = 0; i < caseCount; i++) {
-      const useDat = masteredCount() >= UNLOCK_DAT && Math.random() < 0.4;
-      const q = caseQuestion(useDat ? 'dat' : 'akk');
-      if (q) session.push(q);
-    }
-
-    // Konzept-Auffrischung: Lernpfad angefangen (oder fertig) → ab und zu
-    // eine Verständnisfrage aus bestandenen Schritten einstreuen, damit
-    // „Wen oder was?" und „nur DER ändert sich" nicht verblassen
-    const akkPassed = Object.keys(pathState('akk').passed).map(Number);
-    if (type === 'mixed' && akkPassed.length && Math.random() < 0.6) {
-      const pool = PATH_AKK.filter(u => akkPassed.includes(u.n)).flatMap(u => u.items);
-      if (pool.length) {
-        session[Math.floor(Math.random() * session.length)] =
-          { ...pool[Math.floor(Math.random() * pool.length)] };
-      }
-    }
+    // Grammatik einmischen — durchmischt statt am Ende (Interleaving
+    // festigt die Unterscheidung: „Wen oder was?" vs. „Wem?")
+    session = shuffle(session.concat(gramItems));
   } else {
     // reine Satz-Runde
     for (let i = 0; i < SESSION_LEN; i++) {
@@ -1360,7 +1433,7 @@ function startSession(type) {
   renderQuestion();
 }
 
-function quitSession() { pathCtx = null; goHome(); }
+function quitSession() { pathCtx = null; mcCtx = null; goHome(); }
 
 /* ═════════ Frage anzeigen ═════════ */
 function renderProgress() {
@@ -1792,13 +1865,157 @@ const PATH_AKK = [
     items: [] },   // wird live aus caseQuestion('akk') gebaut — ihre eigenen Wörter
 ];
 
+const PATH_DAT = [
+  { n: 1,
+    title: '🎁 Die neue Frage: Wem?',
+    lesson: `
+      <p>Du kennst schon das <b>Ziel</b> („Wen oder was?" 🪄).
+      Aber manche Sätze haben noch jemanden: den <b>Empfänger</b> —
+      der etwas <b>bekommt</b> oder dem geholfen wird!</p>
+      <div style="text-align:center; font-size:1.1rem; font-weight:800; margin:14px 0;">
+        Ich gebe <span style="border-bottom:3px solid var(--prime);">dem Hund</span> die Wurst. 🐕🎁
+      </div>
+      <p>Die Wurst ist das Ziel (Wen oder was?). Aber <b>wer bekommt sie?</b>
+      Frag: <b style="color:var(--prime);">„Wem?"</b> → dem Hund!</p>
+      <p>Der Empfänger steht im <b>Dativ</b>. Neues Geheimwort! 🎓</p>
+      <p class="it">Chi <b>riceve</b> qualcosa si trova con la domanda „Wem?" (a chi?) — e sta nel <b>dativo</b>.</p>`,
+    items: [
+      { kind:'pmcq', em:'🐕', sent:'Ich gebe dem Hund die Wurst.', task:'Wem gebe ich die Wurst?', task_it:'A chi do la salsiccia?',
+        opts:['dem Hund','die Wurst','ich'], correct:'dem Hund',
+        hint:'Die Wurst ist das Ziel — aber wer BEKOMMT sie?',
+        explain:'Wem gebe ich die Wurst? → dem Hund. Der Hund ist der Empfänger — Dativ!' },
+      { kind:'pmcq', em:'🐈', sent:'Oma schenkt der Katze einen Ball.', task:'Wem schenkt Oma den Ball?', task_it:'A chi regala la palla?',
+        opts:['der Katze','einen Ball','Oma'], correct:'der Katze',
+        hint:'Der Ball ist das Geschenk — wer bekommt es?',
+        explain:'Wem schenkt Oma den Ball? → der Katze. Die Katze ist die Empfängerin!' },
+      { kind:'pmcq', em:'👦', sent:'Chiara hilft dem Bruder.', task:'Wem hilft Chiara?', task_it:'A chi aiuta Chiara?',
+        opts:['dem Bruder','Chiara','hilft'], correct:'dem Bruder',
+        hint:'Helfen ist wie ein Geschenk: Wer bekommt die Hilfe?',
+        explain:'Wem hilft Chiara? → dem Bruder. Hilfe-Empfänger = Dativ!' },
+      { kind:'pmcq', em:'👂', sent:'Was klingt richtig?', task:'Hör genau hin!', task_it:'Quale suona giusto?',
+        opts:['Ich spiele mit dem Ball.','Ich spiele mit den Ball.'], correct:'Ich spiele mit dem Ball.',
+        hint:'Sprich beide Sätze leise — dein Ohr weiß es!',
+        explain:'„Mit DEM Ball" — dein Ohr kennt den Dativ schon! Gleich lernst du das System.' },
+    ] },
+  { n: 2,
+    title: '🎭 Im Dativ ziehen sich ALLE um!',
+    lesson: `
+      <p>Beim Akkusativ hat sich nur DER verändert. Der Dativ ist eine
+      große Verkleidungsparty — <b>alle ziehen sich um</b>:</p>
+      <div style="background:var(--card2, #f4f1fa); border-radius:14px; padding:12px; margin:12px 0; text-align:center; font-weight:800; font-size:1.05rem; line-height:2;">
+        <span style="color:var(--c-der);">der</span> ➡️ <b style="color:var(--c-der);">DEM</b> &nbsp;(ein ➡️ <b>einem</b>)<br>
+        <span style="color:var(--c-die);">die</span> ➡️ <b style="color:var(--c-die);">DER</b> &nbsp;(eine ➡️ <b>einer</b>) 😲<br>
+        <span style="color:var(--c-das);">das</span> ➡️ <b style="color:var(--c-das);">DEM</b> &nbsp;(ein ➡️ <b>einem</b>)
+      </div>
+      <p>Die Überraschung: <b>die Katze</b> wird zu „mit <b>der</b> Katze"!
+      Und der + das bekommen beide <b>dem</b>.</p>
+      <p class="it">Nel dativo cambiano TUTTI: der→dem, die→der (sorpresa!), das→dem.</p>`,
+    items: [
+      { kind:'pfill', em:'🐕', t:'Ich spiele mit ___ Hund.', base:'der Hund', opts:['der','den','dem'], correct:'dem',
+        hint:'Dativ-Party: der zieht sich um zu …?',
+        explain:'der Hund → mit DEM Hund. Im Dativ: der → dem!' },
+      { kind:'pfill', em:'🐈', t:'Ich spiele mit ___ Katze.', base:'die Katze', opts:['die','der','dem'], correct:'der',
+        hint:'Die Überraschung aus der Tabelle: die wird zu …?',
+        explain:'die Katze → mit DER Katze. Das ist die Dativ-Überraschung!' },
+      { kind:'pfill', em:'🚗', t:'Wir fahren mit ___ Auto.', base:'das Auto', opts:['das','dem','den'], correct:'dem',
+        hint:'das zieht sich um — genau wie der!',
+        explain:'das Auto → mit DEM Auto. der und das bekommen beide „dem"!' },
+      { kind:'pfill', em:'👧', t:'Sie spielt mit ___ Freundin.', base:'eine Freundin (die Freundin)', opts:['eine','einer','einem'], correct:'einer',
+        hint:'die → der, also eine → …?',
+        explain:'eine Freundin → mit EINER Freundin. eine wird zu einer!' },
+    ] },
+  { n: 3,
+    title: '🧲 Die Magnet-Wörter',
+    lesson: `
+      <p>Fünf kleine Wörter sind wie Magnete: Nach ihnen kommt
+      <b>IMMER</b> der Dativ — ohne Ausnahme!</p>
+      <div style="text-align:center; font-weight:900; font-size:1.25rem; color:var(--prime); line-height:1.8; margin:12px 0;">
+        mit · bei · zu · von · aus 🧲
+      </div>
+      <p>Sprich sie dreimal wie einen Zauberspruch:
+      <i>mit-bei-zu-von-aus!</i> 🎵</p>
+      <p><b>mit</b> dem Ball · <b>bei</b> der Oma · <b>zu</b> der Schule ·
+      <b>von</b> dem Lehrer · <b>aus</b> dem Haus</p>
+      <p class="it">Dopo <b>mit, bei, zu, von, aus</b> viene SEMPRE il dativo — impara la filastrocca!</p>`,
+    items: [
+      { kind:'pfill', em:'👵', t:'Wir wohnen bei ___ Oma.', base:'die Oma', opts:['die','der','dem'], correct:'der',
+        hint:'„bei" ist ein Magnet-Wort → Dativ! Und die wird zu …?',
+        explain:'bei DER Oma — Magnet-Wort „bei" + Dativ-Überraschung die→der!' },
+      { kind:'pfill', em:'✉️', t:'Der Brief ist von ___ Lehrer.', base:'der Lehrer', opts:['der','den','dem'], correct:'dem',
+        hint:'„von" ist ein Magnet-Wort → Dativ!',
+        explain:'von DEM Lehrer — nach „von" kommt immer der Dativ.' },
+      { kind:'pfill', em:'🏫', t:'Ich komme aus ___ Schule.', base:'die Schule', opts:['die','der','das'], correct:'der',
+        hint:'„aus" ist ein Magnet-Wort — und die Schule ist ein DIE-Wort!',
+        explain:'aus DER Schule — Magnet-Wort + die→der.' },
+      { kind:'pmcq', em:'🧲', sent:'Welche Wörter sind die Dativ-Magnete?', task:'Der Zauberspruch!', task_it:'Quali sono le parole-magnete?',
+        opts:['mit, bei, zu, von, aus','und, oder, aber','ich, du, er'], correct:'mit, bei, zu, von, aus',
+        hint:'Der Zauberspruch aus der Lektion — mit-bei-…?',
+        explain:'mit, bei, zu, von, aus — nach ihnen kommt IMMER der Dativ!' },
+    ] },
+  { n: 4,
+    title: '💝 Verben mit Empfänger',
+    lesson: `
+      <p>Manche Verben haben eingebaute Empfänger — bei ihnen fragst du
+      automatisch <b>„Wem?"</b>:</p>
+      <div style="text-align:center; font-weight:800; font-size:1.05rem; line-height:2; margin:12px 0;">
+        geben 🎁 · helfen 🤝 · gehören 🏷️<br>schmecken 😋 · danken 🙏
+      </div>
+      <p><b>Ich helfe dem Kind.</b> — Wem helfe ich? → dem Kind!</p>
+      <p><b>Die Pizza schmeckt dem Bruder.</b> — Wem schmeckt sie? → dem Bruder!</p>
+      <p class="it">Verbi con destinatario: dare, aiutare, appartenere, piacere (di gusto), ringraziare — chiedono sempre „Wem?".</p>`,
+    items: [
+      { kind:'pfill', em:'🧒', t:'Ich helfe ___ Kind.', base:'das Kind', opts:['das','dem','den'], correct:'dem',
+        hint:'„helfen" will einen Empfänger — Wem helfe ich?',
+        explain:'Ich helfe DEM Kind — helfen + Dativ, das→dem!' },
+      { kind:'pfill', em:'🚲', t:'Das Fahrrad gehört ___ Mädchen.', base:'das Mädchen', opts:['dem','das','den'], correct:'dem',
+        hint:'„gehören": Wem gehört das Fahrrad?',
+        explain:'Es gehört DEM Mädchen — gehören + Dativ!' },
+      { kind:'pfill', em:'🍕', t:'Die Pizza schmeckt ___ Bruder.', base:'der Bruder', opts:['der','dem','den'], correct:'dem',
+        hint:'Wem schmeckt die Pizza? Der Bruder ist ein DER-Wort.',
+        explain:'Sie schmeckt DEM Bruder — schmecken + Dativ, der→dem!' },
+      { kind:'pfill', em:'👩‍🏫', t:'Wir danken ___ Lehrerin.', base:'die Lehrerin', opts:['der','die','einer'], correct:'der',
+        hint:'„danken": Wem danken wir? Und die wird zu …?',
+        explain:'Wir danken DER Lehrerin — danken + Dativ, die→der!' },
+    ] },
+  { n: 5,
+    title: '🏆 Alles zusammen!',
+    lesson: `
+      <p>Du kennst jetzt beide Geheimfragen:</p>
+      <div style="font-weight:800; line-height:2; margin:12px 0;">
+        🎯 Ziel: <b>„Wen oder was?"</b> → Akkusativ (nur der→den)<br>
+        🎁 Empfänger: <b>„Wem?"</b> → Dativ (alle ziehen sich um!)<br>
+        🧲 mit-bei-zu-von-aus → immer Dativ!
+      </div>
+      <p>Jetzt kommen 6 echte Sätze mit deinen eigenen Wörtern.
+      Schaffst du sie, bist du <b>Dativ-Detektivin</b>! 🕵️‍♀️</p>
+      <p class="it">Ora 6 frasi vere con le TUE parole — diventa detective del dativo!</p>`,
+    items: [] },   // wird live aus caseQuestion('dat') gebaut
+];
+
+/* ── Konzept-Register: jedes Grammatik-Konzept hat einen Lernpfad und
+   durchläuft den Lebenszyklus Lernen → Festigen → Meister-Check → Gold.
+   Neue Konzepte (Präteritum, wörtliche Rede …) werden hier eingehängt. ── */
+const FEST_MIN_DAYS   = 3;    // Übungstage mit Festigen-Fragen vor dem Meister-Check
+const MC_SIZE         = 10;   // Fragen im Meister-Check
+const MC_PASS         = 8;    // davon beim ersten Versuch richtig
+const MC_RETRY_DAYS   = 2;    // Wartezeit nach nicht bestandenem Check
+const GOLD_INTERVALS  = [7, 14, 30, 60];   // Auffrisch-Abstände für Gold-Konzepte
+
+const CONCEPTS = {
+  akk: { name: 'Akkusativ', em: '✍️', path: () => PATH_AKK, drill: 'akk',
+         detective: 'Akkusativ-Detektivin', next: 'dat' },
+  dat: { name: 'Dativ',     em: '✉️', path: () => PATH_DAT, drill: 'dat',
+         detective: 'Dativ-Detektivin', requires: 'akk' },
+};
+function pathUnits(kase) { return CONCEPTS[kase].path(); }
+
 function pathKey() { return `gram_path_${profile}`; }
 function loadPath() { return safeLoad(pathKey(), {}); }
 function pathState(kase) {
   const p = loadPath();
   return p[kase] || { unit: 1, passed: {} };
 }
-function pathDone(kase) { return pathState(kase).unit > PATH_AKK.length; }
+function pathDone(kase) { return pathState(kase).unit > pathUnits(kase).length; }
 
 function savePathPass(kase, unitN) {
   const p = loadPath();
@@ -1809,28 +2026,152 @@ function savePathPass(kase, unitN) {
   safeSave(pathKey(), p);
 }
 
+/* ── Lebenszyklus-Helfer ──
+   Zustand pro Konzept (in gram_path_<profil>):
+   unit/passed  = Lernpfad-Fortschritt
+   fest         = { 'YYYY-MM-DD': n } Übungstage mit Festigen-Fragen
+   mc           = { tries, passed(ts), nextTry } Meister-Check
+   gBox/gDue    = Auffrisch-SRS für gemeisterte (Gold-)Konzepte */
+function conceptGold(kase)  { const st = pathState(kase); return !!(st.mc && st.mc.passed); }
+function conceptInFest(kase){ return pathDone(kase) && !conceptGold(kase); }
+function festDaysCount(kase){ return Object.keys(pathState(kase).fest || {}).length; }
+
+function stampFestDay(kase) {
+  const p = loadPath();
+  const st = p[kase]; if (!st) return;
+  st.fest = st.fest || {};
+  st.fest[todayStr()] = (st.fest[todayStr()] || 0) + 1;
+  safeSave(pathKey(), p);
+}
+
+function mcReady(kase) {
+  if (!conceptInFest(kase)) return false;
+  if (profile !== 'Eltern' && festDaysCount(kase) < FEST_MIN_DAYS) return false;
+  const st = pathState(kase);
+  if (st.mc && st.mc.nextTry && st.mc.nextTry > todayStr()) return false;
+  return true;
+}
+
+// Ist der Lernpfad eines Konzepts freigeschaltet? (Vorgänger muss Gold sein)
+function conceptPathOpen(kase) {
+  if (profile === 'Eltern') return true;
+  const req = CONCEPTS[kase].requires;
+  return !req || conceptGold(req);
+}
+
+// Auffrisch-SRS: Gold-Konzepte tauchen in wachsenden Abständen wieder auf
+function conceptDue(kase) {
+  const st = pathState(kase);
+  return conceptGold(kase) && (!st.gDue || st.gDue <= todayStr());
+}
+function bumpGold(kase, ok) {
+  const p = loadPath(); const st = p[kase]; if (!st) return;
+  st.gBox = ok ? Math.min((st.gBox ?? -1) + 1, GOLD_INTERVALS.length - 1) : 0;
+  st.gDue = addDays(todayStr(), GOLD_INTERVALS[st.gBox]);
+  safeSave(pathKey(), p);
+}
+
+/* ── Meister-Check: 10 Fragen, keine Lektion, nur der erste Versuch zählt.
+   6 echte Satzfragen (aus ihren eigenen Wörtern) + 4 Konzeptfragen. ── */
+let mcCtx = null;
+
+function startMeisterCheck(kase) {
+  if (!mcReady(kase) && profile !== 'Eltern') { goHome(); return; }
+  mcCtx = { kase };
+  lastSessionType = `mc-${kase}`;
+  session = [];
+  sIdx = 0; sCorrect = 0; sNewWords = [];
+  sessionStartMastered = masteredCount();
+  for (let i = 0; i < 6; i++) {
+    const q = caseQuestion(kase);
+    if (q) session.push(q);
+  }
+  const pool = shuffle(pathUnits(kase).flatMap(u => u.items)).map(it => ({ ...it }));
+  session = shuffle(session.concat(pool.slice(0, Math.max(0, MC_SIZE - session.length))));
+  showScreen('s-quiz');
+  renderQuestion();
+}
+
+function finishMcSession() {
+  const kase = mcCtx.kase; mcCtx = null;
+  const con = CONCEPTS[kase];
+  const need = Math.ceil(session.length * (MC_PASS / MC_SIZE));
+  const passed = sCorrect >= need;
+  const p = loadPath();
+  const st = p[kase] || (p[kase] = { unit: 1, passed: {} });
+  st.mc = st.mc || { tries: 0 };
+  st.mc.tries++;
+
+  let detail = '';
+  if (passed) {
+    st.mc.passed = Date.now();
+    st.gBox = 0;
+    st.gDue = addDays(todayStr(), GOLD_INTERVALS[0]);
+    safeSave(pathKey(), p);
+    const newBadges = checkBadges({});
+    sfx('badge'); confetti();
+    document.getElementById('result-emoji').textContent = '🏆';
+    document.getElementById('result-title').textContent = `${con.name} GEMEISTERT!`;
+    if (newBadges.length) detail += newBadges.map(b =>
+      `<div style="text-align:center; font-weight:900; font-size:1.05rem; color:var(--prime); margin-bottom:8px;">
+        🏅 Neues Abzeichen: ${b.em} ${b.lbl}!</div>`).join('');
+    const nextK = con.next;
+    if (nextK && !pathDone(nextK)) {
+      detail += `<div style="text-align:center; font-weight:800; color:var(--prime); margin:8px 0;">
+        🔓 Neu freigeschaltet: 🎓 Lernpfad ${CONCEPTS[nextK].name}!</div>`;
+    }
+    detail += `<p class="it" style="text-align:center;">Concetto padroneggiato — la prova da maestro è superata!</p>`;
+  } else {
+    st.mc.nextTry = addDays(todayStr(), MC_RETRY_DAYS);
+    safeSave(pathKey(), p);
+    sfx('fanfare');
+    document.getElementById('result-emoji').textContent = '💪';
+    document.getElementById('result-title').textContent = 'Fast geschafft!';
+    detail += `<div style="text-align:center; font-weight:800; margin:8px 0;">
+      Du hattest ${sCorrect} von ${session.length} — für den Meister-Titel brauchst du ${need}.
+      Noch ${MC_RETRY_DAYS} Tage Training, dann klappt es bestimmt! 🌱</div>
+      <p class="it" style="text-align:center;">Ancora un po' di allenamento — la prova si può ripetere tra ${MC_RETRY_DAYS} giorni!</p>`;
+  }
+  document.getElementById('result-score').textContent =
+    `${sCorrect} von ${session.length} beim ersten Versuch!`;
+
+  detail += `<div style="font-weight:800; font-size:.9rem; margin-top:10px;">Das kam dran:</div><div class="recap-grid">` +
+    session.map(q => {
+      const txt = q.kind === 'case' ? `${q.noun.em} ${q.solution} ${q.nounForm}`
+                : q.kind === 'pfill' ? `${q.em} ${q.t.replace('___', q.correct)}`
+                : `${q.em} ${q.correct}`;
+      const cls = q.result === 'right' ? '' : q.result === 'retry' ? ' retry' : ' wrong';
+      return `<span class="recap-chip${cls}">${txt}</span>`;
+    }).join('') + `</div>`;
+
+  document.getElementById('result-detail').innerHTML = detail;
+  showScreen('s-result');
+  applyIt();
+}
+
 let pathCtx = null;   // { kase, unit } während einer Lernpfad-Runde
 
 function startPath(kase, unitOverride) {
+  const units = pathUnits(kase);
   const st = pathState(kase);
-  const unitN = unitOverride || Math.min(st.unit, PATH_AKK.length);
-  const unit = PATH_AKK[unitN - 1];
+  const unitN = unitOverride || Math.min(st.unit, units.length);
+  const unit = units[unitN - 1];
   pathCtx = { kase, unit: unitN };
   lastSessionType = `path-${kase}`;
 
   // Lektion zeigen
-  document.getElementById('lesson-title').textContent = `Schritt ${unitN} von ${PATH_AKK.length}: ${unit.title}`;
+  document.getElementById('lesson-title').textContent = `Schritt ${unitN} von ${units.length}: ${unit.title}`;
   let body = unit.lesson;
   // Schritt-Auswahl: nach Abschluss (Wiederholung) und im Eltern-Modus
   // darf man frei zwischen den Schritten springen
   if (pathDone(kase) || profile === 'Eltern') {
     body += `<div style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-top:14px;">` +
-      PATH_AKK.map(u =>
+      units.map(u =>
         `<button class="el-pill ${u.n === unitN ? 'active' : ''}" onclick="startPath('${kase}', ${u.n})">Schritt ${u.n}</button>`).join('') +
       `</div>`;
   }
   document.getElementById('lesson-body').innerHTML = body;
-  document.getElementById('lesson-progress').innerHTML = PATH_AKK.map((u, i) =>
+  document.getElementById('lesson-progress').innerHTML = units.map((u, i) =>
     `<div class="q-dot ${st.passed[u.n] ? 'done' : (i === unitN - 1 ? 'now' : '')}"></div>`).join('');
   document.getElementById('lesson-go').onclick = () => beginPathCheck();
   showScreen('s-lesson');
@@ -1838,12 +2179,13 @@ function startPath(kase, unitOverride) {
 }
 
 function beginPathCheck() {
-  const unit = PATH_AKK[pathCtx.unit - 1];
+  const units = pathUnits(pathCtx.kase);
+  const unit = units[pathCtx.unit - 1];
   session = [];
   sIdx = 0; sCorrect = 0; sNewWords = [];
   sessionStartMastered = masteredCount();
 
-  if (unit.n === 5) {
+  if (unit.n === units.length) {
     // Finale: echte Satzfragen mit ihren eigenen gelernten Wörtern
     for (let i = 0; i < 6; i++) {
       const q = caseQuestion(pathCtx.kase);
@@ -1851,7 +2193,7 @@ function beginPathCheck() {
     }
     // Notnagel, falls zu wenige bekannte Nomen passen
     if (session.length < 4) {
-      PATH_AKK[2].items.concat(PATH_AKK[3].items).forEach(it => session.push({ ...it }));
+      units[2].items.concat(units[3].items).forEach(it => session.push({ ...it }));
       session = session.slice(0, 6);
     }
   } else {
@@ -1918,10 +2260,12 @@ function nextQuestion() {
    kommt beim nächsten Mal noch einmal — nie ein Misserfolgs-Bildschirm. */
 function finishPathSession() {
   const ctx = pathCtx; pathCtx = null;
-  const unit = PATH_AKK[ctx.unit - 1];
+  const units = pathUnits(ctx.kase);
+  const con = CONCEPTS[ctx.kase];
+  const unit = units[ctx.unit - 1];
   const wrong   = session.filter(q => q.result === 'wrong').length;
   const retries = session.filter(q => q.result === 'retry').length;
-  const allowed = unit.n === PATH_AKK.length ? PATH_PASS_RETRIES_FINAL : PATH_PASS_RETRIES;
+  const allowed = unit.n === units.length ? PATH_PASS_RETRIES_FINAL : PATH_PASS_RETRIES;
   const passed  = wrong === 0 && retries <= allowed;
 
   let detail = '';
@@ -1930,7 +2274,7 @@ function finishPathSession() {
     const nowDone = pathDone(ctx.kase);
     document.getElementById('result-emoji').textContent = nowDone ? '🕵️‍♀️' : '🎉';
     document.getElementById('result-title').textContent = nowDone
-      ? 'Du bist Akkusativ-Detektivin!'
+      ? `Du bist ${con.detective}!`
       : `Schritt ${unit.n} geschafft!`;
     document.getElementById('result-score').textContent =
       `${sCorrect} von ${session.length} beim ersten Versuch!`;
@@ -1941,12 +2285,15 @@ function finishPathSession() {
         `<div style="text-align:center; font-weight:900; font-size:1.05rem; color:var(--prime); margin-bottom:8px;">
           🏅 Neues Abzeichen: ${b.em} ${b.lbl}!</div>`).join('');
       detail += `<div style="text-align:center; font-weight:800; color:var(--prime); margin:8px 0;">
-        🔓 „Sätze üben (Akkusativ)" ist jetzt frei — und du wirst es LIEBEN, wie leicht es ist!</div>`;
-      detail += `<p class="it" style="text-align:center;">Percorso completato — ora gli esercizi saranno facilissimi!</p>`;
+        🔓 „Sätze üben (${con.name})" ist jetzt frei!</div>
+        <div style="text-align:center; font-weight:700; margin:6px 0;">
+        Jetzt kommt das Training: Deine täglichen Runden enthalten ${con.name}-Fragen.
+        Nach ${FEST_MIN_DAYS} Übungstagen wartet der <b>🏆 Meister-Check</b>!</div>`;
+      detail += `<p class="it" style="text-align:center;">Percorso completato! Ora qualche giorno di allenamento — poi la prova da maestro!</p>`;
     } else {
       sfx('fanfare');
       detail += `<div style="text-align:center; font-weight:800; margin:8px 0;">
-        Weiter geht's mit Schritt ${unit.n + 1} von ${PATH_AKK.length} — wann immer du magst! 🚀</div>`;
+        Weiter geht's mit Schritt ${unit.n + 1} von ${units.length} — wann immer du magst! 🚀</div>`;
     }
   } else {
     document.getElementById('result-emoji').textContent = '🌱';
@@ -1976,6 +2323,7 @@ function finishPathSession() {
 
 function finishSession() {
   if (pathCtx) { finishPathSession(); return; }
+  if (mcCtx)   { finishMcSession(); return; }
   const total = session.length;
   const pct = sCorrect / total;
   const emoji = pct >= 0.9 ? '🏆' : pct >= 0.7 ? '🎉' : pct >= 0.5 ? '💪' : '🌱';
@@ -1986,6 +2334,21 @@ function finishSession() {
 
   const m = masteredCount();
   const t = days[todayStr()] || { a: 0 };
+
+  // ── Konzept-Buchhaltung: Festigen-Tage stempeln, Gold-SRS fortschreiben ──
+  const touched = {};
+  session.forEach(q => {
+    if (q._concept) (touched[q._concept] = touched[q._concept] || []).push(q);
+  });
+  Object.entries(touched).forEach(([k, qs]) => {
+    if (conceptInFest(k)) {
+      stampFestDay(k);
+    } else if (conceptGold(k)) {
+      const allRight = qs.every(q => q.result === 'right');
+      if (conceptDue(k)) bumpGold(k, allRight);
+      else if (!allRight) bumpGold(k, false);   // Fehler holt das Konzept früher zurück
+    }
+  });
 
   // Neue Abzeichen prüfen (perfekte Runde zählt ab 8 Fragen)
   const perfect = sCorrect === total && total >= 8;
@@ -1998,6 +2361,23 @@ function finishSession() {
     detail += newBadges.map(b =>
       `<div style="text-align:center; font-weight:900; font-size:1.05rem; color:var(--prime); margin-bottom:8px;">
         🏅 Neues Abzeichen: ${b.em} ${b.lbl}!</div>`).join('');
+  }
+
+  // ── Was wartet als Nächstes? (Einladung, keine Pflicht) ──
+  const mcK = Object.keys(CONCEPTS).find(mcReady);
+  const festK2 = Object.keys(CONCEPTS).find(conceptInFest);
+  const openPathK = Object.keys(CONCEPTS).find(k =>
+    conceptPathOpen(k) && !pathDone(k) && (k !== 'akk' || m >= UNLOCK_AKK));
+  if (mcK) {
+    detail += `<div style="text-align:center; font-weight:900; color:var(--prime); margin-bottom:8px;">
+      🏆 Der Meister-Check (${CONCEPTS[mcK].name}) wartet auf dich!</div>`;
+  } else if (festK2) {
+    const d = festDaysCount(festK2);
+    if (d < FEST_MIN_DAYS) detail += `<div style="text-align:center; font-weight:800; margin-bottom:8px;">
+      🔨 ${CONCEPTS[festK2].name}-Training: Tag ${d} von ${FEST_MIN_DAYS} — dann kommt der Meister-Check!</div>`;
+  } else if (openPathK && Object.keys(pathState(openPathK).passed).length < pathUnits(openPathK).length) {
+    detail += `<div style="text-align:center; font-weight:800; margin-bottom:8px;">
+      🎓 Ein neuer Schritt im Lernpfad ${CONCEPTS[openPathK].name} wartet auf dich!</div>`;
   }
 
   // Rückblick: jedes Wort der Runde mit Ampelfarbe (grün/gelb/rot)
@@ -2085,16 +2465,25 @@ function showProgress() {
     `</div>`;
 
   const m = masteredCount();
-  const akkP = pathState('akk');
   let unlock = `<h2 style="margin-bottom:8px;">🔓 Nächste Abenteuer</h2><div style="font-weight:700; line-height:1.9;">`;
-  unlock += m < UNLOCK_AKK
-    ? `🔒 Lernpfad Akkusativ: noch ${UNLOCK_AKK - m} Wörter<br>`
-    : pathDone('akk')
-      ? `✅ Lernpfad Akkusativ — geschafft! 🕵️‍♀️<br>✅ Akkusativ-Sätze — freigeschaltet!<br>`
-      : `🎓 Lernpfad Akkusativ: Schritt ${Math.min(akkP.unit, PATH_AKK.length)} von ${PATH_AKK.length}<br>🔒 Akkusativ-Sätze: erst den Lernpfad abschließen<br>`;
-  unlock += m >= UNLOCK_DAT
-    ? `✅ Dativ-Sätze — freigeschaltet!`
-    : `🔒 Dativ-Sätze: noch ${UNLOCK_DAT - m} Wörter`;
+  Object.keys(CONCEPTS).forEach(kase => {
+    const con = CONCEPTS[kase];
+    const st = pathState(kase);
+    const units = pathUnits(kase);
+    if (conceptGold(kase)) {
+      unlock += `🏆 ${con.name} — GEMEISTERT!<br>`;
+    } else if (conceptInFest(kase)) {
+      unlock += `🔨 ${con.name}-Training: Tag ${festDaysCount(kase)} von ${FEST_MIN_DAYS} — dann der Meister-Check!<br>`;
+    } else if (Object.keys(st.passed).length) {
+      unlock += `🎓 Lernpfad ${con.name}: Schritt ${Math.min(st.unit, units.length)} von ${units.length}<br>`;
+    } else if (!conceptPathOpen(kase)) {
+      unlock += `🔒 ${con.name}: erst ${CONCEPTS[con.requires].name} meistern<br>`;
+    } else if (kase === 'akk' && m < UNLOCK_AKK) {
+      unlock += `🔒 Lernpfad Akkusativ: noch ${UNLOCK_AKK - m} Wörter<br>`;
+    } else {
+      unlock += `🎓 Lernpfad ${con.name}: bereit zum Start!<br>`;
+    }
+  });
   unlock += `</div>`;
   document.getElementById('unlock-card').innerHTML = unlock;
 
@@ -2232,23 +2621,32 @@ function elternRender() {
   const caseNames = { akk: 'Akkusativ', dat: 'Dativ' };
   let caseHtml = '<h2 style="margin-bottom:4px;">Kasus-Übungen</h2>';
 
-  // Lernpfad-Fortschritt des Kindes (welcher Schritt, wann bestanden)
+  // Lernpfad-Fortschritt des Kindes: Schritte, Training, Meister-Check
   const kPath = safeLoad(`gram_path_${elChild}`, {});
-  const kAkk = kPath.akk || { unit: 1, passed: {} };
-  const kAkkDone = kAkk.unit > PATH_AKK.length;
   const fmtP = ts => ts ? new Date(ts).toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' }) : '';
-  caseHtml += `
-    <div class="el-case-row">
-      <div style="display:flex; justify-content:space-between; font-weight:800; font-size:.9rem;">
-        <span>🎓 Lernpfad Akkusativ</span>
-        <span>${kAkkDone ? 'abgeschlossen 🕵️‍♀️' : `Schritt ${Math.min(kAkk.unit, PATH_AKK.length)} von ${PATH_AKK.length}`}</span>
-      </div>
-      <div class="el-case-bar-wrap"><div class="el-case-bar" style="width:${Math.round(Object.keys(kAkk.passed).length / PATH_AKK.length * 100)}%;"></div></div>
-      <div class="el-err">${PATH_AKK.map(u =>
-        kAkk.passed[u.n] ? `<span>✅ ${u.n} <b>(${fmtP(kAkk.passed[u.n])})</b></span>` : `<span>⬜ ${u.n}</span>`).join('')}
-      </div>
-    </div>
-    <p class="it" style="font-size:.8rem; margin:2px 0 10px;">Il percorso spiega l'accusativo passo per passo — gli esercizi si sbloccano alla fine.</p>`;
+  Object.keys(CONCEPTS).forEach(kase => {
+    const con = CONCEPTS[kase];
+    const units = pathUnits(kase);
+    const k = kPath[kase] || { unit: 1, passed: {} };
+    const done = k.unit > units.length;
+    const gold = !!(k.mc && k.mc.passed);
+    const festD = Object.keys(k.fest || {}).length;
+    const status = gold ? `🏆 gemeistert (${fmtP(k.mc.passed)})`
+      : done ? `🔨 Training: Tag ${festD}/${FEST_MIN_DAYS}${k.mc?.tries ? ` · Check-Versuche: ${k.mc.tries}` : ''}`
+      : Object.keys(k.passed).length ? `Schritt ${Math.min(k.unit, units.length)} von ${units.length}`
+      : 'noch nicht begonnen';
+    caseHtml += `
+      <div class="el-case-row">
+        <div style="display:flex; justify-content:space-between; font-weight:800; font-size:.9rem;">
+          <span>🎓 Lernpfad ${con.name}</span><span>${status}</span>
+        </div>
+        <div class="el-case-bar-wrap"><div class="el-case-bar" style="width:${gold ? 100 : Math.round(Object.keys(k.passed).length / units.length * 100)}%;"></div></div>
+        <div class="el-err">${units.map(u =>
+          k.passed[u.n] ? `<span>✅ ${u.n} <b>(${fmtP(k.passed[u.n])})</b></span>` : `<span>⬜ ${u.n}</span>`).join('')}
+        </div>
+      </div>`;
+  });
+  caseHtml += `<p class="it" style="font-size:.8rem; margin:2px 0 10px;">Percorso → allenamento quotidiano → prova da maestro (8/10 al primo colpo) → oro con ripassi automatici.</p>`;
 
   let any = false;
   ['akk', 'dat'].forEach(k => {
