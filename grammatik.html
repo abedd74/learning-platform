@@ -920,9 +920,15 @@ const PROFILES = [
 ];
 let profile = null;
 
-const GOAL_PER_DAY = 30;          // beantwortete Fragen pro Tag ≈ 15 Minuten
-const NEW_PER_SESSION = 3;        // neue Wörter pro Runde
-const MAX_NEW_PER_DAY = 6;        // Deckel: hält die Wiederhol-Last dauerhaft bei ~15 min/Tag
+// Chiara beantwortet Fragen in ~3-4 Sekunden — das alte Ziel (30) war in
+// 2 Minuten geschafft und ließ 80% des 15-Minuten-Lernbudgets ungenutzt.
+// Angehoben am 2026-07-23; dayGoal() lässt die alten Flammen im
+// Wochenstreifen brennen (rückwirkend gilt das alte Ziel).
+const GOAL_PER_DAY = 50;          // beantwortete Fragen pro Tag
+const GOAL_RAISED  = '2026-07-24';
+function dayGoal(ds) { return ds < GOAL_RAISED ? 30 : GOAL_PER_DAY; }
+const NEW_PER_SESSION = 5;        // neue Wörter pro Runde
+const MAX_NEW_PER_DAY = 10;       // Tagesdeckel neue Wörter (89% Ersttreffer → sie kann mehr)
 const THROTTLE_DUE = 20;          // ab so vielen fälligen Wiederholungen: erst Rückstau abbauen
 const SESSION_LEN = 10;
 const UNLOCK_AKK = 30;            // gemeisterte Wörter für Akkusativ
@@ -1148,8 +1154,9 @@ function goHome() {
   document.getElementById('stat-mastered').textContent = masteredCount();
 
   const t = days[todayStr()] || { a: 0 };
-  document.getElementById('goal-num').textContent = `${Math.min(t.a, GOAL_PER_DAY)} / ${GOAL_PER_DAY}`;
-  document.getElementById('goalbar').style.width = Math.min(100, t.a / GOAL_PER_DAY * 100) + '%';
+  const gToday = dayGoal(todayStr());
+  document.getElementById('goal-num').textContent = `${Math.min(t.a, gToday)} / ${gToday}`;
+  document.getElementById('goalbar').style.width = Math.min(100, t.a / gToday * 100) + '%';
   renderWeekStrip();
 
   const m = masteredCount();
@@ -1240,7 +1247,7 @@ function goHome() {
   renderConceptHome('dat', 'btn-path-dat', 'note-path-dat', 'btn-dat', 'note-dat');
 
   // Nach erreichtem Tagesziel: feiern + nur noch Extra-Runden (reine Wiederholung)
-  const goalDone = t.a >= GOAL_PER_DAY;
+  const goalDone = t.a >= gToday;
   const daily = document.getElementById('btn-daily');
   daily.textContent = goalDone ? '⭐ Extra-Runde (Wiederholung)' : '🎯 Tägliches Training';
 
@@ -1277,7 +1284,7 @@ function renderWeekStrip() {
   for (let i = 6; i >= 0; i--) {
     const ds = addDays(today, -i);
     const d = days[ds];
-    const met = d && d.a >= GOAL_PER_DAY;
+    const met = d && d.a >= dayGoal(ds);
     const part = d && d.a > 0 && !met;
     const wd = names[new Date(ds + 'T12:00:00').getDay()];
     html += `<div class="wday ${met ? 'met' : ''} ${part ? 'part' : ''} ${i === 0 ? 'today' : ''}">
@@ -1316,7 +1323,7 @@ function checkBadges(extra = {}) {
   const facts = {
     m: masteredCount(),
     streak: streakCount(),
-    goalToday: t.a >= GOAL_PER_DAY,
+    goalToday: t.a >= dayGoal(todayStr()),
     traps: NOUNS.filter(n => isTrap(n) && srs[n.de] && srs[n.de].b >= 3).length,
     pathAkkDone: pathDone('akk'),
     pathDatDone: pathDone('dat'),
@@ -1339,6 +1346,19 @@ let sNewWords = [];
 let attempt = 0;         // 0 = erster Versuch, 1 = Wiederholung
 let lastSessionType = 'mixed';
 let sessionStartMastered = 0;
+let sessionStartTs = 0;  // Rundenbeginn — für die Übungszeit-Messung
+
+// Übungszeit pro Tag festhalten (ms gesamt + Rundenzahl): damit lässt
+// sich das Tagesbudget (~15 min) kalibrieren statt nur Antworten zählen.
+function recordSessionTime() {
+  if (!sessionStartTs) return;
+  const t = todayStr();
+  const d = days[t] || (days[t] = { a: 0, c: 0 });
+  d.ms = (d.ms || 0) + (Date.now() - sessionStartTs);
+  d.sess = (d.sess || 0) + 1;
+  sessionStartTs = 0;
+  saveState();
+}
 
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
@@ -1473,14 +1493,23 @@ function startSession(type) {
     const answeredToday   = (days[tKey] && days[tKey].a) || 0;
     let allowNew = Math.max(0, MAX_NEW_PER_DAY - introducedToday);
     if (dueWords().length > THROTTLE_DUE) allowNew = 0;
-    if (answeredToday >= GOAL_PER_DAY)    allowNew = 0;
+    if (answeredToday >= dayGoal(tKey))   allowNew = 0;
 
     // Wiederholungen zuerst, dann neue Wörter; Lücken mit bekannten Wörtern
     // auffüllen. Ganz neue Profile dürfen die Runde mit neuen Wörtern füllen.
     const fresh = newWords(Math.min(NEW_PER_SESSION, allowNew));
     let picks = dueWords().slice(0, genderCount - fresh.length).concat(fresh);
     if (picks.length < genderCount) {
-      const extra = NOUNS.filter(n => srs[n.de] && !picks.includes(n)).slice(0, genderCount - picks.length);
+      // Lücken fair auffüllen: früher nahm diese Zeile stur die ersten
+      // bekannten Wörter der NOUNS-Liste — Affe & Fuchs kamen dadurch
+      // fast täglich dran (18× bei 0 Fehlern), während schwache Wörter
+      // warteten. Jetzt: mischen, dann schwächste Kästen zuerst und bei
+      // Gleichstand das am längsten nicht Gesehene (früheste Fälligkeit).
+      const extra = shuffle(NOUNS.filter(n => srs[n.de] && !picks.includes(n)))
+        .sort((a, b) =>
+          (srs[a.de].b - srs[b.de].b) ||
+          (srs[a.de].due < srs[b.de].due ? -1 : srs[a.de].due > srs[b.de].due ? 1 : 0))
+        .slice(0, genderCount - picks.length);
       picks = picks.concat(extra);
     }
     if (picks.length < genderCount) {
@@ -1502,6 +1531,7 @@ function startSession(type) {
   }
 
   if (!session.length) { alert('Erst ein paar Wörter lernen! 🦉'); return; }
+  sessionStartTs = Date.now();
   showScreen('s-quiz');
   renderQuestion();
 }
@@ -2168,6 +2198,7 @@ function startMeisterCheck(kase) {
   }
   const pool = shuffle(pathUnits(kase).flatMap(u => u.items)).map(it => ({ ...it }));
   session = shuffle(session.concat(pool.slice(0, Math.max(0, MC_SIZE - session.length))));
+  sessionStartTs = Date.now();
   showScreen('s-quiz');
   renderQuestion();
 }
@@ -2279,6 +2310,7 @@ function beginPathCheck() {
   } else {
     session = shuffle(unit.items.map(it => ({ ...it })));
   }
+  sessionStartTs = Date.now();
   showScreen('s-quiz');
   renderQuestion();
 }
@@ -2402,6 +2434,7 @@ function finishPathSession() {
 }
 
 function finishSession() {
+  recordSessionTime();
   if (pathCtx) { finishPathSession(); return; }
   if (mcCtx)   { finishMcSession(); return; }
   const total = session.length;
@@ -2474,8 +2507,8 @@ function finishSession() {
   detail += `<div style="font-weight:800; line-height:2; margin-top:12px;">`;
   if (sNewWords.length) detail += `🆕 Neue Wörter: ${sNewWords.map(w => `${byDe[w].g} ${w}`).join(', ')}<br>`;
   detail += `💎 Gemeisterte Wörter: ${m}<br>`;
-  detail += `📅 Heute geübt: ${t.a} von ${GOAL_PER_DAY}`;
-  if (t.a >= GOAL_PER_DAY) detail += ` — Tagesziel geschafft! 🔥`;
+  detail += `📅 Heute geübt: ${t.a} von ${dayGoal(todayStr())}`;
+  if (t.a >= dayGoal(todayStr())) detail += ` — Tagesziel geschafft! 🔥`;
   detail += `</div>`;
   if (sessionStartMastered < UNLOCK_AKK && m >= UNLOCK_AKK) {
     detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: 🎓 Lernpfad Akkusativ — entdecke das Geheimnis der Ziele!</div>`;
@@ -2688,13 +2721,28 @@ function elternRender() {
   const activeDays = Object.values(kDays).filter(d => d.a > 0).length;
   const totalAnswers = Object.values(kDays).reduce((s, d) => s + d.a, 0);
   const totalCorrect = Object.values(kDays).reduce((s, d) => s + (d.c || 0), 0);
+  // Übungszeit (wird seit 2026-07-23 gemessen — ältere Tage haben keine Daten)
+  const timedDays = Object.entries(kDays).filter(([, d]) => d.ms > 0);
+  const totalMs   = timedDays.reduce((s, [, d]) => s + d.ms, 0);
+  const totalSess = timedDays.reduce((s, [, d]) => s + (d.sess || 0), 0);
+  const fmtMin = ms => {
+    const m = ms / 60000;
+    return m >= 10 ? Math.round(m) + ' min' : (Math.round(m * 10) / 10) + ' min';
+  };
+  const timeHtml = timedDays.length
+    ? `⏱ Übungszeit: <b>${fmtMin(totalMs)}</b> an ${timedDays.length} Tagen ·
+       Ø Runde: <b>${totalSess ? fmtMin(totalMs / totalSess) : '–'}</b> ·
+       Ø Tag: <b>${fmtMin(totalMs / timedDays.length)}</b><br>`
+    : `⏱ Übungszeit: <span style="opacity:.6;">wird ab jetzt gemessen</span><br>`;
+
   document.getElementById('el-summary').innerHTML =
     `<h2 style="margin-bottom:6px;">Überblick</h2>
      <div style="font-weight:700; line-height:1.9; font-size:.92rem;">
        ✅ Sicher: <b>${counts.sicher}</b> · 🌤 Fast: <b>${counts.fast}</b> ·
        🌱 In Arbeit: <b>${counts.arbeit}</b> · 🔴 Braucht Hilfe: <b>${counts.hilfe}</b> · ⬜ Neu: <b>${counts.neu}</b><br>
        📅 Übungstage: <b>${activeDays}</b> · Antworten gesamt: <b>${totalAnswers}</b> ·
-       Ersttreffer-Quote: <b>${totalAnswers ? Math.round(totalCorrect / totalAnswers * 100) : 0}%</b>
+       Ersttreffer-Quote: <b>${totalAnswers ? Math.round(totalCorrect / totalAnswers * 100) : 0}%</b><br>
+       ${timeHtml}
      </div>`;
 
   // ── Kasus-Panel: Wo hakt es — Genus oder Deklination? ──
