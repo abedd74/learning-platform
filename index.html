@@ -1440,7 +1440,7 @@ function renderModuleCards() {
           <span class="module-icon">${m.icon}</span>
           <div class="module-title">${m.name}${itName}</div>
           <div class="module-meta">
-            <span class="module-grade-tag">Klasse ${m.grade}</span>
+            <span class="module-grade-tag">${m.grade === 'all' ? 'Klasse 1–4' : 'Klasse ' + m.grade}</span>
             <span class="module-subject-tag">${m.subject || ''}</span>
           </div>
           <div class="module-progress">
@@ -1455,7 +1455,7 @@ function renderModuleCards() {
         <span class="module-icon">${m.icon}</span>
         <div class="module-title">${m.name}${itName}</div>
         <div class="module-meta">
-          <span class="module-grade-tag">Klasse ${m.grade}</span>
+          <span class="module-grade-tag">${m.grade === 'all' ? 'Klasse 1–4' : 'Klasse ' + m.grade}</span>
           <span class="module-subject-tag">${m.subject || ''}</span>
         </div>
         <div class="module-progress" id="module-prog-${key}">
@@ -1544,7 +1544,9 @@ function filterGrade(grade, el) {
 function filterGradeByValue(grade) {
   document.querySelectorAll('.module-card').forEach(card => {
     const cardGrade = parseInt(card.dataset.grade);
-    card.style.display = (grade === 'all' || cardGrade === grade) ? '' : 'none';
+    // Karten mit data-grade="all" (z.B. Spiele für beide Kinder) sind
+    // in jeder Klassenansicht sichtbar
+    card.style.display = (grade === 'all' || cardGrade === grade || card.dataset.grade === 'all') ? '' : 'none';
   });
 }
 
@@ -1943,6 +1945,18 @@ const EDITOR_MODULES = {
     color:          '#00796B',
     href:           'grammatik.html',   // link-out module: opens its own page
     playLabel:      'Üben! 🦉',
+  },
+  wortregen: {
+    name:           'Wort-Regen',
+    nameIt:         'Pioggia di parole',
+    icon:           '🌧️',
+    grade:          'all',       // Spiel für beide Kinder — in jeder Klassenansicht sichtbar
+    subject:        'Spiel',
+    subjectIt:      'Gioco',
+    active:         true,
+    color:          '#1CB0F6',
+    href:           'wortregen.html',   // eigenständige Seite, liest SRS nur lesend
+    playLabel:      'Spielen! 🌧️',
   },
   // ── Coming-soon placeholders (no question bank yet) ──
   math3: {
