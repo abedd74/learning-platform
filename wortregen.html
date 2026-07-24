@@ -164,6 +164,7 @@ h1 { font-size: 1.5rem; font-weight: 900; margin: 8px 0 2px; }
   <button class="btn secondary" onclick="showStart()">🏠 Zum Start</button>
 </div>
 
+<script src="sync.js"></script>
 <script>
 // 332 Grundwortschatz-Nomen [de, Artikel, Emoji, Kategorie] — generiert aus grammatik.html
 const WORDS = [["Affe","der","🐒","tiere"],["Ameise","die","🐜","tiere"],["Biene","die","🐝","tiere"],["Bär","der","🐻","tiere"],["Dachs","der","🦡","tiere"],["Ente","die","🦆","tiere"],["Eule","die","🦉","tiere"],["Fisch","der","🐟","tiere"],["Fuchs","der","🦊","tiere"],["Hase","der","🐰","tiere"],["Huhn","das","🐔","tiere"],["Hund","der","🐕","tiere"],["Igel","der","🦔","tiere"],["Katze","die","🐱","tiere"],["Kuh","die","🐄","tiere"],["Käfer","der","🪲","tiere"],["Maus","die","🐭","tiere"],["Ochse","der","🐂","tiere"],["Pferd","das","🐴","tiere"],["Pony","das","🐴","tiere"],["Qualle","die","🪼","tiere"],["Raupe","die","🐛","tiere"],["Reh","das","🦌","tiere"],["Schlange","die","🐍","tiere"],["Spinne","die","🕷️","tiere"],["Tiger","der","🐯","tiere"],["Tier","das","🐾","tiere"],["Vogel","der","🐦","tiere"],["Wurm","der","🪱","tiere"],["Frau","die","👩","menschen"],["Mann","der","👨","menschen"],["Junge","der","👦","menschen"],["Mädchen","das","👧","menschen"],["Kind","das","🧒","menschen"],["Baby","das","👶","menschen"],["Bruder","der","👦","menschen"],["Schwester","die","👧","menschen"],["Mutter","die","👩","menschen"],["Vater","der","👨","menschen"],["Tante","die","👩","menschen"],["Onkel","der","👨","menschen"],["Tochter","die","👧","menschen"],["Herr","der","🎩","menschen"],["Mensch","der","🧍","menschen"],["Nachbar","der","🏘️","menschen"],["Freund","der","🤝","menschen"],["Arzt","der","👨‍⚕️","menschen"],["Lehrer","der","👨‍🏫","menschen"],["Lehrerin","die","👩‍🏫","menschen"],["Verkäufer","der","🛒","menschen"],["König","der","👑","menschen"],["Hexe","die","🧙‍♀️","menschen"],["Riese","der","🗻","menschen"],["Clown","der","🤡","menschen"],["Chef","der","💼","menschen"],["Arm","der","💪","koerper"],["Auge","das","👁️","koerper"],["Bein","das","🦵","koerper"],["Finger","der","☝️","koerper"],["Fuß","der","🦶","koerper"],["Hals","der","🧣","koerper"],["Hand","die","✋","koerper"],["Herz","das","❤️","koerper"],["Knie","das","🦵","koerper"],["Kopf","der","🗣️","koerper"],["Körper","der","🧍","koerper"],["Mund","der","👄","koerper"],["Nase","die","👃","koerper"],["Ohr","das","👂","koerper"],["Rücken","der","🧍","koerper"],["Zahn","der","🦷","koerper"],["Zeh","der","🦶","koerper"],["Gesicht","das","🙂","koerper"],["Haar","das","💇","koerper"],["Träne","die","😢","koerper"],["Apfel","der","🍎","essen"],["Beere","die","🫐","essen"],["Birne","die","🍐","essen"],["Brot","das","🍞","essen"],["Butter","die","🧈","essen"],["Ei","das","🥚","essen"],["Eis","das","🍦","essen"],["Gemüse","das","🥦","essen"],["Gurke","die","🥒","essen"],["Käse","der","🧀","essen"],["Kirsche","die","🍒","essen"],["Kuchen","der","🍰","essen"],["Milch","die","🥛","essen"],["Nudel","die","🍝","essen"],["Nuss","die","🥜","essen"],["Obst","das","🍇","essen"],["Pflaume","die","🟣","essen"],["Pilz","der","🍄","essen"],["Pizza","die","🍕","essen"],["Quark","der","🥣","essen"],["Saft","der","🧃","essen"],["Salz","das","🧂","essen"],["Soße","die","🥣","essen"],["Tee","der","🍵","essen"],["Wurst","die","🌭","essen"],["Zucker","der","🍬","essen"],["Zwiebel","die","🧅","essen"],["Frühstück","das","🥐","essen"],["Buch","das","📖","schule"],["Heft","das","📓","schule"],["Stift","der","✏️","schule"],["Füller","der","🖊️","schule"],["Kleber","der","🧴","schule"],["Lineal","das","📏","schule"],["Papier","das","📄","schule"],["Pinsel","der","🖌️","schule"],["Schere","die","✂️","schule"],["Schrift","die","✍️","schule"],["Schule","die","🏫","schule"],["Tafel","die","🖼️","schule"],["Tasche","die","👜","schule"],["Text","der","📝","schule"],["Klasse","die","🏫","schule"],["Zeugnis","das","📜","schule"],["Ergebnis","das","✅","schule"],["Wort","das","💬","schule"],["Satz","der","💬","schule"],["Zahl","die","🔢","schule"],["Nummer","die","🔢","schule"],["Name","der","🏷️","schule"],["Seite","die","📄","schule"],["Thema","das","💭","schule"],["Lexikon","das","📚","schule"],["Computer","der","💻","schule"],["Internet","das","🌐","schule"],["Handy","das","📱","schule"],["E-Mail","die","📧","schule"],["Radio","das","📻","schule"],["Telefon","das","☎️","schule"],["Fehler","der","❌","schule"],["Comic","der","💥","schule"],["Bad","das","🛁","haus"],["Bett","das","🛏️","haus"],["Bild","das","🖼️","haus"],["Brille","die","👓","haus"],["Decke","die","🧺","haus"],["Fenster","das","🪟","haus"],["Feuer","das","🔥","haus"],["Flur","der","🚪","haus"],["Gabel","die","🍴","haus"],["Haus","das","🏠","haus"],["Küche","die","🍳","haus"],["Löffel","der","🥄","haus"],["Messer","das","🔪","haus"],["Müll","der","🗑️","haus"],["Puppe","die","🪆","haus"],["Raum","der","🚪","haus"],["Schlüssel","der","🔑","haus"],["Schrank","der","🗄️","haus"],["Sessel","der","🛋️","haus"],["Spiegel","der","🪞","haus"],["Stuhl","der","🪑","haus"],["Tasse","die","☕","haus"],["Teller","der","🍽️","haus"],["Tisch","der","🍽️","haus"],["Tür","die","🚪","haus"],["Uhr","die","⏰","haus"],["Vase","die","🏺","haus"],["Zimmer","das","🛋️","haus"],["Kalender","der","📅","haus"],["Seife","die","🧼","haus"],["Windel","die","👶","haus"],["Lampe","die","💡","haus"],["Teddy","der","🧸","haus"],["Würfel","der","🎲","haus"],["Kamm","der","💈","haus"],["Block","der","🗒️","haus"],["Pflaster","das","🩹","haus"],["Hemd","das","👔","kleidung"],["Hose","die","👖","kleidung"],["Hut","der","🎩","kleidung"],["Jacke","die","🧥","kleidung"],["Kleid","das","👗","kleidung"],["Mütze","die","🧢","kleidung"],["Rock","der","🩳","kleidung"],["Schal","der","🧣","kleidung"],["Schuh","der","👟","kleidung"],["Pullover","der","👕","kleidung"],["Stoff","der","🧵","kleidung"],["Knopf","der","🔘","kleidung"],["Ast","der","🌿","natur"],["Baum","der","🌳","natur"],["Berg","der","⛰️","natur"],["Blatt","das","🍃","natur"],["Blitz","der","⚡","natur"],["Blume","die","🌸","natur"],["Blüte","die","🌺","natur"],["Erde","die","🌍","natur"],["Feld","das","🌾","natur"],["Fluss","der","🏞️","natur"],["Garten","der","🌷","natur"],["Gras","das","🌱","natur"],["Himmel","der","☁️","natur"],["Höhle","die","🕳️","natur"],["Insel","die","🏝️","natur"],["Land","das","🗺️","natur"],["Licht","das","💡","natur"],["Loch","das","🕳️","natur"],["Luft","die","🌬️","natur"],["Meer","das","🌊","natur"],["Mond","der","🌙","natur"],["Nebel","der","🌫️","natur"],["Quelle","die","💧","natur"],["Rasen","der","🌱","natur"],["Regen","der","🌧️","natur"],["Sand","der","🏖️","natur"],["Schnee","der","❄️","natur"],["See","der","🏞️","natur"],["Sonne","die","☀️","natur"],["Stein","der","🪨","natur"],["Stern","der","⭐","natur"],["Strand","der","🏖️","natur"],["Strauch","der","🌳","natur"],["Sturm","der","🌪️","natur"],["Tal","das","🏞️","natur"],["Tanne","die","🌲","natur"],["Vulkan","der","🌋","natur"],["Wald","der","🌲","natur"],["Wasser","das","💧","natur"],["Welt","die","🌍","natur"],["Wiese","die","🌼","natur"],["Wind","der","💨","natur"],["Wurzel","die","🌱","natur"],["Zaun","der","🚧","natur"],["Stamm","der","🪵","natur"],["Hitze","die","🥵","natur"],["Kälte","die","🥶","natur"],["Wärme","die","♨️","natur"],["Temperatur","die","🌡️","natur"],["Ampel","die","🚦","stadt"],["Auto","das","🚗","stadt"],["Bahn","die","🚆","stadt"],["Bank","die","🪑","stadt"],["Boot","das","🛶","stadt"],["Brücke","die","🌉","stadt"],["Bus","der","🚌","stadt"],["Fahrrad","das","🚲","stadt"],["Flugzeug","das","✈️","stadt"],["Kirche","die","⛪","stadt"],["Platz","der","🏙️","stadt"],["Stadt","die","🏙️","stadt"],["Straße","die","🛣️","stadt"],["Taxi","das","🚕","stadt"],["Tor","das","🥅","stadt"],["Verkehr","der","🚦","stadt"],["Weg","der","🛤️","stadt"],["Zug","der","🚂","stadt"],["Zoo","der","🦁","stadt"],["Theater","das","🎭","stadt"],["Schiff","das","🚢","stadt"],["Gebäude","das","🏢","stadt"],["Turm","der","🗼","stadt"],["Abend","der","🌆","zeit"],["Jahr","das","📅","zeit"],["Monat","der","📅","zeit"],["Minute","die","⏱️","zeit"],["Sekunde","die","⏱️","zeit"],["Stunde","die","🕐","zeit"],["Woche","die","🗓️","zeit"],["Tag","der","🌞","zeit"],["Nacht","die","🌙","zeit"],["Mittag","der","🕛","zeit"],["Zeit","die","⏳","zeit"],["Herbst","der","🍂","zeit"],["Frühling","der","🌷","zeit"],["Sommer","der","☀️","zeit"],["Winter","der","⛄","zeit"],["Geburtstag","der","🎂","zeit"],["Urlaub","der","🏖️","zeit"],["Morgen","der","🌅","zeit"],["Angst","die","😨","dinge"],["Ball","der","⚽","dinge"],["Brief","der","✉️","dinge"],["Dach","das","🏠","dinge"],["Draht","der","🔗","dinge"],["Durst","der","🥤","dinge"],["Ende","das","🏁","dinge"],["Entfernung","die","📏","dinge"],["Fach","das","📚","dinge"],["Fahrzeug","das","🚗","dinge"],["Farbe","die","🎨","dinge"],["Freude","die","😄","dinge"],["Frieden","der","🕊️","dinge"],["Gefahr","die","⚠️","dinge"],["Gepäck","das","🧳","dinge"],["Glas","das","🥛","dinge"],["Glück","das","🍀","dinge"],["Grund","der","🤔","dinge"],["Heizung","die","♨️","dinge"],["Hunger","der","🍽️","dinge"],["Idee","die","💡","dinge"],["Kampf","der","🥊","dinge"],["Kreis","der","⭕","dinge"],["Lärm","der","📢","dinge"],["Lied","das","🎵","dinge"],["Liter","der","🧴","dinge"],["Meter","der","📏","dinge"],["Musik","die","🎶","dinge"],["Ordnung","die","🧹","dinge"],["Paket","das","📦","dinge"],["Pass","der","🛂","dinge"],["Programm","das","📺","dinge"],["Punkt","der","⚫","dinge"],["Quadrat","das","⬜","dinge"],["Rad","das","🛞","dinge"],["Reihe","die","🔢","dinge"],["Ring","der","💍","dinge"],["Ruhe","die","🤫","dinge"],["Sache","die","📦","dinge"],["Schatz","der","💎","dinge"],["Schloss","das","🏰","dinge"],["Schnur","die","🪢","dinge"],["Schutz","der","🛡️","dinge"],["Seil","das","🪢","dinge"],["Spaß","der","🎉","dinge"],["Spaziergang","der","🚶","dinge"],["Sport","der","🏃","dinge"],["Stimme","die","🗣️","dinge"],["Stück","das","🧩","dinge"],["Versuch","der","🧪","dinge"],["Zeitung","die","📰","dinge"],["Null","die","0️⃣","dinge"],["Verein","der","⚽","dinge"],["Chance","die","🎯","dinge"],["Chor","der","🎤","dinge"],["Euro","der","💶","dinge"],["Cent","der","🪙","dinge"]];
@@ -186,6 +187,14 @@ function slug(s) {
     .replace(/[^a-z0-9]/g, '');
 }
 function safeParse(raw) { try { return JSON.parse(raw); } catch { return null; } }
+
+// Synchronisierte Spiel-Schlüssel (wr_stats_*, wr_high_*): über FamilySync
+// geräteübergreifend — Rekorde reisen mit, Metriken landen in der Cloud
+// für die Schwierigkeits-Kalibrierung. wr_sound bleibt gerätelokal.
+function wrSave(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+  window.FamilySync?.markDirty(key);
+}
 
 let profile = null;
 let mode = 'normal';
@@ -219,14 +228,66 @@ function toggleSnd() {
   document.getElementById('snd-btn').textContent = sndOn() ? '🔊' : '🔇';
 }
 let clip = null;
-function say(word) {
+function say(word, delay = 0) {
+  if (!sndOn()) return;
+  const go = () => {
+    try {
+      if (clip) clip.pause();
+      clip = new Audio(`audio/a_${slug(word[0])}.mp3`);
+      clip.onerror = () => fallbackSay(word);
+      clip.play().catch(() => fallbackSay(word));
+    } catch { fallbackSay(word); }
+  };
+  delay ? setTimeout(go, delay) : go();
+}
+
+/* ── Effekt-Sounds (WebAudio-Synthesizer, keine Dateien):
+   Treffer = leiser Zwei-Ton-Glockenklang, Fehler = deutlich lauterer
+   Explosions-Knall (Rauschen + fallender Sub-Ton). Das Wort-Audio kommt
+   jeweils kurz DANACH, damit der Effekt es nicht überdeckt. ── */
+let actx = null;
+function sfx(kind) {
   if (!sndOn()) return;
   try {
-    if (clip) clip.pause();
-    clip = new Audio(`audio/a_${slug(word[0])}.mp3`);
-    clip.onerror = () => fallbackSay(word);
-    clip.play().catch(() => fallbackSay(word));
-  } catch { fallbackSay(word); }
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state === 'suspended') actx.resume();
+    const t0 = actx.currentTime;
+    if (kind === 'good') {
+      [[660, 0, .09], [990, .08, .13]].forEach(([f, at, dur]) => {
+        const o = actx.createOscillator(), g = actx.createGain();
+        o.type = 'sine'; o.frequency.value = f;
+        o.connect(g); g.connect(actx.destination);
+        g.gain.setValueAtTime(.0001, t0 + at);
+        g.gain.exponentialRampToValueAtTime(.12, t0 + at + .015);
+        g.gain.exponentialRampToValueAtTime(.0001, t0 + at + dur);
+        o.start(t0 + at); o.stop(t0 + at + dur + .05);
+      });
+    } else {
+      // BOOM: ~3× lauter als der Glockenklang
+      const dur = 0.5;
+      const buf = actx.createBuffer(1, Math.floor(actx.sampleRate * dur), actx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+      const src = actx.createBufferSource(); src.buffer = buf;
+      const filt = actx.createBiquadFilter();
+      filt.type = 'lowpass';
+      filt.frequency.setValueAtTime(1600, t0);
+      filt.frequency.exponentialRampToValueAtTime(120, t0 + dur);
+      const g = actx.createGain();
+      g.gain.setValueAtTime(.55, t0);
+      g.gain.exponentialRampToValueAtTime(.0001, t0 + dur);
+      src.connect(filt); filt.connect(g); g.connect(actx.destination);
+      src.start(t0);
+      const o = actx.createOscillator(), og = actx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(150, t0);
+      o.frequency.exponentialRampToValueAtTime(40, t0 + .35);
+      og.gain.setValueAtTime(.5, t0);
+      og.gain.exponentialRampToValueAtTime(.0001, t0 + .4);
+      o.connect(og); og.connect(actx.destination);
+      o.start(t0); o.stop(t0 + .45);
+    }
+  } catch {}
 }
 function fallbackSay(word) {
   if (!('speechSynthesis' in window)) return;
@@ -318,7 +379,15 @@ function startGame(retry = 0) {
     last: performance.now(),
     over: false,
     learned: {},                 // im Spiel korrigierte Wörter (für den Schluss-Screen)
+    // Sitzungs-Metriken für die Schwierigkeits-Kalibrierung (synchronisiert)
+    stats: {
+      ts: Date.now(), mode, pool: 0,
+      catches: 0, repairs: 0, mistakes: 0,
+      wrongByArt: { der: 0, die: 0, das: 0 },
+      wordsWrong: [], rowsMax: 0,
+    },
   };
+  G.stats.pool = G.pool.length;
   const dl = document.getElementById('deadline');
   dl.style.top = (c.tileH * 1.6) + 'px';
   updateHud();
@@ -365,6 +434,7 @@ function pushRow() {
     G.cols[col].forEach((tt, i) => placeTile(tt, col, i));
   }
   // Verloren, wenn der Stapel die Regenwolken erreicht
+  G.stats.rowsMax = Math.max(G.stats.rowsMax, ...G.cols.map(c => c.length));
   const maxRows = Math.floor((G.H - G.c.tileH * 1.6) / G.c.tileH);
   if (G.cols.some(col => col.length > maxRows)) endGame();
 }
@@ -427,7 +497,9 @@ function land(f) {
     //    (gleiche Logik wie der zweite Versuch im Trainer). ──
     const gain = top.revealed ? 0.5 : 1;
     G.score += gain;
-    say(top.word);
+    if (gain === 1) G.stats.catches++; else G.stats.repairs++;
+    sfx('good');
+    say(top.word, 250);   // erst der Klang, dann klar das Wort
     top.el.classList.add('pop');
     const p = document.createElement('div');
     p.className = 'plus1'; p.textContent = gain === 1 ? '+1' : '+½';
@@ -445,6 +517,11 @@ function land(f) {
     //    Feld bebt, und das Wort bleibt ZERBROCHEN stehen, mit dem
     //    richtigen Artikel sichtbar (der Lernmoment). ──
     G.hearts--;
+    G.stats.mistakes++;
+    G.stats.wrongByArt[top.word[1]]++;
+    if (G.stats.wordsWrong.length < 15 && !G.stats.wordsWrong.includes(top.word[0]))
+      G.stats.wordsWrong.push(top.word[0]);
+    sfx('boom');
     const field = document.getElementById('field');
     const cx = f.col * G.colW + G.colW / 2;
     const cy = stack.length * G.c.tileH;
@@ -499,7 +576,7 @@ function land(f) {
         `<span>${letters}</span>`;
       G.learned[top.word[0]] = top.word[1];
     }
-    say(top.word);
+    say(top.word, 350);   // nach dem Knall: der richtige Artikel, deutlich
   }
   updateHud();
   if (G.hearts <= 0) { endGame(); return; }
@@ -511,14 +588,35 @@ function updateHud() {
   document.getElementById('hud-hearts').textContent = '❤️'.repeat(Math.max(0, G.hearts)) + '🤍'.repeat(3 - Math.max(0, G.hearts));
 }
 
+// Eine Sitzung in wr_stats_<Profil> festhalten (id-keyed, letzte 60) —
+// Grundlage für die Schwierigkeits-Kalibrierung, geräteübergreifend synchronisiert
+function recordSession(reason) {
+  const s = G.stats;
+  if (s.catches + s.repairs + s.mistakes === 0 && Date.now() - s.ts < 5000) return;
+  const key = `wr_stats_${profile}`;
+  const all = safeParse(localStorage.getItem(key)) || {};
+  all[s.ts.toString(36)] = {
+    ...s,
+    dur: Date.now() - s.ts,
+    score: G.score,
+    hearts: G.hearts,
+    end: reason,             // 'stack' | 'hearts' | 'quit'
+    speedEnd: Math.round(G.speed),
+  };
+  const ids = Object.keys(all).sort((a, b) => (all[a].ts || 0) - (all[b].ts || 0));
+  while (ids.length > 60) delete all[ids.shift()];
+  wrSave(key, all);
+}
+
 function endGame(quit = false) {
   if (!G || G.over) { showStart(); return; }
   G.over = true;
   cancelAnimationFrame(rafId);
+  recordSession(quit ? 'quit' : G.hearts <= 0 ? 'hearts' : 'stack');
   const hiKey = `wr_high_${profile}`;
   const oldHi = parseFloat(localStorage.getItem(hiKey)) || 0;
   const isRecord = G.score > oldHi;
-  if (isRecord) localStorage.setItem(hiKey, String(G.score));
+  if (isRecord) wrSave(hiKey, G.score);
 
   document.getElementById('over-emoji').textContent = isRecord ? '🏆' : G.score >= 10 ? '🌈' : '🌱';
   document.getElementById('over-title').textContent = isRecord ? 'NEUER REKORD!' : quit ? 'Bis bald!' : 'Der Stapel war schneller!';

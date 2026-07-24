@@ -42,6 +42,8 @@
     { re: /^gram_case_.+$/,   merge: mergeMaxPerEntry },
     { re: /^gram_badges_.+$/, merge: mergeDeepUnion },
     { re: /^gram_path_.+$/,   merge: mergeMaxPerEntry },   // Lernpfad: mehr Fortschritt gewinnt
+    { re: /^wr_stats_.+$/,    merge: mergeDeepUnion },     // Wort-Regen: Sitzungs-Metriken (id-keyed, Vereinigung)
+    { re: /^wr_high_.+$/,     merge: mergeMax },           // Wort-Regen: Rekord — der höchste gewinnt
     { re: /^wq_srs_.+$/,    merge: mergeSrs },
     { re: /^wq_stats_.+$/,  merge: mergeMaxPerEntry },
     { re: /^wq_deck_.+$/,   merge: mergeDeepUnion },
@@ -57,6 +59,9 @@
 
   /* ── Misch-Strategien ─────────────────────────────────────────── */
   function parse(raw) { try { return JSON.parse(raw); } catch { return null; } }
+
+  // Skalarer Höchstwert (z.B. Spiel-Rekorde)
+  function mergeMax(a, b) { return Math.max(Number(a) || 0, Number(b) || 0); }
 
   // SRS: pro Wort gewinnt der Eintrag mit mehr Übungsgeschichte
   function mergeSrs(a, b) {
