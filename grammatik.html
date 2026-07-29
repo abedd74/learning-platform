@@ -939,6 +939,26 @@ const INTERVALS = [0, 1, 2, 4, 8, 16, 32, 64, 90];
 const MAX_BOX = INTERVALS.length - 1;
 const LEECH_WRONG = 4;            // ab so vielen Fehlern gilt ein Wort als „Klette"
 
+/* ── Selbstheilende Aktualisierung: iPad-Lesezeichen halten manchmal wochen-
+   lang eine alte Version im Cache (real passiert: Chiaras Übungsgerät lief
+   zwei Wochen auf altem Stand und bekam nie Akkusativ-Fragen). Beim Laden
+   wird still die frische Version geprüft; ist sie neuer, lädt die Seite
+   einmal mit Cache-Brecher neu. ── */
+const APP_VERSION = 8;
+(function selfHeal() {
+  try {
+    fetch(location.pathname, { cache: 'no-store' })
+      .then(r => r.text())
+      .then(t => {
+        const m = t.match(/APP_VERSION = (\d+)/);
+        if (m && +m[1] > APP_VERSION && sessionStorage.getItem('gram_healed') !== m[1]) {
+          sessionStorage.setItem('gram_healed', m[1]);
+          location.replace(location.pathname + '?v=' + m[1] + location.hash);
+        }
+      }).catch(() => {});
+  } catch {}
+})();
+
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 function addDays(dateStr, d) {
   const dt = new Date(dateStr + 'T12:00:00');
@@ -1441,7 +1461,10 @@ function startSession(type) {
     //    3. normale Satzübung für Gold-Konzepte
     //    4. Konzept-Häppchen, wenn ein Lernpfad angefangen ist
     const gramItems = [];
-    if (type === 'mixed') {
+    // Grammatik-Plätze in BEIDEN Modi (mixed UND gender): das Festigen darf
+    // nicht davon abhängen, welchen Knopf das Kind gewohnheitsmäßig drückt —
+    // genau daran ist der Meister-Check zwei Wochen lang gescheitert.
+    {
       const conceptItem = (k) => {
         const pool = pathUnits(k).flatMap(u => u.items);
         return pool.length ? { ...pool[Math.floor(Math.random() * pool.length)], _concept: k } : null;
@@ -2453,6 +2476,16 @@ function finishSession() {
   session.forEach(q => {
     if (q._concept) (touched[q._concept] = touched[q._concept] || []).push(q);
   });
+
+  // Diagnose-Telemetrie pro Tag: welche Version lief (v) und wie viele
+  // Grammatik-Fragen wurden beantwortet (g) — aus der Cloud ablesbar,
+  // damit ein veralteter Geräte-Cache nie wieder wochenlang unentdeckt bleibt
+  (function() {
+    const dd = days[todayStr()] || (days[todayStr()] = { a: 0, c: 0 });
+    dd.v = Math.max(dd.v || 0, APP_VERSION);
+    dd.g = (dd.g || 0) + session.filter(q => q._concept).length;
+    saveState();
+  })();
   Object.entries(touched).forEach(([k, qs]) => {
     if (conceptInFest(k)) {
       stampFestDay(k);
