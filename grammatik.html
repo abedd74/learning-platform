@@ -944,7 +944,7 @@ const LEECH_WRONG = 4;            // ab so vielen Fehlern gilt ein Wort als „K
    zwei Wochen auf altem Stand und bekam nie Akkusativ-Fragen). Beim Laden
    wird still die frische Version geprüft; ist sie neuer, lädt die Seite
    einmal mit Cache-Brecher neu. ── */
-const APP_VERSION = 8;
+const APP_VERSION = 9;
 (function selfHeal() {
   try {
     fetch(location.pathname, { cache: 'no-store' })
@@ -2543,6 +2543,13 @@ function finishSession() {
   detail += `📅 Heute geübt: ${t.a} von ${dayGoal(todayStr())}`;
   if (t.a >= dayGoal(todayStr())) detail += ` — Tagesziel geschafft! 🔥`;
   detail += `</div>`;
+  // Nachtisch-Schleife: Ziel geschafft → Einladung ins Spiel (nie Bedingung,
+  // immer Belohnung — das Spiel verstärkt die Trainings-Gewohnheit)
+  if (t.a >= dayGoal(todayStr())) {
+    detail += `<a href="wortregen.html?profil=${encodeURIComponent(profile)}" class="btn secondary"
+      style="display:block; text-decoration:none; text-align:center; margin-top:12px;">
+      🌧️ Belohnung: eine Runde Wort-Regen?</a>`;
+  }
   if (sessionStartMastered < UNLOCK_AKK && m >= UNLOCK_AKK) {
     detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: 🎓 Lernpfad Akkusativ — entdecke das Geheimnis der Ziele!</div>`;
   } else if (sessionStartMastered < UNLOCK_DAT && m >= UNLOCK_DAT) {

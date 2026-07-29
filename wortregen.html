@@ -210,11 +210,21 @@ function buildPool() {
   const srs = safeParse(localStorage.getItem(`gram_srs_${profile}`)) || {};
   const byName = {};
   WORDS.forEach(w => byName[w[0]] = w);
-  let pool = Object.keys(srs).filter(de => srs[de].b >= 2 && byName[de]).map(de => byName[de]);
-  if (pool.length < 12) {
+  const today = new Date().toISOString().slice(0, 10);
+  // Probe-Modus: das Spiel wiederholt bevorzugt, was der Trainer diese
+  // Woche bearbeitet — fällige Wörter 3×, frisch Gelerntes (Kasten 2-3) 2×,
+  // Gemeistertes 1× im Los-Topf. Gleicher Spaß, doppelte Wirkung.
+  const known = Object.keys(srs).filter(de => srs[de].b >= 2 && byName[de]);
+  let pool = [];
+  known.forEach(de => {
+    const e = srs[de];
+    const weight = (e.due && e.due <= today) ? 3 : e.b <= 3 ? 2 : 1;
+    for (let i = 0; i < weight; i++) pool.push(byName[de]);
+  });
+  if (known.length < 12) {
     pool = Object.keys(srs).filter(de => byName[de]).map(de => byName[de]);
   }
-  if (pool.length < 12) {
+  if (new Set(pool.map(w => w[0])).size < 12) {
     // Ganz frisches Profil (z.B. Marta): sanfter Startwortschatz
     pool = WORDS.filter(w => ['tiere', 'essen', 'haus'].includes(w[3])).slice(0, 40);
   }
@@ -387,7 +397,7 @@ function startGame(retry = 0) {
       wordsWrong: [], rowsMax: 0,
     },
   };
-  G.stats.pool = G.pool.length;
+  G.stats.pool = new Set(G.pool.map(w => w[0])).size;   // echte Wortzahl (Pool ist gewichtet)
   const dl = document.getElementById('deadline');
   dl.style.top = (c.tileH * 1.6) + 'px';
   updateHud();
@@ -564,6 +574,21 @@ function land(f) {
     });
 
     if (!top.revealed) {
+      // ── Späher-Funktion: ein Fehler im Spiel schickt das Wort im Trainer
+      //    zurück in die Wiederholung (Kasten runter, morgen fällig). Das
+      //    Spiel findet Wackel-Wörter, die der Trainer für sicher hält —
+      //    s++ sorgt dafür, dass die Abwertung den Sync-Merge gewinnt. ──
+      try {
+        const srsKey = `gram_srs_${profile}`;
+        const srsAll = safeParse(localStorage.getItem(srsKey));
+        const e = srsAll && srsAll[top.word[0]];
+        if (e) {
+          e.s++; e.w++; e.k = 0;
+          e.b = Math.max(0, e.b - 1);
+          e.due = new Date().toISOString().slice(0, 10);
+          wrSave(srsKey, srsAll);
+        }
+      } catch {}
       top.revealed = true;
       top.el.classList.add('broken');
       top.el.style.borderColor = `var(--c-${top.word[1]})`;
