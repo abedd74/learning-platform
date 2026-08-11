@@ -641,7 +641,7 @@ const NOUNS = [
 {de:'E-Mail',g:'die',pl:'E-Mails',it:"l'email",itG:'f',em:'📧',cat:'schule'},
 {de:'Radio',g:'das',pl:'Radios',it:'la radio',itG:'f',em:'📻',cat:'schule'},
 {de:'Telefon',g:'das',pl:'Telefone',it:'il telefono',itG:'m',em:'☎️',cat:'schule'},
-{de:'Fehler',g:'der',pl:'Fehler',it:"l'errore",itG:'m',em:'❌',cat:'schule'},
+{de:'Fehler',g:'der',pl:'Fehler',it:"l'errore",itG:'m',em:'❌',cat:'abstrakt'},
 {de:'Comic',g:'der',pl:'Comics',it:'il fumetto',itG:'m',em:'💥',cat:'schule'},
 // ── Haus & Alltag ──
 {de:'Bad',g:'das',pl:'Bäder',it:'il bagno',itG:'m',em:'🛁',cat:'haus'},
@@ -713,7 +713,7 @@ const NOUNS = [
 {de:'Land',g:'das',pl:'Länder',it:'il paese',itG:'m',em:'🗺️',cat:'natur'},
 {de:'Licht',g:'das',pl:'Lichter',it:'la luce',itG:'f',em:'💡',cat:'natur'},
 {de:'Loch',g:'das',pl:'Löcher',it:'il buco',itG:'m',em:'🕳️',cat:'natur'},
-{de:'Luft',g:'die',pl:null,it:"l'aria",itG:'f',em:'🌬️',cat:'natur'},
+{de:'Luft',g:'die',pl:null,it:"l'aria",itG:'f',em:'🌬️',cat:'abstrakt'},
 {de:'Meer',g:'das',pl:'Meere',it:'il mare',itG:'m',em:'🌊',cat:'natur'},
 {de:'Mond',g:'der',pl:'Monde',it:'la luna',itG:'f',em:'🌙',cat:'natur'},
 {de:'Nebel',g:'der',pl:null,it:'la nebbia',itG:'f',em:'🌫️',cat:'natur'},
@@ -740,10 +740,10 @@ const NOUNS = [
 {de:'Wurzel',g:'die',pl:'Wurzeln',it:'la radice',itG:'f',em:'🌱',cat:'natur'},
 {de:'Zaun',g:'der',pl:'Zäune',it:'il recinto',itG:'m',em:'🚧',cat:'natur'},
 {de:'Stamm',g:'der',pl:'Stämme',it:'il tronco',itG:'m',em:'🪵',cat:'natur'},
-{de:'Hitze',g:'die',pl:null,it:'il caldo',itG:'m',em:'🥵',cat:'natur'},
-{de:'Kälte',g:'die',pl:null,it:'il freddo',itG:'m',em:'🥶',cat:'natur'},
-{de:'Wärme',g:'die',pl:null,it:'il calore',itG:'m',em:'♨️',cat:'natur'},
-{de:'Temperatur',g:'die',pl:'Temperaturen',it:'la temperatura',itG:'f',em:'🌡️',cat:'natur'},
+{de:'Hitze',g:'die',pl:null,it:'il caldo',itG:'m',em:'🥵',cat:'abstrakt'},
+{de:'Kälte',g:'die',pl:null,it:'il freddo',itG:'m',em:'🥶',cat:'abstrakt'},
+{de:'Wärme',g:'die',pl:null,it:'il calore',itG:'m',em:'♨️',cat:'abstrakt'},
+{de:'Temperatur',g:'die',pl:'Temperaturen',it:'la temperatura',itG:'f',em:'🌡️',cat:'abstrakt'},
 // ── Stadt & Verkehr ──
 {de:'Ampel',g:'die',pl:'Ampeln',it:'il semaforo',itG:'m',em:'🚦',cat:'stadt'},
 {de:'Auto',g:'das',pl:'Autos',it:"l'auto",itG:'f',em:'🚗',cat:'stadt'},
@@ -788,63 +788,63 @@ const NOUNS = [
 {de:'Urlaub',g:'der',pl:'Urlaube',it:'la vacanza',itG:'f',em:'🏖️',cat:'zeit'},
 {de:'Morgen',g:'der',pl:'Morgen',it:'il mattino',itG:'m',em:'🌅',cat:'zeit'},
 // ── Dinge & Begriffe ──
-{de:'Angst',g:'die',pl:'Ängste',it:'la paura',itG:'f',em:'😨',cat:'dinge'},
+{de:'Angst',g:'die',pl:'Ängste',it:'la paura',itG:'f',em:'😨',cat:'abstrakt'},
 {de:'Ball',g:'der',pl:'Bälle',it:'la palla',itG:'f',em:'⚽',cat:'dinge'},
 {de:'Brief',g:'der',pl:'Briefe',it:'la lettera',itG:'f',em:'✉️',cat:'dinge'},
 {de:'Dach',g:'das',pl:'Dächer',it:'il tetto',itG:'m',em:'🏠',cat:'dinge'},
 {de:'Draht',g:'der',pl:'Drähte',it:'il filo',itG:'m',em:'🔗',cat:'dinge'},
-{de:'Durst',g:'der',pl:null,it:'la sete',itG:'f',em:'🥤',cat:'dinge'},
-{de:'Ende',g:'das',pl:'Enden',it:'la fine',itG:'f',em:'🏁',cat:'dinge'},
-{de:'Entfernung',g:'die',pl:'Entfernungen',it:'la distanza',itG:'f',em:'📏',cat:'dinge'},
+{de:'Durst',g:'der',pl:null,it:'la sete',itG:'f',em:'🥤',cat:'abstrakt'},
+{de:'Ende',g:'das',pl:'Enden',it:'la fine',itG:'f',em:'🏁',cat:'abstrakt'},
+{de:'Entfernung',g:'die',pl:'Entfernungen',it:'la distanza',itG:'f',em:'📏',cat:'abstrakt'},
 {de:'Fach',g:'das',pl:'Fächer',it:'la materia',itG:'f',em:'📚',cat:'dinge'},
 {de:'Fahrzeug',g:'das',pl:'Fahrzeuge',it:'il veicolo',itG:'m',em:'🚗',cat:'dinge'},
 {de:'Farbe',g:'die',pl:'Farben',it:'il colore',itG:'m',em:'🎨',cat:'dinge'},
-{de:'Freude',g:'die',pl:null,it:'la gioia',itG:'f',em:'😄',cat:'dinge'},
-{de:'Frieden',g:'der',pl:null,it:'la pace',itG:'f',em:'🕊️',cat:'dinge'},
-{de:'Gefahr',g:'die',pl:'Gefahren',it:'il pericolo',itG:'m',em:'⚠️',cat:'dinge'},
+{de:'Freude',g:'die',pl:null,it:'la gioia',itG:'f',em:'😄',cat:'abstrakt'},
+{de:'Frieden',g:'der',pl:null,it:'la pace',itG:'f',em:'🕊️',cat:'abstrakt'},
+{de:'Gefahr',g:'die',pl:'Gefahren',it:'il pericolo',itG:'m',em:'⚠️',cat:'abstrakt'},
 {de:'Gepäck',g:'das',pl:null,it:'il bagaglio',itG:'m',em:'🧳',cat:'dinge'},
 {de:'Glas',g:'das',pl:'Gläser',it:'il bicchiere',itG:'m',em:'🥛',cat:'dinge'},
-{de:'Glück',g:'das',pl:null,it:'la fortuna',itG:'f',em:'🍀',cat:'dinge'},
-{de:'Grund',g:'der',pl:'Gründe',it:'il motivo',itG:'m',em:'🤔',cat:'dinge'},
+{de:'Glück',g:'das',pl:null,it:'la fortuna',itG:'f',em:'🍀',cat:'abstrakt'},
+{de:'Grund',g:'der',pl:'Gründe',it:'il motivo',itG:'m',em:'🤔',cat:'abstrakt'},
 {de:'Heizung',g:'die',pl:'Heizungen',it:'il riscaldamento',itG:'m',em:'♨️',cat:'dinge'},
-{de:'Hunger',g:'der',pl:null,it:'la fame',itG:'f',em:'🍽️',cat:'dinge'},
-{de:'Idee',g:'die',pl:'Ideen',it:"l'idea",itG:'f',em:'💡',cat:'dinge'},
-{de:'Kampf',g:'der',pl:'Kämpfe',it:'la lotta',itG:'f',em:'🥊',cat:'dinge'},
-{de:'Kreis',g:'der',pl:'Kreise',it:'il cerchio',itG:'m',em:'⭕',cat:'dinge'},
-{de:'Lärm',g:'der',pl:null,it:'il rumore',itG:'m',em:'📢',cat:'dinge'},
-{de:'Lied',g:'das',pl:'Lieder',it:'la canzone',itG:'f',em:'🎵',cat:'dinge'},
-{de:'Liter',g:'der',pl:'Liter',it:'il litro',itG:'m',em:'🧴',cat:'dinge'},
-{de:'Meter',g:'der',pl:'Meter',it:'il metro',itG:'m',em:'📏',cat:'dinge'},
-{de:'Musik',g:'die',pl:null,it:'la musica',itG:'f',em:'🎶',cat:'dinge'},
-{de:'Ordnung',g:'die',pl:null,it:"l'ordine",itG:'m',em:'🧹',cat:'dinge'},
+{de:'Hunger',g:'der',pl:null,it:'la fame',itG:'f',em:'🍽️',cat:'abstrakt'},
+{de:'Idee',g:'die',pl:'Ideen',it:"l'idea",itG:'f',em:'💡',cat:'abstrakt'},
+{de:'Kampf',g:'der',pl:'Kämpfe',it:'la lotta',itG:'f',em:'🥊',cat:'abstrakt'},
+{de:'Kreis',g:'der',pl:'Kreise',it:'il cerchio',itG:'m',em:'⭕',cat:'abstrakt'},
+{de:'Lärm',g:'der',pl:null,it:'il rumore',itG:'m',em:'📢',cat:'abstrakt'},
+{de:'Lied',g:'das',pl:'Lieder',it:'la canzone',itG:'f',em:'🎵',cat:'abstrakt'},
+{de:'Liter',g:'der',pl:'Liter',it:'il litro',itG:'m',em:'🧴',cat:'abstrakt'},
+{de:'Meter',g:'der',pl:'Meter',it:'il metro',itG:'m',em:'📏',cat:'abstrakt'},
+{de:'Musik',g:'die',pl:null,it:'la musica',itG:'f',em:'🎶',cat:'abstrakt'},
+{de:'Ordnung',g:'die',pl:null,it:"l'ordine",itG:'m',em:'🧹',cat:'abstrakt'},
 {de:'Paket',g:'das',pl:'Pakete',it:'il pacco',itG:'m',em:'📦',cat:'dinge'},
 {de:'Pass',g:'der',pl:'Pässe',it:'il passaporto',itG:'m',em:'🛂',cat:'dinge'},
 {de:'Programm',g:'das',pl:'Programme',it:'il programma',itG:'m',em:'📺',cat:'dinge'},
-{de:'Punkt',g:'der',pl:'Punkte',it:'il punto',itG:'m',em:'⚫',cat:'dinge'},
-{de:'Quadrat',g:'das',pl:'Quadrate',it:'il quadrato',itG:'m',em:'⬜',cat:'dinge'},
+{de:'Punkt',g:'der',pl:'Punkte',it:'il punto',itG:'m',em:'⚫',cat:'abstrakt'},
+{de:'Quadrat',g:'das',pl:'Quadrate',it:'il quadrato',itG:'m',em:'⬜',cat:'abstrakt'},
 {de:'Rad',g:'das',pl:'Räder',it:'la ruota',itG:'f',em:'🛞',cat:'dinge'},
-{de:'Reihe',g:'die',pl:'Reihen',it:'la fila',itG:'f',em:'🔢',cat:'dinge'},
+{de:'Reihe',g:'die',pl:'Reihen',it:'la fila',itG:'f',em:'🔢',cat:'abstrakt'},
 {de:'Ring',g:'der',pl:'Ringe',it:"l'anello",itG:'m',em:'💍',cat:'dinge'},
-{de:'Ruhe',g:'die',pl:null,it:'la calma',itG:'f',em:'🤫',cat:'dinge'},
+{de:'Ruhe',g:'die',pl:null,it:'la calma',itG:'f',em:'🤫',cat:'abstrakt'},
 {de:'Sache',g:'die',pl:'Sachen',it:'la cosa',itG:'f',em:'📦',cat:'dinge'},
 {de:'Schatz',g:'der',pl:'Schätze',it:'il tesoro',itG:'m',em:'💎',cat:'dinge'},
 {de:'Schloss',g:'das',pl:'Schlösser',it:'il castello',itG:'m',em:'🏰',cat:'dinge'},
 {de:'Schnur',g:'die',pl:'Schnüre',it:'la corda',itG:'f',em:'🪢',cat:'dinge'},
-{de:'Schutz',g:'der',pl:null,it:'la protezione',itG:'f',em:'🛡️',cat:'dinge'},
+{de:'Schutz',g:'der',pl:null,it:'la protezione',itG:'f',em:'🛡️',cat:'abstrakt'},
 {de:'Seil',g:'das',pl:'Seile',it:'la corda',itG:'f',em:'🪢',cat:'dinge'},
-{de:'Spaß',g:'der',pl:null,it:'il divertimento',itG:'m',em:'🎉',cat:'dinge'},
-{de:'Spaziergang',g:'der',pl:'Spaziergänge',it:'la passeggiata',itG:'f',em:'🚶',cat:'dinge'},
-{de:'Sport',g:'der',pl:null,it:'lo sport',itG:'m',em:'🏃',cat:'dinge'},
-{de:'Stimme',g:'die',pl:'Stimmen',it:'la voce',itG:'f',em:'🗣️',cat:'dinge'},
+{de:'Spaß',g:'der',pl:null,it:'il divertimento',itG:'m',em:'🎉',cat:'abstrakt'},
+{de:'Spaziergang',g:'der',pl:'Spaziergänge',it:'la passeggiata',itG:'f',em:'🚶',cat:'abstrakt'},
+{de:'Sport',g:'der',pl:null,it:'lo sport',itG:'m',em:'🏃',cat:'abstrakt'},
+{de:'Stimme',g:'die',pl:'Stimmen',it:'la voce',itG:'f',em:'🗣️',cat:'abstrakt'},
 {de:'Stück',g:'das',pl:'Stücke',it:'il pezzo',itG:'m',em:'🧩',cat:'dinge'},
-{de:'Versuch',g:'der',pl:'Versuche',it:'il tentativo',itG:'m',em:'🧪',cat:'dinge'},
+{de:'Versuch',g:'der',pl:'Versuche',it:'il tentativo',itG:'m',em:'🧪',cat:'abstrakt'},
 {de:'Zeitung',g:'die',pl:'Zeitungen',it:'il giornale',itG:'m',em:'📰',cat:'dinge'},
-{de:'Null',g:'die',pl:'Nullen',it:'lo zero',itG:'m',em:'0️⃣',cat:'dinge'},
-{de:'Verein',g:'der',pl:'Vereine',it:"l'associazione",itG:'f',em:'⚽',cat:'dinge'},
-{de:'Chance',g:'die',pl:'Chancen',it:"l'occasione",itG:'f',em:'🎯',cat:'dinge'},
-{de:'Chor',g:'der',pl:'Chöre',it:'il coro',itG:'m',em:'🎤',cat:'dinge'},
-{de:'Euro',g:'der',pl:'Euros',it:"l'euro",itG:'m',em:'💶',cat:'dinge'},
-{de:'Cent',g:'der',pl:'Cents',it:'il centesimo',itG:'m',em:'🪙',cat:'dinge'},
+{de:'Null',g:'die',pl:'Nullen',it:'lo zero',itG:'m',em:'0️⃣',cat:'abstrakt'},
+{de:'Verein',g:'der',pl:'Vereine',it:"l'associazione",itG:'f',em:'⚽',cat:'abstrakt'},
+{de:'Chance',g:'die',pl:'Chancen',it:"l'occasione",itG:'f',em:'🎯',cat:'abstrakt'},
+{de:'Chor',g:'der',pl:'Chöre',it:'il coro',itG:'m',em:'🎤',cat:'abstrakt'},
+{de:'Euro',g:'der',pl:'Euros',it:"l'euro",itG:'m',em:'💶',cat:'abstrakt'},
+{de:'Cent',g:'der',pl:'Cents',it:'il centesimo',itG:'m',em:'🪙',cat:'abstrakt'},
 ];
 
 /* Monats- und Wochentagsnamen: alle DER — als Regel-Lektion */
@@ -879,17 +879,24 @@ function genderRule(n) {
    %A = Artikel-Lücke, %N = Nomen (Singular).
    cats ODER only schränken die passenden Nomen ein.       */
 const TEMPLATES_AKK = [
-  {t:'Ich sehe %A %N.',            it:'Io vedo...',    cats:['tiere','menschen','haus','stadt','natur','dinge','kleidung','schule']},
-  {t:'Chiara hat %A %N.',          it:'Chiara ha...',  cats:['tiere','haus','kleidung','schule','dinge','essen']},
+  {t:'Ich sehe %A %N.',            it:'Io vedo...',    cats:['tiere','menschen','haus','stadt','natur','dinge','kleidung','schule'], also:['Fehler']},
+  {t:'Chiara hat %A %N.',          it:'Chiara ha...',  cats:['tiere','haus','kleidung','schule','dinge','essen'], also:['Idee','Chance']},
   {t:'Wir suchen %A %N.',          it:'Cerchiamo...',  cats:['tiere','haus','kleidung','schule','dinge']},
-  {t:'Er malt %A %N.',             it:'Lui disegna...',cats:['tiere','natur','haus','stadt','essen']},
-  {t:'Sie kauft %A %N.',           it:'Lei compra...', cats:['essen','kleidung','schule','haus','dinge']},
+  {t:'Er malt %A %N.',             it:'Lui disegna...',cats:['tiere','natur','haus','stadt','essen'], also:['Kreis','Quadrat','Punkt']},
+  // kaufen ohne 'schule'-Kategorie: „Sie kauft einen Fehler/ein Zeugnis" war
+  // Unsinn — die wirklich kaufbaren Schulsachen kommen per also-Liste
+  {t:'Sie kauft %A %N.',           it:'Lei compra...', cats:['essen','kleidung','haus','dinge'],
+   also:['Buch','Heft','Stift','Füller','Kleber','Lineal','Papier','Pinsel','Schere','Tasche','Block','Lexikon','Comic','Computer','Handy','Radio','Telefon']},
   {t:'Ich esse %A %N.',            it:'Io mangio...',  only:['Apfel','Birne','Brot','Ei','Kuchen','Pizza','Wurst','Gurke','Kirsche','Pflaume','Nuss','Pilz','Beere']},
   {t:'Ich trinke %A %N.',          it:'Io bevo...',    only:['Saft','Tee','Milch']},
   {t:'Wir besuchen %A %N.',        it:'Visitiamo...',  cats:['menschen'], also:['Zoo','Schloss','Stadt','Theater','Insel']},
   {t:'Sie füttert %A %N.',         it:'Lei dà da mangiare a...', cats:['tiere']},
-  {t:'Ich brauche %A %N.',         it:'Ho bisogno di...', cats:['schule','kleidung','haus','dinge']},
-  {t:'Findest du %A %N?',          it:'Trovi...?',     cats:['tiere','schule','dinge','kleidung','haus']},
+  {t:'Ich brauche %A %N.',         it:'Ho bisogno di...', cats:['schule','kleidung','haus','dinge'], also:['Idee','Euro']},
+  // Abstrakte Nomen bekommen idiomatische Rahmen — "Sie kauft eine Chance"
+  // klang wie Unsinn (Chiara hat es selbst gemerkt!). Hören/machen passen:
+  {t:'Ich höre %A %N.',            it:'Io sento...',   only:['Lied','Musik','Stimme','Lärm','Chor']},
+  {t:'Wir machen %A %N.',          it:'Facciamo...',   only:['Spaziergang','Versuch','Kreis','Punkt']},
+  {t:'Findest du %A %N?',          it:'Trovi...?',     cats:['tiere','schule','dinge','kleidung','haus'], also:['Fehler']},
   {t:'Marta möchte %A %N.',        it:'Marta vuole...', cats:['essen','dinge','kleidung','tiere']},
 ];
 const TEMPLATES_DAT = [
@@ -944,7 +951,7 @@ const LEECH_WRONG = 4;            // ab so vielen Fehlern gilt ein Wort als „K
    zwei Wochen auf altem Stand und bekam nie Akkusativ-Fragen). Beim Laden
    wird still die frische Version geprüft; ist sie neuer, lädt die Seite
    einmal mit Cache-Brecher neu. ── */
-const APP_VERSION = 9;
+const APP_VERSION = 10;
 (function selfHeal() {
   try {
     fetch(location.pathname, { cache: 'no-store' })
@@ -1421,10 +1428,13 @@ function genderQuestion(n) {
   return { kind: 'gender', noun: n, typed };
 }
 
-function caseQuestion(kase) {
+function caseQuestion(kase, minBox = 2) {
   const templates = kase === 'akk' ? TEMPLATES_AKK : TEMPLATES_DAT;
-  // Nomen, die schon etwas sitzen (Box ≥ 2), sonst irgendein bekanntes
-  const known = NOUNS.filter(n => srs[n.de] && srs[n.de].b >= 2);
+  // minBox steuert die Fairness: Übungen ab Kasten 2, der Meister-Check aber
+  // nur mit sicheren Wörtern (Kasten 4) — die Prüfung misst den Kasus,
+  // nicht das Vokabel-Glück. Rückfallstufen, falls der Pool zu dünn ist.
+  let known = NOUNS.filter(n => srs[n.de] && srs[n.de].b >= minBox);
+  if (known.length < 10) known = NOUNS.filter(n => srs[n.de] && srs[n.de].b >= 2);
   const pool = known.length >= 10 ? known : NOUNS.filter(n => srs[n.de]);
   for (let tries = 0; tries < 40; tries++) {
     const tpl = templates[Math.floor(Math.random() * templates.length)];
@@ -1470,7 +1480,7 @@ function startSession(type) {
         return pool.length ? { ...pool[Math.floor(Math.random() * pool.length)], _concept: k } : null;
       };
       const caseItem = (k) => {
-        const q = caseQuestion(k);
+        const q = caseQuestion(k, conceptInFest(k) ? 3 : 2);   // Festigen: halbwegs sichere Nomen
         if (q) q._concept = k;
         return q;
       };
@@ -2216,7 +2226,7 @@ function startMeisterCheck(kase) {
   sIdx = 0; sCorrect = 0; sNewWords = [];
   sessionStartMastered = masteredCount();
   for (let i = 0; i < 6; i++) {
-    const q = caseQuestion(kase);
+    const q = caseQuestion(kase, 4);   // Prüfung nur mit sicheren Wörtern
     if (q) session.push(q);
   }
   const pool = shuffle(pathUnits(kase).flatMap(u => u.items)).map(it => ({ ...it }));
