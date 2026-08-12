@@ -363,6 +363,8 @@ body.show-it .it.inline { display: inline; }
   <button class="btn secondary" id="btn-more" onclick="toggleMore()">🧰 Mehr üben …</button>
   <div id="more-wrap" style="display:none;">
     <button class="btn secondary" onclick="startSession('gender')">🔤 Der-Die-Das üben</button>
+    <button class="btn secondary" id="btn-path-nom" onclick="startPath('nomen')">🧩 Lernpfad: Nomen-Bausteine</button>
+    <div class="lock-note" id="note-path-nom"></div>
     <button class="btn secondary" id="btn-path-akk" onclick="startPath('akk')">🎓 Lernpfad: Akkusativ</button>
     <div class="lock-note" id="note-path-akk"></div>
     <button class="btn secondary" id="btn-akk" onclick="startSession('akk')">✍️ Sätze üben (Akkusativ)</button>
@@ -845,6 +847,26 @@ const NOUNS = [
 {de:'Chor',g:'der',pl:'Chöre',it:'il coro',itG:'m',em:'🎤',cat:'abstrakt'},
 {de:'Euro',g:'der',pl:'Euros',it:"l'euro",itG:'m',em:'💶',cat:'abstrakt'},
 {de:'Cent',g:'der',pl:'Cents',it:'il centesimo',itG:'m',em:'🪙',cat:'abstrakt'},
+// ── Wort-Bausteine -nis/-schaft/-tum (Sprachbuch Kl. 4, S. 21 — Aug 2026) ──
+// Alle 'abstrakt': Genus-Drill ja, Satz-Generator nein (siehe Kategorie-Regel).
+{de:'Erlebnis',g:'das',pl:'Erlebnisse',it:"l'avventura",itG:'f',em:'🎢',cat:'abstrakt'},
+{de:'Geheimnis',g:'das',pl:'Geheimnisse',it:'il segreto',itG:'m',em:'🤫',cat:'abstrakt'},
+{de:'Hindernis',g:'das',pl:'Hindernisse',it:"l'ostacolo",itG:'m',em:'🚧',cat:'abstrakt'},
+{de:'Ereignis',g:'das',pl:'Ereignisse',it:"l'evento",itG:'m',em:'✨',cat:'abstrakt'},
+{de:'Erlaubnis',g:'die',pl:null,it:'il permesso',itG:'m',em:'🙆',cat:'abstrakt'},
+{de:'Erkenntnis',g:'die',pl:'Erkenntnisse',it:'la scoperta',itG:'f',em:'🧠',cat:'abstrakt'},
+{de:'Freundschaft',g:'die',pl:'Freundschaften',it:"l'amicizia",itG:'f',em:'👭',cat:'abstrakt'},
+{de:'Mannschaft',g:'die',pl:'Mannschaften',it:'la squadra',itG:'f',em:'🏅',cat:'abstrakt'},
+{de:'Meisterschaft',g:'die',pl:'Meisterschaften',it:'il campionato',itG:'m',em:'🏆',cat:'abstrakt'},
+{de:'Feindschaft',g:'die',pl:'Feindschaften',it:"l'inimicizia",itG:'f',em:'⚔️',cat:'abstrakt'},
+{de:'Bereitschaft',g:'die',pl:null,it:'la disponibilità',itG:'f',em:'🙋',cat:'abstrakt'},
+{de:'Verwandtschaft',g:'die',pl:null,it:'la parentela',itG:'f',em:'👨‍👩‍👧‍👦',cat:'abstrakt'},
+{de:'Wissenschaft',g:'die',pl:'Wissenschaften',it:'la scienza',itG:'f',em:'🔬',cat:'abstrakt'},
+{de:'Reichtum',g:'der',pl:'Reichtümer',it:'la ricchezza',itG:'f',em:'💰',cat:'abstrakt'},
+{de:'Irrtum',g:'der',pl:'Irrtümer',it:"l'errore",itG:'m',em:'🤦',cat:'abstrakt'},
+{de:'Wachstum',g:'das',pl:null,it:'la crescita',itG:'f',em:'🌱',cat:'abstrakt'},
+{de:'Rittertum',g:'das',pl:null,it:'la cavalleria',itG:'f',em:'🏰',cat:'abstrakt'},
+{de:'Eigentum',g:'das',pl:null,it:'la proprietà',itG:'f',em:'💼',cat:'abstrakt'},
 ];
 
 /* Monats- und Wochentagsnamen: alle DER — als Regel-Lektion */
@@ -869,7 +891,13 @@ function genderRule(n) {
   if (/(ung)$/.test(w))          return 'Wörter auf -ung sind immer DIE!';
   if (/(heit|keit)$/.test(w))    return 'Wörter auf -heit und -keit sind immer DIE!';
   if (/(chen|lein)$/.test(w))    return 'Wörter auf -chen sind immer DAS — auch das Mädchen!';
-  if (/(nis)$/.test(w))          return 'Wörter auf -nis sind meistens DAS!';
+  if (/(schaft)$/.test(w))       return 'Wörter auf -schaft sind immer DIE — ohne Ausnahme!';
+  if (/tum$/.test(w))            return (w === 'Reichtum' || w === 'Irrtum')
+    ? 'Das Angeber-Paar! DER Reichtum und DER Irrtum sind die einzigen -tum-Wörter mit DER!'
+    : 'Wörter auf -tum sind fast immer DAS — nur Reichtum und Irrtum sind DER!';
+  if (/(nis)$/.test(w))          return (n.g === 'die')
+    ? `Achtung, Ausnahme! -nis ist meistens DAS — aber es heißt DIE ${w}!`
+    : 'Wörter auf -nis sind meistens DAS!';
   if (/in$/.test(w) && n.cat === 'menschen' && n.g === 'die') return 'Frauen-Wörter auf -in sind DIE!';
   if (['Frühling','Sommer','Herbst','Winter'].includes(w)) return 'Alle Jahreszeiten sind DER! 🍂';
   return null;
@@ -951,7 +979,7 @@ const LEECH_WRONG = 4;            // ab so vielen Fehlern gilt ein Wort als „K
    zwei Wochen auf altem Stand und bekam nie Akkusativ-Fragen). Beim Laden
    wird still die frische Version geprüft; ist sie neuer, lädt die Seite
    einmal mit Cache-Brecher neu. ── */
-const APP_VERSION = 10;
+const APP_VERSION = 11;
 (function selfHeal() {
   try {
     fetch(location.pathname, { cache: 'no-store' })
@@ -1230,7 +1258,9 @@ function goHome() {
     const done = pathDone(kase);
     const gold = conceptGold(kase);
     const bP = document.getElementById(pathBtnId), nP = document.getElementById(pathNoteId);
-    const bD = document.getElementById(drillBtnId), nD = document.getElementById(drillNoteId);
+    // Konzepte ohne Satz-Drill (Nomen-Bausteine) haben nur den Pfad-Knopf
+    const bD = drillBtnId ? document.getElementById(drillBtnId) : null;
+    const nD = drillNoteId ? document.getElementById(drillNoteId) : null;
 
     // Zugang zum Lernpfad: Vorgänger-Konzept muss Gold sein;
     // der Akkusativ zusätzlich erst ab UNLOCK_AKK gemeisterten Wörtern
@@ -1260,16 +1290,19 @@ function goHome() {
             : '';
       } else {
         nP.textContent = (st.unit === 1 && !Object.keys(st.passed).length)
-          ? `✨ Neu! Hier lernst du Schritt für Schritt, was der ${con.name} ist.` : '';
+          ? (con.newNote || `✨ Neu! Hier lernst du Schritt für Schritt, was der ${con.name} ist.`) : '';
       }
     }
 
     // Satzübung: frei nach abgeschlossenem Lernpfad
-    if (!done && !elternMode) {
-      bD.classList.add('locked'); bD.disabled = true;
-      nD.textContent = (!lockMsg) ? '🔒 Erst den Lernpfad abschließen — dann wird das hier kinderleicht!' : '';
-    } else { bD.classList.remove('locked'); bD.disabled = false; nD.textContent = ''; }
+    if (bD) {
+      if (!done && !elternMode) {
+        bD.classList.add('locked'); bD.disabled = true;
+        nD.textContent = (!lockMsg) ? '🔒 Erst den Lernpfad abschließen — dann wird das hier kinderleicht!' : '';
+      } else { bD.classList.remove('locked'); bD.disabled = false; nD.textContent = ''; }
+    }
   }
+  renderConceptHome('nomen', 'btn-path-nom', 'note-path-nom', null, null);
   renderConceptHome('akk', 'btn-path-akk', 'note-path-akk', 'btn-akk', 'note-akk');
   renderConceptHome('dat', 'btn-path-dat', 'note-path-dat', 'btn-dat', 'note-dat');
 
@@ -1337,6 +1370,8 @@ const BADGES = [
   { id:'mcakk',    em:'🏆', lbl:'Akkusativ-Meisterin',       cond: f => f.mcAkk },
   { id:'pathdat',  em:'🕵️', lbl:'Dativ-Detektivin',          cond: f => f.pathDatDone },
   { id:'mcdat',    em:'🥇', lbl:'Dativ-Meisterin',           cond: f => f.mcDat },
+  { id:'pathnom',  em:'🧩', lbl:'Baustein-Detektivin',       cond: f => f.pathNomDone },
+  { id:'mcnom',    em:'🏗️', lbl:'Baustein-Meisterin',        cond: f => f.mcNom },
   { id:'dat',      em:'✉️', lbl:'Dativ freigeschaltet',      cond: f => f.m >= UNLOCK_DAT },
   { id:'perfect',  em:'🏆', lbl:'Perfekte Runde',            cond: (f, x) => !!x.perfect },
 ];
@@ -1354,8 +1389,10 @@ function checkBadges(extra = {}) {
     traps: NOUNS.filter(n => isTrap(n) && srs[n.de] && srs[n.de].b >= 3).length,
     pathAkkDone: pathDone('akk'),
     pathDatDone: pathDone('dat'),
+    pathNomDone: pathDone('nomen'),
     mcAkk: conceptGold('akk'),
     mcDat: conceptGold('dat'),
+    mcNom: conceptGold('nomen'),
   };
   const fresh = [];
   BADGES.forEach(b => {
@@ -1480,15 +1517,22 @@ function startSession(type) {
         return pool.length ? { ...pool[Math.floor(Math.random() * pool.length)], _concept: k } : null;
       };
       const caseItem = (k) => {
-        const q = caseQuestion(k, conceptInFest(k) ? 3 : 2);   // Festigen: halbwegs sichere Nomen
+        const q = liveQuestion(k, conceptInFest(k) ? 3 : 2);   // Festigen: halbwegs sichere Nomen
         if (q) q._concept = k;
         return q;
       };
-      // 1. Festigen: 2 Satzfragen + 1 Konzeptfrage
-      const festK = Object.keys(CONCEPTS).find(conceptInFest);
-      if (festK) {
+      // 1. Festigen: 2 lebende Fragen + 1 Konzeptfrage — bzw. je 1+1, wenn
+      //    zwei Konzepte gleichzeitig im Festigen sind (z. B. Akkusativ wartet
+      //    auf den Meister-Check, während Nomen-Bausteine frisch gelernt ist)
+      const festKs = Object.keys(CONCEPTS).filter(conceptInFest).slice(0, 2);
+      const festK = festKs[0];
+      if (festKs.length === 1) {
         [caseItem(festK), caseItem(festK), conceptItem(festK)]
           .filter(Boolean).forEach(q => gramItems.push(q));
+      } else if (festKs.length === 2) {
+        festKs.forEach(k => {
+          [caseItem(k), conceptItem(k)].filter(Boolean).forEach(q => gramItems.push(q));
+        });
       }
       // 2. fällige Gold-Auffrischung: 1 Satz + 1 Konzept
       Object.keys(CONCEPTS).filter(conceptDue).slice(0, 1).forEach(k => {
@@ -2135,6 +2179,186 @@ const PATH_DAT = [
     items: [] },   // wird live aus caseQuestion('dat') gebaut
 ];
 
+/* ── Lernpfad Nomen-Bausteine: -nis, -schaft, -tum (Sprachbuch Kl. 4, S. 21).
+   Die Schule lehrt nur die Großschreibung — die Artikel-Muster fehlen dort.
+   Ehrliche Didaktik: Regel, wo eine Regel gilt (-schaft), Ausnahme-Paar,
+   wo es genau zwei gibt (-tum), Einzelwort-Lernen, wo es keine Regel gibt (-nis). ── */
+const PATH_NOMEN = [
+  { n: 1,
+    title: '👭 -schaft ist immer DIE!',
+    lesson: `
+      <p>Kleine Bausteine am Wortende verraten dir ein Geheimnis:
+      <b>-nis</b>, <b>-schaft</b> und <b>-tum</b> machen aus Wörtern <b>Nomen</b> —
+      die schreibt man groß, das kennst du schon aus der Schule! 🏫</p>
+      <p class="it">I mattoncini <b>-nis</b>, <b>-schaft</b> e <b>-tum</b> alla fine di una parola
+      creano un nome — e si scrive con la maiuscola!</p>
+      <p>Aber die Bausteine können noch mehr: Sie verraten oft den <b>Artikel</b>!
+      Der erste Baustein ist der einfachste:</p>
+      <div style="text-align:center; font-size:1.2rem; font-weight:900; color:var(--c-die); margin:12px 0;">
+        -schaft → immer DIE! 💯
+      </div>
+      <p><b style="color:var(--c-die);">die</b> Freundschaft,
+      <b style="color:var(--c-die);">die</b> Mannschaft,
+      <b style="color:var(--c-die);">die</b> Wissenschaft — <b>ohne Ausnahme</b>.</p>
+      <p class="it">Le parole in -schaft sono SEMPRE femminili: die. Senza eccezioni!</p>`,
+    items: [
+      { kind:'pfill', em:'🏅', t:'___ Mannschaft jubelt nach dem Spiel.', base:'endet auf -schaft', opts:['der','die','das'], correct:'die',
+        hint:'Schau auf das Wortende: -schaft ist immer …?',
+        explain:'die Mannschaft — -schaft ist immer DIE!' },
+      { kind:'pfill', em:'👭', t:'___ Freundschaft ist ein Schatz.', base:'endet auf -schaft', opts:['der','die','das'], correct:'die',
+        hint:'-schaft verrät dir den Artikel — ganz ohne Nachdenken!',
+        explain:'die Freundschaft — der Baustein macht es dir leicht!' },
+      { kind:'pfill', em:'🏘️', t:'___ Nachbarschaft feiert ein Fest.', base:'endet auf -schaft', opts:['der','die','das'], correct:'die',
+        hint:'Dieses Wort hast du noch nie geübt — aber der Baustein verrät alles!',
+        explain:'die Nachbarschaft! Die Regel gilt sogar bei Wörtern, die du gar nicht kennst.' },
+      { kind:'pmcq', em:'🔑', sent:'Wörter mit -schaft sind …', task:'Was stimmt?', task_it:'Cosa è vero?',
+        opts:['immer DIE','immer DER','mal so, mal so'], correct:'immer DIE',
+        hint:'Es gibt keine einzige Ausnahme!',
+        explain:'-schaft ist immer DIE. Deine sicherste Artikel-Regel!' },
+    ] },
+  { n: 2,
+    title: '👑 -tum ist fast immer DAS',
+    lesson: `
+      <p>Der zweite Baustein: <b>-tum</b>. Fast alle -tum-Wörter sind
+      <b style="color:var(--c-das);">DAS</b>:</p>
+      <p style="text-align:center; font-weight:800; margin:10px 0;">
+      <b style="color:var(--c-das);">das</b> Eigentum · <b style="color:var(--c-das);">das</b> Rittertum ·
+      <b style="color:var(--c-das);">das</b> Wachstum</p>
+      <p><b>ABER:</b> Zwei Angeber wollen unbedingt DER sein — das <b>Angeber-Paar</b>:</p>
+      <div style="text-align:center; font-size:1.15rem; font-weight:900; color:var(--c-der); margin:12px 0;">
+        DER Reichtum 💰 &nbsp;·&nbsp; DER Irrtum 🤦
+      </div>
+      <p>Merk dir nur diese zwei — alle anderen -tum-Wörter sind DAS!</p>
+      <p class="it">Le parole in -tum sono quasi sempre <b>das</b> — tranne due "spacconi":
+      <b>der Reichtum</b> (la ricchezza) e <b>der Irrtum</b> (l'errore).</p>`,
+    items: [
+      { kind:'pfill', em:'🏰', t:'___ Rittertum war die Zeit der Burgen.', base:'endet auf -tum', opts:['der','die','das'], correct:'das',
+        hint:'Ist Rittertum ein Angeber? Nein! Also gilt die normale Regel …',
+        explain:'das Rittertum — kein Angeber, also DAS!' },
+      { kind:'pfill', em:'🌱', t:'Chiara staunt über ___ Wachstum der Blume.', base:'endet auf -tum', opts:['der','die','das'], correct:'das',
+        hint:'Wachstum gehört nicht zum Angeber-Paar …',
+        explain:'das Wachstum — fast alle -tum-Wörter sind DAS!' },
+      { kind:'pfill', em:'💰', t:'___ Reichtum des Königs ist riesig.', base:'Achtung! 😏', opts:['der','die','das'], correct:'der',
+        hint:'Reichtum ist einer der zwei Angeber!',
+        explain:'DER Reichtum — der erste Angeber! (Der zweite ist der Irrtum.)' },
+      { kind:'pmcq', em:'🕵️‍♀️', sent:'Welche zwei -tum-Wörter sind DER?', task:'Finde das Angeber-Paar!', task_it:'Trova la coppia di spacconi!',
+        opts:['Reichtum und Irrtum','Wachstum und Rittertum','Eigentum und Wachstum'], correct:'Reichtum und Irrtum',
+        hint:'Reich sein und sich irren — das sind die zwei Angeber!',
+        explain:'DER Reichtum und DER Irrtum — alle anderen -tum-Wörter sind DAS!' },
+    ] },
+  { n: 3,
+    title: '🎁 -nis, die Wundertüte',
+    lesson: `
+      <p>Der dritte Baustein ist eine <b>Wundertüte</b>: Bei <b>-nis</b> gibt es
+      leider keine sichere Regel. 🎁</p>
+      <p><b>Meistens</b> ist -nis <b style="color:var(--c-das);">DAS</b>:</p>
+      <p style="text-align:center; font-weight:800; margin:10px 0;">
+      <b style="color:var(--c-das);">das</b> Geheimnis · <b style="color:var(--c-das);">das</b> Erlebnis ·
+      <b style="color:var(--c-das);">das</b> Hindernis · <b style="color:var(--c-das);">das</b> Ergebnis</p>
+      <p>Aber ein paar sind <b style="color:var(--c-die);">DIE</b> — die musst du dir einfach merken:</p>
+      <div style="text-align:center; font-size:1.1rem; font-weight:900; color:var(--c-die); margin:12px 0;">
+        DIE Erlaubnis 🙆 &nbsp;·&nbsp; DIE Erkenntnis 🧠
+      </div>
+      <p>Kein Trick, kein Zauber — Ella übt sie mit dir, bis sie sitzen! 🦉</p>
+      <p class="it">Per -nis non c'è una regola sicura: di solito <b>das</b>, ma alcune parole
+      sono <b>die</b> (die Erlaubnis = il permesso, die Erkenntnis = la scoperta). Vanno imparate!</p>`,
+    items: [
+      { kind:'pfill', em:'🤫', t:'Ella verrät ___ Geheimnis nicht.', base:'endet auf -nis', opts:['der','die','das'], correct:'das',
+        hint:'-nis ist meistens …?',
+        explain:'das Geheimnis — die Wundertüte zeigt meistens DAS!' },
+      { kind:'pfill', em:'🙆', t:'Mama gibt mir ___ Erlaubnis.', base:'Achtung, Ausnahme!', opts:['der','die','das'], correct:'die',
+        hint:'Erlaubnis ist eine der Merk-Wörter aus der Lektion!',
+        explain:'DIE Erlaubnis — eine der wenigen DIE-Ausnahmen bei -nis!' },
+      { kind:'pmcq', em:'🎁', sent:'Welches -nis-Wort ist DIE?', task:'Finde die Ausnahme!', task_it:"Trova l'eccezione!",
+        opts:['Erlaubnis','Erlebnis','Hindernis'], correct:'Erlaubnis',
+        hint:'Denk an die zwei Merk-Wörter: Erlaubnis und Erkenntnis!',
+        explain:'die Erlaubnis (und die Erkenntnis) — die anderen sind DAS!' },
+      { kind:'pfill', em:'🚧', t:'Das Pony springt über ___ Hindernis.', base:'endet auf -nis', opts:['der','die','das'], correct:'das',
+        hint:'Ist Hindernis ein Merk-Wort? Nein — also gilt: meistens …',
+        explain:'das Hindernis — keine Ausnahme, also DAS!' },
+    ] },
+  { n: 4,
+    title: '🏆 Wort-Baustelle: Alles zusammen!',
+    lesson: `
+      <p>Du kennst jetzt alle drei Bausteine:</p>
+      <div style="font-weight:800; line-height:2; margin:12px 0;">
+        1️⃣ <b>-schaft</b> → immer <b style="color:var(--c-die);">DIE</b> 💯<br>
+        2️⃣ <b>-tum</b> → fast immer <b style="color:var(--c-das);">DAS</b> —
+           nur <b style="color:var(--c-der);">der</b> Reichtum und <b style="color:var(--c-der);">der</b> Irrtum nicht 👑<br>
+        3️⃣ <b>-nis</b> → meistens <b style="color:var(--c-das);">DAS</b>,
+           aber <b style="color:var(--c-die);">die</b> Erlaubnis und <b style="color:var(--c-die);">die</b> Erkenntnis 🎁
+      </div>
+      <p>Jetzt kommen 6 Fragen aus der Wort-Baustelle: Artikel finden UND
+      selbst Nomen bauen! Schaffst du sie, bist du <b>Baustein-Detektivin</b>! 🧩</p>
+      <p class="it">Ora 6 domande dal cantiere delle parole — trova l'articolo e costruisci i nomi.
+      Se ce la fai, sei detective dei mattoncini!</p>`,
+    items: [] },   // wird live aus nomenQuestion() gebaut
+];
+
+/* Wort-Bauen: aus einem Wort ein Nomen bauen — den richtigen Baustein wählen.
+   Übt genau den Fehlertyp „die Erlaubschaft" (falscher Baustein). */
+const WORTBAU_POOL = [
+  { kind:'pfill', em:'🙆', t:'Aus erlauben wird die Erlaub___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'nis',
+    hint:'Sprich es laut: die Erlaubnis, die Erlaubschaft — was klingt richtig?',
+    explain:'die Erlaubnis! Und Achtung: sie ist eine DIE-Ausnahme.' },
+  { kind:'pfill', em:'👭', t:'Aus Freund wird die Freund___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'schaft',
+    hint:'Freunde gehören zusammen — welcher Baustein passt?',
+    explain:'die Freundschaft — und -schaft ist immer DIE!' },
+  { kind:'pfill', em:'🎢', t:'Aus erleben wird das Erleb___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'nis',
+    hint:'Sprich es laut — dein Ohr kennt die Antwort!',
+    explain:'das Erlebnis!' },
+  { kind:'pfill', em:'🏆', t:'Aus Meister wird die Meister___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'schaft',
+    hint:'Wer wird Deutscher Meister? Es geht um die Meister…?',
+    explain:'die Meisterschaft — -schaft, also DIE!' },
+  { kind:'pfill', em:'🤫', t:'Aus geheim wird das Geheim___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'nis',
+    hint:'Psst! Sprich es leise: das Geheim…?',
+    explain:'das Geheimnis!' },
+  { kind:'pfill', em:'💰', t:'Aus reich wird der Reich___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'tum',
+    hint:'Der König hat viel Gold — seinen Reich…?',
+    explain:'der Reichtum — ein Angeber: eines der zwei DER-Wörter auf -tum!' },
+  { kind:'pfill', em:'🏰', t:'Aus Ritter wird das Ritter___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'tum',
+    hint:'Die Zeit der Ritter heißt das Ritter…?',
+    explain:'das Rittertum — kein Angeber, also DAS!' },
+  { kind:'pfill', em:'👨‍👩‍👧‍👦', t:'Aus verwandt wird die Verwandt___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'schaft',
+    hint:'Oma, Opa, Tante, Onkel — alle zusammen sind die Verwandt…?',
+    explain:'die Verwandtschaft — -schaft, also DIE!' },
+  { kind:'pfill', em:'🌱', t:'Aus wachsen wird das Wachs___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'tum',
+    hint:'Die Blume wächst — man sieht ihr Wachs…?',
+    explain:'das Wachstum — fast alle -tum-Wörter sind DAS!' },
+  { kind:'pfill', em:'🧠', t:'Aus erkennen wird die Erkennt___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'nis',
+    hint:'Sprich es laut: die Erkenntnis — hörst du den Baustein?',
+    explain:'die Erkenntnis — mit Doppel-n! Und sie ist eine DIE-Ausnahme.' },
+  { kind:'pfill', em:'🤦', t:'Aus irren wird der Irr___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'tum',
+    hint:'Wer sich irrt, macht einen Irr…?',
+    explain:'der Irrtum — der zweite Angeber mit DER!' },
+  { kind:'pfill', em:'⚔️', t:'Aus Feind wird die Feind___.', base:'-nis, -schaft oder -tum?', opts:['nis','schaft','tum'], correct:'schaft',
+    hint:'Das Gegenteil von Freundschaft ist die Feind…?',
+    explain:'die Feindschaft — -schaft, also DIE!' },
+];
+
+/* Lebende Fragen für das Konzept Nomen-Bausteine: Mischung aus Wort-Bauen
+   und Genus-Fragen zu Baustein-Nomen. Die Regeln beantworten die Fragen auch
+   bei noch nie geübten Wörtern — deshalb ist der SRS-Kasten hier nur eine
+   Vorliebe (Rückfall auf alle Baustein-Nomen), keine Fairness-Schranke. */
+let _nomenRecent = [];
+function nomenQuestion(minBox = 2) {
+  const pickFrom = arr => arr[Math.floor(Math.random() * arr.length)];
+  if (Math.random() < 0.4) {
+    const fresh = WORTBAU_POOL.filter(it => !_nomenRecent.includes(it.t));
+    const it = pickFrom(fresh.length ? fresh : WORTBAU_POOL);
+    _nomenRecent.push(it.t); _nomenRecent = _nomenRecent.slice(-6);
+    return { ...it };
+  }
+  const all = NOUNS.filter(n => /(nis|schaft|tum)$/.test(n.de));
+  let pool = all.filter(n => srs[n.de] && srs[n.de].b >= minBox);
+  if (pool.length < 4) pool = all.filter(n => srs[n.de]);
+  if (pool.length < 4) pool = all;
+  const freshN = pool.filter(n => !_nomenRecent.includes(n.de));
+  const n = pickFrom(freshN.length ? freshN : pool);
+  _nomenRecent.push(n.de); _nomenRecent = _nomenRecent.slice(-6);
+  return genderQuestion(n);
+}
+
 /* ── Konzept-Register: jedes Grammatik-Konzept hat einen Lernpfad und
    durchläuft den Lebenszyklus Lernen → Festigen → Meister-Check → Gold.
    Neue Konzepte (Präteritum, wörtliche Rede …) werden hier eingehängt. ── */
@@ -2149,8 +2373,20 @@ const CONCEPTS = {
          detective: 'Akkusativ-Detektivin', next: 'dat' },
   dat: { name: 'Dativ',     em: '✉️', path: () => PATH_DAT, drill: 'dat',
          detective: 'Dativ-Detektivin', requires: 'akk' },
+  // Eigener Strang ohne 'requires': läuft parallel zu den Kasus-Konzepten,
+  // weil die Schule das Thema JETZT behandelt (Sprachbuch S. 21).
+  nomen: { name: 'Nomen-Bausteine', em: '🧩', path: () => PATH_NOMEN,
+           detective: 'Baustein-Detektivin', live: nomenQuestion,
+           newNote: '✨ Neu! Entdecke, wie -nis, -schaft und -tum dir den Artikel verraten.' },
 };
 function pathUnits(kase) { return CONCEPTS[kase].path(); }
+
+/* Lebende Frage eines Konzepts: Kasus-Konzepte bauen Satzfragen,
+   Konzepte mit eigener live-Funktion (Nomen-Bausteine) ihre eigenen. */
+function liveQuestion(kase, minBox = 2) {
+  const con = CONCEPTS[kase];
+  return (con && con.live) ? con.live(minBox) : caseQuestion(kase, minBox);
+}
 
 function pathKey() { return `gram_path_${profile}`; }
 function loadPath() { return safeLoad(pathKey(), {}); }
@@ -2226,7 +2462,7 @@ function startMeisterCheck(kase) {
   sIdx = 0; sCorrect = 0; sNewWords = [];
   sessionStartMastered = masteredCount();
   for (let i = 0; i < 6; i++) {
-    const q = caseQuestion(kase, 4);   // Prüfung nur mit sicheren Wörtern
+    const q = liveQuestion(kase, 4);   // Prüfung nur mit sicheren Wörtern
     if (q) session.push(q);
   }
   const pool = shuffle(pathUnits(kase).flatMap(u => u.items)).map(it => ({ ...it }));
@@ -2281,8 +2517,9 @@ function finishMcSession() {
 
   detail += `<div style="font-weight:800; font-size:.9rem; margin-top:10px;">Das kam dran:</div><div class="recap-grid">` +
     session.map(q => {
-      const txt = q.kind === 'case' ? `${q.noun.em} ${q.solution} ${q.nounForm}`
-                : q.kind === 'pfill' ? `${q.em} ${q.t.replace('___', q.correct)}`
+      const txt = q.kind === 'case'   ? `${q.noun.em} ${q.solution} ${q.nounForm}`
+                : q.kind === 'gender' ? `${q.noun.em} ${q.noun.g} ${q.noun.de}`
+                : q.kind === 'pfill'  ? `${q.em} ${q.t.replace('___', q.correct)}`
                 : `${q.em} ${q.correct}`;
       const cls = q.result === 'right' ? '' : q.result === 'retry' ? ' retry' : ' wrong';
       return `<span class="recap-chip${cls}">${txt}</span>`;
@@ -2330,9 +2567,9 @@ function beginPathCheck() {
   sessionStartMastered = masteredCount();
 
   if (unit.n === units.length) {
-    // Finale: echte Satzfragen mit ihren eigenen gelernten Wörtern
+    // Finale: echte Fragen mit ihren eigenen gelernten Wörtern
     for (let i = 0; i < 6; i++) {
-      const q = caseQuestion(pathCtx.kase);
+      const q = liveQuestion(pathCtx.kase);
       if (q) session.push(q);
     }
     // Notnagel, falls zu wenige bekannte Nomen passen
@@ -2429,9 +2666,9 @@ function finishPathSession() {
       if (newBadges.length) detail += newBadges.map(b =>
         `<div style="text-align:center; font-weight:900; font-size:1.05rem; color:var(--prime); margin-bottom:8px;">
           🏅 Neues Abzeichen: ${b.em} ${b.lbl}!</div>`).join('');
-      detail += `<div style="text-align:center; font-weight:800; color:var(--prime); margin:8px 0;">
-        🔓 „Sätze üben (${con.name})" ist jetzt frei!</div>
-        <div style="text-align:center; font-weight:700; margin:6px 0;">
+      if (con.drill) detail += `<div style="text-align:center; font-weight:800; color:var(--prime); margin:8px 0;">
+        🔓 „Sätze üben (${con.name})" ist jetzt frei!</div>`;
+      detail += `<div style="text-align:center; font-weight:700; margin:6px 0;">
         Jetzt kommt das Training: Deine täglichen Runden enthalten ${con.name}-Fragen.
         Nach ${FEST_MIN_DAYS} Übungstagen wartet der <b>🏆 Meister-Check</b>!</div>`;
       detail += `<p class="it" style="text-align:center;">Percorso completato! Ora qualche giorno di allenamento — poi la prova da maestro!</p>`;
