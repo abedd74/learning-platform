@@ -351,9 +351,12 @@ body.show-it .it.inline { display: inline; }
   <button class="btn" id="btn-daily" onclick="startSession('mixed')">🎯 Tägliches Training</button>
   <div class="lock-note" id="note-daily"></div>
 
-  <!-- Ereignis-Karte: erscheint NUR, wenn etwas Besonderes wartet
-       (Meister-Check bereit / neuer Lernpfad-Schritt) -->
+  <!-- Ereignis-Karten: erscheinen NUR, wenn etwas Besonderes wartet
+       (Meister-Check bereit / neuer Lernpfad-Schritt) — beide dürfen
+       gleichzeitig da sein, sonst versteckt der eine Pokal den neuen Pfad -->
   <button class="btn" id="btn-event" style="display:none; background:#FFB800; border-color:#E5A600; color:#5d4a00;"></button>
+  <button class="btn" id="btn-event2" style="display:none; background:#FFD54F; border-color:#E5B800; color:#5d4a00;"></button>
+  <button class="btn" id="btn-event3" style="display:none; background:#FFD54F; border-color:#E5B800; color:#5d4a00;"></button>
 
   <div style="display:flex; gap:10px;">
     <button class="btn secondary" style="flex:1; margin:10px 0;" onclick="showZoo()">🦁 Wörter-Zoo</button>
@@ -433,7 +436,7 @@ body.show-it .it.inline { display: inline; }
   <h1 id="result-title">Super gemacht!</h1>
   <div class="result-score" id="result-score"></div>
   <div class="card" id="result-detail"></div>
-  <button class="btn" onclick="startSession(lastSessionType)">Nochmal üben! 🔁</button>
+  <button class="btn" id="btn-result-again" onclick="startSession(lastSessionType)">Nochmal üben! 🔁</button>
   <button class="btn secondary" onclick="goHome()">🏠 Fertig für jetzt</button>
 </div>
 
@@ -979,7 +982,7 @@ const LEECH_WRONG = 4;            // ab so vielen Fehlern gilt ein Wort als „K
    zwei Wochen auf altem Stand und bekam nie Akkusativ-Fragen). Beim Laden
    wird still die frische Version geprüft; ist sie neuer, lädt die Seite
    einmal mit Cache-Brecher neu. ── */
-const APP_VERSION = 11;
+const APP_VERSION = 12;
 (function selfHeal() {
   try {
     fetch(location.pathname, { cache: 'no-store' })
@@ -1217,30 +1220,38 @@ function goHome() {
   const m = masteredCount();
   const elternMode = profile === 'Eltern';
 
-  // ── Ereignis-Karte: genau EIN besonderes Ding, wenn eines wartet.
-  //    Priorität: Meister-Check bereit > nächster Lernpfad-Schritt. ──
-  const bEvent = document.getElementById('btn-event');
+  // ── Ereignis-Karten: Meister-Check bereit und/oder nächster Lernpfad-
+  //    Schritt. Beide zugleich sichtbar — eine einzige Karte mit Vorrang
+  //    für den Check hat den neuen Nomen-Pfad 3 Wochen lang verdeckt. ──
   const nDaily = document.getElementById('note-daily');
   const mcK = Object.keys(CONCEPTS).find(mcReady);
-  const stepK = Object.keys(CONCEPTS).find(k =>
+  const stepKs = Object.keys(CONCEPTS).filter(k =>
     conceptPathOpen(k) && !pathDone(k) &&
     (k !== 'akk' || m >= UNLOCK_AKK || elternMode));
-  if (mcK) {
-    bEvent.style.display = '';
-    bEvent.textContent = `🏆 Meister-Check: ${CONCEPTS[mcK].name}!`;
-    bEvent.onclick = () => startMeisterCheck(mcK);
-  } else if (stepK) {
-    const stS = pathState(stepK);
-    bEvent.style.display = '';
-    bEvent.textContent = `🎓 Lernpfad ${CONCEPTS[stepK].name}: Schritt ${Math.min(stS.unit, pathUnits(stepK).length)} von ${pathUnits(stepK).length}`;
-    bEvent.onclick = () => startPath(stepK);
-  } else bEvent.style.display = 'none';
+  const events = [];
+  if (mcK) events.push({ txt: `🏆 Meister-Check: ${CONCEPTS[mcK].name}!`, fn: () => startMeisterCheck(mcK) });
+  stepKs.forEach(k => {
+    const stS = pathState(k);
+    events.push({ txt: `🎓 Lernpfad ${CONCEPTS[k].name}: Schritt ${Math.min(stS.unit, pathUnits(k).length)} von ${pathUnits(k).length}`,
+                  fn: () => startPath(k) });
+  });
+  ['btn-event', 'btn-event2', 'btn-event3'].forEach((id, i) => {
+    const b = document.getElementById(id), e = events[i];
+    b.style.display = e ? '' : 'none';
+    if (e) { b.textContent = e.txt; b.onclick = e.fn; }
+  });
 
-  // Festigen-Status als kleine Zeile unter dem Tages-Knopf
+  // Zeile unter dem Tages-Knopf: Check-Ansage bzw. Festigen-Status
   const festHome = Object.keys(CONCEPTS).find(conceptInFest);
-  nDaily.textContent = (festHome && !mcK)
-    ? `🔨 ${CONCEPTS[festHome].name}-Training läuft: Tag ${festDaysCount(festHome)} von ${FEST_MIN_DAYS} — dann kommt der Meister-Check!`
-    : '';
+  const festSt = festHome ? pathState(festHome) : null;
+  const festWait = festSt && festSt.mc && festSt.mc.nextTry && festSt.mc.nextTry > todayStr();
+  nDaily.textContent = (mcK && mcOverdue(mcK))
+    ? `🏆 Dein Training beginnt heute mit dem Meister-Check ${CONCEPTS[mcK].name} — du schaffst das!`
+    : (festHome && !mcK && festWait)
+      ? `💪 Weiter üben — der Meister-Check ${CONCEPTS[festHome].name} kommt am ${festSt.mc.nextTry.slice(8,10)}.${festSt.mc.nextTry.slice(5,7)}. wieder!`
+    : (festHome && !mcK && festDaysCount(festHome) < FEST_MIN_DAYS)
+      ? `🔨 ${CONCEPTS[festHome].name}-Training läuft: Tag ${festDaysCount(festHome)} von ${FEST_MIN_DAYS} — dann kommt der Meister-Check!`
+      : '';
 
   // „Mehr üben"-Bereich: für Eltern immer offen
   if (elternMode) {
@@ -1492,6 +1503,10 @@ function caseQuestion(kase, minBox = 2) {
 function startSession(type) {
   if (type && type.startsWith('path-')) { startPath(type.slice(5)); return; }
   if (type && type.startsWith('mc-'))   { startMeisterCheck(type.slice(3)); return; }
+  if (type === 'mixed' || type === 'gender') {
+    const overdueK = Object.keys(CONCEPTS).find(mcOverdue);
+    if (overdueK) { introMeisterCheck(overdueK, type); return; }
+  }
   pathCtx = null; mcCtx = null;
   lastSessionType = type;
   session = [];
@@ -2366,6 +2381,8 @@ const FEST_MIN_DAYS   = 3;    // Übungstage mit Festigen-Fragen vor dem Meister
 const MC_SIZE         = 10;   // Fragen im Meister-Check
 const MC_PASS         = 8;    // davon beim ersten Versuch richtig
 const MC_RETRY_DAYS   = 2;    // Wartezeit nach nicht bestandenem Check
+const MC_NUDGE_DAYS   = 2;    // so lange darf ein bereiter Check freiwillig warten;
+                              // danach beginnt das Tägliche Training damit
 const GOLD_INTERVALS  = [7, 14, 30, 60];   // Auffrisch-Abstände für Gold-Konzepte
 
 const CONCEPTS = {
@@ -2438,6 +2455,22 @@ function conceptPathOpen(kase) {
   return !req || conceptGold(req);
 }
 
+// Seit wann ist der Meister-Check bereit? (Retry-Datum bzw. der Tag, an dem
+// die Festigen-Mindesttage voll waren)
+function mcReadySince(kase) {
+  const st = pathState(kase);
+  if (st.mc && st.mc.nextTry) return st.mc.nextTry;
+  const fest = Object.keys(st.fest || {}).sort();
+  return fest[FEST_MIN_DAYS - 1] || todayStr();
+}
+// Ein Check, der länger als MC_NUDGE_DAYS nur als Pokal-Knopf wartet, wird
+// Teil des Täglichen Trainings — ein freiwilliger Extra-Knopf lässt sich
+// sonst wochenlang übersehen.
+function mcOverdue(kase) {
+  if (profile === 'Eltern' || !mcReady(kase)) return false;
+  return addDays(mcReadySince(kase), MC_NUDGE_DAYS) <= todayStr();
+}
+
 // Auffrisch-SRS: Gold-Konzepte tauchen in wachsenden Abständen wieder auf
 function conceptDue(kase) {
   const st = pathState(kase);
@@ -2454,9 +2487,29 @@ function bumpGold(kase, ok) {
    6 echte Satzfragen (aus ihren eigenen Wörtern) + 4 Konzeptfragen. ── */
 let mcCtx = null;
 
-function startMeisterCheck(kase) {
+// Kurze Ansage vor dem Check, wenn er aus dem Täglichen Training heraus
+// startet — danach läuft die gewohnte Runde (fromType) weiter.
+function introMeisterCheck(kase, fromType) {
+  const con = CONCEPTS[kase];
+  document.getElementById('lesson-title').textContent = `🏆 Heute zuerst: Meister-Check ${con.name}!`;
+  document.getElementById('lesson-body').innerHTML = `
+    <p>Du hast den ${con.name} schon an <b>${festDaysCount(kase)} Tagen</b> trainiert — du bist bereit! 💪</p>
+    <p><b>${MC_SIZE} Fragen</b>, nur der erste Versuch zählt. Danach geht dein Training ganz normal weiter.</p>
+    <p class="it">Oggi l'allenamento comincia con la prova da maestro: ${MC_SIZE} domande, conta solo il primo tentativo — poi si continua come sempre.</p>`;
+  document.getElementById('lesson-progress').innerHTML = '';
+  document.getElementById('lesson-go').onclick = () => startMeisterCheck(kase, fromType);
+  showScreen('s-lesson');
+  applyIt();
+}
+
+function setResultMainBtn(label, fn) {
+  const b = document.getElementById('btn-result-again');
+  b.textContent = label; b.onclick = fn;
+}
+
+function startMeisterCheck(kase, fromDaily) {
   if (!mcReady(kase) && profile !== 'Eltern') { goHome(); return; }
-  mcCtx = { kase };
+  mcCtx = { kase, fromDaily: fromDaily || null };
   lastSessionType = `mc-${kase}`;
   session = [];
   sIdx = 0; sCorrect = 0; sNewWords = [];
@@ -2473,7 +2526,7 @@ function startMeisterCheck(kase) {
 }
 
 function finishMcSession() {
-  const kase = mcCtx.kase; mcCtx = null;
+  const kase = mcCtx.kase, fromDaily = mcCtx.fromDaily; mcCtx = null;
   const con = CONCEPTS[kase];
   const need = Math.ceil(session.length * (MC_PASS / MC_SIZE));
   const passed = sCorrect >= need;
@@ -2526,6 +2579,8 @@ function finishMcSession() {
     }).join('') + `</div>`;
 
   document.getElementById('result-detail').innerHTML = detail;
+  // Nach dem Check geht es ins normale Training weiter (nicht „nochmal Check")
+  setResultMainBtn('Weiter zum Training ▶', () => startSession(fromDaily || 'mixed'));
   showScreen('s-result');
   applyIt();
 }
@@ -2699,6 +2754,7 @@ function finishPathSession() {
     }).join('') + `</div>`;
 
   document.getElementById('result-detail').innerHTML = detail;
+  setResultMainBtn('Nochmal üben! 🔁', () => startSession(lastSessionType));
   showScreen('s-result');
   applyIt();
 }
@@ -2759,7 +2815,7 @@ function finishSession() {
   // ── Was wartet als Nächstes? (Einladung, keine Pflicht) ──
   const mcK = Object.keys(CONCEPTS).find(mcReady);
   const festK2 = Object.keys(CONCEPTS).find(conceptInFest);
-  const openPathK = Object.keys(CONCEPTS).find(k =>
+  const openPathKs = Object.keys(CONCEPTS).filter(k =>
     conceptPathOpen(k) && !pathDone(k) && (k !== 'akk' || m >= UNLOCK_AKK));
   if (mcK) {
     detail += `<div style="text-align:center; font-weight:900; color:var(--prime); margin-bottom:8px;">
@@ -2768,10 +2824,12 @@ function finishSession() {
     const d = festDaysCount(festK2);
     if (d < FEST_MIN_DAYS) detail += `<div style="text-align:center; font-weight:800; margin-bottom:8px;">
       🔨 ${CONCEPTS[festK2].name}-Training: Tag ${d} von ${FEST_MIN_DAYS} — dann kommt der Meister-Check!</div>`;
-  } else if (openPathK && Object.keys(pathState(openPathK).passed).length < pathUnits(openPathK).length) {
-    detail += `<div style="text-align:center; font-weight:800; margin-bottom:8px;">
-      🎓 Ein neuer Schritt im Lernpfad ${CONCEPTS[openPathK].name} wartet auf dich!</div>`;
   }
+  // Offene Lernpfade werden unabhängig davon angekündigt (eigene Stränge)
+  openPathKs.filter(k => Object.keys(pathState(k).passed).length < pathUnits(k).length).forEach(k => {
+    detail += `<div style="text-align:center; font-weight:800; margin-bottom:8px;">
+      🎓 Ein neuer Schritt im Lernpfad ${CONCEPTS[k].name} wartet auf dich!</div>`;
+  });
 
   // Rückblick: jedes Wort der Runde mit Ampelfarbe (grün/gelb/rot)
   detail += `<div style="font-weight:800; font-size:.9rem;">Das hast du geübt:</div><div class="recap-grid">` +
@@ -2803,6 +2861,7 @@ function finishSession() {
     detail += `<div style="margin-top:10px; font-weight:800; color:var(--prime);">🔓 Neu freigeschaltet: Sätze üben (Dativ)!</div>`;
   }
   document.getElementById('result-detail').innerHTML = detail;
+  setResultMainBtn('Nochmal üben! 🔁', () => startSession(lastSessionType));
   showScreen('s-result');
 }
 
