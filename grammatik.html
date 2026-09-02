@@ -982,7 +982,7 @@ const LEECH_WRONG = 4;            // ab so vielen Fehlern gilt ein Wort als „K
    zwei Wochen auf altem Stand und bekam nie Akkusativ-Fragen). Beim Laden
    wird still die frische Version geprüft; ist sie neuer, lädt die Seite
    einmal mit Cache-Brecher neu. ── */
-const APP_VERSION = 12;
+const APP_VERSION = 13;
 (function selfHeal() {
   try {
     fetch(location.pathname, { cache: 'no-store' })
@@ -1116,19 +1116,56 @@ function pickVoice() {
 }
 if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 
-function speak(text, delay = 0) {
-  if (!soundOn() || !('speechSynthesis' in window)) return;
+let currentUtter = null;
+function utter(text) {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'de-DE';
+    if (deVoice) u.voice = deVoice;
+    u.rate = 0.92;
+    u.onend = u.onerror = () => { if (currentUtter === u) currentUtter = null; };
+    currentUtter = u;
+    speechSynthesis.speak(u);
+  } catch {}
+}
+
+/* ── Ein einziger Audiokanal. Eine neue Anfrage ersetzt jede noch wartende
+   (verzögerte) Anfrage; ein gerade laufender Clip darf aber zu Ende spielen
+   (max. AUDIO_WAIT_MS), damit die Antwort „die Katze" hörbar bleibt und die
+   nächste Frage danach kommt — nicht darüber. Ohne das überlappten sich bei
+   schnellem Tippen zwei Stimmen mit zwei verschiedenen Wörtern. ── */
+let audioGen = 0;
+let currentClip = null;
+const AUDIO_WAIT_MS = 2500;   // längster a_-Clip ≈ 2,3 s
+function stopAudio() {
+  if (currentClip) { try { currentClip.pause(); } catch {} currentClip = null; }
+  currentUtter = null;
+  if ('speechSynthesis' in window) { try { speechSynthesis.cancel(); } catch {} }
+}
+// interrupt = true: sofort loslegen (Antwort-Audio darf die Frage-Vorlesung
+// abbrechen — die nächste Frage wartet aber, bis die Antwort zu Ende ist)
+function audioRequest(delay, startFn, interrupt = false) {
+  const my = ++audioGen;
   const go = () => {
-    try {
-      speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'de-DE';
-      if (deVoice) u.voice = deVoice;
-      u.rate = 0.92;
-      speechSynthesis.speak(u);
-    } catch {}
+    if (my !== audioGen) return;
+    const c = currentClip;
+    const busy = (c && !c.paused && !c.ended) ? c : currentUtter;   // Clip oder Gerätestimme
+    if (!interrupt && busy) {
+      let done = false;
+      const fin = () => { if (done) return; done = true; if (my === audioGen) { stopAudio(); startFn(my); } };
+      busy.addEventListener(busy === c ? 'ended' : 'end', fin, { once: true });
+      setTimeout(fin, AUDIO_WAIT_MS);
+      return;
+    }
+    stopAudio(); startFn(my);
   };
   delay ? setTimeout(go, delay) : go();
+}
+
+function speak(text, delay = 0, interrupt = false) {
+  if (!soundOn() || !('speechSynthesis' in window)) return;
+  audioRequest(delay, () => utter(text), interrupt);
 }
 
 /* ── Echte Audio-Aufnahmen (neuronale Stimme „Katja") für alle Nomen.
@@ -1141,25 +1178,26 @@ function audioSlug(s) {
     .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
     .replace(/[^a-z0-9]/g, '');
 }
-let currentClip = null;
-function playClip(file, fallbackText, delay = 0) {
+function playClip(file, fallbackText, delay = 0, interrupt = false) {
   if (!soundOn()) return;
-  const go = () => {
+  audioRequest(delay, (my) => {
     try {
-      if (currentClip) { try { currentClip.pause(); } catch {} }
-      if ('speechSynthesis' in window) { try { speechSynthesis.cancel(); } catch {} }
       const a = new Audio('audio/' + file);
       currentClip = a;
       let fell = false;
-      const fallback = () => { if (!fell) { fell = true; speak(fallbackText); } };
+      // Gerätestimme nur, wenn dieser Clip noch der aktuelle ist: ein von uns
+      // selbst unterbrochenes play() (AbortError) ist kein fehlender Clip
+      const fallback = () => {
+        if (fell || currentClip !== a || my !== audioGen) return;
+        fell = true; utter(fallbackText);
+      };
       a.onerror = fallback;
       a.play().catch(fallback);
-    } catch { speak(fallbackText); }
-  };
-  delay ? setTimeout(go, delay) : go();
+    } catch { utter(fallbackText); }
+  }, interrupt);
 }
 function speakWord(n, delay = 0)    { playClip('w_' + audioSlug(n.de) + '.mp3', n.de, delay); }
-function speakArtWord(n, delay = 0) { playClip('a_' + audioSlug(n.de) + '.mp3', `${n.g} ${n.de}`, delay); }
+function speakArtWord(n, delay = 0) { playClip('a_' + audioSlug(n.de) + '.mp3', `${n.g} ${n.de}`, delay, true); }
 
 /* Ella reagiert im Quiz */
 function ellaReact(kind) {
@@ -1881,7 +1919,7 @@ function answerCase(choice, btn) {
     d.m = masteredCount();
     recordCase(q.kase, first ? { c: 1 } : { errType: q.errType });
     sfx('good'); ellaReact('good');
-    speak(`${q.solution} ${q.nounForm}`, 350);
+    speak(`${q.solution} ${q.nounForm}`, 350, true);
     fb.className = 'feedback show good';
     fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] +
       ` <b>${q.solution} ${q.nounForm}</b> — genau richtig!`;
@@ -1916,7 +1954,7 @@ function answerCase(choice, btn) {
     d.m = masteredCount();
     recordCase(q.kase, { errType: q.errType || diagnoseCase(choice, q) });
     sfx('bad'); ellaReact('sad');
-    speak(`${q.solution} ${q.nounForm}`, 500);
+    speak(`${q.solution} ${q.nounForm}`, 500, true);
     fb.className = 'feedback show bad';
     fb.innerHTML = `Gleich hast du's! Richtig ist: <b>${q.solution} ${q.nounForm}</b> (${n.g} ${n.de}). ${CASE_RULES[q.kase]}`;
     lockAnswers();
@@ -2658,7 +2696,7 @@ function answerPath(choice, btn) {
     d.a++; if (first) d.c++;
     saveState();
     sfx('good'); ellaReact('good');
-    if (q.kind === 'pfill') speak(q.t.replace('___', choice), 350);
+    if (q.kind === 'pfill') speak(q.t.replace('___', choice), 350, true);
     fb.className = 'feedback show good';
     fb.innerHTML = PRAISE[Math.floor(Math.random() * PRAISE.length)] + ' ' + (q.explain || '');
     lockAnswers();
