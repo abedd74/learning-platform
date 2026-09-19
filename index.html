@@ -74,6 +74,8 @@
     body.theme-whale h1  { color: #0B3C5D; }
     body.theme-whale h2  { color: #0B3C5D; }
     body.theme-whale .sub { color: #3D6B80; }
+    /* Bild-Fragen: neutraler Rahmen statt Lesetext-Kasten */
+    .passage-block.is-figure { background: #FFFFFF; border: 2px solid #E5E5E5; border-radius: 16px; padding: 10px; }
 
     /* ── Screens ───────────────────────────────── */
     .screen {
@@ -3125,7 +3127,13 @@ function renderQuestion() {
   // ── Passage block (optional — for book comprehension questions) ──
   const passageEl = document.getElementById('q-passage');
   if (passageEl) {
-    if (q.passage) {
+    if (q.figure) {
+      // Bild zur Frage (eigene SVG-Zeichnung) — ohne „Lies zuerst"-Etikett
+      passageEl.style.display = '';
+      passageEl.classList.add('is-figure');
+      passageEl.innerHTML = q.figure;
+    } else if (q.passage) {
+      passageEl.classList.remove('is-figure');
       passageEl.style.display = '';
       passageEl.innerHTML =
         `<div class="passage-label">📖 Lies zuerst<span class="it"> / Leggi prima</span></div>` +
@@ -7119,14 +7127,78 @@ anwendungen: [
 //   QB_WHALES — Wale (Sachunterricht bilingual, Klasse 4)
 //   Quelle: Chiaras Lapbook (DE + EN), Lückentext-Wortliste,
 //   Arbeitsblatt-Formate. Test: Do 24.09.2026.
-//   enDraft:true = englischer Wortlaut von uns formuliert (Lehrerin-
-//   Version von Atmung / Nachkommen / Wachstum / Orca fehlt noch) —
-//   nach Eingang der Originaltexte ersetzen.
+//   Alle Fragen auf Deutsch (Test: deutsche Fragen mit englischer
+//   Übersetzung); nur 3 EN↔DE-Wortschatz-Zuordnungen als Brücke zum Lapbook.
 // ═══════════════════════════════════════════════════════════════
+
+// Eigene Zeichnung eines Buckelwals mit 7 nummerierten Punkten (Arbeitsblatt-
+// Aufgabe „Benenne die Körperteile"). active = hervorgehobene Nummer.
+const WAL_PARTS = [
+  null,
+  { name:'Rückenflosse (Finne)',  t:[141,40],  l:[141,13] },
+  { name:'Blaslöcher',            t:[283,51],  l:[283,17] },
+  { name:'Barten im Maul',        t:[322,88],  l:[346,44] },
+  { name:'Auge',                  t:[262,92],  l:[226,17] },
+  { name:'Furchen',               t:[288,113], l:[330,152] },
+  { name:'Brustflosse (Flipper)', t:[203,142], l:[150,158] },
+  { name:'Schwanzflosse (Fluke)', t:[16,66],   l:[44,17] },
+];
+function walDiagram(active) {
+  const marks = WAL_PARTS.map((p, n) => {
+    if (!p) return '';
+    const on = n === active;
+    return `<line x1="${p.l[0]}" y1="${p.l[1]}" x2="${p.t[0]}" y2="${p.t[1]}" stroke="${on ? '#E65100' : '#90A4AE'}" stroke-width="${on ? 2.5 : 1.5}"/>
+      <circle cx="${p.t[0]}" cy="${p.t[1]}" r="${on ? 3.5 : 2.5}" fill="${on ? '#E65100' : '#90A4AE'}"/>
+      <circle cx="${p.l[0]}" cy="${p.l[1]}" r="${on ? 12 : 9.5}" fill="${on ? '#E65100' : '#FFFFFF'}" stroke="${on ? '#E65100' : '#90A4AE'}" stroke-width="2"/>
+      <text x="${p.l[0]}" y="${p.l[1] + (on ? 5 : 4)}" text-anchor="middle" font-size="${on ? 15 : 12}" font-weight="900" fill="${on ? '#FFFFFF' : '#607D8B'}" font-family="Nunito,sans-serif">${n}</text>`;
+  }).join('');
+  return `<svg viewBox="0 0 364 172" style="width:100%;max-width:520px;display:block;margin:0 auto;" role="img" aria-label="Wal mit nummerierten Körperteilen">
+    <path d="M44 80 Q22 70 6 50 Q10 74 24 84 Q10 96 8 120 Q26 102 44 90 Z" fill="#5B7C8D" stroke="#37474F" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M40 80 Q90 58 128 48 L138 38 Q146 40 152 47 Q220 40 276 52 Q284 47 292 54 Q326 62 344 84 Q336 100 306 112 Q262 124 200 116 Q120 108 40 90 Z" fill="#78909C" stroke="#37474F" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M344 84 Q336 100 306 112 Q262 124 214 117 Q250 108 290 100 Q322 94 344 84 Z" fill="#ECEFF1" stroke="#37474F" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M342 86 Q306 92 258 98" fill="none" stroke="#37474F" stroke-width="2" stroke-linecap="round"/>
+    <path d="M334 88 l-2 6 M326 89 l-2 6 M318 90 l-2 6 M310 91 l-2 6 M302 92 l-2 6" stroke="#37474F" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M326 99 Q290 110 236 116 M318 104 Q286 114 246 119 M306 109 Q280 117 256 120" fill="none" stroke="#90A4AE" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="262" cy="92" r="3" fill="#263238"/>
+    <path d="M232 110 Q214 140 186 160 Q200 158 214 150 Q212 156 206 162 Q232 146 246 116 Z" fill="#ECEFF1" stroke="#37474F" stroke-width="2" stroke-linejoin="round"/>
+    <ellipse cx="281" cy="52" rx="3" ry="1.5" fill="#263238"/><ellipse cx="288" cy="53" rx="3" ry="1.5" fill="#263238"/>
+    ${marks}
+  </svg>`;
+}
+function walPartQuestion(n, hint, hint_it) {
+  const names = WAL_PARTS.slice(1).map(p => p.name);
+  const correct = WAL_PARTS[n].name;
+  // 3 Ablenker, fest gewählt (rotierend), damit die Frage stabil bleibt
+  const others = names.filter(x => x !== correct);
+  const distract = [0, 1, 2].map(i => others[(n + i * 2) % others.length]);
+  const it = { 'Rückenflosse (Finne)':'pinna dorsale', 'Blaslöcher':'sfiatatoi', 'Barten im Maul':'fanoni in bocca',
+               'Auge':'occhio', 'Furchen':'solchi della gola', 'Brustflosse (Flipper)':'pinna pettorale',
+               'Schwanzflosse (Fluke)':'pinna caudale' };
+  return { type:'mcq',
+    figure: walDiagram(n),
+    question:`Wie heißt der Körperteil mit der Nummer ${n}?`,
+    question_it:`Come si chiama la parte del corpo con il numero ${n}?`,
+    options:[correct, ...distract],
+    options_it:[correct, ...distract].map(o => it[o]),
+    correct,
+    hint, hint_it,
+    answer_text:`Nummer ${n} ist: ${correct}.`,
+    answer_text_it:`Il numero ${n} è: ${correct}.` };
+}
+
 const QB_WHALES = {
 
 // ── Der Körper ───────────────────────────────────────────────
 koerper: [
+
+  walPartQuestion(1, 'Sie sitzt oben auf dem Rücken des Wals.', 'Si trova sopra, sul dorso della balena.'),
+  walPartQuestion(2, 'Dort spritzt der Wal beim Atmen Wasser aus.', 'Da lì la balena spruzza acqua quando respira.'),
+  walPartQuestion(3, 'Damit filtert der Bartenwal sein Futter — statt Zähnen.', 'Con quelli il Bartenwal filtra il cibo — al posto dei denti.'),
+  walPartQuestion(4, 'Damit sieht der Wal.', 'Con quello la balena vede.'),
+  walPartQuestion(5, 'Lange Falten unten an der Kehle.', 'Lunghe pieghe sotto, sulla gola.'),
+  walPartQuestion(6, 'Die lange Flosse an der Seite — beim Buckelwal ist sie riesig.', 'La lunga pinna sul fianco — nella megattera è enorme.'),
+  walPartQuestion(7, 'Ganz hinten am Wal — damit schwimmt er vorwärts.', 'In fondo alla balena — con quella nuota in avanti.'),
+
 
   { type:'dragmatch',
     question:'Verbinde das englische Wort mit dem deutschen Körperteil! / Match the English word to the German one:',
@@ -7145,20 +7217,6 @@ koerper: [
     hint_it:'Tre parole compaiono tra parentesi anche in tedesco — guarda bene!',
     answer_text:'dorsal fin = Rückenflosse (Finne), fluke = Schwanzflosse, flipper = Brustflosse, blowholes = Blaslöcher.',
     answer_text_it:'pinna dorsale = Rückenflosse, pinna caudale = Schwanzflosse, pinna pettorale = Brustflosse, sfiatatoi = Blaslöcher.' },
-
-  { type:'dragmatch',
-    question:'Und diese drei? / And these three?',
-    question_it:'E queste tre?',
-    pairs:[
-      { left:'eye',           right:'Auge' },
-      { left:'baleen plates', right:'Barten im Maul' },
-      { left:'throat pleats', right:'Furchen' },
-    ],
-    pairs_it:[ { left:'occhio', right:'' }, { left:'fanoni', right:'' }, { left:'solchi della gola', right:'' } ],
-    hint:'"throat" heißt Kehle/Hals — dort hat der Wal lange Falten.',
-    hint_it:'"throat" significa gola — lì la balena ha lunghe pieghe.',
-    answer_text:'eye = Auge, baleen plates = Barten im Maul, throat pleats = Furchen.',
-    answer_text_it:'occhio = Auge, fanoni = Barten, solchi della gola = Furchen.' },
 
   { type:'mcq',
     question:'Wie nennt man die Schwanzflosse des Wals noch?',
@@ -7216,30 +7274,6 @@ koerper: [
     hint_it:'In inglese si chiamano "throat pleats" — throat = gola.',
     answer_text:'Falsch! Die Furchen sind lange Falten unten an der Kehle.',
     answer_text_it:'Falso! I solchi sono lunghe pieghe sotto, sulla gola.' },
-
-  { type:'mcq',
-    question:'What is the English word for „Barten"?',
-    question_it:'Qual è la parola inglese per "Barten" (fanoni)?',
-    options:['baleen plates','blowholes','throat pleats','dorsal fin'],
-    options_it:['fanoni','sfiatatoi','solchi della gola','pinna dorsale'],
-    correct:'baleen plates',
-    hint:'Think of the "baleen whales" — the Bartenwale!',
-    hint_it:'Pensa alle "baleen whales" — le balene con i fanoni!',
-    answer_text:'Barten = baleen plates.',
-    answer_text_it:'Barten = baleen plates (fanoni).' },
-
-  { type:'fitb',
-    question:'Complete the sentence!',
-    question_it:'Completa la frase!',
-    prefix:'The tail fin of a whale is called the',
-    suffix:'.',
-    prefix_it:'La pinna caudale della balena si chiama',
-    suffix_it:'.',
-    answer:['fluke'],
-    hint:'It is the same word in German: die Schwanzflosse (F____).',
-    hint_it:'È la stessa parola in tedesco: Schwanzflosse (F____).',
-    answer_text:'The tail fin is called the fluke.',
-    answer_text_it:'La pinna caudale si chiama fluke.' },
 ],
 
 // ── Zahnwal oder Bartenwal? ──────────────────────────────────
@@ -7341,26 +7375,15 @@ gruppen: [
     answer_text:'Orcas, Delfine, Weißwale und Pottwale sind Zahnwale.',
     answer_text_it:'Orche, delfini, beluga e capodogli sono Zahnwale.' },
 
-  { type:'truefalse',
-    question:'Is Chiara right?',
-    question_it:'Chiara ha ragione?',
-    statement:'Toothed whales have two blowholes and baleen whales have only one.',
-    statement_it:'Gli odontoceti hanno due sfiatatoi e i misticeti uno solo.',
-    correct:false,
-    hint:'It is the other way round!',
-    hint_it:'È il contrario!',
-    answer_text:'Wrong! Baleen whales have TWO blowholes, toothed whales only ONE.',
-    answer_text_it:'Sbagliato! I misticeti ne hanno DUE, gli odontoceti UNO solo.' },
-
   { type:'mcq',
-    question:'Which group is bigger and heavier?',
-    question_it:'Quale gruppo è più grande e pesante?',
-    options:['baleen whales','toothed whales'],
-    options_it:['misticeti (Bartenwale)','odontoceti (Zahnwale)'],
-    correct:'baleen whales',
-    hint:'Up to 35 meters and 130 tons …',
+    question:'Welche Gruppe wird größer und schwerer?',
+    question_it:'Quale gruppo diventa più grande e pesante?',
+    options:['die Bartenwale','die Zahnwale'],
+    options_it:['i Bartenwale','gli Zahnwale'],
+    correct:'die Bartenwale',
+    hint:'Bis zu 35 Meter und 130 Tonnen …',
     hint_it:'Fino a 35 metri e 130 tonnellate …',
-    answer_text:'Baleen whales: up to 35 meters and 130 tons. Toothed whales: up to 20 meters and 40 tons.',
+    answer_text:'Bartenwale: bis zu 35 Meter und 130 Tonnen. Zahnwale: bis zu 20 Meter und 40 Tonnen.',
     answer_text_it:'Misticeti: fino a 35 m e 130 t. Odontoceti: fino a 20 m e 40 t.' },
 ],
 
@@ -7449,28 +7472,15 @@ barten: [
     answer_text_it:'Falso! I Bartenwale non hanno denti, ma centinaia di fanoni.' },
 
   { type:'truefalse',
-    question:'Is Chiara right?',
+    question:'Stimmt das, was Chiara sagt?',
     question_it:'Chiara ha ragione?',
-    statement:'Baleen whales filter their food through baleen plates in their upper jaw.',
+    statement:'Bartenwale filtern ihre Nahrung mit den Barten aus dem Wasser.',
     statement_it:'I misticeti filtrano il cibo attraverso i fanoni nella mascella superiore.',
     correct:true,
-    hint:'They don\'t have teeth — so how do they catch tiny plankton?',
+    hint:'Sie haben keine Zähne — wie fangen sie dann das winzige Plankton?',
     hint_it:'Non hanno denti — come catturano il plancton?',
-    answer_text:'Right! They don\'t have teeth but filter their food through baleen plates.',
+    answer_text:'Richtig! Bartenwale haben keine Zähne — sie filtern ihre Nahrung mit den Barten im Oberkiefer.',
     answer_text_it:'Giusto! Non hanno denti ma filtrano il cibo con i fanoni.' },
-
-  { type:'fitb',
-    question:'Complete the sentence!',
-    question_it:'Completa la frase!',
-    prefix:'Baleen whales include the blue whale and the',
-    suffix:'whale.',
-    prefix_it:'I misticeti comprendono la balenottera azzurra e la',
-    suffix_it:'(in inglese).',
-    answer:['humpback'],
-    hint:'Buckel = hump. Rücken = back.',
-    hint_it:'Buckel = hump (gobba). Rücken = back (schiena).',
-    answer_text:'Baleen whales include the blue whale and the humpback whale.',
-    answer_text_it:'Dei misticeti fanno parte la blue whale e la humpback whale (megattera).' },
 ],
 
 // ── Zahnwale ─────────────────────────────────────────────────
@@ -7567,28 +7577,6 @@ zahn: [
     hint_it:'Sulle tue carte c\'è una T — T come "toothed".',
     answer_text:'Richtig! Weißwal = Beluga. In deinem Lapbook steht für ihn auch „Schweinswal".',
     answer_text_it:'Giusto! Weißwal = beluga. Nel tuo lapbook è chiamato anche "Schweinswal".' },
-
-  { type:'mcq',
-    question:'How many blowholes do toothed whales have?',
-    question_it:'Quanti sfiatatoi hanno gli odontoceti?',
-    options:['only one','two','three'],
-    options_it:['solo uno','due','tre'],
-    correct:'only one',
-    hint:'"They have teeth and only ___ blowhole."',
-    hint_it:'"Hanno denti e solo ___ sfiatatoio."',
-    answer_text:'Toothed whales have teeth and only one blowhole.',
-    answer_text_it:'Gli odontoceti hanno denti e un solo sfiatatoio.' },
-
-  { type:'multiselect',
-    question:'What do toothed whales eat? Select ALL!',
-    question_it:'Che cosa mangiano gli odontoceti? Scegli TUTTO!',
-    options:['fish','squid','plankton only','penguins','seals'],
-    options_it:['pesci','calamari','solo plancton','pinguini','foche'],
-    correct:['fish','squid','penguins','seals'],
-    hint:'Exactly 4. Squid = Tintenfisch, seal = Robbe.',
-    hint_it:'Esattamente 4. Squid = calamaro, seal = foca.',
-    answer_text:'Their prey are fish, squid, crustaceans and also penguins and seals.',
-    answer_text_it:'Le loro prede sono pesci, calamari, crostacei e anche pinguini e foche.' },
 ],
 
 // ── Wissenswertes: Walgesänge & Blauwal ──────────────────────
@@ -7684,26 +7672,15 @@ wissen: [
     answer_text:'An der Körperunterseite ist der Blauwal gelbbraun.',
     answer_text_it:'Sul lato inferiore la balenottera azzurra è giallo-bruna.' },
 
-  { type:'truefalse',
-    question:'Is Chiara right?',
-    question_it:'Chiara ha ragione?',
-    statement:'The blue whale is known as the gentle giant of the sea.',
-    statement_it:'La balenottera azzurra è conosciuta come il gigante gentile del mare.',
-    correct:true,
-    hint:'It is larger, longer and heavier than any other creature.',
-    hint_it:'È più grande, lunga e pesante di qualsiasi altra creatura.',
-    answer_text:'Right! The blue whale is the gentle giant of the sea.',
-    answer_text_it:'Giusto! La blue whale è il gigante gentile del mare.' },
-
   { type:'mcq',
-    question:'Why do humpback whales sing their underwater lullabies?',
-    question_it:'Perché le megattere cantano le loro ninne nanne sott\'acqua?',
-    options:['to communicate with other whales','to scare sharks away','to find plankton'],
+    question:'Wozu dienen die Walgesänge?',
+    question_it:'A che cosa servono i canti delle balene?',
+    options:['Die Wale unterhalten sich damit.','Sie vertreiben damit die Haie.','Sie finden damit Plankton.'],
     options_it:['per comunicare con altre balene','per spaventare gli squali','per trovare il plancton'],
-    correct:'to communicate with other whales',
-    hint:'communicate = sich unterhalten.',
+    correct:'Die Wale unterhalten sich damit.',
+    hint:'Auch du benutzt deine Stimme, um mit anderen zu …',
     hint_it:'communicate = comunicare.',
-    answer_text:'Their songs help them to communicate with other whales.',
+    answer_text:'Durch die Walgesänge unterhalten sich Wale miteinander.',
     answer_text_it:'I loro canti le aiutano a comunicare con le altre balene.' },
 ],
 
@@ -7788,28 +7765,6 @@ orca: [
     hint_it:'Con quello l\'orca vede.',
     answer_text:'Der weiße Fleck ist hinter dem Auge.',
     answer_text_it:'La macchia bianca è dietro l\'occhio.' },
-
-  { type:'truefalse', enDraft:true,
-    question:'Is Chiara right?',
-    question_it:'Chiara ha ragione?',
-    statement:'Orcas are black and have a white belly.',
-    statement_it:'Le orche sono nere e hanno la pancia bianca.',
-    correct:true,
-    hint:'belly = Bauch.',
-    hint_it:'belly = pancia.',
-    answer_text:'Right! Orcas are black with a white belly and a white patch behind the eye.',
-    answer_text_it:'Giusto! Le orche sono nere con la pancia bianca e una macchia bianca dietro l\'occhio.' },
-
-  { type:'mcq', enDraft:true,
-    question:'What is another English name for the orca?',
-    question_it:'Qual è un altro nome inglese dell\'orca?',
-    options:['killer whale','sperm whale','beluga whale','blue whale'],
-    options_it:['killer whale','sperm whale','beluga whale','blue whale'],
-    correct:'killer whale',
-    hint:'It is on your species card: "_____ whale (orca)".',
-    hint_it:'È sulla tua carta delle specie: "_____ whale (orca)".',
-    answer_text:'The orca is also called killer whale — it is the largest predator in the world.',
-    answer_text_it:'L\'orca è chiamata anche killer whale — è il più grande predatore del mondo.' },
 ],
 
 // ── Feinde ───────────────────────────────────────────────────
@@ -7825,6 +7780,17 @@ feinde: [
     hint_it:'Chi osa attaccare un animale così enorme?',
     answer_text:'Falsch! Wale haben aufgrund ihrer Größe nur wenige Fressfeinde.',
     answer_text_it:'Falso! Per le loro dimensioni le balene hanno pochi nemici.' },
+
+  { type:'mcq',
+    question:'Warum haben Wale nur wenige Fressfeinde?',
+    question_it:'Perché le balene hanno pochi nemici naturali?',
+    options:['wegen ihrer Größe','weil sie so schnell sind','weil sie giftig sind'],
+    options_it:['per le loro dimensioni','perché sono così veloci','perché sono velenose'],
+    correct:'wegen ihrer Größe',
+    hint:'Ein Blauwal ist 33 Meter lang — wer greift so ein Tier an?',
+    hint_it:'Una balenottera azzurra è lunga 33 metri — chi attacca un animale così?',
+    answer_text:'Wale haben aufgrund ihrer Größe nur wenige Fressfeinde.',
+    answer_text_it:'Per le loro dimensioni le balene hanno pochi nemici.' },
 
   { type:'multiselect',
     question:'Wer gehört zu den Feinden der Wale? Wähle ALLE aus!',
@@ -7860,28 +7826,6 @@ feinde: [
     hint_it:'Pensa all\'orca — è lei stessa una balena e un predatore.',
     answer_text:'Kleinere Wale werden manchmal von größeren Walen angegriffen.',
     answer_text_it:'Le balene piccole a volte sono attaccate da balene più grandi.' },
-
-  { type:'mcq',
-    question:'What does "predators" mean in German?',
-    question_it:'Che cosa significa "predators" in tedesco?',
-    options:['Feinde','Nahrung','Arten','Atmung'],
-    options_it:['nemici','cibo','specie','respirazione'],
-    correct:'Feinde',
-    hint:'It is the red pocket of your lapbook — with the shark.',
-    hint_it:'È la tasca rossa del tuo lapbook — con lo squalo.',
-    answer_text:'Predators = Feinde (Fressfeinde).',
-    answer_text_it:'Predators = nemici (predatori).' },
-
-  { type:'truefalse',
-    question:'Is Chiara right?',
-    question_it:'Chiara ha ragione?',
-    statement:'Whales have very few predators because they are so big.',
-    statement_it:'Le balene hanno pochissimi predatori perché sono così grandi.',
-    correct:true,
-    hint:'"… due to their size." Size = Größe.',
-    hint_it:'"… due to their size." Size = dimensione.',
-    answer_text:'Right! Whales have very few predators due to their size.',
-    answer_text_it:'Giusto! Le balene hanno pochissimi predatori per via delle loro dimensioni.' },
 ],
 
 // ── Nahrung ──────────────────────────────────────────────────
@@ -7945,30 +7889,6 @@ nahrung: [
     hint_it:'Con i fanoni si filtrano solo animali piccolissimi.',
     answer_text:'Ein Zahnwal — er lebt räuberisch.',
     answer_text_it:'Uno Zahnwal — vive da predatore.' },
-
-  { type:'mcq',
-    question:'What is a "crustacean" in German?',
-    question_it:'Che cos\'è un "crustacean" in tedesco?',
-    options:['Krebs (Krebstier)','Tintenfisch','Robbe','Seevogel'],
-    options_it:['granchio (crostaceo)','calamaro','foca','uccello marino'],
-    correct:'Krebs (Krebstier)',
-    hint:'It has claws — Scheren!',
-    hint_it:'Ha le chele!',
-    answer_text:'crustacean = Krebs / Krebstier.',
-    answer_text_it:'crustacean = granchio / crostaceo.' },
-
-  { type:'fitb',
-    question:'Complete the sentence!',
-    question_it:'Completa la frase!',
-    prefix:'Baleen whales feast on smaller fish species and',
-    suffix:'.',
-    prefix_it:'I misticeti si nutrono di piccoli pesci e di',
-    suffix_it:'.',
-    answer:['plankton'],
-    hint:'The same word in German and English: P_______.',
-    hint_it:'La stessa parola in tedesco e inglese: P_______.',
-    answer_text:'Baleen whales feast on smaller fish species and plankton.',
-    answer_text_it:'I misticeti mangiano piccoli pesci e plancton.' },
 ],
 
 // ── Walarten ─────────────────────────────────────────────────
@@ -7988,21 +7908,6 @@ arten: [
     hint_it:'hump = gobba (Buckel), blue = blu. Poi ne restano solo due!',
     answer_text:'killer whale = Schwertwal, sperm whale = Pottwal, humpback whale = Buckelwal, blue whale = Blauwal.',
     answer_text_it:'orca = Schwertwal, capodoglio = Pottwal, megattera = Buckelwal, balenottera azzurra = Blauwal.' },
-
-  { type:'dragmatch',
-    question:'Und diese? / And these?',
-    question_it:'E queste?',
-    pairs:[
-      { left:'beluga whale',       right:'Weißwal' },
-      { left:'bottlenose dolphin', right:'Großer Tümmler' },
-      { left:'common dolphin',     right:'Gemeiner Delfin' },
-      { left:'narwhal',            right:'Narwal' },
-    ],
-    pairs_it:[ { left:'beluga', right:'' }, { left:'tursiope', right:'' }, { left:'delfino comune', right:'' }, { left:'narvalo', right:'' } ],
-    hint:'Der Beluga ist ganz weiß. "common" heißt "gewöhnlich / gemein".',
-    hint_it:'Il beluga è tutto bianco. "common" significa "comune".',
-    answer_text:'beluga = Weißwal, bottlenose dolphin = Großer Tümmler, common dolphin = Gemeiner Delfin, narwhal = Narwal.',
-    answer_text_it:'beluga = Weißwal, tursiope = Großer Tümmler, delfino comune = Gemeiner Delfin, narvalo = Narwal.' },
 
   { type:'multiselect',
     question:'Auf deinen Walkarten steht T (toothed) oder B (baleen). Welche Wale haben ein B?',
@@ -8025,17 +7930,6 @@ arten: [
     hint_it:'Guarda la lista nel libretto degli Zahnwale: Pottwal, Orca, D…',
     answer_text:'Richtig! Delfine gehören zu den Zahnwalen.',
     answer_text_it:'Giusto! I delfini fanno parte degli Zahnwale.' },
-
-  { type:'mcq',
-    question:'Wie heißt der "spinner dolphin" auf Deutsch?',
-    question_it:'Come si chiama lo "spinner dolphin" in tedesco?',
-    options:['Schlankdelfin','Amazonasdelfin','Commersondelfin','Gemeiner Delfin'],
-    options_it:['Schlankdelfin','Amazonasdelfin','Commersondelfin','Gemeiner Delfin'],
-    correct:'Schlankdelfin',
-    hint:'Er ist dünn und lang — also …',
-    hint_it:'È snello e lungo — quindi … (schlank = snello).',
-    answer_text:'spinner dolphin = Schlankdelfin.',
-    answer_text_it:'spinner dolphin = Schlankdelfin.' },
 
   { type:'fitb',
     question:'Wie heißt der Beluga auf Deutsch?',
@@ -8060,17 +7954,6 @@ arten: [
     hint_it:'Il Großer Tümmler in inglese è "bottlenose dolphin".',
     answer_text:'Der Pottwal (sperm whale) ist kein Delfin. Der Große Tümmler schon!',
     answer_text_it:'Il capodoglio non è un delfino. Il tursiope sì!' },
-
-  { type:'mcq',
-    question:'Which whale is the "Pottwal" in English?',
-    question_it:'Quale balena è il "Pottwal" in inglese?',
-    options:['sperm whale','humpback whale','killer whale','beluga whale'],
-    options_it:['sperm whale','humpback whale','killer whale','beluga whale'],
-    correct:'sperm whale',
-    hint:'It is the biggest toothed whale, with a huge square head.',
-    hint_it:'È il più grande odontoceto, con un\'enorme testa squadrata.',
-    answer_text:'Pottwal = sperm whale.',
-    answer_text_it:'Pottwal = sperm whale (capodoglio).' },
 ],
 
 // ── Atmung ───────────────────────────────────────────────────
@@ -8178,28 +8061,6 @@ atmung: [
     hint_it:'Pensa alla fontana sopra la balena!',
     answer_text:'Durch die Blaslöcher spritzt der Wal bei jedem Atemzug Wasser aus.',
     answer_text_it:'Dagli sfiatatoi la balena spruzza acqua a ogni respiro.' },
-
-  { type:'truefalse', enDraft:true,
-    question:'Is Chiara right?',
-    question_it:'Chiara ha ragione?',
-    statement:'Whales are fish. They breathe with gills.',
-    statement_it:'Le balene sono pesci. Respirano con le branchie.',
-    correct:false,
-    hint:'gills = Kiemen. Do whales have them?',
-    hint_it:'gills = branchie. Le balene le hanno?',
-    answer_text:'Wrong! Whales are mammals. They breathe with lungs, just like humans.',
-    answer_text_it:'Sbagliato! Le balene sono mammiferi. Respirano con i polmoni, come noi.' },
-
-  { type:'mcq', enDraft:true,
-    question:'What is the English word for „Säugetiere"?',
-    question_it:'Qual è la parola inglese per "Säugetiere" (mammiferi)?',
-    options:['mammals','fish','reptiles','predators'],
-    options_it:['mammiferi','pesci','rettili','predatori'],
-    correct:'mammals',
-    hint:'It starts with M — like "Mama".',
-    hint_it:'Inizia con M — come "mamma".',
-    answer_text:'Säugetiere = mammals. Whales are mammals!',
-    answer_text_it:'Säugetiere = mammals. Le balene sono mammiferi!' },
 ],
 
 // ── Nachkommen & Wachstum ────────────────────────────────────
@@ -8286,6 +8147,17 @@ nachkommen: [
     answer_text:'Der junge Wal muss sofort an die Wasseroberfläche, um tief einzuatmen.',
     answer_text_it:'Il piccolo deve salire subito in superficie per respirare profondamente.' },
 
+  { type:'mcq',
+    question:'Was muss ein junger Wal sofort nach der Geburt tun?',
+    question_it:'Che cosa deve fare un piccolo di balena subito dopo la nascita?',
+    options:['an die Wasseroberfläche schwimmen und tief einatmen','tief hinabtauchen und sich verstecken','Plankton fressen'],
+    options_it:['nuotare in superficie e respirare profondamente','immergersi in profondità e nascondersi','mangiare plancton'],
+    correct:'an die Wasseroberfläche schwimmen und tief einatmen',
+    hint:'Wale atmen mit der Lunge — und unter Wasser gibt es keine Luft.',
+    hint_it:'Le balene respirano con i polmoni — e sott\'acqua non c\'è aria.',
+    answer_text:'Der junge Wal muss sofort an die Wasseroberfläche, um tief einzuatmen.',
+    answer_text_it:'Il piccolo deve salire subito in superficie per respirare profondamente.' },
+
   { type:'sequence',
     question:'Das Wachstum eines Schwertwals: Bringe die 4 Bilder in die richtige Reihenfolge!',
     question_it:'La crescita di un\'orca: metti le 4 immagini nell\'ordine giusto!',
@@ -8296,28 +8168,6 @@ nachkommen: [
     hint_it:'Prima il piccolo cresce nella pancia della mamma — si chiama embrione.',
     answer_text:'Embryo → Geburt → Mama und Babyorca → Ausgewachsener Orca.',
     answer_text_it:'Embrione → nascita → mamma e piccolo → orca adulta.' },
-
-  { type:'mcq', enDraft:true,
-    question:'How many babies does a whale mother usually have?',
-    question_it:'Quanti piccoli ha di solito una mamma balena?',
-    options:['only one','two or three','at least five'],
-    options_it:['solo uno','due o tre','almeno cinque'],
-    correct:'only one',
-    hint:'"Wale gebären meist nur ein einziges Junges."',
-    hint_it:'"Le balene partoriscono di solito un solo piccolo."',
-    answer_text:'Whales usually give birth to only one baby.',
-    answer_text_it:'Le balene di solito partoriscono un solo piccolo.' },
-
-  { type:'truefalse', enDraft:true,
-    question:'Is Chiara right?',
-    question_it:'Chiara ha ragione?',
-    statement:'After birth, the baby whale must swim to the surface right away to take a deep breath.',
-    statement_it:'Dopo la nascita il piccolo deve nuotare subito in superficie per fare un respiro profondo.',
-    correct:true,
-    hint:'surface = Wasseroberfläche, breath = Atemzug.',
-    hint_it:'surface = superficie, breath = respiro.',
-    answer_text:'Right! The baby whale needs air at once — whales breathe with lungs.',
-    answer_text_it:'Giusto! Il piccolo ha subito bisogno d\'aria — le balene respirano con i polmoni.' },
 ],
 
 }; // end QB_WHALES
