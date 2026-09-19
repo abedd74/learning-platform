@@ -7186,6 +7186,100 @@ function walPartQuestion(n, hint, hint_it) {
     answer_text_it:`Il numero ${n} è: ${correct}.` };
 }
 
+// Eigene Zeichnungen der 7 Wale vom Arbeitsblatt „Ordne die Namen den Walen
+// richtig zu" — jeweils mit dem typischen Erkennungsmerkmal und der Länge.
+const WAL_PICS = (() => {
+  const O = '#263238';   // Umriss
+  const fluke = (x, y, fill, k = 1) =>
+    `<path d="M${x} ${y - 5} Q${x - 16 * k} ${y - 10 * k} ${x - 28 * k} ${y - 30 * k} Q${x - 27 * k} ${y - 8 * k} ${x - 17 * k} ${y} Q${x - 27 * k} ${y + 8 * k} ${x - 28 * k} ${y + 30 * k} Q${x - 16 * k} ${y + 10 * k} ${x} ${y + 5} Z" fill="${fill}" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`;
+  const wrap = (inner, len, vbw = 330) =>
+    `<svg viewBox="0 0 ${vbw} 132" style="width:100%;max-width:500px;display:block;margin:0 auto;" role="img" aria-label="Zeichnung eines Wals">
+      ${inner}
+      <text x="12" y="124" font-size="15" font-weight="900" fill="#607D8B" font-family="Nunito,sans-serif">Länge: ${len}</text>
+    </svg>`;
+
+  return {
+    beluga: { name:'Weißwal (Beluga)', svg: wrap(`
+      ${fluke(44, 70, '#F5F5F5')}
+      <path d="M42 66 Q92 38 172 35 Q232 35 262 44 Q284 36 294 54 Q296 62 304 67 Q302 74 292 77 Q268 98 200 101 Q112 99 42 75 Z" fill="#FAFAFA" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M304 68 Q292 73 282 70" fill="none" stroke="${O}" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="274" cy="63" r="2.6" fill="${O}"/>
+      <path d="M238 92 Q232 112 214 114 Q220 100 222 91 Z" fill="#EEEEEE" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`, '2–4 m') },
+
+    delfin: { name:'Delfin', svg: wrap(`
+      ${fluke(44, 68, '#78909C')}
+      <path d="M42 65 Q92 42 148 38 Q150 24 155 11 Q172 20 181 39 Q232 40 262 55 Q268 59 271 62 L293 66 L272 73 Q240 93 172 93 Q102 89 42 72 Z" fill="#90A4AE" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M272 73 Q240 93 172 93 Q122 91 84 81 Q170 84 264 68 Z" fill="#ECEFF1" stroke="${O}" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M292 67 L274 68" fill="none" stroke="${O}" stroke-width="1.6"/>
+      <circle cx="258" cy="63" r="2.6" fill="${O}"/>
+      <path d="M228 86 Q218 108 200 114 Q212 98 210 88 Z" fill="#78909C" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`, '3 m') },
+
+    narwal: { name:'Narwal', svg: wrap(`
+      ${fluke(44, 70, '#90A4AE')}
+      <path d="M296 58 L384 47 L297 66 Z" fill="#FFF8E1" stroke="${O}" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M42 66 Q92 40 172 38 Q242 38 278 48 Q298 54 300 67 Q296 82 270 93 Q200 103 122 93 Q72 85 42 75 Z" fill="#CFD8DC" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>
+      ${[[70,68],[92,58],[104,74],[126,52],[138,70],[150,84],[166,48],[176,66],[190,82],[204,50],[214,70],[232,56],[240,80],[254,64],[118,84],[84,80],[268,54],[160,60],[222,90],[196,62]]
+        .map(([x, y], i) => `<ellipse cx="${x}" cy="${y}" rx="${4 + (i % 3)}" ry="${3 + (i % 2)}" fill="#455A64" opacity=".8"/>`).join('')}
+      <circle cx="280" cy="64" r="2.6" fill="${O}"/>
+      <path d="M244 90 Q238 108 222 110 Q228 98 230 90 Z" fill="#B0BEC5" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`, '5 m', 392) },
+
+    orca: { name:'Schwertwal (Orca)', svg: wrap(`
+      ${fluke(44, 70, '#1B1B1B')}
+      <path d="M42 66 Q92 46 142 42 L166 3 Q176 20 184 41 Q242 40 276 52 Q298 60 304 71 Q298 82 278 88 Q232 100 172 98 Q102 92 42 75 Z" fill="#1B1B1B" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M303 73 Q282 88 232 96 Q192 99 160 93 Q202 88 242 85 Q272 81 290 75 Z" fill="#FFFFFF" stroke="${O}" stroke-width="1.2" stroke-linejoin="round"/>
+      <ellipse cx="266" cy="58" rx="12" ry="5" fill="#FFFFFF" transform="rotate(-12 266 58)"/>
+      <ellipse cx="126" cy="50" rx="17" ry="5" fill="#9E9E9E" transform="rotate(-6 126 50)"/>
+      <circle cx="284" cy="65" r="2" fill="#FFFFFF"/>
+      <path d="M234 92 Q230 120 208 122 Q204 106 214 92 Z" fill="#1B1B1B" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`, '8 m') },
+
+    buckelwal: { name:'Buckelwal', svg: wrap(`
+      ${fluke(44, 72, '#455A64')}
+      <path d="M42 68 Q100 50 150 45 L158 36 Q166 38 171 46 Q232 40 272 50 Q300 58 306 75 Q298 93 264 101 Q200 109 132 97 Q82 87 42 77 Z" fill="#546E7A" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M306 76 Q298 93 264 101 Q226 106 190 104 Q232 98 268 90 Q292 84 306 76 Z" fill="#ECEFF1" stroke="${O}" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M296 84 Q262 96 214 102 M286 91 Q258 100 226 104" fill="none" stroke="#90A4AE" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M304 77 Q280 82 252 86" fill="none" stroke="${O}" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="280" cy="57" r="2.4" fill="#37474F"/><circle cx="289" cy="62" r="2.4" fill="#37474F"/><circle cx="296" cy="68" r="2.4" fill="#37474F"/>
+      <circle cx="256" cy="80" r="2.6" fill="${O}"/>
+      <path d="M244 96 Q226 124 168 129 Q186 122 198 116 Q188 120 178 119 Q212 106 228 92 Z" fill="#ECEFF1" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`, '13 m') },
+
+    pottwal: { name:'Pottwal', svg: wrap(`
+      ${fluke(44, 68, '#5D6D75')}
+      <path d="M42 64 Q92 50 130 47 Q141 40 151 47 Q200 42 242 40 L296 40 Q307 42 307 56 L305 80 Q303 89 292 90 Q240 99 180 96 Q102 90 42 73 Z" fill="#78868D" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M290 91 L232 105 Q227 100 236 96 L282 89 Z" fill="#ECEFF1" stroke="${O}" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M70 66 q10 -4 20 0 t20 0 M84 76 q10 -4 20 0 t20 0 M120 60 q10 -4 20 0 t20 0 M136 80 q10 -4 20 0 t20 0 M170 62 q10 -4 20 0 t20 0" fill="none" stroke="#546168" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="238" cy="78" r="2.6" fill="${O}"/>
+      <path d="M222 94 Q218 110 204 112 Q208 102 210 94 Z" fill="#5D6D75" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`, '16 m') },
+
+    blauwal: { name:'Blauwal', svg: wrap(`
+      ${fluke(34, 68, '#4A7BA6', 0.8)}
+      <path d="M32 65 Q62 60 90 57 L98 50 Q104 53 106 56 Q200 47 266 54 Q302 60 314 72 Q304 86 266 91 Q182 97 102 84 Q62 76 32 71 Z" fill="#5B8DB8" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M314 73 Q304 86 266 91 Q226 94 192 93 Q236 88 272 82 Q298 78 314 73 Z" fill="#DCE9F3" stroke="${O}" stroke-width="1.2" stroke-linejoin="round"/>
+      <path d="M302 80 Q268 89 218 93 M290 85 Q262 91 232 93" fill="none" stroke="#7FA6C6" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M312 73 Q290 76 262 78" fill="none" stroke="${O}" stroke-width="1.8" stroke-linecap="round"/>
+      ${[[70,66],[110,62],[140,70],[170,58],[200,68],[230,60],[126,78],[186,80],[250,68],[90,72]]
+        .map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="6" ry="3" fill="#8FB4D3" opacity=".7"/>`).join('')}
+      <circle cx="266" cy="72" r="2.4" fill="${O}"/>
+      <path d="M240 88 Q230 106 212 110 Q222 97 224 88 Z" fill="#4A7BA6" stroke="${O}" stroke-width="2" stroke-linejoin="round"/>`, '33 m') },
+  };
+})();
+
+function walPicQuestion(key, hint, hint_it) {
+  const keys = Object.keys(WAL_PICS);
+  const it = { beluga:'beluga', delfin:'delfino', narwal:'narvalo', orca:'orca', buckelwal:'megattera', pottwal:'capodoglio', blauwal:'balenottera azzurra' };
+  const n = keys.indexOf(key);
+  const opts = [key, ...[1, 3, 5].map(d => keys[(n + d) % keys.length])];
+  return { type:'mcq',
+    figure: WAL_PICS[key].svg,
+    question:`Welcher Wal ist das? (Bild ${'ABCDEFG'[n]})`,
+    question_it:'Che balena è?',
+    options: opts.map(k => WAL_PICS[k].name),
+    options_it: opts.map(k => it[k]),
+    correct: WAL_PICS[key].name,
+    hint, hint_it,
+    answer_text:`Das ist der ${WAL_PICS[key].name}.`,
+    answer_text_it:`È: ${it[key]} (${WAL_PICS[key].name}).` };
+}
+
 const QB_WHALES = {
 
 // ── Der Körper ───────────────────────────────────────────────
@@ -7893,6 +7987,39 @@ nahrung: [
 
 // ── Walarten ─────────────────────────────────────────────────
 arten: [
+
+  walPicQuestion('beluga',    'Er ist ganz weiß, hat eine runde Stirn und KEINE Rückenflosse.', 'È tutto bianco, ha la fronte rotonda e NESSUNA pinna dorsale.'),
+  walPicQuestion('delfin',    'Klein, schlank, mit einer langen Schnauze und einer gebogenen Rückenflosse.', 'Piccolo, snello, con un lungo muso e una pinna dorsale ricurva.'),
+  walPicQuestion('narwal',    'Schau auf den langen Stoßzahn vorne am Kopf!', 'Guarda la lunga zanna davanti alla testa!'),
+  walPicQuestion('orca',      'Schwarz mit weißem Bauch und einem weißen Fleck hinter dem Auge — und eine hohe Rückenflosse wie ein Schwert.', "Nera con la pancia bianca e una macchia bianca dietro l'occhio — e una pinna dorsale alta come una spada."),
+  walPicQuestion('buckelwal', 'Er hat riesige, lange Brustflossen und Furchen an der Kehle.', 'Ha pinne pettorali enormi e lunghe e solchi sulla gola.'),
+  walPicQuestion('pottwal',   'Sein Kopf ist riesig und eckig — fast wie ein Kasten. Der Unterkiefer ist ganz schmal.', 'La sua testa è enorme e squadrata — quasi come una scatola. La mandibola è molto stretta.'),
+  walPicQuestion('blauwal',   'Der längste von allen: 33 Meter! Dunkelblau oder grau, mit einer winzigen Rückenflosse.', 'La più lunga di tutte: 33 metri! Blu scuro o grigia, con una minuscola pinna dorsale.'),
+
+  { type:'mcq',
+    figure: WAL_PICS.buckelwal.svg,
+    question:'Dieser Wal hat Furchen an der Kehle und keine Zähne. Zu welcher Gruppe gehört er?',
+    question_it:'Questa balena ha solchi sulla gola e nessun dente. A quale gruppo appartiene?',
+    options:['zu den Bartenwalen','zu den Zahnwalen'],
+    options_it:['ai Bartenwale','agli Zahnwale'],
+    correct:'zu den Bartenwalen',
+    hint:'Keine Zähne — was hat er stattdessen im Maul?',
+    hint_it:'Niente denti — che cosa ha in bocca al loro posto?',
+    answer_text:'Das ist ein Buckelwal — ein Bartenwal.',
+    answer_text_it:'È una megattera — un Bartenwal.' },
+
+  { type:'mcq',
+    figure: WAL_PICS.orca.svg,
+    question:'Dieser Wal jagt Robben und Pinguine. Zu welcher Gruppe gehört er?',
+    question_it:'Questa balena caccia foche e pinguini. A quale gruppo appartiene?',
+    options:['zu den Zahnwalen','zu den Bartenwalen'],
+    options_it:['agli Zahnwale','ai Bartenwale'],
+    correct:'zu den Zahnwalen',
+    hint:'Zum Jagen braucht man Zähne!',
+    hint_it:'Per cacciare servono i denti!',
+    answer_text:'Das ist ein Orca (Schwertwal) — ein Zahnwal.',
+    answer_text_it:"È un'orca — uno Zahnwal." },
+
 
   { type:'dragmatch',
     question:'Wie heißen diese Wale auf Deutsch? / Match the English and German names:',
