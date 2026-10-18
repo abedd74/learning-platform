@@ -1,0 +1,155 @@
+{
+  "items": [
+    {
+      "id": "book_kap20-htlz3wf",
+      "type": "multi",
+      "prompt": {
+        "de": "Warum hat Odd das Krokodil gestohlen?",
+        "it": "Perché Odd ha rubato il coccodrillo?"
+      },
+      "hint": {
+        "de": "Zwei Gründe werden im Buch erklärt — Odd wollte bei den anderen Eindruck machen.",
+        "it": "Nel libro vengono spiegati due motivi — Odd voleva fare colpo sugli altri."
+      },
+      "explain": {
+        "de": "Odd hat das Krokodil gestohlen, um den anderen etwas zu beweisen und cool zu sein.",
+        "it": "Odd ha rubato il coccodrillo per dimostrare qualcosa agli altri e per sembrare figo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er wollte den anderen etwas beweisen",
+            "it": "Voleva dimostrare qualcosa agli altri"
+          },
+          {
+            "de": "Er wollte cool sein",
+            "it": "Voleva essere figo"
+          },
+          {
+            "de": "Er brauchte Geld",
+            "it": "Aveva bisogno di soldi"
+          },
+          {
+            "de": "Er wollte Mette beeindrucken",
+            "it": "Voleva impressionare Mette"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "book_kap20-homb0iu",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie reagiert Rolf, als er sieht, dass Odd ihm Zack zurückbringt?",
+        "it": "Come reagisce Rolf quando vede che Odd gli riporta Zack?"
+      },
+      "hint": {
+        "de": "Rolf ist sehr froh, Zack wiederzuhaben.",
+        "it": "Rolf è felicissimo di riavere Zack."
+      },
+      "explain": {
+        "de": "Rolf ist unglaublich erleichtert, befreit Zack liebevoll vom Schal und freut sich riesig.",
+        "it": "Rolf è incredibilmente sollevato, libera Zack dalla sciarpa con delicatezza ed è felicissimo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "er ist erleichtert und freut sich riesig",
+            "it": "è sollevato e felicissimo"
+          },
+          {
+            "de": "er ist wütend und ruft die Polizei",
+            "it": "è arrabbiato e chiama la polizia"
+          },
+          {
+            "de": "er weint vor Freude und umarmt Odd",
+            "it": "piange di gioia e abbraccia Odd"
+          },
+          {
+            "de": "er ist überrascht, sagt aber nichts",
+            "it": "è sorpreso ma non dice nulla"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap20-h1avo9p5",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Strafe bekommt Odd von Rolf für den Diebstahl?",
+        "it": "Che punizione riceve Odd da Rolf per il furto?"
+      },
+      "hint": {
+        "de": "Odds Strafe hat direkt mit Tieren zu tun.",
+        "it": "La punizione di Odd ha a che fare direttamente con gli animali."
+      },
+      "explain": {
+        "de": "Odd muss ab sofort als unbezahlter Reptilienassistent an den Wochenenden aushelfen.",
+        "it": "D'ora in poi Odd deve aiutare nei weekend come assistente ai rettili, senza paga."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "er muss als Reptilienassistent arbeiten",
+            "it": "deve lavorare come assistente ai rettili"
+          },
+          {
+            "de": "er muss Geld bezahlen",
+            "it": "deve pagare dei soldi"
+          },
+          {
+            "de": "er muss zum Schuldirektor",
+            "it": "deve andare dal preside"
+          },
+          {
+            "de": "seine Eltern müssen ins Aquarium kommen",
+            "it": "i suoi genitori devono venire all'acquario"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap20-h1dgip2w",
+      "type": "choice",
+      "prompt": {
+        "de": "Zeigt Rolf Odd bei der Polizei an?",
+        "it": "Rolf denuncia Odd alla polizia?"
+      },
+      "hint": {
+        "de": "Rolf und Odd machen einen Deal — nur sie zwei wissen, wer der Krokodildieb war.",
+        "it": "Rolf e Odd fanno un patto — solo loro due sanno chi era il ladro di coccodrilli."
+      },
+      "explain": {
+        "de": "Nein, Rolf zeigt Odd nicht an — es bleibt ihr gemeinsames Geheimnis.",
+        "it": "No, Rolf non denuncia Odd — rimane il loro segreto."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Nein, es bleibt ihr Geheimnis",
+            "it": "No, rimane il loro segreto"
+          },
+          {
+            "de": "Ja, er ruft sofort die Polizei",
+            "it": "Sì, chiama subito la polizia"
+          },
+          {
+            "de": "Er wartet erst eine Woche",
+            "it": "Aspetta prima una settimana"
+          },
+          {
+            "de": "Ja, aber nur wenn Odd es wieder tut",
+            "it": "Sì, ma solo se Odd lo fa di nuovo"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

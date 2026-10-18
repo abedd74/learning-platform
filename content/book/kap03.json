@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "id": "book_kap03-h1blsbl7",
+      "type": "text",
+      "prompt": {
+        "de": "Wer setzt sich neben Odd in der Schule?",
+        "it": "Chi si siede vicino a Odd a scuola?"
+      },
+      "hint": {
+        "de": "Es ist ein Mädchen, das nett zu Odd ist.",
+        "it": "È una ragazza gentile con Odd."
+      },
+      "explain": {
+        "de": "Mette setzt sich neben Odd.",
+        "it": "Mette si siede vicino a Odd."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Neben Odd setzt sich",
+          "it": "Vicino a Odd si siede"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "mette"
+        ]
+      }
+    },
+    {
+      "id": "book_kap03-h1mor8hu",
+      "type": "choice",
+      "prompt": {
+        "de": "Wonach riecht Mettes Haar?",
+        "it": "Di cosa profumano i capelli di Mette?"
+      },
+      "hint": {
+        "de": "Es ist ein Obst, das es in vielen Sorten gibt — grün und rot.",
+        "it": "È un frutto che esiste in tante varietà — verdi e rosse."
+      },
+      "explain": {
+        "de": "Mettes Haar riecht nach Äpfeln.",
+        "it": "I capelli di Mette profumano di mele."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "nach Äpfeln",
+            "it": "di mele"
+          },
+          {
+            "de": "nach Erdbeeren",
+            "it": "di fragole"
+          },
+          {
+            "de": "nach Schokolade",
+            "it": "di cioccolato"
+          },
+          {
+            "de": "nach Blumen",
+            "it": "di fiori"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap03-hep5xav",
+      "type": "choice",
+      "prompt": {
+        "de": "Wer sitzt hinter Odd in der Klasse?",
+        "it": "Chi siede dietro Odd in classe?"
+      },
+      "hint": {
+        "de": "Es ist ein Mädchen, das oft nicht nett zu Odd ist.",
+        "it": "È una ragazza che spesso non è gentile con Odd."
+      },
+      "explain": {
+        "de": "Nova sitzt hinter Odd.",
+        "it": "Nova siede dietro Odd."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Nova"
+          },
+          {
+            "de": "Kine"
+          },
+          {
+            "de": "Lene"
+          },
+          {
+            "de": "Mette"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap03-h1cii57j",
+      "type": "multi",
+      "prompt": {
+        "de": "Über welche zwei Tiere sprechen die Kinder in Kapitel 3?",
+        "it": "Di quali due animali parlano i bambini nel capitolo 3?"
+      },
+      "hint": {
+        "de": "Beide Tiere wirken gefährlich — eines kriecht, eines schwimmt im Meer.",
+        "it": "Entrambi gli animali sembrano pericolosi — uno striscia, l'altro nuota nel mare."
+      },
+      "explain": {
+        "de": "Die Kinder sprechen über Schlangen und Haie.",
+        "it": "I bambini parlano di serpenti e squali."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schlangen",
+            "it": "serpenti"
+          },
+          {
+            "de": "Krokodile",
+            "it": "coccodrilli"
+          },
+          {
+            "de": "Haie",
+            "it": "squali"
+          },
+          {
+            "de": "Hamster",
+            "it": "criceti"
+          }
+        ],
+        "correct": [
+          0,
+          2
+        ]
+      }
+    },
+    {
+      "id": "book_kap03-h1p2b5kn",
+      "type": "choice",
+      "prompt": {
+        "de": "Wer deckt Odds Lüge über das Aquarium sofort auf?",
+        "it": "Chi smonta subito la bugia di Odd sull'acquario?"
+      },
+      "hint": {
+        "de": "Es ist ein Mädchen, das genau weiß, dass Odd lügt.",
+        "it": "È una ragazza che sa benissimo che Odd sta mentendo."
+      },
+      "explain": {
+        "de": "Lene mischt sich ein und sagt, dass Odd lügt.",
+        "it": "Lene interviene e dice che Odd sta mentendo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Lene",
+            "it": "Lene"
+          },
+          {
+            "de": "Nova",
+            "it": "Nova"
+          },
+          {
+            "de": "Knut",
+            "it": "Knut"
+          },
+          {
+            "de": "Mette",
+            "it": "Mette"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

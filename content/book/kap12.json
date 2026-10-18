@@ -1,0 +1,185 @@
+{
+  "items": [
+    {
+      "id": "book_kap12-hlz7w56",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie nennt die Klasse Odd jetzt?",
+        "it": "Come chiama ora la classe Odd?"
+      },
+      "hint": {
+        "de": "Der neue Spitzname hat etwas mit Krokodilen zu tun.",
+        "it": "Il nuovo soprannome ha a che fare con i coccodrilli."
+      },
+      "explain": {
+        "de": "Die Klasse nennt Odd jetzt Krokodil-Odd.",
+        "it": "Ora la classe chiama Odd „Krokodil-Odd\" (Odd il coccodrillo)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Krokodil-Odd"
+          },
+          {
+            "de": "Tier-Odd"
+          },
+          {
+            "de": "Zoo-Odd"
+          },
+          {
+            "de": "Odd der Große"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap12-hbfuadd",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Superkraft würde Odd in Kapitel 12 immer noch am liebsten haben?",
+        "it": "Quale superpotere vorrebbe ancora Odd nel capitolo 12?"
+      },
+      "hint": {
+        "de": "Odds Wunsch ist seit Kapitel 1 derselbe geblieben.",
+        "it": "Il desiderio di Odd è rimasto lo stesso dal capitolo 1."
+      },
+      "explain": {
+        "de": "Odd möchte immer noch am liebsten fliegen.",
+        "it": "Odd vorrebbe ancora, più di tutto, volare."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "fliegen",
+            "it": "volare"
+          },
+          {
+            "de": "unsichtbar sein",
+            "it": "diventare invisibile"
+          },
+          {
+            "de": "Gedanken lesen",
+            "it": "leggere il pensiero"
+          },
+          {
+            "de": "super stark sein",
+            "it": "essere super forte"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap12-hnhbv63",
+      "type": "choice",
+      "prompt": {
+        "de": "Was behauptet Odd, wo er während der Suche war?",
+        "it": "Cosa sostiene Odd di aver fatto durante le ricerche?"
+      },
+      "hint": {
+        "de": "Odd erfindet eine körperliche Ausrede.",
+        "it": "Odd inventa una scusa legata al corpo."
+      },
+      "explain": {
+        "de": "Odd behauptet, er sei mit Bauchschmerzen die ganze Zeit auf dem Klo gewesen.",
+        "it": "Odd sostiene di essere stato tutto il tempo in bagno con il mal di pancia."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "er war mit Bauchschmerzen auf dem Klo",
+            "it": "era in bagno con mal di pancia"
+          },
+          {
+            "de": "er hat die Gruppe verloren",
+            "it": "aveva perso il gruppo"
+          },
+          {
+            "de": "er hat Rolf gesucht",
+            "it": "stava cercando Rolf"
+          },
+          {
+            "de": "er hat den Ausgang nicht gefunden",
+            "it": "non aveva trovato l'uscita"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap12-h1jqnspb",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche verdächtigen Geräusche kommen aus Odds Rucksack?",
+        "it": "Che rumori sospetti provengono dallo zaino di Odd?"
+      },
+      "hint": {
+        "de": "Zack ist nicht ganz still in seinem Versteck.",
+        "it": "Zack non sta proprio zitto nel suo nascondiglio."
+      },
+      "explain": {
+        "de": "Aus dem Rucksack kommen eigenartige Knatschlaute und ein Kratzen.",
+        "it": "Dallo zaino provengono strani rumori di masticazione e graffi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kratzen und Knatschlaute",
+            "it": "graffi e rumori di masticazione"
+          },
+          {
+            "de": "leises Fauchen",
+            "it": "un sibilo sottile"
+          },
+          {
+            "de": "ein Niesen",
+            "it": "uno starnuto"
+          },
+          {
+            "de": "ein Klappern",
+            "it": "un tintinnio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap12-h1higxlt",
+      "type": "choice",
+      "prompt": {
+        "de": "Was denkt Mette, als Odd verrät, er habe gerade mit einem Krokodil geredet?",
+        "it": "Cosa pensa Mette quando Odd rivela di aver parlato con un coccodrillo?"
+      },
+      "hint": {
+        "de": "Mette lacht glucksend — sie nimmt Odds Geständnis nicht ernst.",
+        "it": "Mette ridacchia — non prende sul serio la confessione di Odd."
+      },
+      "explain": {
+        "de": "Mette denkt, Odd denkt sich wieder komische Fantasiegeschichten aus.",
+        "it": "Mette pensa che Odd si stia inventando di nuovo strane storie di fantasia."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie hält es für eine Fantasiegeschichte",
+            "it": "Lo prende come una storia di fantasia"
+          },
+          {
+            "de": "Sie glaubt ihm sofort",
+            "it": "Gli crede subito"
+          },
+          {
+            "de": "Sie warnt den Lehrer",
+            "it": "Avvisa il maestro"
+          },
+          {
+            "de": "Sie fragt nach mehr Details",
+            "it": "Chiede altri dettagli"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "items": [
+    {
+      "id": "book_kap05-h1rcu4wu",
+      "type": "multi",
+      "prompt": {
+        "de": "Welche zwei Aussagen über Krokodile sind richtig?",
+        "it": "Quali due affermazioni sui coccodrilli sono corrette?"
+      },
+      "hint": {
+        "de": "Eine Aussage ist ein Fakt über Krokodile, eine passiert im Buch.",
+        "it": "Un'affermazione è un fatto sui coccodrilli, l'altra succede nel libro."
+      },
+      "explain": {
+        "de": "Krokodilzähne wachsen nach — und Odd streichelt tatsächlich ein Krokodil.",
+        "it": "I denti dei coccodrilli ricrescono — e Odd accarezza davvero un coccodrillo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Ihre Zähne wachsen immer wieder nach",
+            "it": "I denti ricrescono sempre"
+          },
+          {
+            "de": "Odd streichelt ein Krokodil",
+            "it": "Odd accarezza un coccodrillo"
+          },
+          {
+            "de": "Sie können nicht schwimmen",
+            "it": "Non sanno nuotare"
+          },
+          {
+            "de": "Sie schlafen den ganzen Winter",
+            "it": "Dormono tutto l'inverno"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "book_kap05-hn5k02j",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum sind Krokodile bedroht?",
+        "it": "Perché i coccodrilli sono minacciati?"
+      },
+      "hint": {
+        "de": "Es ist leider etwas, das wir selbst verursachen.",
+        "it": "Purtroppo è qualcosa che causiamo noi stessi."
+      },
+      "explain": {
+        "de": "Krokodile sind wegen der Menschen bedroht.",
+        "it": "I coccodrilli sono minacciati per colpa degli esseri umani."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "wegen der Menschen",
+            "it": "per colpa degli esseri umani"
+          },
+          {
+            "de": "wegen anderer Tiere",
+            "it": "per colpa di altri animali"
+          },
+          {
+            "de": "wegen der Kälte",
+            "it": "per il freddo"
+          },
+          {
+            "de": "wegen Krankheiten",
+            "it": "per le malattie"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap05-h1541g9s",
+      "type": "choice",
+      "prompt": {
+        "de": "Was sind Rolfs absolute Lieblingstiere im Aquarium?",
+        "it": "Quali sono gli animali preferiti di Rolf nell'acquario?"
+      },
+      "hint": {
+        "de": "Es sind die gefährlichsten Tiere im Aquarium — und Rolf liebt sie über alles.",
+        "it": "Sono gli animali più pericolosi dell'acquario — e Rolf li adora."
+      },
+      "explain": {
+        "de": "Rolfs Lieblingstiere sind die Krokodile.",
+        "it": "Gli animali preferiti di Rolf sono i coccodrilli."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "die Krokodile",
+            "it": "i coccodrilli"
+          },
+          {
+            "de": "die Pinguine",
+            "it": "i pinguini"
+          },
+          {
+            "de": "die Pfeilschwanzkrebse",
+            "it": "i granchi ferro di cavallo"
+          },
+          {
+            "de": "die Piranhas",
+            "it": "i piranha"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap05-hpat3ck",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt das kleine Krokodil, das Rolf der Klasse zeigt?",
+        "it": "Come si chiama il coccodrillino che Rolf mostra alla classe?"
+      },
+      "hint": {
+        "de": "Der Name klingt kurz und kräftig — fast wie ein Schlag.",
+        "it": "Il nome è corto e deciso — quasi come un colpo."
+      },
+      "explain": {
+        "de": "Das kleine Krokodil heißt Zack.",
+        "it": "Il coccodrillino si chiama Zack."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Das kleine Krokodil heißt",
+          "it": "Il coccodrillino si chiama"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "zack"
+        ]
+      }
+    }
+  ]
+}

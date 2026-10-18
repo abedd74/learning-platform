@@ -1,0 +1,155 @@
+{
+  "items": [
+    {
+      "id": "book_kap15-h8pdrjp",
+      "type": "choice",
+      "prompt": {
+        "de": "Welchen Sport machen die Kinder in Kapitel 15?",
+        "it": "Quale sport fanno i bambini nel capitolo 15?"
+      },
+      "hint": {
+        "de": "Der Name verrät schon, dass man dabei sitzt.",
+        "it": "Il nome rivela già che si gioca da seduti."
+      },
+      "explain": {
+        "de": "Die Kinder spielen Sitzfußball.",
+        "it": "I bambini giocano a calcio da seduti."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Fußball",
+            "it": "calcio"
+          },
+          {
+            "de": "Sitzfußball",
+            "it": "calcio da seduti"
+          },
+          {
+            "de": "Völkerball",
+            "it": "palla avvelenata"
+          },
+          {
+            "de": "Basketball",
+            "it": "pallacanestro"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "book_kap15-h1bpwv7",
+      "type": "choice",
+      "prompt": {
+        "de": "Womit droht der neue, selbstbewusste Odd dem verdutzten Knut?",
+        "it": "Con cosa minaccia il nuovo, sicuro Odd lo sbalordito Knut?"
+      },
+      "hint": {
+        "de": "Odds Drohung ist ziemlich mutig — und zieht Zack mit ein.",
+        "it": "La minaccia di Odd è piuttosto coraggiosa — e tira in ballo Zack."
+      },
+      "explain": {
+        "de": "Odd droht Knut, dass sein Krokodil ihm mit Vergnügen in den Hintern beißen wird.",
+        "it": "Odd minaccia Knut: il suo coccodrillo gli morderà il sedere con piacere."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "sein Krokodil wird ihn in den Hintern beißen",
+            "it": "il suo coccodrillo lo morderà nel sedere"
+          },
+          {
+            "de": "er wird ihn beim Lehrer anzeigen",
+            "it": "lo riferirà al maestro"
+          },
+          {
+            "de": "er wird zurückschlagen",
+            "it": "contrattaccherà"
+          },
+          {
+            "de": "er wird ihn einfach ignorieren",
+            "it": "lo ignorerà semplicemente"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap15-hwmqq6f",
+      "type": "multi",
+      "prompt": {
+        "de": "Welche zwei Mädchen verteidigen Odd und stimmen ihm zu?",
+        "it": "Quali due ragazze difendono Odd e gli danno ragione?"
+      },
+      "hint": {
+        "de": "Zwei Mädchen aus der Klasse halten zu Odd — nicht die, die ihn sonst ärgern.",
+        "it": "Due ragazze della classe stanno dalla parte di Odd — non quelle che di solito lo prendono in giro."
+      },
+      "explain": {
+        "de": "Lene und Mette verteidigen Odd und stimmen ihm zu.",
+        "it": "Lene e Mette difendono Odd e gli danno ragione."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Lene",
+            "it": "Lene"
+          },
+          {
+            "de": "Mette",
+            "it": "Mette"
+          },
+          {
+            "de": "Nova",
+            "it": "Nova"
+          },
+          {
+            "de": "Kine",
+            "it": "Kine"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "book_kap15-h69gr3a",
+      "type": "choice",
+      "prompt": {
+        "de": "Wann soll die Hausaufgabe abgegeben werden?",
+        "it": "Quando va consegnato il compito?"
+      },
+      "hint": {
+        "de": "Es ist der erste Schultag der Woche.",
+        "it": "È il primo giorno di scuola della settimana."
+      },
+      "explain": {
+        "de": "Die Hausaufgabe soll am Montag abgegeben werden.",
+        "it": "Il compito va consegnato lunedì."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "am Montag",
+            "it": "lunedì"
+          },
+          {
+            "de": "am Dienstag",
+            "it": "martedì"
+          },
+          {
+            "de": "am Mittwoch",
+            "it": "mercoledì"
+          },
+          {
+            "de": "am Freitag",
+            "it": "venerdì"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

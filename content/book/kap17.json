@@ -1,0 +1,150 @@
+{
+  "items": [
+    {
+      "id": "book_kap17-h1auqjjs",
+      "type": "multi",
+      "prompt": {
+        "de": "Was brauchen Krokodile zum Leben?",
+        "it": "Di cosa hanno bisogno i coccodrilli per vivere?"
+      },
+      "hint": {
+        "de": "Drei wichtige Bedürfnisse werden in Kapitel 17 erklärt.",
+        "it": "Nel capitolo 17 vengono spiegati tre bisogni importanti."
+      },
+      "explain": {
+        "de": "Krokodile brauchen Wärme, richtiges Futter und viel Wasser zum Schwimmen.",
+        "it": "I coccodrilli hanno bisogno di calore, cibo adeguato e molta acqua per nuotare."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Wärme",
+            "it": "calore"
+          },
+          {
+            "de": "richtiges Futter",
+            "it": "cibo adeguato"
+          },
+          {
+            "de": "viel Wasser zum Schwimmen",
+            "it": "molta acqua per nuotare"
+          },
+          {
+            "de": "Sonnenlicht jeden Tag",
+            "it": "sole ogni giorno"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "id": "book_kap17-hibv11f",
+      "type": "choice",
+      "prompt": {
+        "de": "Wen sieht Odd in den Fernsehnachrichten bitterlich weinen?",
+        "it": "Chi vede Odd piangere a dirotto nelle notizie in televisione?"
+      },
+      "hint": {
+        "de": "Es ist jemand, dem Zack sehr viel bedeutet — er arbeitet im Aquarium.",
+        "it": "È qualcuno a cui Zack sta molto a cuore — lavora all'acquario."
+      },
+      "explain": {
+        "de": "Odd sieht Rolf, den Reptilienchef des Aquariums, in den Nachrichten weinen.",
+        "it": "Odd vede piangere al telegiornale Rolf, il responsabile dei rettili dell'acquario."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Rolf",
+            "it": "Rolf"
+          },
+          {
+            "de": "Espen",
+            "it": "Espen"
+          },
+          {
+            "de": "Gunfrid Askildsen",
+            "it": "Gunfrid Askildsen"
+          },
+          {
+            "de": "Odds Mama",
+            "it": "la mamma di Odd"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap17-hxrxauo",
+      "type": "text",
+      "prompt": {
+        "de": "Wer behauptet im Fernsehen, den mutmaßlichen Krokodildieb gesehen zu haben?",
+        "it": "Chi afferma in televisione di aver visto il presunto ladro di coccodrilli?"
+      },
+      "hint": {
+        "de": "Es ist eine ältere Dame mit einem sehr ungewöhnlichen Namen.",
+        "it": "È una signora anziana con un nome molto insolito."
+      },
+      "explain": {
+        "de": "Gunfrid Askildsen sagt, sie habe einen Mann bei den Büschen gesehen.",
+        "it": "Gunfrid Askildsen dice di aver visto un uomo vicino ai cespugli."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die Zeugin heißt",
+          "it": "Il nome della testimone è"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "gunfrid askildsen",
+          "gunfrid",
+          "askildsen"
+        ]
+      }
+    },
+    {
+      "id": "book_kap17-h1g84xce",
+      "type": "choice",
+      "prompt": {
+        "de": "Was gesteht Odd Kine am Ende des Kapitels unter Tränen?",
+        "it": "Cosa confessa Odd a Kine in lacrime alla fine del capitolo?"
+      },
+      "hint": {
+        "de": "Odd weint und sagt Kine etwas Schlimmes über ihr Haustier.",
+        "it": "Odd piange e dice a Kine qualcosa di terribile sul suo animale."
+      },
+      "explain": {
+        "de": "Odd gesteht Kine unter Tränen, dass er glaubt, das Krokodil habe Schnuppi gefressen.",
+        "it": "Odd confessa a Kine in lacrime che crede che il coccodrillo abbia mangiato Schnuppi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "dass er glaubt, das Krokodil hat Schnuppi gefressen",
+            "it": "che crede che il coccodrillo abbia mangiato Schnuppi"
+          },
+          {
+            "de": "dass er ein Krokodil gestohlen hat",
+            "it": "che ha rubato un coccodrillo"
+          },
+          {
+            "de": "dass er nachts in den Zoo gegangen ist",
+            "it": "che di notte è andato allo zoo"
+          },
+          {
+            "de": "dass Schnuppi schon länger weg ist",
+            "it": "che Schnuppi è sparito da tempo"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

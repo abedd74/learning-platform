@@ -1,0 +1,100 @@
+{
+  "items": [
+    {
+      "id": "book_kap10-hletolz",
+      "type": "text",
+      "prompt": {
+        "de": "Wie viele Krokodile gibt es insgesamt im Zoo?",
+        "it": "Quanti coccodrilli ci sono in totale allo zoo?"
+      },
+      "hint": {
+        "de": "Es ist eine zweistellige Zahl.",
+        "it": "È un numero a due cifre."
+      },
+      "explain": {
+        "de": "Im Zoo gibt es insgesamt 26 Krokodile.",
+        "it": "Allo zoo ci sono in totale 26 coccodrilli."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Im Zoo gibt es insgesamt",
+          "it": "Allo zoo ci sono in totale"
+        },
+        "suffix": {
+          "de": "Krokodile.",
+          "it": "coccodrilli."
+        },
+        "accepted": [
+          "26",
+          "sechsundzwanzig"
+        ]
+      }
+    },
+    {
+      "id": "book_kap10-htgwdir",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie fühlt sich Odd, als er die Treppe nach unten geht?",
+        "it": "Come si sente Odd mentre scende le scale?"
+      },
+      "hint": {
+        "de": "Odds Herz rast, seine Ohren pfeifen — sein Körper zeigt deutliche Stresszeichen.",
+        "it": "Il cuore di Odd batte forte, le orecchie gli fischiano — il suo corpo mostra chiari segni di stress."
+      },
+      "explain": {
+        "de": "Odd hat große Angst, sein Herz rast und er ist schweißgebadet.",
+        "it": "Odd ha molta paura, il cuore gli batte forte ed è in un bagno di sudore."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "er hat große Angst und ist schweißgebadet",
+            "it": "ha molta paura ed è in sudore"
+          },
+          {
+            "de": "er ist aufgeregt und neugierig",
+            "it": "è eccitato e curioso"
+          },
+          {
+            "de": "er ist ruhig und konzentriert",
+            "it": "è calmo e concentrato"
+          },
+          {
+            "de": "er ist froh und voller Energie",
+            "it": "è felice e pieno di energia"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap10-h16htcg9",
+      "type": "text",
+      "prompt": {
+        "de": "Was beschließt Odd, dass er jetzt am meisten braucht?",
+        "it": "Cosa decide Odd che gli serve di più in questo momento?"
+      },
+      "hint": {
+        "de": "Das Wort setzt sich aus „Krokodil\" und etwas anderem zusammen.",
+        "it": "La parola è composta da „Krokodil\" e qualcos'altro."
+      },
+      "explain": {
+        "de": "Odd braucht eine gehörige Portion Krokodilglück.",
+        "it": "A Odd serve una bella dose di Krokodilglück (fortuna da coccodrillo)."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Odd beschließt, er braucht jetzt eine gehörige Portion",
+          "it": "Odd decide che ha bisogno di una bella dose di"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "krokodilglück"
+        ]
+      }
+    }
+  ]
+}

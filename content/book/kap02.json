@@ -1,0 +1,181 @@
+{
+  "items": [
+    {
+      "id": "book_kap02-h7w8jvm",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist Nussi?",
+        "it": "Cos'è Nussi?"
+      },
+      "hint": {
+        "de": "Nussi ist etwas, womit man kuschelt und schläft.",
+        "it": "Nussi è qualcosa con cui si coccola e si dorme."
+      },
+      "explain": {
+        "de": "Nussi ist Odds Kuscheltier.",
+        "it": "Nussi è il peluche di Odd."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "ein Kuscheltier",
+            "it": "un peluche"
+          },
+          {
+            "de": "ein Hund",
+            "it": "un cane"
+          },
+          {
+            "de": "ein Hamster",
+            "it": "un criceto"
+          },
+          {
+            "de": "ein Fußball",
+            "it": "un pallone da calcio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap02-hwy9de8",
+      "type": "choice",
+      "prompt": {
+        "de": "Welchen Sport spielen die Kinder im Unterricht?",
+        "it": "Quale sport fanno i bambini a scuola?"
+      },
+      "hint": {
+        "de": "Es ist ein Wurfspiel, bei dem zwei Mannschaften gegeneinander antreten.",
+        "it": "È un gioco di lancio in cui due squadre si sfidano."
+      },
+      "explain": {
+        "de": "Die Kinder spielen Völkerball.",
+        "it": "I bambini giocano a palla avvelenata."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Völkerball",
+            "it": "palla avvelenata"
+          },
+          {
+            "de": "Fußball",
+            "it": "calcio"
+          },
+          {
+            "de": "Basketball",
+            "it": "pallacanestro"
+          },
+          {
+            "de": "Handball",
+            "it": "pallamano"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap02-hgj46kx",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie viele Tore schießt Petter beim Sport?",
+        "it": "Quanti gol segna Petter durante lo sport?"
+      },
+      "hint": {
+        "de": "Es ist eine gerade Zahl kleiner als drei.",
+        "it": "È un numero pari più piccolo di tre."
+      },
+      "explain": {
+        "de": "Petter schießt zwei Tore.",
+        "it": "Petter segna due gol."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "vier",
+            "it": "quattro"
+          },
+          {
+            "de": "drei",
+            "it": "tre"
+          },
+          {
+            "de": "zwei",
+            "it": "due"
+          },
+          {
+            "de": "keins",
+            "it": "zero"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "book_kap02-h19n4byl",
+      "type": "text",
+      "prompt": {
+        "de": "Was hat Odd zu Hause im Flur vergessen?",
+        "it": "Cosa ha dimenticato Odd a casa nell'ingresso?"
+      },
+      "hint": {
+        "de": "Es ist sein liebstes Kuscheltier — ein Eichhörnchen.",
+        "it": "È il suo peluche preferito — uno scoiattolo."
+      },
+      "explain": {
+        "de": "Odd hat Nussi, sein Kuscheltier-Eichhörnchen, vergessen.",
+        "it": "Odd ha dimenticato Nussi, il suo scoiattolo di peluche."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Im Flur hat Odd sein Kuscheltier vergessen:",
+          "it": "Nell'ingresso Odd ha dimenticato il suo peluche:"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "nussi"
+        ]
+      }
+    },
+    {
+      "id": "book_kap02-h1rg5wx4",
+      "type": "choice",
+      "prompt": {
+        "de": "Was wirft Odd aus Versehen aufs Turnhallendach?",
+        "it": "Cosa lancia accidentalmente Odd sul tetto della palestra?"
+      },
+      "hint": {
+        "de": "Es passiert beim Völkerball — Odd schießt etwas viel zu weit.",
+        "it": "Succede durante la palla avvelenata — Odd lancia qualcosa troppo lontano."
+      },
+      "explain": {
+        "de": "Odd wirft den Ball beim Völkerball aufs Turnhallendach.",
+        "it": "Odd lancia la palla sul tetto della palestra giocando a palla avvelenata."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "den Ball",
+            "it": "la palla"
+          },
+          {
+            "de": "seinen Rucksack",
+            "it": "il suo zaino"
+          },
+          {
+            "de": "sein Federmäppchen",
+            "it": "il suo astuccio"
+          },
+          {
+            "de": "seine Jacke",
+            "it": "la sua giacca"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

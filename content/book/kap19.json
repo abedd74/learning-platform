@@ -1,0 +1,115 @@
+{
+  "items": [
+    {
+      "id": "book_kap19-hn69ec1",
+      "type": "choice",
+      "prompt": {
+        "de": "Wo trifft Odd die älteren Jugendlichen?",
+        "it": "Dove incontra Odd i ragazzi più grandi?"
+      },
+      "hint": {
+        "de": "Es ist ein Ort, wo man Autos betankt.",
+        "it": "È un posto dove si fa benzina."
+      },
+      "explain": {
+        "de": "Odd trifft die Jugendlichen an der Tankstelle.",
+        "it": "Odd incontra i ragazzi alla stazione di servizio."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "an der Tankstelle",
+            "it": "alla stazione di servizio"
+          },
+          {
+            "de": "im Park",
+            "it": "al parco"
+          },
+          {
+            "de": "vor der Schule",
+            "it": "davanti alla scuola"
+          },
+          {
+            "de": "im Supermarkt",
+            "it": "al supermercato"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap19-h1uzkpb1",
+      "type": "choice",
+      "prompt": {
+        "de": "Was passiert, als Odd Zack einpacken will?",
+        "it": "Cosa succede quando Odd vuole mettere Zack nello zaino?"
+      },
+      "hint": {
+        "de": "Zack gibt etwas zurück, das er eigentlich nicht hätte schlucken sollen.",
+        "it": "Zack restituisce qualcosa che non avrebbe dovuto ingoiare."
+      },
+      "explain": {
+        "de": "Zack reißt die Schnauze auf und würgt Kines Mobiltelefon unbeschadet wieder heraus.",
+        "it": "Zack spalanca le fauci e rigurgita il cellulare di Kine, intatto."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Zack würgt Kines Handy heraus",
+            "it": "Zack rigurgita il cellulare di Kine"
+          },
+          {
+            "de": "Zack beißt Odd in die Hand",
+            "it": "Zack morde la mano di Odd"
+          },
+          {
+            "de": "Zack läuft unter das Bett",
+            "it": "Zack corre sotto il letto"
+          },
+          {
+            "de": "Zack schläft ein",
+            "it": "Zack si addormenta"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap19-h4b4d8w",
+      "type": "choice",
+      "prompt": {
+        "de": "Womit transportiert Odd das Krokodil mitten in der Nacht zurück?",
+        "it": "Come trasporta Odd il coccodrillo nel cuore della notte?"
+      },
+      "hint": {
+        "de": "Odd fährt mit dem Krokodil im Rucksack durch die nächtlichen Straßen.",
+        "it": "Odd attraversa le strade notturne con il coccodrillo nello zaino."
+      },
+      "explain": {
+        "de": "Odd verfrachtet Zack mit einem Schal um die Schnauze in den Rucksack und fährt mit dem Fahrrad.",
+        "it": "Odd sistema Zack nello zaino con una sciarpa attorno al muso e va in bicicletta."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "mit dem Fahrrad",
+            "it": "in bicicletta"
+          },
+          {
+            "de": "zu Fuß",
+            "it": "a piedi"
+          },
+          {
+            "de": "mit dem Bus",
+            "it": "con l'autobus"
+          },
+          {
+            "de": "in einem Bollerwagen",
+            "it": "con un carrellino"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

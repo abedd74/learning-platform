@@ -1,0 +1,343 @@
+{
+  "items": [
+    {
+      "id": "book_tierwissen-hot2xj3",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde jedes Tier mit dem richtigen Fakt.",
+        "it": "Collega ogni animale con il fatto corretto."
+      },
+      "hint": {
+        "de": "Jedes Tier hat eine überraschende Eigenschaft.",
+        "it": "Ogni animale ha una caratteristica sorprendente."
+      },
+      "explain": {
+        "de": "Pfeilschwanzkrebs → blaues Blut, Piranha → Pflanzenfresser, Karpfen → Schnuller, Boa → 3 Meter, Rattenschlange → nicht giftig, Krokodile → Dinosaurier.",
+        "it": "Granchio ferro di cavallo → sangue blu, piranha → anche erbivoro, carpe → ciucci, boa → 3 metri, serpente ratto → non velenoso, coccodrilli → dinosauri."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Pfeilschwanzkrebs",
+              "it": "Granchio ferro di cavallo"
+            },
+            "right": {
+              "de": "hat blaues Blut",
+              "it": "ha il sangue blu"
+            }
+          },
+          {
+            "left": {
+              "de": "Piranha",
+              "it": "Piranha"
+            },
+            "right": {
+              "de": "ist auch ein Pflanzenfresser",
+              "it": "è anche erbivoro"
+            }
+          },
+          {
+            "left": {
+              "de": "Manche Karpfen",
+              "it": "Alcune carpe"
+            },
+            "right": {
+              "de": "saugen gerne an Schnullern",
+              "it": "amano succhiare i ciucci"
+            }
+          },
+          {
+            "left": {
+              "de": "Boa Constrictor",
+              "it": "Boa constrictor"
+            },
+            "right": {
+              "de": "kann über drei Meter lang werden",
+              "it": "può superare i tre metri di lunghezza"
+            }
+          },
+          {
+            "left": {
+              "de": "Rattenschlange",
+              "it": "Serpente ratto"
+            },
+            "right": {
+              "de": "ist nicht giftig",
+              "it": "non è velenoso"
+            }
+          },
+          {
+            "left": {
+              "de": "Krokodile",
+              "it": "Coccodrilli"
+            },
+            "right": {
+              "de": "haben zur gleichen Zeit wie Dinosaurier gelebt",
+              "it": "hanno vissuto ai tempi dei dinosauri"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "book_tierwissen-h1ict09f",
+      "type": "choice",
+      "prompt": {
+        "de": "Wovon ernähren sich Krokodile hauptsächlich?",
+        "it": "Di cosa si nutrono principalmente i coccodrilli?"
+      },
+      "hint": {
+        "de": "Krokodile sind Fleischfresser.",
+        "it": "I coccodrilli sono carnivori."
+      },
+      "explain": {
+        "de": "Krokodile ernähren sich hauptsächlich von Fleisch.",
+        "it": "I coccodrilli si nutrono principalmente di carne."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "von Fleisch",
+            "it": "di carne"
+          },
+          {
+            "de": "von Pflanzen",
+            "it": "di piante"
+          },
+          {
+            "de": "von Obst",
+            "it": "di frutta"
+          },
+          {
+            "de": "von Gras",
+            "it": "di erba"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_tierwissen-hijvdje",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist besonders an Krokodilzähnen?",
+        "it": "Cosa c'è di speciale nei denti dei coccodrilli?"
+      },
+      "hint": {
+        "de": "Das macht Krokodile zu sehr guten Jägern.",
+        "it": "Questo rende i coccodrilli ottimi cacciatori."
+      },
+      "explain": {
+        "de": "Krokodilzähne wachsen immer wieder nach.",
+        "it": "I denti dei coccodrilli ricrescono sempre."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie wachsen immer wieder nach",
+            "it": "Ricrescono sempre"
+          },
+          {
+            "de": "Sie sind extra hart",
+            "it": "Sono extra duri"
+          },
+          {
+            "de": "Sie können nicht ausfallen",
+            "it": "Non cadono mai"
+          },
+          {
+            "de": "Sie leuchten im Dunkeln",
+            "it": "Brillano al buio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_tierwissen-h1p5bcf9",
+      "type": "choice",
+      "prompt": {
+        "de": "Was kann der Schleimaal, das sogar Haie in die Flucht schlägt?",
+        "it": "Cosa può fare il pesce fantasma che mette in fuga persino gli squali?"
+      },
+      "hint": {
+        "de": "Der Schleimaal heißt nicht umsonst so — sein Schleim ist seine Superwaffe.",
+        "it": "Non si chiama così per caso — il suo muco è la sua super-arma."
+      },
+      "explain": {
+        "de": "Der Schleimaal kann klebrigen Schleim absondern, der sogar Haie vertreibt.",
+        "it": "Il pesce fantasma può produrre un muco appiccicoso che scaccia persino gli squali."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "klebrigen Schleim absondern",
+            "it": "produrre muco appiccicoso"
+          },
+          {
+            "de": "elektrische Stöße abgeben",
+            "it": "dare scosse elettriche"
+          },
+          {
+            "de": "sehr laut schreien",
+            "it": "emettere suoni fortissimi"
+          },
+          {
+            "de": "seinen Körper aufblasen",
+            "it": "gonfiarsi"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_tierwissen-h1tkuef1",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Tiere haben laut dem Buch zur gleichen Zeit wie die Dinosaurier gelebt?",
+        "it": "Quali animali, secondo il libro, hanno vissuto nello stesso periodo dei dinosauri?"
+      },
+      "hint": {
+        "de": "Rolf erklärt das als Beweis dafür, wie alt und besonders diese Tiere sind.",
+        "it": "Rolf lo spiega come prova di quanto questi animali siano antichi e speciali."
+      },
+      "explain": {
+        "de": "Krokodile haben zur gleichen Zeit wie die Dinosaurier gelebt.",
+        "it": "I coccodrilli hanno vissuto nello stesso periodo dei dinosauri."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Krokodile",
+            "it": "Coccodrilli"
+          },
+          {
+            "de": "Schlangen",
+            "it": "Serpenti"
+          },
+          {
+            "de": "Piranhas",
+            "it": "Piranha"
+          },
+          {
+            "de": "Warane",
+            "it": "Varani"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_tierwissen-h1wm1gca",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie lange kann die Boa Constrictor laut dem Buch werden?",
+        "it": "Quanto può diventare lunga la boa constrictor secondo il libro?"
+      },
+      "hint": {
+        "de": "Es ist mehr als die Körpergröße eines Erwachsenen.",
+        "it": "È più dell'altezza di un adulto."
+      },
+      "explain": {
+        "de": "Die Boa Constrictor kann über drei Meter lang werden.",
+        "it": "La boa constrictor può diventare lunga più di tre metri."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "über drei Meter",
+            "it": "più di tre metri"
+          },
+          {
+            "de": "über einen Meter",
+            "it": "più di un metro"
+          },
+          {
+            "de": "über fünf Meter",
+            "it": "più di cinque metri"
+          },
+          {
+            "de": "genau zwei Meter",
+            "it": "esattamente due metri"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_tierwissen-hfnczag",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum ist die Rattenschlange eigentlich harmlos?",
+        "it": "Perché il serpente ratto è in realtà innocuo?"
+      },
+      "hint": {
+        "de": "Ihr Name klingt gefährlich — aber sie hat keine Waffe.",
+        "it": "Il suo nome suona pericoloso — ma non ha armi."
+      },
+      "explain": {
+        "de": "Die Rattenschlange ist nicht giftig und daher harmlos.",
+        "it": "Il serpente ratto non è velenoso e quindi è innocuo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie ist nicht giftig",
+            "it": "Non è velenosa"
+          },
+          {
+            "de": "Sie ist sehr klein",
+            "it": "È molto piccola"
+          },
+          {
+            "de": "Sie frisst nur Pflanzen",
+            "it": "Mangia solo piante"
+          },
+          {
+            "de": "Sie ist blind",
+            "it": "È cieca"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_tierwissen-h1k7or6x",
+      "type": "choice",
+      "prompt": {
+        "de": "Was für ein Tier ist ein Waran?",
+        "it": "Che tipo di animale è un varano?"
+      },
+      "hint": {
+        "de": "Der Waran ist ein Reptil — aber weder Schlange noch Krokodil.",
+        "it": "Il varano è un rettile — ma non è né un serpente né un coccodrillo."
+      },
+      "explain": {
+        "de": "Ein Waran ist eine große Eidechse.",
+        "it": "Un varano è una grande lucertola."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "eine große Eidechse",
+            "it": "una grande lucertola"
+          },
+          {
+            "de": "eine Schlangenart",
+            "it": "un tipo di serpente"
+          },
+          {
+            "de": "ein Fisch",
+            "it": "un pesce"
+          },
+          {
+            "de": "eine Schildkröte",
+            "it": "una tartaruga"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

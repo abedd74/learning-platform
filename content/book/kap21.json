@@ -1,0 +1,161 @@
+{
+  "items": [
+    {
+      "id": "book_kap21-h1irupu0",
+      "type": "choice",
+      "prompt": {
+        "de": "Wer besucht Odd am Ende des Buches?",
+        "it": "Chi visita Odd alla fine del libro?"
+      },
+      "hint": {
+        "de": "Es ist jemand, der von Anfang an nett zu Odd war.",
+        "it": "È qualcuno che è stato gentile con Odd fin dall'inizio."
+      },
+      "explain": {
+        "de": "Mette besucht Odd am Ende des Buches.",
+        "it": "Mette visita Odd alla fine del libro."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Mette"
+          },
+          {
+            "de": "Nova"
+          },
+          {
+            "de": "Petter"
+          },
+          {
+            "de": "Kine"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap21-h12q726r",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie reagiert Odds Familie, als er von seinem neuen Wochenendjob erzählt?",
+        "it": "Come reagisce la famiglia di Odd quando racconta del suo nuovo lavoro del weekend?"
+      },
+      "hint": {
+        "de": "Odds Familie reagiert sehr positiv auf die ungewöhnliche Neuigkeit.",
+        "it": "La famiglia di Odd reagisce molto positivamente alla notizia insolita."
+      },
+      "explain": {
+        "de": "Odds Familie findet es wahnsinnig cool und nennt ihn bewundernd Schlangenbeschwörer.",
+        "it": "La famiglia di Odd trova la cosa fantastica e lo chiama con ammirazione incantatore di serpenti."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "sie finden es wahnsinnig cool und nennen ihn Schlangenbeschwörer",
+            "it": "trovano la cosa fantastica e lo chiamano domatore di serpenti"
+          },
+          {
+            "de": "sie sind sauer und wollen es verbieten",
+            "it": "sono arrabbiati e vogliono vietarglielo"
+          },
+          {
+            "de": "sie glauben ihm nicht",
+            "it": "non gli credono"
+          },
+          {
+            "de": "sie fragen nach den Details des Diebstahls",
+            "it": "chiedono i dettagli del furto"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap21-h1dl68ns",
+      "type": "choice",
+      "prompt": {
+        "de": "Was fragt Mette Odd lächelnd als allerletzten Satz im Buch?",
+        "it": "Cosa chiede Mette a Odd sorridendo come ultima frase del libro?"
+      },
+      "hint": {
+        "de": "Mettes letzte Frage zeigt, dass sie ihm vielleicht doch mehr glaubt als sie zugegeben hat.",
+        "it": "L'ultima domanda di Mette mostra che forse gli crede più di quanto abbia ammesso."
+      },
+      "explain": {
+        "de": "Mette fragt lächelnd, ob sich das Krokodil vielleicht doch in seinem Rucksack versteckt hatte.",
+        "it": "Mette chiede sorridendo se il coccodrillo forse si era davvero nascosto nel suo zaino."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "ob das Krokodil sich vielleicht doch in seinem Rucksack versteckt hatte",
+            "it": "se il coccodrillo si era forse davvero nascosto nel suo zaino"
+          },
+          {
+            "de": "ob sie ihm von Zack erzählen kann",
+            "it": "se gli può raccontare di Zack"
+          },
+          {
+            "de": "ob sie auch mal ins Aquarium kommen darf",
+            "it": "se può venire anche lei all'acquario"
+          },
+          {
+            "de": "ob sie jetzt beste Freunde sind",
+            "it": "se adesso sono migliori amici"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap21-h1x46pd3",
+      "type": "pairs",
+      "prompt": {
+        "de": "Wer sagt was am Ende des Buches?",
+        "it": "Chi dice cosa alla fine del libro?"
+      },
+      "hint": {
+        "de": "Denk daran, wie jede Person am Ende reagiert.",
+        "it": "Pensa a come reagisce ogni persona alla fine."
+      },
+      "explain": {
+        "de": "Mama → Hast du keine Angst?, Odd → Zum Glück ist es wieder zurück., Mette → Ja, kann schon sein.",
+        "it": "Mama → Non hai paura?, Odd → Per fortuna è tornato., Mette → Sì, può darsi."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Mama",
+              "it": "Mama"
+            },
+            "right": {
+              "de": "Hast du keine Angst?",
+              "it": "Non hai paura?"
+            }
+          },
+          {
+            "left": {
+              "de": "Odd",
+              "it": "Odd"
+            },
+            "right": {
+              "de": "Zum Glück ist es wieder zurück.",
+              "it": "Per fortuna è tornato."
+            }
+          },
+          {
+            "left": {
+              "de": "Mette",
+              "it": "Mette"
+            },
+            "right": {
+              "de": "Ja, kann schon sein.",
+              "it": "Sì, può darsi."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

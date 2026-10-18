@@ -1,0 +1,358 @@
+{
+  "items": [
+    {
+      "id": "book_personen-h1550k3m",
+      "type": "multi",
+      "prompt": {
+        "de": "Wer ärgert Odd in der Schule?",
+        "it": "Chi dà fastidio a Odd a scuola?"
+      },
+      "hint": {
+        "de": "Drei Kinder machen Odd das Leben schwer.",
+        "it": "Tre bambini rendono la vita difficile a Odd."
+      },
+      "explain": {
+        "de": "Nova, Knut und Bjarne ärgern Odd.",
+        "it": "Nova, Knut e Bjarne danno fastidio a Odd."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Nova"
+          },
+          {
+            "de": "Knut"
+          },
+          {
+            "de": "Bjarne"
+          },
+          {
+            "de": "Mette"
+          },
+          {
+            "de": "Petter"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "id": "book_personen-h1bxc1vf",
+      "type": "multi",
+      "prompt": {
+        "de": "Wie ist Mettes Charakter?",
+        "it": "Com'è il carattere di Mette?"
+      },
+      "hint": {
+        "de": "Zwei Eigenschaften beschreiben Mette am besten.",
+        "it": "Due qualità descrivono Mette al meglio."
+      },
+      "explain": {
+        "de": "Mette ist freundlich und schreckhaft.",
+        "it": "Mette è gentile e timorosa."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "freundlich",
+            "it": "gentile"
+          },
+          {
+            "de": "schreckhaft",
+            "it": "timorosa"
+          },
+          {
+            "de": "gemein",
+            "it": "cattiva"
+          },
+          {
+            "de": "arrogant",
+            "it": "arrogante"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "book_personen-hmgsbp4",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt Odds Kuscheltier?",
+        "it": "Come si chiama il peluche di Odd?"
+      },
+      "hint": {
+        "de": "Es ist ein gemütlicher Name für ein Kuscheltier.",
+        "it": "È un nome tenero per un peluche."
+      },
+      "explain": {
+        "de": "Odds Kuscheltier heißt Nussi.",
+        "it": "Il peluche di Odd si chiama Nussi."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Odds Kuscheltier heißt",
+          "it": "Il peluche di Odd si chiama"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "nussi"
+        ]
+      }
+    },
+    {
+      "id": "book_personen-hi9uykx",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde jede Person mit ihrer Eigenschaft.",
+        "it": "Collega ogni persona con la sua caratteristica."
+      },
+      "hint": {
+        "de": "Denk daran, wie sich jede Person im Buch verhält.",
+        "it": "Pensa a come si comporta ogni persona nel libro."
+      },
+      "explain": {
+        "de": "Odd → einsam/tierlieb, Mette → freundlich/mutig, Rolf → cool/tätowiert, Nova → gemein/frech.",
+        "it": "Odd → solitario/amante degli animali, Mette → gentile/coraggiosa, Rolf → figo/tatuato, Nova → cattiva/sfacciata."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Odd",
+              "it": "Odd"
+            },
+            "right": {
+              "de": "einsam und tierlieb",
+              "it": "solitario e amante degli animali"
+            }
+          },
+          {
+            "left": {
+              "de": "Mette",
+              "it": "Mette"
+            },
+            "right": {
+              "de": "freundlich und mutig",
+              "it": "gentile e coraggiosa"
+            }
+          },
+          {
+            "left": {
+              "de": "Rolf",
+              "it": "Rolf"
+            },
+            "right": {
+              "de": "cool und tätowiert",
+              "it": "figo e tatuato"
+            }
+          },
+          {
+            "left": {
+              "de": "Nova",
+              "it": "Nova"
+            },
+            "right": {
+              "de": "gemein und frech",
+              "it": "cattiva e sfacciata"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "book_personen-h12z1oth",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt Odds Schwester?",
+        "it": "Come si chiama la sorella di Odd?"
+      },
+      "hint": {
+        "de": "Ihr Name beginnt mit K.",
+        "it": "Il suo nome inizia con la K."
+      },
+      "explain": {
+        "de": "Odds Schwester heißt Kine.",
+        "it": "La sorella di Odd si chiama Kine."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kine",
+            "it": "Kine"
+          },
+          {
+            "de": "Lene",
+            "it": "Lene"
+          },
+          {
+            "de": "Mette",
+            "it": "Mette"
+          },
+          {
+            "de": "Nova",
+            "it": "Nova"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_personen-h1h5mnz0",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist Rolfs Aufgabe im Aquarium?",
+        "it": "Qual è il ruolo di Rolf nell'acquario?"
+      },
+      "hint": {
+        "de": "Rolf ist zuständig für die gefährlichsten Tiere im Aquarium.",
+        "it": "Rolf è responsabile degli animali più pericolosi dell'acquario."
+      },
+      "explain": {
+        "de": "Rolf ist der Reptilienchef im Aquarium.",
+        "it": "Rolf è il responsabile dei rettili dell'acquario."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er ist der Reptilienchef",
+            "it": "È il responsabile dei rettili"
+          },
+          {
+            "de": "Er verkauft Eintrittskarten",
+            "it": "Vende i biglietti"
+          },
+          {
+            "de": "Er pflegt die Pinguine",
+            "it": "Si prende cura dei pinguini"
+          },
+          {
+            "de": "Er ist der Direktor",
+            "it": "È il direttore"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_personen-h6gjx41",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum wünscht sich Odd ein Tier mit scharfen Zähnen als Freund?",
+        "it": "Perché Odd desidera un animale con denti affilati come amico?"
+      },
+      "hint": {
+        "de": "Odd denkt, mit einem gefährlichen Freund würden die anderen Respekt haben — oder Angst.",
+        "it": "Odd pensa che con un amico pericoloso gli altri avrebbero rispetto — o paura."
+      },
+      "explain": {
+        "de": "Odd wünscht sich ein Tier mit scharfen Zähnen, damit er nicht mehr feige sein muss und die anderen Respekt haben.",
+        "it": "Odd desidera un animale con denti affilati per non dover più essere codardo e farsi rispettare dagli altri."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "damit er nicht mehr feige sein muss",
+            "it": "per non dover essere più codardo"
+          },
+          {
+            "de": "weil er Tiere so liebt",
+            "it": "perché ama molto gli animali"
+          },
+          {
+            "de": "weil Mette Krokodile mag",
+            "it": "perché a Mette piacciono i coccodrilli"
+          },
+          {
+            "de": "weil Rolf ihn dazu ermutigt hat",
+            "it": "perché Rolf lo ha incoraggiato"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_personen-h1hqpih4",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Veränderung zeigt Odd im Verlauf der Geschichte?",
+        "it": "Che cambiamento mostra Odd nel corso della storia?"
+      },
+      "hint": {
+        "de": "Am Ende wagt Odd Dinge, die er am Anfang nie getan hätte.",
+        "it": "Alla fine Odd osa cose che all'inizio non avrebbe mai fatto."
+      },
+      "explain": {
+        "de": "Odd wird im Verlauf der Geschichte mutiger und selbstbewusster.",
+        "it": "Nel corso della storia Odd diventa più coraggioso e sicuro di sé."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er wird mutiger und selbstbewusster",
+            "it": "Diventa più coraggioso e sicuro di sé"
+          },
+          {
+            "de": "Er wird ängstlicher",
+            "it": "Diventa più timoroso"
+          },
+          {
+            "de": "Er wechselt die Schule",
+            "it": "Cambia scuola"
+          },
+          {
+            "de": "Er verliert seinen besten Freund",
+            "it": "Perde il suo migliore amico"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_personen-h1kiew0e",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist Lenes Rolle in der Geschichte?",
+        "it": "Qual è il ruolo di Lene nella storia?"
+      },
+      "hint": {
+        "de": "Lene sagt schon in Kapitel 3 genau, was Sache ist.",
+        "it": "Già nel capitolo 3 Lene dice esattamente come stanno le cose."
+      },
+      "explain": {
+        "de": "Lene ist klug und spricht immer direkt die Wahrheit aus — sie deckt zum Beispiel Odds Lüge sofort auf.",
+        "it": "Lene è intelligente e dice sempre la verità senza giri di parole — per esempio smonta subito la bugia di Odd."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie ist klug und spricht immer direkt die Wahrheit aus",
+            "it": "È intelligente e dice sempre la verità senza giri di parole"
+          },
+          {
+            "de": "Sie ist Odds beste Freundin",
+            "it": "È la migliore amica di Odd"
+          },
+          {
+            "de": "Sie hilft Odd beim Krokodil-Plan",
+            "it": "Aiuta Odd con il piano del coccodrillo"
+          },
+          {
+            "de": "Sie ärgert Odd zusammen mit Nova",
+            "it": "Dà fastidio a Odd insieme a Nova"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

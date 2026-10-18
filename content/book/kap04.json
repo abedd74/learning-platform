@@ -1,0 +1,180 @@
+{
+  "items": [
+    {
+      "id": "book_kap04-h1i31fid",
+      "type": "multi",
+      "prompt": {
+        "de": "Welche zwei Wörter passen zu Rolf, dem Tierflüsterer?",
+        "it": "Quali due aggettivi descrivono Rolf, l'ammansitore di animali?"
+      },
+      "hint": {
+        "de": "Rolf ist ein Tierflüsterer — denke daran, wie er aussieht und wirkt.",
+        "it": "Rolf è un ammansitore di animali — pensa a come appare e all'impressione che fa."
+      },
+      "explain": {
+        "de": "Rolf ist mutig und tätowiert.",
+        "it": "Rolf è coraggioso e tatuato."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "mutig",
+            "it": "coraggioso"
+          },
+          {
+            "de": "tätowiert",
+            "it": "tatuato"
+          },
+          {
+            "de": "ängstlich",
+            "it": "pauroso"
+          },
+          {
+            "de": "langweilig",
+            "it": "noioso"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "book_kap04-h1f2vxi1",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Tier zeigt Rolf den Kindern zuerst?",
+        "it": "Quale animale mostra Rolf ai bambini per primo?"
+      },
+      "hint": {
+        "de": "Es ist ein Tier mit einem ungewöhnlichen Namen.",
+        "it": "È un animale dal nome insolito."
+      },
+      "explain": {
+        "de": "Rolf zeigt den Kindern zuerst die Pfeilschwanzkrebse.",
+        "it": "Rolf mostra per primi ai bambini i granchi ferro di cavallo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Pfeilschwanzkrebse"
+          },
+          {
+            "de": "Krokodile"
+          },
+          {
+            "de": "Schlangen"
+          },
+          {
+            "de": "Piranhas"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap04-hsibymt",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt der tätowierte Mitarbeiter im Aquarium?",
+        "it": "Come si chiama il dipendente tatuato dell'acquario?"
+      },
+      "hint": {
+        "de": "Sein Name ist kurz — eine einzige Silbe.",
+        "it": "Il suo nome è corto — una sola sillaba."
+      },
+      "explain": {
+        "de": "Der tätowierte Mitarbeiter heißt Rolf.",
+        "it": "Il dipendente tatuato si chiama Rolf."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Der tätowierte Mitarbeiter heißt",
+          "it": "Il dipendente tatuato si chiama"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "rolf"
+        ]
+      }
+    },
+    {
+      "id": "book_kap04-hv5s26l",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Tier hat laut Rolf blaues Blut?",
+        "it": "Quale animale ha il sangue blu secondo Rolf?"
+      },
+      "hint": {
+        "de": "Es ist ein Meerestier mit vielen Beinen und einem langen Schwanz.",
+        "it": "È un animale marino con tante zampe e una lunga coda."
+      },
+      "explain": {
+        "de": "Der Pfeilschwanzkrebs hat tatsächlich blaues Blut.",
+        "it": "Il granchio ferro di cavallo ha davvero il sangue blu."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "der Pfeilschwanzkrebs",
+            "it": "il granchio ferro di cavallo"
+          },
+          {
+            "de": "der Piranha",
+            "it": "il piranha"
+          },
+          {
+            "de": "der Waran",
+            "it": "il varano"
+          },
+          {
+            "de": "die Rattenschlange",
+            "it": "il serpente ratto"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap04-h1o068ms",
+      "type": "choice",
+      "prompt": {
+        "de": "In wen stolpert Odd, als er versucht wie ein Pinguin zu watscheln?",
+        "it": "Contro chi inciampa Odd mentre cerca di camminare come un pinguino?"
+      },
+      "hint": {
+        "de": "Odd verliert das Gleichgewicht und kracht in eine Gruppe hinein — Nova ist dabei.",
+        "it": "Odd perde l'equilibrio e finisce contro un gruppo — c'è anche Nova."
+      },
+      "explain": {
+        "de": "Odd stolpert in eine Gruppe Mädchen, woraufhin Nova ihm einen Stüber verpasst.",
+        "it": "Odd inciampa contro un gruppo di ragazze, e Nova gli dà un colpetto."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "eine Gruppe Mädchen",
+            "it": "un gruppo di ragazze"
+          },
+          {
+            "de": "Rolf",
+            "it": "Rolf"
+          },
+          {
+            "de": "seinen Lehrer Espen",
+            "it": "il suo maestro Espen"
+          },
+          {
+            "de": "einen Wachmann",
+            "it": "una guardia"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

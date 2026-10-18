@@ -1,0 +1,231 @@
+{
+  "id": "book",
+  "name": {
+    "de": "Der Krokodildieb",
+    "it": "Comprensione del testo"
+  },
+  "icon": "📖",
+  "subject": {
+    "de": "Deutsch",
+    "it": "Tedesco"
+  },
+  "grades": [
+    3
+  ],
+  "archive": true,
+  "engine": "quiz",
+  "mascot": {
+    "key": "book",
+    "name": "Zacki"
+  },
+  "idPrefix": "book_",
+  "legacyStorageKey": "wq_editor_QB_book",
+  "successTitle": {
+    "de": "Buch-Expertin",
+    "it": "esperta del libro"
+  },
+  "srs": {
+    "intervals": [
+      0,
+      1,
+      2,
+      4,
+      7,
+      14
+    ]
+  },
+  "topics": [
+    {
+      "id": "kap01",
+      "label": {
+        "de": "Kapitel 1"
+      },
+      "icon": "📖",
+      "file": "kap01.json"
+    },
+    {
+      "id": "kap02",
+      "label": {
+        "de": "Kapitel 2"
+      },
+      "icon": "📖",
+      "file": "kap02.json"
+    },
+    {
+      "id": "kap03",
+      "label": {
+        "de": "Kapitel 3"
+      },
+      "icon": "📖",
+      "file": "kap03.json"
+    },
+    {
+      "id": "kap04",
+      "label": {
+        "de": "Kapitel 4"
+      },
+      "icon": "📖",
+      "file": "kap04.json"
+    },
+    {
+      "id": "kap05",
+      "label": {
+        "de": "Kapitel 5"
+      },
+      "icon": "📖",
+      "file": "kap05.json"
+    },
+    {
+      "id": "kap06",
+      "label": {
+        "de": "Kapitel 6"
+      },
+      "icon": "📖",
+      "file": "kap06.json"
+    },
+    {
+      "id": "kap07",
+      "label": {
+        "de": "Kapitel 7"
+      },
+      "icon": "📖",
+      "file": "kap07.json"
+    },
+    {
+      "id": "kap08",
+      "label": {
+        "de": "Kapitel 8"
+      },
+      "icon": "📖",
+      "file": "kap08.json"
+    },
+    {
+      "id": "kap09",
+      "label": {
+        "de": "Kapitel 9"
+      },
+      "icon": "📖",
+      "file": "kap09.json"
+    },
+    {
+      "id": "kap10",
+      "label": {
+        "de": "Kapitel 10"
+      },
+      "icon": "📖",
+      "file": "kap10.json"
+    },
+    {
+      "id": "kap11",
+      "label": {
+        "de": "Kapitel 11"
+      },
+      "icon": "📖",
+      "file": "kap11.json"
+    },
+    {
+      "id": "kap12",
+      "label": {
+        "de": "Kapitel 12"
+      },
+      "icon": "📖",
+      "file": "kap12.json"
+    },
+    {
+      "id": "kap13",
+      "label": {
+        "de": "Kapitel 13"
+      },
+      "icon": "📖",
+      "file": "kap13.json"
+    },
+    {
+      "id": "kap14",
+      "label": {
+        "de": "Kapitel 14"
+      },
+      "icon": "📖",
+      "file": "kap14.json"
+    },
+    {
+      "id": "kap15",
+      "label": {
+        "de": "Kapitel 15"
+      },
+      "icon": "📖",
+      "file": "kap15.json"
+    },
+    {
+      "id": "kap16",
+      "label": {
+        "de": "Kapitel 16"
+      },
+      "icon": "📖",
+      "file": "kap16.json"
+    },
+    {
+      "id": "kap17",
+      "label": {
+        "de": "Kapitel 17"
+      },
+      "icon": "📖",
+      "file": "kap17.json"
+    },
+    {
+      "id": "kap18",
+      "label": {
+        "de": "Kapitel 18"
+      },
+      "icon": "📖",
+      "file": "kap18.json"
+    },
+    {
+      "id": "kap19",
+      "label": {
+        "de": "Kapitel 19"
+      },
+      "icon": "📖",
+      "file": "kap19.json"
+    },
+    {
+      "id": "kap20",
+      "label": {
+        "de": "Kapitel 20"
+      },
+      "icon": "📖",
+      "file": "kap20.json"
+    },
+    {
+      "id": "kap21",
+      "label": {
+        "de": "Kapitel 21"
+      },
+      "icon": "📖",
+      "file": "kap21.json"
+    },
+    {
+      "id": "personen",
+      "label": {
+        "de": "Personen & Charaktere"
+      },
+      "icon": "👤",
+      "file": "personen.json"
+    },
+    {
+      "id": "handlung",
+      "label": {
+        "de": "Handlung & Ereignisse"
+      },
+      "icon": "📋",
+      "file": "handlung.json"
+    },
+    {
+      "id": "tierwissen",
+      "label": {
+        "de": "Tierwissen"
+      },
+      "icon": "🐊",
+      "file": "tierwissen.json"
+    }
+  ]
+}

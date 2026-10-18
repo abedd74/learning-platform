@@ -1,0 +1,182 @@
+{
+  "items": [
+    {
+      "id": "book_kap08-hafvmys",
+      "type": "choice",
+      "prompt": {
+        "de": "Wo versteckt Odd das Krokodil?",
+        "it": "Dove nasconde Odd il coccodrillo?"
+      },
+      "hint": {
+        "de": "Zack ist nicht weit von Odds Bett entfernt.",
+        "it": "Zack non è lontano dal letto di Odd."
+      },
+      "explain": {
+        "de": "Odd versteckt das Krokodil in seinem Zimmer.",
+        "it": "Odd nasconde il coccodrillo nella sua stanza."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "in seinem Zimmer",
+            "it": "nella sua stanza"
+          },
+          {
+            "de": "auf dem Dachboden",
+            "it": "in soffitta"
+          },
+          {
+            "de": "in der Garage",
+            "it": "in garage"
+          },
+          {
+            "de": "im Badezimmer",
+            "it": "in bagno"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap08-h12ezkjj",
+      "type": "choice",
+      "prompt": {
+        "de": "Wann schleicht sich Odd unbemerkt von der Klasse weg?",
+        "it": "Quando si allontana Odd dalla classe senza farsi notare?"
+      },
+      "hint": {
+        "de": "Die anderen sind abgelenkt von einem ganz anderen Tier-Erlebnis.",
+        "it": "Gli altri sono distratti da un'esperienza con tutt'altro animale."
+      },
+      "explain": {
+        "de": "Odd schleicht sich weg, während die Klasse damit beschäftigt ist, die Pinguine mit Heringen zu füttern.",
+        "it": "Odd si allontana di soppiatto mentre la classe è impegnata a dare le aringhe ai pinguini."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "während die Klasse Pinguine mit Heringen füttert",
+            "it": "mentre la classe dà le aringhe ai pinguini"
+          },
+          {
+            "de": "während Rolf die Krokodile erklärt",
+            "it": "mentre Rolf spiega i coccodrilli"
+          },
+          {
+            "de": "während sie Mittagspause machen",
+            "it": "durante la pausa pranzo"
+          },
+          {
+            "de": "während Espen die Kinder zählt",
+            "it": "mentre Espen conta i bambini"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap08-h1egbflj",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum muss Odd in seinem Versteck plötzlich die Luft anhalten?",
+        "it": "Perché Odd deve trattenere il respiro nel suo nascondiglio?"
+      },
+      "hint": {
+        "de": "Sein Körper macht in diesem Moment genau das Falsche.",
+        "it": "Il suo corpo fa proprio la cosa sbagliata in quel momento."
+      },
+      "explain": {
+        "de": "Odd muss die Luft anhalten, weil er zweimal niesen muss und Angst hat, entdeckt zu werden.",
+        "it": "Odd deve trattenere il respiro perché deve starnutire due volte e ha paura di essere scoperto."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "weil er niesen muss",
+            "it": "perché deve starnutire"
+          },
+          {
+            "de": "weil ein Krokodil auf ihn zukommt",
+            "it": "perché un coccodrillo si avvicina"
+          },
+          {
+            "de": "weil er Angst bekommt",
+            "it": "perché ha paura"
+          },
+          {
+            "de": "weil ein Wächter vorbeigeht",
+            "it": "perché passa una guardia"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap08-hfimner",
+      "type": "choice",
+      "prompt": {
+        "de": "Vor welchem Tier gruselt Odd sich auf dem Weg besonders?",
+        "it": "Di quale animale si spaventa particolarmente Odd durante il percorso?"
+      },
+      "hint": {
+        "de": "Dieses Tier produziert klebrigen Schleim — damit schlägt es sogar Haie in die Flucht!",
+        "it": "Questo animale produce un muco appiccicoso — con cui mette in fuga persino gli squali!"
+      },
+      "explain": {
+        "de": "Der Schleimaal gruselt Odd besonders — er kann Schleim absondern, der sogar Haie vertreibt.",
+        "it": "Il pesce fantasma spaventa Odd in particolare — può produrre un muco che scaccia persino gli squali."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "dem Schleimaal",
+            "it": "il pesce fantasma"
+          },
+          {
+            "de": "dem Waran",
+            "it": "il varano"
+          },
+          {
+            "de": "dem Piranha",
+            "it": "il piranha"
+          },
+          {
+            "de": "dem Pfeilschwanzkrebs",
+            "it": "il granchio ferro di cavallo"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap08-h184p1wz",
+      "type": "text",
+      "prompt": {
+        "de": "Wie viele Krokodile sind auf dem Zooplan eingezeichnet?",
+        "it": "Quanti coccodrilli sono segnati sulla mappa dello zoo?"
+      },
+      "hint": {
+        "de": "Es ist eine einstellige Zahl.",
+        "it": "È un numero a una cifra."
+      },
+      "explain": {
+        "de": "Auf dem Zooplan sind 5 Krokodile eingezeichnet.",
+        "it": "Sulla mappa dello zoo sono segnati 5 coccodrilli."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Auf dem Zooplan sind",
+          "it": "Sulla mappa dello zoo ci sono"
+        },
+        "suffix": {
+          "de": "Krokodile eingezeichnet.",
+          "it": "coccodrilli segnati."
+        },
+        "accepted": [
+          "5",
+          "fünf"
+        ]
+      }
+    }
+  ]
+}

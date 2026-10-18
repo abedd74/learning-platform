@@ -1,0 +1,168 @@
+{
+  "items": [
+    {
+      "id": "book_kap06-hn70bby",
+      "type": "pairs",
+      "prompt": {
+        "de": "Wer sagt was in Kapitel 6?",
+        "it": "Chi dice cosa nel capitolo 6?"
+      },
+      "hint": {
+        "de": "Jede Person hat eine typische Reaktion.",
+        "it": "Ogni persona ha una reazione tipica."
+      },
+      "explain": {
+        "de": "Kine → ekelig, Odd → gestreichelt, Mama → Beeil dich.",
+        "it": "Kine → schifosi, Odd → accarezzato, Mama → sbrigati."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Kine",
+              "it": "Kine"
+            },
+            "right": {
+              "de": "Äh, Krokodile sind ekelig!",
+              "it": "Bleah, i coccodrilli sono schifosi!"
+            }
+          },
+          {
+            "left": {
+              "de": "Odd",
+              "it": "Odd"
+            },
+            "right": {
+              "de": "Ich habe ein Krokodil gestreichelt.",
+              "it": "Ho accarezzato un coccodrillo."
+            }
+          },
+          {
+            "left": {
+              "de": "Mama",
+              "it": "Mama"
+            },
+            "right": {
+              "de": "Beeil dich!",
+              "it": "Sbrigati!"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "book_kap06-hx8ysqh",
+      "type": "multi",
+      "prompt": {
+        "de": "Was denkt Odd nach dem Zoobesuch?",
+        "it": "Cosa pensa Odd dopo la visita allo zoo?"
+      },
+      "hint": {
+        "de": "Odds Gedanken drehen sich um Zack und Freundschaft.",
+        "it": "I pensieri di Odd ruotano attorno a Zack e all'amicizia."
+      },
+      "explain": {
+        "de": "Odd möchte ein Krokodil als Freund und denkt, Zack hätte es bei ihm gut.",
+        "it": "Odd vorrebbe un coccodrillo come amico e pensa che Zack starebbe bene da lui."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er möchte ein Krokodil als Freund haben",
+            "it": "Vuole un coccodrillo come amico"
+          },
+          {
+            "de": "Zack hätte es bei ihm gut",
+            "it": "Zack starebbe bene con lui"
+          },
+          {
+            "de": "Er will nie wieder in den Zoo",
+            "it": "Non vuole più andare allo zoo"
+          },
+          {
+            "de": "Er mag keine Krokodile",
+            "it": "Non gli piacciono i coccodrilli"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "book_kap06-hfk7ih0",
+      "type": "choice",
+      "prompt": {
+        "de": "Was fressen Krokodile laut Rolfs Erklärung?",
+        "it": "Di cosa si nutrono i coccodrilli secondo la spiegazione di Rolf?"
+      },
+      "hint": {
+        "de": "Krokodile sind Raubtiere — Rolf erklärt genau, was auf ihrem Speiseplan steht.",
+        "it": "I coccodrilli sono predatori — Rolf spiega esattamente cosa c'è nel loro menù."
+      },
+      "explain": {
+        "de": "Krokodile fressen lebende Mäuse, Ratten, Insekten und Fische.",
+        "it": "I coccodrilli mangiano topi, ratti, insetti e pesci vivi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "lebende Tiere und Fische",
+            "it": "animali vivi e pesci"
+          },
+          {
+            "de": "nur Pflanzen und Früchte",
+            "it": "solo piante e frutti"
+          },
+          {
+            "de": "nur große Säugetiere",
+            "it": "solo grandi mammiferi"
+          },
+          {
+            "de": "getrocknetes Fleisch",
+            "it": "carne essiccata"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap06-h1tqm124",
+      "type": "choice",
+      "prompt": {
+        "de": "Was zeichnet Odd heimlich auf seinem Block?",
+        "it": "Cosa disegna Odd di nascosto sul suo quaderno?"
+      },
+      "hint": {
+        "de": "Odd kann nicht aufhören, an das Tier zu denken — er muss es festhalten.",
+        "it": "Odd non riesce a smettere di pensare all'animale — deve fissarlo sulla carta."
+      },
+      "explain": {
+        "de": "Odd zeichnet heimlich das Krokodil Zack auf seinen Block.",
+        "it": "Odd disegna di nascosto il coccodrillo Zack sul suo quaderno."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "das Krokodil Zack",
+            "it": "il coccodrillo Zack"
+          },
+          {
+            "de": "ein Flugzeug",
+            "it": "un aereo"
+          },
+          {
+            "de": "Mette",
+            "it": "Mette"
+          },
+          {
+            "de": "einen Waran",
+            "it": "un varano"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

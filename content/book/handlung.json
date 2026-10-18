@@ -1,0 +1,279 @@
+{
+  "items": [
+    {
+      "id": "book_handlung-h1qhm23h",
+      "type": "order",
+      "prompt": {
+        "de": "Bringe Odds Plan, ein Krokodil zu stehlen, in die richtige Reihenfolge.",
+        "it": "Metti in ordine il piano di Odd per rubare un coccodrillo."
+      },
+      "hint": {
+        "de": "Denke daran, wie Odds Plan Schritt für Schritt ablief.",
+        "it": "Pensa a come si è svolto il piano di Odd, passo dopo passo."
+      },
+      "explain": {
+        "de": "Zoobesuch → Zack sehen → nachts zurück → Zack stehlen → im Zimmer verstecken.",
+        "it": "Visita allo zoo → vedere Zack → tornare di notte → rubare Zack → nasconderlo in camera."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Odd besucht den Zoo mit der Schule",
+            "it": "Odd visita lo zoo con la scuola"
+          },
+          {
+            "de": "Odd sieht Zack zum ersten Mal",
+            "it": "Odd vede Zack per la prima volta"
+          },
+          {
+            "de": "Odd geht nachts allein in den Zoo",
+            "it": "Odd va allo zoo da solo di notte"
+          },
+          {
+            "de": "Odd stiehlt Zack",
+            "it": "Odd ruba Zack"
+          },
+          {
+            "de": "Odd versteckt Zack in seinem Zimmer",
+            "it": "Odd nasconde Zack nella sua stanza"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "id": "book_handlung-humc47f",
+      "type": "choice",
+      "prompt": {
+        "de": "Was stiehlt Odd aus dem Zoo?",
+        "it": "Cosa ruba Odd dallo zoo?"
+      },
+      "hint": {
+        "de": "Es ist das wichtigste Tier im Buch.",
+        "it": "È l'animale più importante del libro."
+      },
+      "explain": {
+        "de": "Odd stiehlt ein Krokodil aus dem Zoo.",
+        "it": "Odd ruba un coccodrillo dallo zoo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "ein Krokodil",
+            "it": "un coccodrillo"
+          },
+          {
+            "de": "eine Schlange",
+            "it": "un serpente"
+          },
+          {
+            "de": "einen Pfeilschwanzkrebs",
+            "it": "un granchio ferro di cavallo"
+          },
+          {
+            "de": "einen Waran",
+            "it": "un varano"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_handlung-h1q873cp",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie nennt Odd das gestohlene Krokodil?",
+        "it": "Come chiama Odd il coccodrillo rubato?"
+      },
+      "hint": {
+        "de": "Der Name klingt wie ein Menschenname.",
+        "it": "Il nome suona come un nome di persona."
+      },
+      "explain": {
+        "de": "Odd nennt das Krokodil Zack.",
+        "it": "Odd chiama il coccodrillo Zack."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Zack"
+          },
+          {
+            "de": "Rex"
+          },
+          {
+            "de": "Max"
+          },
+          {
+            "de": "Koko"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_handlung-h178trfx",
+      "type": "choice",
+      "prompt": {
+        "de": "Was passiert mit Kines Hamster Schnuppi?",
+        "it": "Cosa succede al criceto Schnuppi di Kine?"
+      },
+      "hint": {
+        "de": "Zack hat Hunger — und Schnuppi ist leider am falschen Ort.",
+        "it": "Zack ha fame — e Schnuppi purtroppo è nel posto sbagliato."
+      },
+      "explain": {
+        "de": "Das Krokodil frisst Schnuppi, Kines Hamster.",
+        "it": "Il coccodrillo mangia Schnuppi, il criceto di Kine."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Das Krokodil frisst ihn",
+            "it": "Il coccodrillo lo mangia"
+          },
+          {
+            "de": "Er läuft aus dem Käfig weg",
+            "it": "Scappa dalla gabbia"
+          },
+          {
+            "de": "Kine verschenkt ihn",
+            "it": "Kine lo regala"
+          },
+          {
+            "de": "Er wird krank und stirbt",
+            "it": "Si ammala e muore"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_handlung-h103efla",
+      "type": "order",
+      "prompt": {
+        "de": "Bringe die wichtigsten Ereignisse der Geschichte in die richtige Reihenfolge.",
+        "it": "Metti in ordine i principali eventi della storia."
+      },
+      "hint": {
+        "de": "Denke an den Anfang, die Mitte und das Ende der Geschichte.",
+        "it": "Pensa all'inizio, alla metà e alla fine della storia."
+      },
+      "explain": {
+        "de": "Klassenausflug → Zack stehlen → Schnuppi gefressen → Zack zurückbringen → Mette klingelt.",
+        "it": "Gita di classe → rubare Zack → Schnuppi mangiato → riportare Zack → Mette suona alla porta."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Klassenausflug ins Aquarium",
+            "it": "Gita di classe all'acquario"
+          },
+          {
+            "de": "Odd stiehlt Zack nachts",
+            "it": "Odd ruba Zack di notte"
+          },
+          {
+            "de": "Zack frisst Schnuppi",
+            "it": "Zack mangia Schnuppi"
+          },
+          {
+            "de": "Odd bringt Zack zurück",
+            "it": "Odd riporta Zack indietro"
+          },
+          {
+            "de": "Mette klingelt bei Odd",
+            "it": "Mette suona alla porta di Odd"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "id": "book_handlung-h7w5cwu",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie endet die Geschichte für Odd?",
+        "it": "Come finisce la storia per Odd?"
+      },
+      "hint": {
+        "de": "Das Ende ist für Odd überraschend positiv.",
+        "it": "Il finale per Odd è sorprendentemente positivo."
+      },
+      "explain": {
+        "de": "Odd bekommt einen Job als Reptilienassistent im Aquarium, und Mette besucht ihn.",
+        "it": "Odd ottiene un lavoro come assistente ai rettili all'acquario, e Mette lo visita."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er bekommt einen Job im Aquarium und Mette besucht ihn",
+            "it": "Ottiene un lavoro in acquario e Mette lo visita"
+          },
+          {
+            "de": "Er muss die Schule wechseln",
+            "it": "Deve cambiare scuola"
+          },
+          {
+            "de": "Er bekommt sein eigenes Krokodil",
+            "it": "Gli viene dato il suo coccodrillo"
+          },
+          {
+            "de": "Er wird von der Polizei erwischt",
+            "it": "Viene scoperto dalla polizia"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_handlung-h1d4txia",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist der tiefste Grund, warum Odd das Krokodil stiehlt?",
+        "it": "Qual è la ragione più profonda per cui Odd ruba il coccodrillo?"
+      },
+      "hint": {
+        "de": "Odds Wunsch hat viel mit seinem Gefühl in der Schule zu tun.",
+        "it": "Il desiderio di Odd ha molto a che fare con come si sente a scuola."
+      },
+      "explain": {
+        "de": "Odd stiehlt das Krokodil, weil er sich allein fühlt und nicht mehr feige sein will.",
+        "it": "Odd ruba il coccodrillo perché si sente solo e non vuole più essere codardo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er fühlt sich allein und will nicht mehr feige sein",
+            "it": "Si sente solo e non vuole più essere codardo"
+          },
+          {
+            "de": "Er will Rolf ärgern",
+            "it": "Vuole fare un dispetto a Rolf"
+          },
+          {
+            "de": "Er braucht das Geld",
+            "it": "Ha bisogno di soldi"
+          },
+          {
+            "de": "Er will Mette beeindrucken",
+            "it": "Vuole fare colpo su Mette"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "items": [
+    {
+      "id": "book_kap13-h1ugqfak",
+      "type": "choice",
+      "prompt": {
+        "de": "Was steht auf dem Schild, das Odd an seiner Zimmertür anbringt?",
+        "it": "Cosa c'è scritto sul cartello che Odd mette alla porta della sua stanza?"
+      },
+      "hint": {
+        "de": "Es ist ein klares Verbotsschild, damit niemand sein Zimmer betritt.",
+        "it": "È un chiaro cartello di divieto, perché nessuno entri nella sua stanza."
+      },
+      "explain": {
+        "de": "Auf dem Schild steht ZUGANG VERBOTEN.",
+        "it": "Sul cartello c'è scritto ZUGANG VERBOTEN (accesso vietato)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "ZUGANG VERBOTEN"
+          },
+          {
+            "de": "GEFÄHRLICH"
+          },
+          {
+            "de": "BETRETEN VERBOTEN"
+          },
+          {
+            "de": "VORSICHT KROKODILE"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap13-h1f5wfr8",
+      "type": "choice",
+      "prompt": {
+        "de": "Wohin flüchtet Odd vor dem schnappenden Zack?",
+        "it": "Dove scappa Odd davanti a Zack che scatta?"
+      },
+      "hint": {
+        "de": "Odd sucht eine erhöhte Position — Zack kann nicht klettern.",
+        "it": "Odd cerca una posizione rialzata — Zack non sa arrampicarsi."
+      },
+      "explain": {
+        "de": "Odd flüchtet vor dem schnappenden Zack ins obere Bett seines Hochbetts.",
+        "it": "Odd scappa da Zack che cerca di morderlo e si rifugia sul letto in alto del letto a castello."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "ins obere Bett seines Hochbetts",
+            "it": "sul letto in alto del suo letto a castello"
+          },
+          {
+            "de": "ins Badezimmer",
+            "it": "in bagno"
+          },
+          {
+            "de": "auf seinen Schrank",
+            "it": "sopra il suo armadio"
+          },
+          {
+            "de": "aus dem Zimmer",
+            "it": "fuori dalla stanza"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap13-h11ljo2x",
+      "type": "choice",
+      "prompt": {
+        "de": "In was verbeißt sich Zack, als Odd ihn freilässt?",
+        "it": "In cosa si azzanna Zack quando Odd lo libera?"
+      },
+      "hint": {
+        "de": "Zack greift nach dem Kleidungsstück an Odds Arm.",
+        "it": "Zack afferra l'indumento sul braccio di Odd."
+      },
+      "explain": {
+        "de": "Zack beißt in den Ärmel von Odds Strickpullover und danach in seinen Hausschuh.",
+        "it": "Zack azzanna la manica del maglione di Odd e poi la sua ciabatta."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "in den Ärmel von Odds Pullover",
+            "it": "nella manica del maglione di Odd"
+          },
+          {
+            "de": "in Odds Bettdecke",
+            "it": "nel piumone di Odd"
+          },
+          {
+            "de": "in Odds Hausschuh",
+            "it": "nella ciabatta di Odd"
+          },
+          {
+            "de": "in einen Socken",
+            "it": "in un calzino"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap13-h1s4xjk4",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist laut Buch Zacks Reich in Odds Zimmer?",
+        "it": "Cos'è il territorio di Zack nella stanza di Odd?"
+      },
+      "hint": {
+        "de": "Zack krabbelt flach darauf herum — er liebt diese Fläche.",
+        "it": "Zack ci striscia sopra — adora questa superficie."
+      },
+      "explain": {
+        "de": "Der Boden ist Zacks Reich.",
+        "it": "Il pavimento è il regno di Zack."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "der Boden",
+            "it": "il pavimento"
+          },
+          {
+            "de": "die Badewanne",
+            "it": "la vasca da bagno"
+          },
+          {
+            "de": "das Bett",
+            "it": "il letto"
+          },
+          {
+            "de": "der Schrank",
+            "it": "l'armadio"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

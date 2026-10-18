@@ -1,0 +1,185 @@
+{
+  "items": [
+    {
+      "id": "book_kap01-h1bw26ko",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Superkraft hätte Odd am liebsten?",
+        "it": "Quale superpotere vorrebbe Odd?"
+      },
+      "hint": {
+        "de": "Odd träumt von etwas ganz Bestimmtem...",
+        "it": "Odd sogna qualcosa di ben preciso..."
+      },
+      "explain": {
+        "de": "Odd hätte am liebsten die Superkraft zu fliegen.",
+        "it": "Odd vorrebbe soprattutto il superpotere di volare."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "fliegen",
+            "it": "volare"
+          },
+          {
+            "de": "unsichtbar sein",
+            "it": "diventare invisibile"
+          },
+          {
+            "de": "teleportieren",
+            "it": "teletrasportarsi"
+          },
+          {
+            "de": "super schnell rennen",
+            "it": "correre velocissimo"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap01-h3o09e6",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Hund der Nachbarin?",
+        "it": "Come si chiama il cane della vicina?"
+      },
+      "hint": {
+        "de": "Der Name klingt ein bisschen wie ein Heldenname.",
+        "it": "Il nome suona un po' come il nome di un eroe."
+      },
+      "explain": {
+        "de": "Der Hund der Nachbarin heißt Hektor.",
+        "it": "Il cane della vicina si chiama Hektor."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Hektor"
+          },
+          {
+            "de": "Rex"
+          },
+          {
+            "de": "Bello"
+          },
+          {
+            "de": "Buster"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap01-hu6lqwq",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist Schnuppi?",
+        "it": "Cos'è Schnuppi?"
+      },
+      "hint": {
+        "de": "Schnuppi ist ein kleines Nagetier.",
+        "it": "Schnuppi è un piccolo roditore."
+      },
+      "explain": {
+        "de": "Schnuppi ist der Hamster von Kine, Odds Schwester.",
+        "it": "Schnuppi è il criceto di Kine, la sorella di Odd."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "ein Hamster",
+            "it": "un criceto"
+          },
+          {
+            "de": "eine Schildkröte",
+            "it": "una tartaruga"
+          },
+          {
+            "de": "ein Hund",
+            "it": "un cane"
+          },
+          {
+            "de": "ein Meerschweinchen",
+            "it": "un porcellino d'India"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap01-hrr8kof",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt Odds Lehrer?",
+        "it": "Come si chiama il maestro di Odd?"
+      },
+      "hint": {
+        "de": "Sein Name klingt nordisch und ist kurz.",
+        "it": "Il suo nome suona nordico ed è corto."
+      },
+      "explain": {
+        "de": "Odds Lehrer heißt Espen.",
+        "it": "Il maestro di Odd si chiama Espen."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Espen",
+            "it": "Espen"
+          },
+          {
+            "de": "Rolf",
+            "it": "Rolf"
+          },
+          {
+            "de": "Petter",
+            "it": "Petter"
+          },
+          {
+            "de": "Björn",
+            "it": "Björn"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap01-hy4a9k7",
+      "type": "choice",
+      "prompt": {
+        "de": "Wer lächelt Odd im Unterricht an?",
+        "it": "Chi sorride a Odd in classe?"
+      },
+      "hint": {
+        "de": "Es ist jemand, der Odd von Anfang an sympathisch findet.",
+        "it": "È qualcuno a cui Odd è simpatico fin dall'inizio."
+      },
+      "explain": {
+        "de": "Mette lächelt Odd an — er bekommt davon ganz heiße Ohren.",
+        "it": "Mette sorride a Odd — e a lui vengono le orecchie tutte calde."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Mette",
+            "it": "Mette"
+          },
+          {
+            "de": "Kine",
+            "it": "Kine"
+          },
+          {
+            "de": "Lene",
+            "it": "Lene"
+          },
+          {
+            "de": "Nova",
+            "it": "Nova"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

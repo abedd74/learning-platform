@@ -1,0 +1,115 @@
+{
+  "items": [
+    {
+      "id": "book_kap09-h1jkpd8p",
+      "type": "choice",
+      "prompt": {
+        "de": "Was sucht Odd angeblich im Zoo?",
+        "it": "Cosa dice Odd di cercare allo zoo?"
+      },
+      "hint": {
+        "de": "Odd erfindet eine Ausrede...",
+        "it": "Odd inventa una scusa..."
+      },
+      "explain": {
+        "de": "Odd sagt, er suche sein Federmäppchen.",
+        "it": "Odd dice di stare cercando il suo astuccio."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "sein Federmäppchen",
+            "it": "il suo astuccio"
+          },
+          {
+            "de": "seinen Rucksack",
+            "it": "il suo zaino"
+          },
+          {
+            "de": "sein Handy",
+            "it": "il suo cellulare"
+          },
+          {
+            "de": "seine Jacke",
+            "it": "la sua giacca"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap09-h1y1m6fe",
+      "type": "choice",
+      "prompt": {
+        "de": "Von wem wird Odd auf dem Weg fast erwischt?",
+        "it": "Da chi viene quasi scoperto Odd durante il percorso?"
+      },
+      "hint": {
+        "de": "Der Mann hat ein Reinigungsgerät dabei.",
+        "it": "L'uomo ha con sé un attrezzo per le pulizie."
+      },
+      "explain": {
+        "de": "Ein Reinigungsmann mit einem Besen kommt Odd fast auf die Schliche.",
+        "it": "Un addetto alle pulizie con una scopa quasi scopre Odd."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "einem Reinigungsmann mit einem Besen",
+            "it": "un addetto alle pulizie con una scopa"
+          },
+          {
+            "de": "dem Aquariumwächter",
+            "it": "la guardia dell'acquario"
+          },
+          {
+            "de": "Rolf",
+            "it": "Rolf"
+          },
+          {
+            "de": "seinem Lehrer Espen",
+            "it": "il suo maestro Espen"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap09-hl1rrkg",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Tier sieht Odd in Kapitel 9 im Zoo?",
+        "it": "Quale animale vede Odd allo zoo nel capitolo 9?"
+      },
+      "hint": {
+        "de": "Es ist eine große Eidechse, kein Krokodil und keine Schlange.",
+        "it": "È una grande lucertola, non un coccodrillo né un serpente."
+      },
+      "explain": {
+        "de": "Odd sieht einen Waran im Zoo.",
+        "it": "Odd vede un varano allo zoo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "eine Boa Constrictor",
+            "it": "un boa constrictor"
+          },
+          {
+            "de": "einen Leguan",
+            "it": "un iguana"
+          },
+          {
+            "de": "einen Waran",
+            "it": "un varano"
+          },
+          {
+            "de": "ein Krokodil",
+            "it": "un coccodrillo"
+          }
+        ],
+        "correct": 2
+      }
+    }
+  ]
+}

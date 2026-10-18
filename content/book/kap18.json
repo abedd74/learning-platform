@@ -1,0 +1,162 @@
+{
+  "items": [
+    {
+      "id": "book_kap18-h9kilm7",
+      "type": "order",
+      "prompt": {
+        "de": "Bringe die Ereignisse aus Kapitel 18 in die richtige Reihenfolge.",
+        "it": "Metti in ordine gli eventi del capitolo 18."
+      },
+      "hint": {
+        "de": "Denke daran: zuerst stellt Odd die Wanne auf, dann sagt Mama Gute Nacht.",
+        "it": "Ricorda: prima Odd sistema la vasca, poi la mamma dà la buonanotte."
+      },
+      "explain": {
+        "de": "Plastikwanne aufstellen → Mama ruft Gute Nacht → Zack frisst Nussi → Kines Handy klingelt → Zack bewegt sich nicht mehr.",
+        "it": "Sistemare la vasca → la mamma dà la buonanotte → Zack mangia Nussi → il cellulare di Kine squilla → Zack non si muove più."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Zack frisst Nussi.",
+            "it": "Zack mangia Nussi."
+          },
+          {
+            "de": "Mama ruft: „Gute Nacht!\"",
+            "it": "Mamma grida: \"Buonanotte!\""
+          },
+          {
+            "de": "Zack bewegt sich nicht mehr.",
+            "it": "Zack non si muove più."
+          },
+          {
+            "de": "Odd stellt eine Plastikwanne mit Wasser in sein Zimmer.",
+            "it": "Odd mette una vasca di plastica con acqua nella sua stanza."
+          },
+          {
+            "de": "Kines Handy klingelt.",
+            "it": "Il cellulare di Kine squilla."
+          }
+        ],
+        "correct": [
+          3,
+          1,
+          0,
+          4,
+          2
+        ]
+      }
+    },
+    {
+      "id": "book_kap18-h1k3wqci",
+      "type": "choice",
+      "prompt": {
+        "de": "Was stellt Odd für das Krokodil in seinem Zimmer auf?",
+        "it": "Cosa mette Odd nella sua stanza per il coccodrillo?"
+      },
+      "hint": {
+        "de": "Rolf hatte gesagt, Krokodile brauchen Wasser — Odd hört auf ihn.",
+        "it": "Rolf aveva detto che i coccodrilli hanno bisogno di acqua — Odd gli dà retta."
+      },
+      "explain": {
+        "de": "Odd holt eine große Plastikwanne voll Wasser und stellt sie für Zack auf.",
+        "it": "Odd prende una grande vasca di plastica piena d'acqua e la sistema per Zack."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "eine große Plastikwanne voller Wasser",
+            "it": "una grande vasca di plastica piena d'acqua"
+          },
+          {
+            "de": "einen Eimer Wasser",
+            "it": "un secchio d'acqua"
+          },
+          {
+            "de": "eine Schüssel",
+            "it": "una ciotola"
+          },
+          {
+            "de": "die Badewanne",
+            "it": "la vasca da bagno"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap18-hpzdm25",
+      "type": "choice",
+      "prompt": {
+        "de": "Was schluckt Zack in einem Stück hinunter?",
+        "it": "Cosa ingoia Zack tutto d'un pezzo?"
+      },
+      "hint": {
+        "de": "Odds liebstes Kuscheltier verschwindet in Zacks Rachen.",
+        "it": "Il peluche preferito di Odd sparisce nelle fauci di Zack."
+      },
+      "explain": {
+        "de": "Zack schnappt nach Nussi, Odds Plüscheichhörnchen, und schluckt es komplett hinunter.",
+        "it": "Zack afferra Nussi, lo scoiattolo di peluche di Odd, e lo ingoia tutto intero."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Nussi, Odds Plüscheichhörnchen",
+            "it": "Nussi, lo scoiattolo di peluche di Odd"
+          },
+          {
+            "de": "eine Socke von Odd",
+            "it": "un calzino di Odd"
+          },
+          {
+            "de": "Kines Handy",
+            "it": "il cellulare di Kine"
+          },
+          {
+            "de": "ein Schinkenbrot",
+            "it": "un panino al prosciutto"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap18-h4q2gfv",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches unerwartete Geräusch kommt aus Zacks Bauch?",
+        "it": "Che rumore inaspettato proviene dalla pancia di Zack?"
+      },
+      "hint": {
+        "de": "Das Geräusch kommt von etwas, das Zack kurz zuvor geschluckt hat.",
+        "it": "Il rumore viene da qualcosa che Zack ha ingoiato poco prima."
+      },
+      "explain": {
+        "de": "Das Klingeln von Kines Handy ertönt aus Zacks Bauch.",
+        "it": "Lo squillo del cellulare di Kine risuona dalla pancia di Zack."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kines Handy klingelt",
+            "it": "il cellulare di Kine squilla"
+          },
+          {
+            "de": "Nussi quietscht",
+            "it": "Nussi cigola"
+          },
+          {
+            "de": "ein dumpfes Knurren",
+            "it": "un grugnito cupo"
+          },
+          {
+            "de": "ein lautes Brummen",
+            "it": "un forte ronzio"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

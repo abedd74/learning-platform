@@ -1,0 +1,145 @@
+{
+  "items": [
+    {
+      "id": "book_kap07-h7zykbw",
+      "type": "text",
+      "prompt": {
+        "de": "Wie ist Odds Spitzname in der Schule?",
+        "it": "Qual è il soprannome di Odd a scuola?"
+      },
+      "hint": {
+        "de": "Der Spitzname hat etwas mit Obst zu tun.",
+        "it": "Il soprannome ha a che fare con la frutta."
+      },
+      "explain": {
+        "de": "Odds Spitzname ist Odd-Birnenkompott.",
+        "it": "Il soprannome di Odd è Odd-Birnenkompott (composta di pere)."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Odds Spitzname ist",
+          "it": "Il soprannome di Odd è"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "odd-birnenkompott",
+          "birnenkompott"
+        ]
+      }
+    },
+    {
+      "id": "book_kap07-h1lve48z",
+      "type": "choice",
+      "prompt": {
+        "de": "Für wen nimmt Odd den Schinken mit?",
+        "it": "Per chi prende Odd il prosciutto?"
+      },
+      "hint": {
+        "de": "Odd denkt an jemanden, der viel Fleisch braucht.",
+        "it": "Odd pensa a qualcuno che ha bisogno di molta carne."
+      },
+      "explain": {
+        "de": "Odd nimmt den Schinken für Zack, das Krokodil, mit.",
+        "it": "Odd prende il prosciutto per Zack, il coccodrillo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "für Zack das Krokodil",
+            "it": "per Zack il coccodrillo"
+          },
+          {
+            "de": "für seinen Hamster Schnuppi",
+            "it": "per il suo criceto Schnuppi"
+          },
+          {
+            "de": "für das Abendessen",
+            "it": "per la cena"
+          },
+          {
+            "de": "für seinen Freund Petter",
+            "it": "per il suo amico Petter"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap07-hlugemq",
+      "type": "choice",
+      "prompt": {
+        "de": "Was sagt Mette zu Odd im Bus, das ihn sehr stolz macht?",
+        "it": "Cosa dice Mette a Odd sul bus, che lo rende molto orgoglioso?"
+      },
+      "hint": {
+        "de": "Mettes Kommentar bezieht sich direkt auf den Zoobesuch.",
+        "it": "Il commento di Mette riguarda direttamente la visita allo zoo."
+      },
+      "explain": {
+        "de": "Mette sagt, sie fand es beeindruckend, dass Odd sich getraut hat, Zack anzufassen.",
+        "it": "Mette dice che l'ha colpita il coraggio di Odd nel toccare Zack."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "dass sie es beeindruckend fand, dass er Zack angefasst hat",
+            "it": "che ha trovato impressionante che abbia toccato Zack"
+          },
+          {
+            "de": "dass er der Mutigste der Klasse ist",
+            "it": "che è il più coraggioso della classe"
+          },
+          {
+            "de": "dass er ihr Lieblingsmitschüler ist",
+            "it": "che è il suo compagno preferito"
+          },
+          {
+            "de": "dass er ihr geholfen hat",
+            "it": "che le ha dato una mano"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap07-hcizury",
+      "type": "choice",
+      "prompt": {
+        "de": "Wer verpasst Odd im Vorbeigehen einen Schlag gegen den Hinterkopf?",
+        "it": "Chi dà a Odd un colpo alla nuca passando?"
+      },
+      "hint": {
+        "de": "Es ist einer der drei, die Odd immer ärgern.",
+        "it": "È uno dei tre che danno sempre fastidio a Odd."
+      },
+      "explain": {
+        "de": "Knut schlägt Odd gegen den Hinterkopf und nennt ihn Odd-Birnenkompott.",
+        "it": "Knut colpisce Odd sulla nuca e lo chiama Odd-Birnenkompott."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Knut",
+            "it": "Knut"
+          },
+          {
+            "de": "Nova",
+            "it": "Nova"
+          },
+          {
+            "de": "Bjarne",
+            "it": "Bjarne"
+          },
+          {
+            "de": "Petter",
+            "it": "Petter"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

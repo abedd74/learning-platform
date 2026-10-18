@@ -1,0 +1,115 @@
+{
+  "items": [
+    {
+      "id": "book_kap14-hkgyqez",
+      "type": "choice",
+      "prompt": {
+        "de": "Wo versteckt sich Zack in Odds Zimmer?",
+        "it": "Dove si nasconde Zack nella stanza di Odd?"
+      },
+      "hint": {
+        "de": "Es ist ein schweres Möbelstück — und Zack zwängt sich ganz darunter.",
+        "it": "È un mobile pesante — e Zack ci si infila proprio sotto."
+      },
+      "explain": {
+        "de": "Zack versteckt sich unter der Kommode.",
+        "it": "Zack si nasconde sotto la cassettiera."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "unter der Kommode",
+            "it": "sotto la cassettiera"
+          },
+          {
+            "de": "unter dem Bett",
+            "it": "sotto il letto"
+          },
+          {
+            "de": "hinter dem Schrank",
+            "it": "dietro l'armadio"
+          },
+          {
+            "de": "im Schrank",
+            "it": "nell'armadio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap14-hfv7j8i",
+      "type": "choice",
+      "prompt": {
+        "de": "Was klaut und frisst Zack direkt am Morgen, als Odd sich anzieht?",
+        "it": "Cosa ruba e mangia Zack la mattina, mentre Odd si veste?"
+      },
+      "hint": {
+        "de": "Es ist ein kleines Kleidungsstück, das man über den Fuß zieht.",
+        "it": "È un piccolo indumento che si infila sul piede."
+      },
+      "explain": {
+        "de": "Zack schnappt sich eine von Odds Socken und schluckt sie einfach hinunter.",
+        "it": "Zack afferra uno dei calzini di Odd e lo ingoia in un boccone."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "eine Socke",
+            "it": "un calzino"
+          },
+          {
+            "de": "einen Schuh",
+            "it": "una scarpa"
+          },
+          {
+            "de": "sein Hemd",
+            "it": "la sua camicia"
+          },
+          {
+            "de": "seine Unterhose",
+            "it": "le sue mutande"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap14-h182iwzi",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum meckert Kine beim Frühstück mit Odd?",
+        "it": "Perché Kine se la prende con Odd a colazione?"
+      },
+      "hint": {
+        "de": "Im Kühlschrank fehlt etwas — aber nicht Odd ist schuld.",
+        "it": "Nel frigorifero manca qualcosa — ma non è colpa di Odd."
+      },
+      "explain": {
+        "de": "Kine denkt, Odd hat den ganzen Aufschnitt und Käse inklusive Leberpastete aufgegessen.",
+        "it": "Kine pensa che Odd abbia mangiato tutti i salumi e il formaggio, compreso il paté di fegato."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie denkt, Odd hat den ganzen Aufschnitt gegessen",
+            "it": "Pensa che Odd abbia mangiato tutti i salumi"
+          },
+          {
+            "de": "weil Odd nicht aufräumt",
+            "it": "perché Odd non mette in ordine"
+          },
+          {
+            "de": "weil Odd zu spät aufgestanden ist",
+            "it": "perché Odd si è alzato tardi"
+          },
+          {
+            "de": "weil Odd ihre Sachen angerührt hat",
+            "it": "perché Odd ha toccato le sue cose"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

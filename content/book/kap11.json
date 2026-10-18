@@ -1,0 +1,120 @@
+{
+  "items": [
+    {
+      "id": "book_kap11-h1ukhrj8",
+      "type": "order",
+      "prompt": {
+        "de": "Bringe die Sätze aus Kapitel 11 in die richtige Reihenfolge.",
+        "it": "Metti in ordine le frasi del capitolo 11."
+      },
+      "hint": {
+        "de": "Denke daran, was Odd Schritt für Schritt in der Nacht gemacht hat.",
+        "it": "Pensa a cosa ha fatto Odd passo dopo passo quella notte."
+      },
+      "explain": {
+        "de": "Zack finden → auf Eimer steigen → vom Eimer fallen → Krokodil in den Rucksack.",
+        "it": "Trovare Zack → salire sul secchio → cadere dal secchio → coccodrillo nello zaino."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Odd findet Zack und tippt gegen die Glasscheibe.",
+            "it": "Odd trova Zack e bussa sul vetro."
+          },
+          {
+            "de": "Odd steigt auf einen Eimer.",
+            "it": "Odd sale su un secchio."
+          },
+          {
+            "de": "Odd fällt vom Eimer herunter.",
+            "it": "Odd cade dal secchio."
+          },
+          {
+            "de": "Odd steckt das Krokodil in den Rucksack.",
+            "it": "Odd mette il coccodrillo nello zaino."
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "id": "book_kap11-h1g7fp0i",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie reagiert Zack, als Odd ihn schließlich packt?",
+        "it": "Come reagisce Zack quando Odd lo afferra?"
+      },
+      "hint": {
+        "de": "Zack ist überhaupt nicht einverstanden — er kämpft aus Leibeskräften.",
+        "it": "Zack non è per niente d'accordo — lotta con tutte le sue forze."
+      },
+      "explain": {
+        "de": "Zack wehrt sich heftig, windet sich, zappelt wild und schnappt nach Odd.",
+        "it": "Zack si difende con forza, si contorce, si dimena e cerca di mordere Odd."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "er wehrt sich heftig und zappelt wild",
+            "it": "si difende con forza e si dimena"
+          },
+          {
+            "de": "er lässt sich ruhig tragen",
+            "it": "si lascia portare tranquillamente"
+          },
+          {
+            "de": "er läuft einfach davon",
+            "it": "scappa via"
+          },
+          {
+            "de": "er beißt Odd sofort in die Hand",
+            "it": "morde subito Odd in una mano"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap11-h1gjelo9",
+      "type": "choice",
+      "prompt": {
+        "de": "Wohin steckt Odd das zappelnde Krokodil?",
+        "it": "Dove mette Odd il coccodrillo che si agita?"
+      },
+      "hint": {
+        "de": "Odd hatte dieses Behältnis schon für seinen Plan vorbereitet.",
+        "it": "Odd aveva già preparato questo contenitore per il suo piano."
+      },
+      "explain": {
+        "de": "Odd schiebt Zack kopfüber in seinen Rucksack und schnürt ihn schnell zu.",
+        "it": "Odd infila Zack a testa in giù nello zaino e lo chiude in fretta."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "in seinen Rucksack",
+            "it": "nel suo zaino"
+          },
+          {
+            "de": "unter seine Jacke",
+            "it": "sotto la sua giacca"
+          },
+          {
+            "de": "in eine Plastiktüte",
+            "it": "in un sacchetto di plastica"
+          },
+          {
+            "de": "in einen Schuhkarton",
+            "it": "in una scatola da scarpe"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

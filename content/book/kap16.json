@@ -1,0 +1,155 @@
+{
+  "items": [
+    {
+      "id": "book_kap16-h1yny7dp",
+      "type": "multi",
+      "prompt": {
+        "de": "Was passiert in Kapitel 16?",
+        "it": "Cosa succede nel capitolo 16?"
+      },
+      "hint": {
+        "de": "Zwei Dinge geschehen — eines mit Schnuppi, eines mit Zack.",
+        "it": "Succedono due cose — una con Schnuppi, una con Zack."
+      },
+      "explain": {
+        "de": "Schnuppi ist verschwunden und Odd sucht Zack.",
+        "it": "Schnuppi è sparito e Odd cerca Zack."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schnuppi ist verschwunden",
+            "it": "Schnuppi è sparito"
+          },
+          {
+            "de": "Odd sucht Zack",
+            "it": "Odd cerca Zack"
+          },
+          {
+            "de": "Mama findet den Zoo-Schlüssel",
+            "it": "Mama trova la chiave dello zoo"
+          },
+          {
+            "de": "Petter besucht Odd",
+            "it": "Petter visita Odd"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "book_kap16-h180y9ei",
+      "type": "choice",
+      "prompt": {
+        "de": "In was tritt Kine, als sie nach Hause kommt?",
+        "it": "In cosa calpesta Kine quando torna a casa?"
+      },
+      "hint": {
+        "de": "Was Zack hinterlässt, macht Kine sehr wütend.",
+        "it": "Quello che Zack lascia in giro fa arrabbiare molto Kine."
+      },
+      "explain": {
+        "de": "Kine tritt in einen stinkenden, braunen Krokodil-Kackhaufen.",
+        "it": "Kine calpesta un mucchio di cacca di coccodrillo, marrone e puzzolente."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "in einen Krokodil-Kackhaufen",
+            "it": "in un mucchio di escrementi di coccodrillo"
+          },
+          {
+            "de": "in Odds Rucksack",
+            "it": "nello zaino di Odd"
+          },
+          {
+            "de": "in eine Wasserlache",
+            "it": "in una pozzanghera"
+          },
+          {
+            "de": "in Odds Hausschuhe",
+            "it": "nelle ciabatte di Odd"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap16-h1noiq2g",
+      "type": "choice",
+      "prompt": {
+        "de": "Wo genau findet Odd das Krokodil in Kines Zimmer?",
+        "it": "Dove esattamente trova Odd il coccodrillo nella stanza di Kine?"
+      },
+      "hint": {
+        "de": "Zack mag dunkle, niedrige Verstecke.",
+        "it": "A Zack piacciono i nascondigli bui e bassi."
+      },
+      "explain": {
+        "de": "Odd findet Zacks Schwanz unter Kines Bett, versteckt unter ihrem geblümten Nachthemd.",
+        "it": "Odd trova la coda di Zack sotto il letto di Kine, nascosta sotto la sua camicia da notte a fiori."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "unter Kines Bett",
+            "it": "sotto il letto di Kine"
+          },
+          {
+            "de": "hinter dem Schrank",
+            "it": "dietro l'armadio"
+          },
+          {
+            "de": "im Kleiderschrank",
+            "it": "nell'armadio"
+          },
+          {
+            "de": "auf dem Fensterbrett",
+            "it": "sul davanzale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "book_kap16-h1tzsluu",
+      "type": "choice",
+      "prompt": {
+        "de": "Wohin sperrt Odd Zack ein, bevor seine Mutter ihn entdeckt?",
+        "it": "Dove chiude Odd Zack prima che la mamma lo trovi?"
+      },
+      "hint": {
+        "de": "Odd schließt dieses Möbelstück in seinem Zimmer ab.",
+        "it": "Odd chiude a chiave questo mobile nella sua stanza."
+      },
+      "explain": {
+        "de": "Odd stopft das eingewickelte Krokodilbündel in seinen eigenen Kleiderschrank und schließt ab.",
+        "it": "Odd infila il fagotto con il coccodrillo nel suo armadio e lo chiude a chiave."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "in seinen eigenen Kleiderschrank",
+            "it": "nel suo armadio"
+          },
+          {
+            "de": "in die Garage",
+            "it": "in garage"
+          },
+          {
+            "de": "ins Badezimmer",
+            "it": "in bagno"
+          },
+          {
+            "de": "in einen Pappkarton",
+            "it": "in uno scatolone"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}
