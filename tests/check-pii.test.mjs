@@ -10,8 +10,11 @@ test('family link with a real-looking value is caught, placeholders are not', ()
   assert.deepEqual(rules(j('open …/index.html?familie', '=a1b2c3d4e5f6')), ['family-code-in-link']);
   assert.deepEqual(rules('(…/index.html?familie=GEHEIMER-CODE)'), []);
   assert.deepEqual(rules('the ?familie= parameter'), []);
-  assert.deepEqual(rules(j("localStorage.setItem('family_sync_id'", ", 'abc123def456')")), ['family-code-literal']);
-  assert.deepEqual(rules(j('documents/families', '/0f3a9c77e21b/stores')), ['family-code-path']);
+  assert.deepEqual(rules(j("localStorage.setItem('family_sync_id'", ", 'abc123def456abc123def456')")), ['family-code-literal']);
+  assert.deepEqual(rules(j('documents/families', '/0f3a9c77e21b0f3a9c77e21b/stores')), ['family-code-path']);
+  // short values are names of things, not codes
+  assert.deepEqual(rules("{ family_sync_id: 'familyId' }"), []);
+  assert.deepEqual(rules('families/{code}/stores'), []);
   assert.deepEqual(rules('documents/families/${encodeURIComponent(familyId())}/stores'), []);
 });
 

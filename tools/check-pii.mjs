@@ -39,8 +39,9 @@ const ALLOWED_EMAILS = [/^noreply@anthropic\.com$/i, /@users\.noreply\.github\.c
 
 export const RULES = [
   { name: 'family-code-in-link', re: /familie=(?=[^\s&"'`)<>]*\d)[A-Za-z0-9_-]{8,}/g },
-  { name: 'family-code-path',    re: /families\/[A-Za-z0-9_-]{8,}/g },
-  { name: 'family-code-literal', re: /family_sync_id['"`]?\s*[,:=]\s*['"`][A-Za-z0-9_-]{8,}/g },
+  // A real family code is a long random string (the Firestore rules require 16+).
+  { name: 'family-code-path',    re: /families\/[A-Za-z0-9_-]{16,}/g },
+  { name: 'family-code-literal', re: /family_sync_id['"`]?\s*[,:=]\s*['"`][A-Za-z0-9_-]{16,}/g },
   { name: 'email',               re: /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/g,
     allow: m => ALLOWED_EMAILS.some(a => a.test(m)) },
   { name: 'phone',               re: /(?:\+|00)(?:39|41|43|49)[\s\/-]?\(?\d[\d\s\/()-]{6,}\d|\b01[5-7]\d[\s\/-]?\d{6,}\b/g },
