@@ -1,0 +1,5 @@
+{
+  "about": "What the app loads, in display order. Quiz modules have a module.json, packs a pack.json.",
+  "quiz": ["whales", "water", "book", "magnetism"],
+  "packs": ["nouns"]
+}
