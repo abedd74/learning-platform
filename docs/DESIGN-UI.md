@@ -1,6 +1,6 @@
 # Look and feel — design brief for v2
 
-Date: 18 October 2026. Status: two directions mocked (`docs/design-mock/index.html`), waiting for Andrea's pick. Phase 3 builds every screen from the chosen direction's tokens (`app/ui/theme.css`).
+Date: 18 October 2026. Status: **decided — direction B "Stille See"** (Andrea, 18 Oct, no tweaks for now); mock in `docs/design-mock/index.html`, tokens in `app/ui/theme.css`. Phase 3 builds every screen from the chosen direction's tokens (`app/ui/theme.css`).
 
 ## What today's screens do, seen on an iPad
 
