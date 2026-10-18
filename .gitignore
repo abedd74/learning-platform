@@ -1,0 +1,15 @@
+# Local tools and editor state — never part of the app
+.claude/
+.DS_Store
+node_modules/
+
+# Test output
+test-results/
+playwright-report/
+
+# Local design sketch from March 2026 (kept on the Mac only)
+wireframe.html
+
+# Backups and exports of family data never go into the repository
+*backup*.json
+lernplattform-backup-*.json
