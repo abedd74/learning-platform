@@ -51,7 +51,7 @@ export const REGISTRY = [
     sync: 'deepUnion', scope: 'profile', since: 1,
     shape: '{badgeId: day}' },
   { id: 'gramPath',       re: /^gram_path_(.+)$/, build: p => `gram_path_${p}`,
-    sync: 'maxPerEntry', scope: 'profile', since: 1,
+    sync: 'maxPerEntryDeep', scope: 'profile', since: 1,   // was maxPerEntry (flat) in the old app: DECISIONS 2026-10-18
     shape: '{akk|dat|nomen: {unit, passed:{n:ts}, fest:{day:n}, mc:{tries,passed,nextTry}, gBox, gDue}}' },
   { id: 'gramLastProfile', re: /^gram_lastProfile$/, build: () => 'gram_lastProfile',
     sync: null, scope: 'device', since: 1, writable: false,
