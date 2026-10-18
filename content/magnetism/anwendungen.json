@@ -1,0 +1,181 @@
+{
+  "items": [
+    {
+      "id": "mag_anwendungen-hikeymi",
+      "type": "pairs",
+      "prompt": {
+        "de": "Wie heißen diese Geräte auf Deutsch? Ordne zu! / What are these called in German? Match them!",
+        "it": "Come si chiamano questi dispositivi in tedesco? Collega!"
+      },
+      "hint": {
+        "de": "Alle 6 stehen im Lapbook \"Magnets at Work\"! Denk an die Bilder! / All 6 are in the \"Magnets at Work\" lapbook!",
+        "it": "Tutti e 6 sono nel lapbook \"Magnets at Work\"!"
+      },
+      "explain": {
+        "de": "computers=Computer, refrigerators=Kühlschrank, cranes=Kran, trains=Zug, X-ray machines=Röntgengerät, cell phones=Handy.",
+        "it": "computers=Computer, refrigerators=Kühlschrank, cranes=Kran, trains=Zug, X-ray machines=Röntgengerät, cell phones=Handy."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "computers"
+            },
+            "right": {
+              "de": "Computer"
+            }
+          },
+          {
+            "left": {
+              "de": "refrigerators"
+            },
+            "right": {
+              "de": "Kühlschrank"
+            }
+          },
+          {
+            "left": {
+              "de": "cranes"
+            },
+            "right": {
+              "de": "Kran"
+            }
+          },
+          {
+            "left": {
+              "de": "trains"
+            },
+            "right": {
+              "de": "Zug"
+            }
+          },
+          {
+            "left": {
+              "de": "X-ray machines"
+            },
+            "right": {
+              "de": "Röntgengerät"
+            }
+          },
+          {
+            "left": {
+              "de": "cell phones"
+            },
+            "right": {
+              "de": "Handy"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mag_anwendungen-hff58t3",
+      "type": "multi",
+      "prompt": {
+        "de": "Wähle ALLE Geräte aus, in denen Magnete verwendet werden! / Select ALL devices that use magnets!",
+        "it": "Seleziona TUTTI i dispositivi che usano magneti!"
+      },
+      "hint": {
+        "de": "Kran, Handy und Kühlschrank — kannst du dir vorstellen, wie sie Magnete benutzen? / Crane, cell phone and fridge — can you imagine how they use magnets?",
+        "it": "Gru, cellulare e frigorifero — riesci a immaginare come usano i magneti?"
+      },
+      "explain": {
+        "de": "Kran (Elektromagnet hebt Metall), Handy (Magnete im Lautsprecher), Kühlschrank (Magnet hält Tür zu). Regenschirm, Plastikflasche und Holzstuhl haben keine Magnete.",
+        "it": "Gru (elettromagnete solleva il metallo), Cellulare (magneti negli altoparlanti), Frigorifero (il magnete tiene chiusa la porta). Ombrello, bottiglia di plastica e sedia non hanno magneti."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kran / Crane",
+            "it": "Gru"
+          },
+          {
+            "de": "Regenschirm / Umbrella",
+            "it": "Ombrello"
+          },
+          {
+            "de": "Handy / Cell phone",
+            "it": "Cellulare"
+          },
+          {
+            "de": "Plastikflasche / Plastic bottle",
+            "it": "Bottiglia di plastica"
+          },
+          {
+            "de": "Kühlschrank / Refrigerator",
+            "it": "Frigorifero"
+          },
+          {
+            "de": "Holzstuhl / Wooden chair",
+            "it": "Sedia di legno"
+          }
+        ],
+        "correct": [
+          0,
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "mag_anwendungen-hcg1z0d",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Gerät benutzt einen Elektromagneten, um schwere Metallteile zu heben? / Which device uses an electromagnet to lift heavy metal pieces?",
+        "it": "Quale dispositivo usa un elettromagnete per sollevare pezzi di metallo pesanti?"
+      },
+      "hint": {
+        "de": "Denk an einen Schrottplatz: ein großer Arm hebt Autoteile hoch — wenn der Strom ausgeschaltet wird, fallen sie! / Think of a scrapyard: a big arm lifts car parts — when the power is off, they drop!",
+        "it": "Pensa a un rottamaio: un braccio grande solleva parti di auto — quando la corrente è spenta, cadono!"
+      },
+      "explain": {
+        "de": "Ein Kran benutzt einen Elektromagneten: Mit Strom hebt er schwere Metallteile an — ohne Strom lässt er sie fallen.",
+        "it": "Una gru usa un elettromagnete: con corrente solleva pezzi di metallo pesanti — senza corrente li lascia cadere."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kühlschrank / Refrigerator",
+            "it": "Frigorifero"
+          },
+          {
+            "de": "Kran / Crane",
+            "it": "Gru"
+          },
+          {
+            "de": "Röntgengerät / X-ray machine",
+            "it": "Macchina a raggi X"
+          },
+          {
+            "de": "Computer",
+            "it": "Computer"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_anwendungen-hqgwamd",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt? / Is Ferro right?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Schau dir das Gummiband um die Kühlschranktür an — darin sind kleine Magnete versteckt! / Look at the rubber seal around the fridge door — tiny magnets are hidden inside!",
+        "it": "Guarda la guarnizione in gomma intorno alla porta del frigorifero — ci sono piccoli magneti nascosti dentro!"
+      },
+      "explain": {
+        "de": "Richtig! Im Gummidichtungsstreifen der Kühlschranktür sind kleine Magnete eingebaut, die die Tür geschlossen halten.",
+        "it": "Corretto! Nella guarnizione in gomma della porta del frigorifero sono incorporati piccoli magneti che tengono la porta chiusa."
+      },
+      "answer": {
+        "statement": {
+          "de": "„Ein Kühlschrank verwendet Magnete, um die Tür geschlossen zu halten.\" / \"A refrigerator uses magnets to keep its door closed.\"",
+          "it": "\"Un frigorifero usa magneti per tenere chiusa la porta.\""
+        },
+        "correct": true
+      }
+    }
+  ]
+}

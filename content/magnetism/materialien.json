@@ -1,0 +1,582 @@
+{
+  "items": [
+    {
+      "id": "mag_materialien-h1ikt9lk",
+      "type": "multi",
+      "prompt": {
+        "de": "Welche vier Materialien werden von Magneten angezogen? / Which four materials are attracted by magnets? Select ALL that apply.",
+        "it": "Quali quattro materiali sono attratti dai magneti? Seleziona tutti."
+      },
+      "hint": {
+        "de": "There are exactly 4 — all metals, but not every metal is magnetic!",
+        "it": "Sono esattamente 4 — tutti metalli, ma non tutti i metalli sono magnetici!"
+      },
+      "explain": {
+        "de": "The 4 magnetic materials are: Iron, Cobalt, Steel, Nickel.",
+        "it": "I 4 materiali magnetici sono: Ferro, Cobalto, Acciaio, Nichel."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Eisen / Iron",
+            "it": "Ferro"
+          },
+          {
+            "de": "Kobalt / Cobalt",
+            "it": "Cobalto"
+          },
+          {
+            "de": "Kupfer / Copper",
+            "it": "Rame"
+          },
+          {
+            "de": "Stahl / Steel",
+            "it": "Acciaio"
+          },
+          {
+            "de": "Holz / Wood",
+            "it": "Legno"
+          },
+          {
+            "de": "Nickel",
+            "it": "Nichel"
+          },
+          {
+            "de": "Aluminium / Aluminum",
+            "it": "Alluminio"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-h33d3jb",
+      "type": "text",
+      "prompt": {
+        "de": "Was ist das vierte magnetische Material? Ergänze!",
+        "it": "Qual è il quarto materiale magnetico? Completa!"
+      },
+      "hint": {
+        "de": "Denk an Nägel, Schrauben und Büroklammern — die sind alle aus diesem Material!",
+        "it": "Pensa a chiodi e graffette — sono fatti di questo materiale!"
+      },
+      "explain": {
+        "de": "Das vierte magnetische Material ist Stahl (Steel).",
+        "it": "Il quarto materiale magnetico è l'acciaio (Steel)."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die vier magnetischen Materialien sind: Eisen, Kobalt, Nickel und",
+          "it": "I quattro materiali magnetici sono: Ferro, Cobalto, Nichel e"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "stahl",
+          "steel"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-hlc8704",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches ist KEIN magnetisches Material? / Which of the following is NOT one of the four magnetic materials?",
+        "it": "Quale dei seguenti NON è uno dei quattro materiali magnetici?"
+      },
+      "hint": {
+        "de": "Copper is a metal — but it does not stick to a magnet!",
+        "it": "Il rame è un metallo — ma non si attacca a un magnete!"
+      },
+      "explain": {
+        "de": "Copper (Kupfer) is NOT magnetic. Only Iron, Steel, Cobalt and Nickel are.",
+        "it": "Il rame non è magnetico. Solo Ferro, Acciaio, Cobalto e Nichel lo sono."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kobalt / Cobalt",
+            "it": "Cobalto"
+          },
+          {
+            "de": "Eisen / Iron",
+            "it": "Ferro"
+          },
+          {
+            "de": "Kupfer / Copper",
+            "it": "Rame"
+          },
+          {
+            "de": "Stahl / Steel",
+            "it": "Acciaio"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "mag_materialien-h8vfa6r",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Not all metals are magnetic! Only Iron, Steel, Cobalt and Nickel are.",
+        "it": "Non tutti i metalli sono magnetici! Solo Ferro, Acciaio, Cobalto e Nichel lo sono."
+      },
+      "explain": {
+        "de": "Wrong! Aluminum is a metal but it is NOT magnetic.",
+        "it": "Falso! L'alluminio è un metallo ma NON è magnetico."
+      },
+      "answer": {
+        "statement": {
+          "de": "Aluminium ist magnetisch, weil es ein Metall ist. / Aluminum is a magnetic material because it is a metal.",
+          "it": "L'alluminio è un materiale magnetico perché è un metallo."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_materialien-hsn5p63",
+      "type": "choice",
+      "prompt": {
+        "de": "Ein Magnet liegt auf einem Tisch. Welcher Gegenstand wird davon angezogen?",
+        "it": "Quale oggetto verrebbe attratto da un magnete sul tavolo?"
+      },
+      "hint": {
+        "de": "Eisen ist eines der vier magnetischen Materialien!",
+        "it": "Il ferro è uno dei quattro materiali magnetici!"
+      },
+      "explain": {
+        "de": "Ein Eisennagel wird angezogen — Eisen ist magnetisch.",
+        "it": "Un chiodo di ferro viene attratto — il ferro è magnetico."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Eine Aluminiumdose",
+            "it": "Una lattina di alluminio"
+          },
+          {
+            "de": "Ein Eisennagel",
+            "it": "Un chiodo di ferro"
+          },
+          {
+            "de": "Ein Kupferdraht",
+            "it": "Un filo di rame"
+          },
+          {
+            "de": "Ein Holzstab",
+            "it": "Un bastoncino di legno"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_materialien-hldv6gd",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"Iron\" auf Deutsch? / What is the German word for \"Iron\"?",
+        "it": "Come si dice \"Iron\" in tedesco?"
+      },
+      "hint": {
+        "de": "Es ist eines der 4 magnetischen Materialien — und auch im Erdkern! / It's one of the 4 magnetic materials — and also found in Earth's core!",
+        "it": "È uno dei 4 materiali magnetici — e si trova anche nel nucleo terrestre!"
+      },
+      "explain": {
+        "de": "\"Iron\" heißt auf Deutsch EISEN. Nickel bleibt übrigens auf beiden Sprachen gleich!",
+        "it": "\"Iron\" in tedesco si dice EISEN. Nickel rimane uguale in entrambe le lingue!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"Iron\" heißt auf Deutsch",
+          "it": "\"Iron\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"Iron\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "eisen"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-h1r0cyu9",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"Steel\" auf Deutsch? / What is the German word for \"Steel\"?",
+        "it": "Come si dice \"Steel\" in tedesco?"
+      },
+      "hint": {
+        "de": "Stahl wird aus Eisen hergestellt — denk an Schienen oder Messer! / Steel is made from iron — think of rails or knives!",
+        "it": "L'acciaio è prodotto dal ferro — pensa ai binari o ai coltelli!"
+      },
+      "explain": {
+        "de": "\"Steel\" heißt auf Deutsch STAHL.",
+        "it": "\"Steel\" in tedesco si dice STAHL (acciaio)."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"Steel\" heißt auf Deutsch",
+          "it": "\"Steel\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"Steel\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "stahl"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-hfthwpt",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"Cobalt\" auf Deutsch? / What is the German word for \"Cobalt\"?",
+        "it": "Come si dice \"Cobalt\" in tedesco?"
+      },
+      "hint": {
+        "de": "Fast wie auf Englisch — nur ein kleiner Unterschied am Anfang! / Almost the same as in English — just a small difference at the start!",
+        "it": "Quasi uguale all'inglese — solo una piccola differenza all'inizio!"
+      },
+      "explain": {
+        "de": "\"Cobalt\" heißt auf Deutsch KOBALT — fast gleich, aber mit K statt C!",
+        "it": "\"Cobalt\" in tedesco si dice KOBALT — quasi uguale, ma con K invece di C!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"Cobalt\" heißt auf Deutsch",
+          "it": "\"Cobalt\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"Cobalt\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "kobalt"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-h5rorb1",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"magnet\" auf Deutsch? / What is the German word for \"magnet\"?",
+        "it": "Come si dice \"magnet\" in tedesco?"
+      },
+      "hint": {
+        "de": "Fast gleich wie auf Englisch — auf Deutsch werden alle Nomen großgeschrieben! / Almost the same as in English — in German all nouns are capitalised!",
+        "it": "Quasi uguale all'inglese — in tedesco tutti i sostantivi si scrivono con la maiuscola!"
+      },
+      "explain": {
+        "de": "\"magnet\" heißt auf Deutsch MAGNET — gleich, aber mit großem M!",
+        "it": "\"magnet\" in tedesco si dice MAGNET — uguale, ma con la M maiuscola!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"magnet\" heißt auf Deutsch",
+          "it": "\"magnet\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"magnet\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "magnet"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-h2mvczl",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"magnetism\" auf Deutsch? / What is the German word for \"magnetism\"?",
+        "it": "Come si dice \"magnetism\" in tedesco?"
+      },
+      "hint": {
+        "de": "Fast wie auf Englisch — füge einfach \"-us\" am Ende hinzu! / Almost the same as in English — just add \"-us\" at the end!",
+        "it": "Quasi uguale all'inglese — aggiungi solo \"-us\" alla fine!"
+      },
+      "explain": {
+        "de": "\"magnetism\" heißt auf Deutsch MAGNETISMUS.",
+        "it": "\"magnetism\" in tedesco si dice MAGNETISMUS."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"magnetism\" heißt auf Deutsch",
+          "it": "\"magnetism\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"magnetism\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "magnetismus"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-hanp0md",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"magnetite\" auf Deutsch? / What is the German word for \"magnetite\"?",
+        "it": "Come si dice \"magnetite\" in tedesco?"
+      },
+      "hint": {
+        "de": "Fast gleich — nur ohne das \"e\" am Ende! / Almost the same — just without the \"e\" at the end!",
+        "it": "Quasi uguale — solo senza la \"e\" finale!"
+      },
+      "explain": {
+        "de": "\"magnetite\" heißt auf Deutsch MAGNETIT — ohne das \"e\" am Ende.",
+        "it": "\"magnetite\" in tedesco si dice MAGNETIT — senza la \"e\" finale."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"magnetite\" heißt auf Deutsch",
+          "it": "\"magnetite\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"magnetite\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "magnetit"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-h2aodt5",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"electro-magnet\" auf Deutsch? / What is the German word for \"electro-magnet\"?",
+        "it": "Come si dice \"electro-magnet\" in tedesco?"
+      },
+      "hint": {
+        "de": "Ein zusammengesetztes Wort: Elektro + Magnet — auf Deutsch ohne Bindestrich! / A compound word: Elektro + Magnet — in German without a hyphen!",
+        "it": "Una parola composta: Elektro + Magnet — in tedesco senza trattino!"
+      },
+      "explain": {
+        "de": "\"electro-magnet\" heißt auf Deutsch ELEKTROMAGNET.",
+        "it": "\"electro-magnet\" in tedesco si dice ELEKTROMAGNET."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"electro-magnet\" heißt auf Deutsch",
+          "it": "\"electro-magnet\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"electro-magnet\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "elektromagnet"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-haycl5x",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"permanent magnet\" auf Deutsch? / What is the German word for \"permanent magnet\"?",
+        "it": "Come si dice \"permanent magnet\" in tedesco?"
+      },
+      "hint": {
+        "de": "\"Dauer\" bedeutet auf Deutsch \"dauerhaft\" oder \"permanent\" — ein Magnet der immer magnetisch bleibt! / \"Dauer\" means \"lasting\" or \"permanent\" — a magnet that stays magnetic!",
+        "it": "\"Dauer\" significa \"durevole\" o \"permanente\" — un magnete che rimane sempre magnetico!"
+      },
+      "explain": {
+        "de": "\"permanent magnet\" heißt auf Deutsch DAUERMAGNET. \"Dauer\" = dauerhaft/permanent.",
+        "it": "\"permanent magnet\" in tedesco si dice DAUERMAGNET. \"Dauer\" = durevole/permanente."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"permanent magnet\" heißt auf Deutsch",
+          "it": "\"permanent magnet\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"permanent magnet\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "dauermagnet"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-h1wl3lft",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"temporary magnet\" auf Deutsch? / What is the German word for \"temporary magnet\"?",
+        "it": "Come si dice \"temporary magnet\" in tedesco?"
+      },
+      "hint": {
+        "de": "\"temporär\" klingt ähnlich wie auf Englisch — und \"Magnet\" kennst du schon! / \"temporär\" sounds similar to English — and \"Magnet\" you already know!",
+        "it": "\"temporär\" suona simile all'inglese — e \"Magnet\" lo conosci già!"
+      },
+      "explain": {
+        "de": "\"temporary magnet\" heißt auf Deutsch TEMPORÄRER MAGNET.",
+        "it": "\"temporary magnet\" in tedesco si dice TEMPORÄRER MAGNET."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"temporary magnet\" heißt auf Deutsch",
+          "it": "\"temporary magnet\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"temporary magnet\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "temporärer magnet",
+          "temporärmagnet",
+          "temporary magnet"
+        ]
+      }
+    },
+    {
+      "id": "mag_materialien-h1vgdepu",
+      "type": "choice",
+      "prompt": {
+        "de": "Es gibt zwei Hauptarten von Magneten. Welche? / There are two main types of magnets. Which ones?",
+        "it": "Ci sono due tipi principali di magneti. Quali?"
+      },
+      "hint": {
+        "de": "Denk an die neuen Wörter, die du gelernt hast: Dauer- und temporär! / Think of the new words you learned: Dauer- and temporär!",
+        "it": "Pensa alle nuove parole che hai imparato: Dauer- e temporär!"
+      },
+      "explain": {
+        "de": "Die zwei Hauptarten sind Dauermagnete (immer magnetisch) und temporäre Magnete (nur manchmal magnetisch).",
+        "it": "I due tipi principali sono i magneti permanenti (sempre magnetici) e quelli temporanei (magnetici solo a volte)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Heiße und kalte Magnete / Hot and cold magnets",
+            "it": "Magneti caldi e freddi"
+          },
+          {
+            "de": "Dauermagnete und temporäre Magnete / Permanent and temporary magnets",
+            "it": "Magneti permanenti e temporanei"
+          },
+          {
+            "de": "Große und kleine Magnete / Big and small magnets",
+            "it": "Magneti grandi e piccoli"
+          },
+          {
+            "de": "Magnete aus Eisen und aus Plastik / Iron magnets and plastic magnets",
+            "it": "Magneti di ferro e di plastica"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_materialien-h1kzqlby",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist ein Dauermagnet? / What is a permanent magnet?",
+        "it": "Cos'è un magnete permanente?"
+      },
+      "hint": {
+        "de": "\"Dauer\" bedeutet \"dauerhaft\" — also: er bleibt immer ein Magnet! / \"Dauer\" means \"lasting\" — so: it always stays a magnet!",
+        "it": "\"Dauer\" significa \"durevole\" — quindi: rimane sempre un magnete!"
+      },
+      "explain": {
+        "de": "Ein Dauermagnet behält seine magnetische Kraft immer — z. B. ein Stabmagnet oder ein Kühlschrankmagnet.",
+        "it": "Un magnete permanente mantiene sempre la sua forza magnetica — per esempio una calamita o una calamita da frigo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Ein Magnet, der nur im Sommer funktioniert / A magnet that only works in summer",
+            "it": "Un magnete che funziona solo d'estate"
+          },
+          {
+            "de": "Ein Magnet, der seine magnetische Kraft immer behält / A magnet that always keeps its magnetic force",
+            "it": "Un magnete che mantiene sempre la sua forza magnetica"
+          },
+          {
+            "de": "Ein Magnet, der aus Plastik ist / A magnet made of plastic",
+            "it": "Un magnete di plastica"
+          },
+          {
+            "de": "Ein Magnet, der sehr klein ist / A magnet that is very small",
+            "it": "Un magnete molto piccolo"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_materialien-h11gnoay",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist ein temporärer Magnet? / What is a temporary magnet?",
+        "it": "Cos'è un magnete temporaneo?"
+      },
+      "hint": {
+        "de": "\"Temporär\" bedeutet \"nur für eine bestimmte Zeit\"! / \"Temporär\" means \"only for a certain time\"!",
+        "it": "\"Temporär\" significa \"solo per un certo tempo\"!"
+      },
+      "explain": {
+        "de": "Ein temporärer Magnet ist nur unter bestimmten Bedingungen magnetisch — z. B. ein Elektromagnet, wenn Strom fließt.",
+        "it": "Un magnete temporaneo è magnetico solo in certe condizioni — per esempio un elettromagnete, quando passa corrente."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Ein Magnet, der schnell kaputt geht / A magnet that breaks quickly",
+            "it": "Un magnete che si rompe in fretta"
+          },
+          {
+            "de": "Ein Magnet, der sehr leicht ist / A magnet that is very light",
+            "it": "Un magnete molto leggero"
+          },
+          {
+            "de": "Ein Magnet, der nur unter bestimmten Bedingungen magnetisch ist (z. B. wenn Strom fließt) / A magnet that is only magnetic under certain conditions (e.g. when current flows)",
+            "it": "Un magnete che è magnetico solo in certe condizioni (per esempio quando passa corrente elettrica)"
+          },
+          {
+            "de": "Ein Magnet, der nur einmal benutzt werden kann / A magnet that can only be used once",
+            "it": "Un magnete che si può usare solo una volta"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "mag_materialien-h1vqu14h",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Ein Elektromagnet braucht Strom, um zu funktionieren — schalte den Strom aus und er ist kein Magnet mehr! / An electromagnet needs current to work — turn the current off and it's no longer a magnet!",
+        "it": "Un elettromagnete ha bisogno di corrente per funzionare — spegni la corrente e non è più un magnete!"
+      },
+      "explain": {
+        "de": "Falsch! Ein Elektromagnet ist ein temporärer Magnet — er funktioniert nur, wenn Strom fließt.",
+        "it": "Falso! Un elettromagnete è un magnete temporaneo — funziona solo quando passa corrente."
+      },
+      "answer": {
+        "statement": {
+          "de": "Ein Elektromagnet ist ein Dauermagnet. / An electromagnet is a permanent magnet.",
+          "it": "Un elettromagnete è un magnete permanente."
+        },
+        "correct": false
+      }
+    }
+  ]
+}

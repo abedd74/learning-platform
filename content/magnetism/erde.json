@@ -1,0 +1,204 @@
+{
+  "items": [
+    {
+      "id": "mag_erde-h4vqiz7",
+      "type": "choice",
+      "prompt": {
+        "de": "Was erzeugt das Magnetfeld der Erde? / What creates Earth's magnetic field?",
+        "it": "Cosa crea il campo magnetico della Terra?"
+      },
+      "hint": {
+        "de": "Think about what material is inside Earth's core!",
+        "it": "Pensa a quale materiale si trova nel nucleo terrestre!"
+      },
+      "explain": {
+        "de": "Earth's magnetic field is created by the movement of liquid iron in its outer core.",
+        "it": "Il campo magnetico della Terra è creato dal movimento del ferro liquido nel nucleo esterno."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Bewegung des Wassers in den Ozeanen / Movement of water in the oceans",
+            "it": "Il movimento dell'acqua negli oceani"
+          },
+          {
+            "de": "Bewegung von flüssigem Eisen im Erdkern / Movement of liquid iron in Earth's outer core",
+            "it": "Il movimento del ferro liquido nel nucleo esterno della Terra"
+          },
+          {
+            "de": "Bewegung der Wolken / Movement of clouds",
+            "it": "Il movimento delle nuvole"
+          },
+          {
+            "de": "Wärme der Sonne / Heat from the sun",
+            "it": "Il calore del sole"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_erde-h161cem4",
+      "type": "text",
+      "prompt": {
+        "de": "Ergänze den Satz über die Erde! / Complete the fact about Earth:",
+        "it": "Completa il fatto sulla Terra:"
+      },
+      "hint": {
+        "de": "Earth doesn't stand still — it moves! And that movement creates the magnetic field.",
+        "it": "La Terra non è ferma — si muove! E quel movimento crea il campo magnetico."
+      },
+      "explain": {
+        "de": "Erde dreht sich = SPINS/ROTATES. / Liquid iron in Earth's outer core creates a magnet as Earth SPINS.",
+        "it": "Il ferro liquido nel nucleo esterno della Terra crea un magnete mentre la Terra RUOTA."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Flüssiges Eisen im Erdkern erzeugt einen Magneten, wenn die Erde sich",
+          "it": "Il ferro liquido nel nucleo esterno della Terra crea un magnete mentre la Terra"
+        },
+        "suffix": {
+          "de": ".<br>Liquid iron in Earth's outer core creates a magnet as Earth ___ .",
+          "it": "."
+        },
+        "accepted": [
+          "dreht",
+          "rotiert",
+          "spins",
+          "rotates"
+        ]
+      }
+    },
+    {
+      "id": "mag_erde-hblernx",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum nennen wir die Erde „einen riesigen Magneten\"? / Why do we describe Earth as \"a giant magnet\"?",
+        "it": "Perché descriviamo la Terra come \"un gigantesco magnete\"?"
+      },
+      "hint": {
+        "de": "Think about what makes something a magnet — poles and a magnetic field!",
+        "it": "Pensa a cosa rende qualcosa un magnete — poli e campo magnetico!"
+      },
+      "explain": {
+        "de": "Earth is like a giant magnet: it has a North pole, a South pole and a magnetic field.",
+        "it": "La Terra è come un gigantesco magnete: ha un polo Nord, un polo Sud e un campo magnetico."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Weil sie sehr schwer ist / Because it is very heavy",
+            "it": "Perché è molto pesante"
+          },
+          {
+            "de": "Weil sie Pole und ein Magnetfeld hat / Because it has poles and a magnetic field",
+            "it": "Perché ha poli e un campo magnetico, proprio come un magnete"
+          },
+          {
+            "de": "Weil sie den Mond anzieht / Because it attracts the Moon",
+            "it": "Perché attrae la Luna"
+          },
+          {
+            "de": "Weil sie rund ist / Because it is round",
+            "it": "Perché è rotonda"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_erde-h1qv5su",
+      "type": "text",
+      "prompt": {
+        "de": "Ergänze den Satz über den Kompass! / Complete the sentence about a compass!",
+        "it": "Completa la frase sulla bussola!"
+      },
+      "hint": {
+        "de": "Nord, Süd, Ost, West — das sind die vier ___ ! / North, South, East, West — those are the four ___ !",
+        "it": "Nord, Sud, Est, Ovest — sono i quattro punti cardinali!"
+      },
+      "explain": {
+        "de": "Ein Kompass zeigt uns die HIMMELSRICHTUNGEN — Nord, Süd, Ost und West.",
+        "it": "Una bussola ci mostra i PUNTI CARDINALI — Nord, Sud, Est e Ovest."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Ein Kompass ist ein Gerät, das uns die",
+          "it": "Una bussola è uno strumento che ci mostra i"
+        },
+        "suffix": {
+          "de": "anzeigt.<br>A compass is a tool we use to find ___ .",
+          "it": "."
+        },
+        "accepted": [
+          "himmelsrichtungen",
+          "himmelsrichtung",
+          "richtungen",
+          "richtung",
+          "direction",
+          "directions"
+        ]
+      }
+    },
+    {
+      "id": "mag_erde-h1vhiitb",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum zeigt die Magnetnadel im Kompass immer nach Norden? / Why does the magnetic needle in a compass always point north?",
+        "it": "Perché l'ago magnetico nella bussola punta sempre a nord?"
+      },
+      "hint": {
+        "de": "Die Erde ist ein riesiger Magnet — und Magnete ziehen sich an! / Earth is a giant magnet — and magnets attract each other!",
+        "it": "La Terra è un gigantesco magnete — e i magneti si attraggono!"
+      },
+      "explain": {
+        "de": "Die Magnetnadel zeigt nach Norden, weil sie vom Magnetfeld der Erde angezogen wird. Der Nordpol der Nadel richtet sich nach dem (geographischen) Nordpol der Erde aus.",
+        "it": "L'ago magnetico punta a nord perché è attratto dal campo magnetico della Terra. Il polo nord dell'ago si orienta verso il polo nord della Terra."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Weil der Kompass so gebaut wurde / Because that's how the compass was built",
+            "it": "Perché la bussola è stata costruita così"
+          },
+          {
+            "de": "Weil die Magnetnadel vom Magnetfeld der Erde angezogen wird / Because the needle is attracted by Earth's magnetic field",
+            "it": "Perché l'ago è attratto dal campo magnetico della Terra"
+          },
+          {
+            "de": "Weil Norden immer oben auf der Karte ist / Because north is always at the top of the map",
+            "it": "Perché il nord è sempre in cima alla mappa"
+          },
+          {
+            "de": "Weil der Nordpol kälter ist / Because the North Pole is colder",
+            "it": "Perché il Polo Nord è più freddo"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_erde-hxtxurb",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt? / Is Ferro right?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Denk daran: Ungleiche Pole ziehen sich an! Der Nordpol der Kompassnadel wird nach Norden gezogen — also muss dort ein Südpol sein! / Unlike poles attract! The compass needle's north pole is pulled north — so there must be a south pole there!",
+        "it": "I poli diversi si attraggono! Il polo nord dell'ago viene attratto verso nord — quindi lì deve esserci un polo sud!"
+      },
+      "explain": {
+        "de": "Richtig! Der geographische Nordpol der Erde ist der magnetische Südpol des Erdmagneten. Deshalb wird der Nordpol der Kompassnadel dorthin gezogen!",
+        "it": "Corretto! Il polo nord geografico della Terra è il polo sud magnetico del magnete terrestre. Per questo il polo nord dell'ago viene attratto verso nord!"
+      },
+      "answer": {
+        "statement": {
+          "de": "„Der Nordpol der Erde ist tatsächlich der Südpol des Erdmagneten.\" / \"Earth's geographic north pole is actually the south pole of the Earth magnet.\"",
+          "it": "\"Il polo nord geografico della Terra è in realtà il polo sud del magnete terrestre.\""
+        },
+        "correct": true
+      }
+    }
+  ]
+}

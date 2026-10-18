@@ -1,0 +1,290 @@
+{
+  "items": [
+    {
+      "id": "mag_magnetfeld-hpm0fhq",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist ein Magnetfeld? / What is a magnetic field?",
+        "it": "Cos'è un campo magnetico?"
+      },
+      "hint": {
+        "de": "It's like an invisible 'zone' of force around the magnet!",
+        "it": "È come una 'zona' invisibile di forza intorno al magnete!"
+      },
+      "explain": {
+        "de": "The magnetic field is the space around a magnet where the magnetic force is felt.",
+        "it": "Il campo magnetico è lo spazio intorno a un magnete dove si sente la forza magnetica."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Ein Feld, wo Magnete wachsen / A field where magnets grow",
+            "it": "Un campo dove crescono i magneti"
+          },
+          {
+            "de": "Der Raum um einen Magneten, in dem die Kraft wirkt / Space around a magnet where force is felt",
+            "it": "Lo spazio intorno a un magnete dove si sente la forza magnetica"
+          },
+          {
+            "de": "Das Innere des Magneten / The inside of a magnet",
+            "it": "L'interno di un magnete"
+          },
+          {
+            "de": "Die Farbe des Magneten / The colour a magnet produces",
+            "it": "Il colore prodotto da un magnete"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_magnetfeld-h7mgvft",
+      "type": "text",
+      "prompt": {
+        "de": "Was ist das Magnetfeld? Ergänze!",
+        "it": "Cos'è il campo magnetico? Completa!"
+      },
+      "hint": {
+        "de": "Es ist der Bereich, der Raum rund um den Magneten!",
+        "it": "È lo spazio, l'area intorno al magnete!"
+      },
+      "explain": {
+        "de": "Das Magnetfeld ist der RAUM um einen Magneten, in dem die Kraft zu spüren ist.",
+        "it": "Il campo magnetico è lo SPAZIO intorno a un magnete dove si sente la forza."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Das Magnetfeld ist der",
+          "it": "Il campo magnetico è lo"
+        },
+        "suffix": {
+          "de": "um einen Magneten, in dem die magnetische Kraft zu spüren ist.",
+          "it": "intorno a un magnete dove si sente la forza magnetica."
+        },
+        "accepted": [
+          "raum",
+          "bereich",
+          "space",
+          "spazio"
+        ]
+      }
+    },
+    {
+      "id": "mag_magnetfeld-h9obvmy",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "The magnetic field is the space AROUND the magnet, not inside it!",
+        "it": "Il campo magnetico è lo spazio INTORNO al magnete, non dentro!"
+      },
+      "explain": {
+        "de": "Wrong! The magnetic field is the space AROUND the magnet.",
+        "it": "Falso! Il campo magnetico è lo spazio INTORNO al magnete."
+      },
+      "answer": {
+        "statement": {
+          "de": "Das Magnetfeld befindet sich nur im Inneren des Magneten. / The magnetic field is only found inside the magnet.",
+          "it": "Il campo magnetico si trova solo dentro il magnete."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_magnetfeld-h53p5ve",
+      "type": "choice",
+      "prompt": {
+        "de": "Was zeigen die gebogenen Linien um einen Magneten im Diagramm? / What do the curved lines around a magnet in a diagram represent?",
+        "it": "Cosa rappresentano le linee curve intorno a un magnete in un disegno?"
+      },
+      "hint": {
+        "de": "These lines are drawn in the lapbook! They show the shape of the magnetic field.",
+        "it": "Queste linee sono disegnate nel lapbook! Mostrano la forma del campo magnetico."
+      },
+      "explain": {
+        "de": "The curved lines show the magnetic field lines — the shape of the magnetic field.",
+        "it": "Le linee curve mostrano le linee del campo magnetico — la forma del campo magnetico."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Die Wärme des Magneten / The magnet's heat",
+            "it": "Il calore del magnete"
+          },
+          {
+            "de": "Die Magnetfeldlinien / The magnetic field lines",
+            "it": "Le linee del campo magnetico"
+          },
+          {
+            "de": "Risse im Magneten / Cracks in the magnet",
+            "it": "Crepe nel magnete"
+          },
+          {
+            "de": "Elektrische Kabel / Electric cables",
+            "it": "Cavi elettrici"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_magnetfeld-hzpowfl",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie verhält sich das flüssige Eisen im Erdkern? / How does the liquid iron in Earth's core behave?",
+        "it": "Come si comporta il ferro liquido nel nucleo della Terra?"
+      },
+      "hint": {
+        "de": "Es ist wie warme Luft im Zimmer — sie steigt nach oben, kühlt ab und sinkt dann wieder! / It's like warm air in a room — it rises, cools, and sinks again!",
+        "it": "È come l'aria calda in una stanza — sale, si raffredda e poi ricade!"
+      },
+      "explain": {
+        "de": "Genau! Das Eisen erwärmt sich, steigt nach oben, kühlt ab und sinkt wieder — wie warme Luft.",
+        "it": "Esatto! Il ferro si scalda, sale, si raffredda e scende — come l'aria calda."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Es bleibt immer an derselben Stelle / It always stays in the same place",
+            "it": "Resta sempre nello stesso posto"
+          },
+          {
+            "de": "Es erwärmt sich, steigt auf, kühlt ab und sinkt wieder / It heats up, rises, cools down and sinks again",
+            "it": "Si scalda, sale, si raffredda e poi scende"
+          },
+          {
+            "de": "Es fließt nur nach Norden / It only flows north",
+            "it": "Scorre solo verso nord"
+          },
+          {
+            "de": "Es wird zu festem Stein / It turns into solid stone",
+            "it": "Diventa pietra solida"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_magnetfeld-hyeordo",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie bewegt sich das flüssige Eisen, wenn die Erde sich dreht? / How does the liquid iron move as Earth spins?",
+        "it": "Come si muove il ferro liquido mentre la Terra ruota?"
+      },
+      "hint": {
+        "de": "Schraubenförmig = wie eine Schraube, in einer Spirale! / Schraubenförmig = like a screw, in a spiral!",
+        "it": "A spirale, proprio come una vite!"
+      },
+      "explain": {
+        "de": "Durch die Drehung der Erde bewegt sich das Eisen schraubenförmig hin und her.",
+        "it": "A causa della rotazione della Terra, il ferro si muove a spirale, come una vite."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Geradeaus in eine Richtung / Straight in one direction",
+            "it": "Dritto in una sola direzione"
+          },
+          {
+            "de": "Schraubenförmig hin und her / In a screw-like spiral motion",
+            "it": "A spirale, come una vite"
+          },
+          {
+            "de": "Es bewegt sich gar nicht / It doesn't move at all",
+            "it": "Non si muove affatto"
+          },
+          {
+            "de": "Im Zickzack / In zigzag",
+            "it": "A zigzag"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_magnetfeld-hve1x2w",
+      "type": "text",
+      "prompt": {
+        "de": "Was erzeugt das Erdmagnetfeld? Ergänze! / What creates Earth's magnetic field? Complete!",
+        "it": "Cosa crea il campo magnetico terrestre? Completa!"
+      },
+      "hint": {
+        "de": "Bewegung von Eisen → elektrischer ____! Strom fließt auch durch Kabel. / Movement of iron → electric ____! It also flows through cables.",
+        "it": "Movimento del ferro → ____ elettrica! Scorre anche nei cavi."
+      },
+      "explain": {
+        "de": "Die Bewegung des Eisens erzeugt einen elektrischen STROM — und dieser Strom bildet das Erdmagnetfeld.",
+        "it": "Il movimento del ferro crea una CORRENTE elettrica — e questa corrente forma il campo magnetico terrestre."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die Bewegung des Eisens erzeugt einen elektrischen",
+          "it": "Il movimento del ferro crea una"
+        },
+        "suffix": {
+          "de": ", der das Erdmagnetfeld bildet.<br>The movement of iron creates an electric ___ that forms Earth's magnetic field.",
+          "it": "elettrica che genera il campo magnetico terrestre."
+        },
+        "accepted": [
+          "strom",
+          "current",
+          "corrente"
+        ]
+      }
+    },
+    {
+      "id": "mag_magnetfeld-h1xgyzpd",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Das Magnetfeld ist unsichtbar — wir spüren es nur, z. B. mit einem Kompass. / The magnetic field is invisible — we only feel it, e.g. with a compass.",
+        "it": "Il campo magnetico è invisibile — possiamo solo sentirne gli effetti, per esempio con una bussola."
+      },
+      "explain": {
+        "de": "Falsch! Das Magnetfeld ist unsichtbar. Wir können es nicht sehen, aber mit einem Kompass spüren.",
+        "it": "Falso! Il campo magnetico è invisibile. Non si vede, ma si percepisce con una bussola."
+      },
+      "answer": {
+        "statement": {
+          "de": "Das Magnetfeld der Erde kann man mit dem bloßen Auge sehen. / Earth's magnetic field can be seen with the naked eye.",
+          "it": "Il campo magnetico della Terra si può vedere a occhio nudo."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_magnetfeld-h3watbx",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"magnetic field\" auf Deutsch? / What is the German word for \"magnetic field\"?",
+        "it": "Come si dice \"magnetic field\" in tedesco?"
+      },
+      "hint": {
+        "de": "Ein zusammengesetztes Wort: Magnet + Feld (= field). Auf Deutsch werden zwei Wörter zu einem! / A compound word: Magnet + Feld (= field). In German two words become one!",
+        "it": "Una parola composta: Magnet + Feld (= campo). In tedesco due parole diventano una!"
+      },
+      "explain": {
+        "de": "\"magnetic field\" heißt auf Deutsch MAGNETFELD — Magnet + Feld zusammen!",
+        "it": "\"magnetic field\" in tedesco si dice MAGNETFELD — Magnet + Feld insieme!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"magnetic field\" heißt auf Deutsch",
+          "it": "\"magnetic field\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"magnetic field\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "magnetfeld"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "items": [
+    {
+      "id": "mag_kraefte-h1jgho9j",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist die magnetische Kraft? / What is magnetic force?",
+        "it": "Cos'è la forza magnetica?"
+      },
+      "hint": {
+        "de": "Think of what a magnet does when you bring it close to something!",
+        "it": "Pensa a cosa fa un magnete quando lo avvicini a qualcosa!"
+      },
+      "explain": {
+        "de": "Magnetic force is the push or pull created by a magnet.",
+        "it": "La forza magnetica è la spinta o attrazione creata da un magnete."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Das Licht eines Magneten / The light created by a magnet",
+            "it": "La luce creata da un magnete"
+          },
+          {
+            "de": "Der Zug oder Schub eines Magneten / The push or pull created by a magnet",
+            "it": "La spinta o attrazione creata da un magnete"
+          },
+          {
+            "de": "Die Wärme eines Magneten / The heat produced by a magnet",
+            "it": "Il calore prodotto da un magnete"
+          },
+          {
+            "de": "Das Geräusch eines Magneten / The sound a magnet makes",
+            "it": "Il suono che fa un magnete"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_kraefte-h1paq8nd",
+      "type": "text",
+      "prompt": {
+        "de": "Ergänze die Definition! / Complete the definition of magnetic force:",
+        "it": "Completa la definizione di forza magnetica:"
+      },
+      "hint": {
+        "de": "A magnet can push things away — and it can also…?",
+        "it": "Un magnete può respingere — ma può anche…?"
+      },
+      "explain": {
+        "de": "Die Kraft = Zug oder SCHUB. / Magnetic force is the push or PULL created by a magnet.",
+        "it": "La forza magnetica è la spinta o ATTRAZIONE creata da un magnete."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Magnetische Kraft = Zug oder",
+          "it": "La forza magnetica è la spinta o"
+        },
+        "suffix": {
+          "de": "eines Magneten.<br>Magnetic force is the push or ___ created by a magnet.",
+          "it": "creata da un magnete."
+        },
+        "accepted": [
+          "pull",
+          "schub",
+          "druck",
+          "stoß",
+          "push"
+        ]
+      }
+    },
+    {
+      "id": "mag_kraefte-huowozj",
+      "type": "choice",
+      "prompt": {
+        "de": "Was bedeutet \"abstoßen\" bei zwei Magneten?",
+        "it": "Cosa significa \"respingere\" per due magneti?"
+      },
+      "hint": {
+        "de": "\"abstoßen\" kommt von \"stoßen\" — wegschieben!",
+        "it": "\"Respingere\" significa allontanarsi!"
+      },
+      "explain": {
+        "de": "\"Abstoßen\" bedeutet, dass sich zwei Magnete voneinander wegbewegen.",
+        "it": "\"Respingere\" significa che due magneti si allontanano l'uno dall'altro."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie ziehen sich an",
+            "it": "Si attraggono"
+          },
+          {
+            "de": "Sie stoßen sich weg",
+            "it": "Si respingono"
+          },
+          {
+            "de": "Sie kleben zusammen",
+            "it": "Si incollano insieme"
+          },
+          {
+            "de": "Sie werden warm",
+            "it": "Si scaldano"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_kraefte-h18n7wv0",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Magnets both attract (pull) AND repel (push)!",
+        "it": "I magneti attraggono E respingono!"
+      },
+      "explain": {
+        "de": "Wrong! Magnets can both pull (attract) and push (repel).",
+        "it": "Falso! I magneti possono attirare (attract) E respingere (repel)."
+      },
+      "answer": {
+        "statement": {
+          "de": "Magnete können nur anziehen — sie können nie abstoßen. / Magnets can only pull objects — they can never push.",
+          "it": "I magneti possono solo attirare oggetti — non possono mai respingere."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_kraefte-h611a3t",
+      "type": "text",
+      "prompt": {
+        "de": "Ergänze den Satz! / Complete the sentence:",
+        "it": "Completa la frase:"
+      },
+      "hint": {
+        "de": "\"attract\" starts with A — like Approach!",
+        "it": "\"attract\" inizia con A — come Avvicinare!"
+      },
+      "explain": {
+        "de": "Sich anziehen = ATTRACT. / When magnets pull together, they ATTRACT each other.",
+        "it": "Quando i magneti si avvicinano, si ATTRAGGONO."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Wenn zwei Magnete sich zueinander bewegen,",
+          "it": "Quando due magneti si avvicinano, diciamo che si"
+        },
+        "suffix": {
+          "de": "sie sich an.<br>When two magnets pull together, they ___ each other.",
+          "it": "."
+        },
+        "accepted": [
+          "attract",
+          "ziehen",
+          "anziehen"
+        ]
+      }
+    },
+    {
+      "id": "mag_kraefte-h19s3sx5",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"force\" auf Deutsch? / What is the German word for \"force\"?",
+        "it": "Come si dice \"force\" in tedesco?"
+      },
+      "hint": {
+        "de": "Denk an \"Magnetkraft\" — das Wort steckt schon drin! / Think of \"Magnetkraft\" — the word is already inside it!",
+        "it": "Pensa a \"Magnetkraft\" — la parola è già lì dentro!"
+      },
+      "explain": {
+        "de": "\"force\" heißt auf Deutsch KRAFT. Magnetkraft = magnetic force!",
+        "it": "\"force\" in tedesco si dice KRAFT. Magnetkraft = forza magnetica!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"force\" heißt auf Deutsch",
+          "it": "\"force\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"force\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "kraft"
+        ]
+      }
+    },
+    {
+      "id": "mag_kraefte-h1eqqb21",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"attract\" auf Deutsch? / What is the German word for \"attract\"?",
+        "it": "Come si dice \"attract\" in tedesco?"
+      },
+      "hint": {
+        "de": "An- + ziehen = heranziehen! Wenn Magnete sich anziehen, ziehen sie sich gegenseitig an. / An- + ziehen = to pull toward! When magnets attract, they pull each other.",
+        "it": "An- + ziehen = attirare! Quando i magneti si attraggono, si tirano l'uno verso l'altro."
+      },
+      "explain": {
+        "de": "\"attract\" heißt auf Deutsch ANZIEHEN.",
+        "it": "\"attract\" in tedesco si dice ANZIEHEN."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"attract\" heißt auf Deutsch",
+          "it": "\"attract\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"attract\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "anziehen"
+        ]
+      }
+    },
+    {
+      "id": "mag_kraefte-h11hhx3h",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"repel\" auf Deutsch? / What is the German word for \"repel\"?",
+        "it": "Come si dice \"repel\" in tedesco?"
+      },
+      "hint": {
+        "de": "Ab- + stoßen = wegstoßen! Wenn Magnete sich abstoßen, stoßen sie sich gegenseitig weg. / Ab- + stoßen = to push away! When magnets repel, they push each other away.",
+        "it": "Ab- + stoßen = respingere! Quando i magneti si respingono, si spingono via l'uno dall'altro."
+      },
+      "explain": {
+        "de": "\"repel\" heißt auf Deutsch ABSTOSSEN (abstoßen).",
+        "it": "\"repel\" in tedesco si dice ABSTOSSEN (abstoßen)."
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"repel\" heißt auf Deutsch",
+          "it": "\"repel\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"repel\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "abstoßen"
+        ]
+      }
+    }
+  ]
+}

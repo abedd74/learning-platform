@@ -1,0 +1,197 @@
+{
+  "items": [
+    {
+      "id": "mag_pole-hqpi7gw",
+      "type": "choice",
+      "prompt": {
+        "de": "Was passiert, wenn Nordpol und Südpol zusammenkommen? / What happens when you bring a North pole and a South pole together?",
+        "it": "Cosa succede quando avvicini un polo Nord e un polo Sud?"
+      },
+      "hint": {
+        "de": "\"Opposite poles attract\" — N and S are opposites!",
+        "it": "\"I poli opposti si attraggono\" — N e S sono opposti!"
+      },
+      "explain": {
+        "de": "Opposite poles (N+S) attract each other.",
+        "it": "I poli opposti (N+S) si attraggono."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie stoßen sich ab / They repel",
+            "it": "Si respingono"
+          },
+          {
+            "de": "Sie ziehen sich an / They attract",
+            "it": "Si attraggono"
+          },
+          {
+            "de": "Nichts passiert / Nothing happens",
+            "it": "Non succede niente"
+          },
+          {
+            "de": "Beide brechen / They both break",
+            "it": "Si rompono"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_pole-h13nr9vs",
+      "type": "choice",
+      "prompt": {
+        "de": "Was passiert, wenn zwei Nordpole zusammenkommen?",
+        "it": "Cosa succede quando due poli Nord si avvicinano?"
+      },
+      "hint": {
+        "de": "Gleiche Pole stoßen sich ab — entgegengesetzte ziehen sich an!",
+        "it": "I poli uguali si respingono — quelli opposti si attraggono!"
+      },
+      "explain": {
+        "de": "Zwei Nordpole stoßen sich ab — gleiche Pole stoßen sich immer ab.",
+        "it": "Due poli Nord si respingono — i poli uguali si respingono sempre."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie ziehen sich an",
+            "it": "Si attraggono"
+          },
+          {
+            "de": "Sie stoßen sich ab",
+            "it": "Si respingono"
+          },
+          {
+            "de": "Nichts passiert",
+            "it": "Non succede niente"
+          },
+          {
+            "de": "Sie schmelzen",
+            "it": "Si sciolgono"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_pole-h12zc9yu",
+      "type": "pairs",
+      "prompt": {
+        "de": "Ordne jede Polregel richtig zu. / Match each rule about magnetic poles:",
+        "it": "Collega ogni regola sui poli magnetici:"
+      },
+      "hint": {
+        "de": "Remember: opposites attract, same poles repel!",
+        "it": "Ricorda: gli opposti si attraggono, i poli uguali si respingono!"
+      },
+      "explain": {
+        "de": "Opposite poles attract (pull together). Like poles repel (push apart).",
+        "it": "I poli opposti si attraggono. I poli uguali si respingono."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Entgegengesetzte Pole (N+S) / Opposite poles"
+            },
+            "right": {
+              "de": "ziehen sich an / attract — pull together"
+            }
+          },
+          {
+            "left": {
+              "de": "Gleiche Pole (N+N oder S+S) / Like poles"
+            },
+            "right": {
+              "de": "stoßen sich ab / repel — push apart"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mag_pole-h7cffrn",
+      "type": "text",
+      "prompt": {
+        "de": "Ergänze die Polregel! / Complete the rule about magnetic poles:",
+        "it": "Completa la regola sui poli magnetici:"
+      },
+      "hint": {
+        "de": "What does a magnet do when two same poles meet? They push away!",
+        "it": "Cosa fanno due poli uguali? Si allontanano!"
+      },
+      "explain": {
+        "de": "Gleiche Pole stoßen sich ab = REPEL. / Opposite poles attract and like poles REPEL.",
+        "it": "I poli opposti si attraggono e i poli uguali si RESPINGONO."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Entgegengesetzte Pole ziehen sich an, gleiche Pole",
+          "it": "I poli opposti si attraggono e i poli uguali si"
+        },
+        "suffix": {
+          "de": "sich ab.<br>Opposite poles attract, like poles ___ .",
+          "it": "."
+        },
+        "accepted": [
+          "repel",
+          "stoßen",
+          "abstoßen"
+        ]
+      }
+    },
+    {
+      "id": "mag_pole-h19waqyu",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Yes! Every magnet always has both a north and a south pole!",
+        "it": "Sì! Ogni magnete ha sempre un polo Nord e un polo Sud!"
+      },
+      "explain": {
+        "de": "Correct! Every magnet always has exactly two poles: North and South.",
+        "it": "Corretto! Ogni magnete ha sempre due poli: Nord e Sud."
+      },
+      "answer": {
+        "statement": {
+          "de": "Jeder Magnet hat genau zwei Pole — einen Nordpol und einen Südpol. / Every magnet has exactly two poles — a north pole and a south pole.",
+          "it": "Ogni magnete ha esattamente due poli — un polo Nord e un polo Sud."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "mag_pole-hz4r52x",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"poles\" auf Deutsch? / What is the German word for \"poles\"?",
+        "it": "Come si dice \"poles\" in tedesco?"
+      },
+      "hint": {
+        "de": "Fast gleich wie auf Englisch — nur ohne das \"s\" am Ende! / Almost the same as in English — just without the \"s\" at the end!",
+        "it": "Quasi uguale all'inglese — solo senza la \"s\" finale!"
+      },
+      "explain": {
+        "de": "\"poles\" heißt auf Deutsch POLE — Nord-Pol und Süd-Pol!",
+        "it": "\"poles\" in tedesco si dice POLE — Polo Nord e Polo Sud!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"poles\" heißt auf Deutsch",
+          "it": "\"poles\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"poles\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "pole"
+        ]
+      }
+    }
+  ]
+}

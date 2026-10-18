@@ -1,0 +1,410 @@
+{
+  "items": [
+    {
+      "id": "mag_geschichte-h1kvfywd",
+      "type": "choice",
+      "prompt": {
+        "de": "Wo wurde Magnetit in der Antike zuerst entdeckt? / Where was magnetic rock (magnetite) first discovered in ancient times?",
+        "it": "Dove fu scoperta per la prima volta la roccia magnetica (magnetite) nell'antichità?"
+      },
+      "hint": {
+        "de": "The word 'magnet' comes from the name of that place!",
+        "it": "La parola 'magnete' viene dal nome di quel luogo!"
+      },
+      "explain": {
+        "de": "Magnetic rock was first found near Magnesia in Greece — that's where the word 'magnet' comes from!",
+        "it": "La roccia magnetica fu trovata vicino a Magnesia in Grecia — da lì viene la parola 'magnete'!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Nahe Rom in Italien / Near Rome in Italy",
+            "it": "Vicino a Roma in Italia"
+          },
+          {
+            "de": "Nahe Magnesia in Griechenland / Near Magnesia in Greece",
+            "it": "Vicino a Magnesia in Grecia"
+          },
+          {
+            "de": "Nahe Peking in China / Near Beijing in China",
+            "it": "Vicino a Pechino in Cina"
+          },
+          {
+            "de": "Nahe Kairo in Ägypten / Near Cairo in Egypt",
+            "it": "Vicino al Cairo in Egitto"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_geschichte-hfvevip",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Land hat den Kompass erfunden? / Which country invented the compass?",
+        "it": "Quale paese ha inventato la bussola?"
+      },
+      "hint": {
+        "de": "China made many great inventions — paper, printing, and…!",
+        "it": "La Cina ha fatto molte grandi invenzioni — la carta, la stampa, e…!"
+      },
+      "explain": {
+        "de": "The compass was invented in China, about 1000 years ago.",
+        "it": "La bussola fu inventata in Cina, circa 1000 anni fa."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Deutschland / Germany",
+            "it": "Germania"
+          },
+          {
+            "de": "Griechenland / Greece",
+            "it": "Grecia"
+          },
+          {
+            "de": "Ägypten / Egypt",
+            "it": "Egitto"
+          },
+          {
+            "de": "China",
+            "it": "Cina"
+          }
+        ],
+        "correct": 3
+      }
+    },
+    {
+      "id": "mag_geschichte-h1gfn1er",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "The compass was invented in China — about 1000 years ago!",
+        "it": "La bussola fu inventata in Cina — circa 1000 anni fa!"
+      },
+      "explain": {
+        "de": "Wrong! The compass was invented in China, not in Europe.",
+        "it": "Falso! La bussola fu inventata in Cina, non in Europa."
+      },
+      "answer": {
+        "statement": {
+          "de": "Der Kompass wurde in Europa von Seeleuten erfunden. / The compass was invented in Europe by sailors.",
+          "it": "La bussola è stata inventata in Europa dai marinai."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_geschichte-hkg4jlk",
+      "type": "text",
+      "prompt": {
+        "de": "Woher kommt das Wort 'Magnet'? / Where does the word 'magnet' come from?",
+        "it": "Da dove viene la parola 'magnete'?"
+      },
+      "hint": {
+        "de": "The place name is almost identical to the word 'magnet'!",
+        "it": "Il nome del luogo è quasi identico alla parola 'magnete'!"
+      },
+      "explain": {
+        "de": "Das Wort kommt aus MAGNESIA. / The word 'magnet' comes from MAGNESIA in ancient Greece.",
+        "it": "La parola 'magnete' viene da MAGNESIA nell'antica Grecia."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Das Wort 'Magnet' kommt von einem Ort namens",
+          "it": "La parola 'magnete' viene da un luogo chiamato"
+        },
+        "suffix": {
+          "de": "in Griechenland.<br>The word 'magnet' comes from a place called ___ in ancient Greece.",
+          "it": "nell'antica Grecia."
+        },
+        "accepted": [
+          "magnesia"
+        ]
+      }
+    },
+    {
+      "id": "mag_geschichte-hq0rh2y",
+      "type": "choice",
+      "prompt": {
+        "de": "Wofür benutzten europäische Seeleute den Kompass?",
+        "it": "Per cosa usavano la bussola i marinai europei?"
+      },
+      "hint": {
+        "de": "Der Kompass zeigt immer nach Norden — perfekt zur Navigation!",
+        "it": "La bussola punta sempre a nord — perfetta per navigare!"
+      },
+      "explain": {
+        "de": "Europäische Seeleute benutzten den Kompass, um die Richtung (Norden/Süden) zu finden.",
+        "it": "I marinai europei usavano la bussola per trovare la direzione (Nord/Sud)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Um die Zeit zu messen",
+            "it": "Per misurare il tempo"
+          },
+          {
+            "de": "Um die Richtung zu finden",
+            "it": "Per trovare la direzione"
+          },
+          {
+            "de": "Um das Wetter vorherzusagen",
+            "it": "Per prevedere il tempo"
+          },
+          {
+            "de": "Um Fische zu fangen",
+            "it": "Per pescare"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_geschichte-h11ien48",
+      "type": "choice",
+      "prompt": {
+        "de": "Vor etwa wie vielen Jahren kamen Menschen in Europa zum ersten Mal mit dem Magnetismus in Kontakt? / About how many years ago did people in Europe first encounter magnetism?",
+        "it": "Circa quanti anni fa gli europei incontrarono il magnetismo per la prima volta?"
+      },
+      "hint": {
+        "de": "Das war im Zeitalter der Antike! / That was in ancient times!",
+        "it": "Era nell'antichità!"
+      },
+      "explain": {
+        "de": "Vor etwa 2500 Jahren, im Zeitalter der Antike, kamen Menschen in Europa zum ersten Mal mit dem Magnetismus in Kontakt.",
+        "it": "Circa 2500 anni fa, nell'antichità, gli europei ebbero il loro primo contatto con il magnetismo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Vor etwa 500 Jahren / About 500 years ago",
+            "it": "Circa 500 anni fa"
+          },
+          {
+            "de": "Vor etwa 1000 Jahren / About 1000 years ago",
+            "it": "Circa 1000 anni fa"
+          },
+          {
+            "de": "Vor etwa 2500 Jahren / About 2500 years ago",
+            "it": "Circa 2500 anni fa"
+          },
+          {
+            "de": "Vor etwa 5000 Jahren / About 5000 years ago",
+            "it": "Circa 5000 anni fa"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "mag_geschichte-h11fcrtw",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Genau! Das war der Schlüssel zur Erfindung des Kompasses. / Exactly! That was the key to inventing the compass.",
+        "it": "Esatto! Fu la scoperta chiave per l'invenzione della bussola."
+      },
+      "explain": {
+        "de": "Richtig! Forscher in China entdeckten vor etwa 1000 Jahren, dass der Magnetstein immer nach Norden zeigt — und entwickelten daraus den Kompass.",
+        "it": "Corretto! I ricercatori cinesi scoprirono circa 1000 anni fa che la pietra punta sempre a nord — e svilupparono la bussola."
+      },
+      "answer": {
+        "statement": {
+          "de": "Forscher in China entdeckten vor etwa 1000 Jahren, dass der Magnetstein immer nach Norden zeigt. / Researchers in China discovered about 1000 years ago that the magnetic stone always points north.",
+          "it": "I ricercatori cinesi scoprirono circa 1000 anni fa che la pietra magnetica punta sempre a nord."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "mag_geschichte-h12zil19",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie verbesserten europäische Seefahrer im Mittelalter den Kompass? / How did European sailors improve the compass in the Middle Ages?",
+        "it": "Come migliorarono i marinai europei la bussola nel Medioevo?"
+      },
+      "hint": {
+        "de": "Die Windrose zeigt alle Himmelsrichtungen an! / The compass rose shows all directions!",
+        "it": "La rosa dei venti indica tutti i punti cardinali!"
+      },
+      "explain": {
+        "de": "Seefahrer legten eine Magnetnadel auf eine Windrose — so konnten sie Norden, Süden, Osten und Westen erkennen.",
+        "it": "I marinai posero un ago magnetico su una rosa dei venti — così potevano determinare Nord, Sud, Est e Ovest."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie fügten einen Spiegel hinzu / They added a mirror",
+            "it": "Aggiunsero uno specchio"
+          },
+          {
+            "de": "Sie legten eine Magnetnadel auf eine Windrose / They placed a magnetic needle on a compass rose",
+            "it": "Posero un ago magnetico su una rosa dei venti"
+          },
+          {
+            "de": "Sie machten ihn aus Gold / They made it out of gold",
+            "it": "Lo fecero d'oro"
+          },
+          {
+            "de": "Sie nutzten Kupfer statt Eisen / They used copper instead of iron",
+            "it": "Usarono il rame invece del ferro"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_geschichte-h1k1jbix",
+      "type": "text",
+      "prompt": {
+        "de": "Welcher Forscher entdeckte, dass die Erde ein riesiger Magnet ist? / Which researcher discovered that Earth is a giant magnet?",
+        "it": "Quale ricercatore scoprì che la Terra è un gigantesco magnete?"
+      },
+      "hint": {
+        "de": "Sein Name ist William G_____t — er klingt fast wie ein Vorname! / His name is William G_____t!",
+        "it": "Il suo nome è William G_____t!"
+      },
+      "explain": {
+        "de": "William GILBERT entdeckte vor etwa 400 Jahren, dass die Erde ein riesiger Magnet ist.",
+        "it": "William GILBERT scoprì circa 400 anni fa che la Terra è un gigantesco magnete."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Der Forscher William",
+          "it": "Il ricercatore William ___ scoprì circa 400 anni fa che la Terra è un gigantesco magnete."
+        },
+        "suffix": {
+          "de": "entdeckte vor etwa 400 Jahren, dass die Erde ein riesiger Magnet ist.<br>The researcher William ___ discovered about 400 years ago that Earth is a giant magnet."
+        },
+        "accepted": [
+          "gilbert"
+        ]
+      }
+    },
+    {
+      "id": "mag_geschichte-hlz5hum",
+      "type": "choice",
+      "prompt": {
+        "de": "Was entdeckten die Menschen in der Antike als Erstes über den Magneteisenstein? / What did people first discover about magnetite in ancient times?",
+        "it": "Cosa scoprirono per primi gli antichi sulla magnetite?"
+      },
+      "hint": {
+        "de": "Magnetit ist ein magnetischer Stein — er macht das, was alle Magnete machen! / Magnetite is a magnetic stone — it does what all magnets do!",
+        "it": "La magnetite è una pietra magnetica — fa quello che fanno tutti i magneti!"
+      },
+      "explain": {
+        "de": "Die Menschen entdeckten zuerst, dass der Magneteisenstein Eisen anzieht.",
+        "it": "Gli antichi scoprirono per primi che la magnetite attrae il ferro."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Dass er leuchtet / That it glows",
+            "it": "Che brilla"
+          },
+          {
+            "de": "Dass er Eisen anziehen kann / That it can attract iron",
+            "it": "Che attrae il ferro"
+          },
+          {
+            "de": "Dass er fliegen kann / That it can fly",
+            "it": "Che può volare"
+          },
+          {
+            "de": "Dass er Hitze erzeugt / That it produces heat",
+            "it": "Che produce calore"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_geschichte-h18xaiev",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Damals waren die Magnete noch nicht wirklich nutzbar — sie wurden ganz anders eingesetzt als heute. / Back then, magnets weren't really usable yet — they were used very differently than today.",
+        "it": "A quel tempo i magneti non erano ancora davvero utilizzabili — venivano usati in modo molto diverso da oggi."
+      },
+      "explain": {
+        "de": "Falsch! Damals waren Magnete noch nicht wirklich nutzbar und wurden ganz anders eingesetzt als heute.",
+        "it": "Falso! All'epoca i magneti non erano ancora davvero utilizzabili e si usavano in modo molto diverso da oggi."
+      },
+      "answer": {
+        "statement": {
+          "de": "Schon vor tausenden von Jahren konnten die Menschen die Magnete genauso nutzen wie heute. / Already thousands of years ago, people could use magnets the same way as today.",
+          "it": "Già migliaia di anni fa, le persone potevano usare i magneti come oggi."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_geschichte-hfe2m7s",
+      "type": "text",
+      "prompt": {
+        "de": "Wann kam der Kompass nach Europa? / When did the compass come to Europe?",
+        "it": "Quando arrivò la bussola in Europa?"
+      },
+      "hint": {
+        "de": "Im Mittelalter — das war einige Jahrhunderte nach den Chinesen (vor 1000 Jahren). / In the Middle Ages — a few centuries after the Chinese (1000 years ago).",
+        "it": "Nel Medioevo — qualche secolo dopo i cinesi (1000 anni fa)."
+      },
+      "explain": {
+        "de": "Im Mittelalter, vor etwa 800 Jahren, kam die Idee des Kompasses nach Europa.",
+        "it": "Nel Medioevo, circa 800 anni fa, l'idea della bussola arrivò in Europa."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Im Mittelalter, vor etwa",
+          "it": "Nel Medioevo, circa"
+        },
+        "suffix": {
+          "de": "Jahren, kam die Idee des Kompasses nach Europa.<br>In the Middle Ages, about ___ years ago, the idea of the compass came to Europe.",
+          "it": "anni fa, l'idea della bussola arrivò in Europa."
+        },
+        "accepted": [
+          "800"
+        ]
+      }
+    },
+    {
+      "id": "mag_geschichte-hv9uubp",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt \"compass\" auf Deutsch? / What is the German word for \"compass\"?",
+        "it": "Come si dice \"compass\" in tedesco?"
+      },
+      "hint": {
+        "de": "Fast gleich wie auf Englisch — nur mit K am Anfang und Doppel-s am Ende! / Almost the same as in English — just with K at the start and double s at the end!",
+        "it": "Quasi uguale all'inglese — solo con K all'inizio e doppia s alla fine!"
+      },
+      "explain": {
+        "de": "\"compass\" heißt auf Deutsch KOMPASS — mit K und Doppel-s!",
+        "it": "\"compass\" in tedesco si dice KOMPASS — con K e doppia s!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "\"compass\" heißt auf Deutsch",
+          "it": "\"compass\" in tedesco si dice"
+        },
+        "suffix": {
+          "de": ".<br>\"compass\" is called ___ in German.",
+          "it": "."
+        },
+        "accepted": [
+          "kompass"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "items": [
+    {
+      "id": "mag_verbindungen-h3ru43j",
+      "type": "choice",
+      "prompt": {
+        "de": "Ein Kompass funktioniert, weil die Erde ein riesiger Magnet ist. Was macht die Erde magnetisch? / A compass works because Earth is a giant magnet. What makes Earth magnetic?",
+        "it": "Una bussola funziona perché la Terra è un gigantesco magnete. Cosa rende la Terra magnetica?"
+      },
+      "hint": {
+        "de": "Iron is one of the 4 magnetic materials — and Earth's core is full of it!",
+        "it": "Il ferro è uno dei 4 materiali magnetici — e il nucleo della Terra ne è pieno!"
+      },
+      "explain": {
+        "de": "Earth is magnetic because of the liquid iron in its outer core.",
+        "it": "La Terra è magnetica grazie al ferro liquido nel suo nucleo esterno."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Ihre enorme Größe / Its enormous size",
+            "it": "Le sue enormi dimensioni"
+          },
+          {
+            "de": "Flüssiges Eisen im Erdkern / Liquid iron in its outer core",
+            "it": "Il ferro liquido nel suo nucleo esterno"
+          },
+          {
+            "de": "Das Wasser in den Ozeanen / The water in its oceans",
+            "it": "L'acqua nei suoi oceani"
+          },
+          {
+            "de": "Ihre Entfernung zur Sonne / Its distance from the Sun",
+            "it": "La sua distanza dal Sole"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_verbindungen-h1ddda9e",
+      "type": "choice",
+      "prompt": {
+        "de": "Eine Büroklammer, ein Nagel und eine Schraube haften alle an einem Magneten. Was haben sie gemeinsam? / A paper clip, a nail and a screw all stick to a magnet. What do they have in common?",
+        "it": "Una graffetta, un chiodo e una vite si attaccano tutti a un magnete. Cosa hanno in comune?"
+      },
+      "hint": {
+        "de": "Iron and steel are two of the four magnetic materials!",
+        "it": "Ferro e acciaio sono due dei quattro materiali magnetici!"
+      },
+      "explain": {
+        "de": "Paper clip, nail and screw are all made of iron or steel — which are magnetic.",
+        "it": "Graffetta, chiodo e vite sono tutti fatti di ferro o acciaio — che sono magnetici."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Alle aus Aluminium / All made of aluminum",
+            "it": "Sono tutti fatti di alluminio"
+          },
+          {
+            "de": "Alle aus Kupfer / All made of copper",
+            "it": "Sono tutti fatti di rame"
+          },
+          {
+            "de": "Alle aus Eisen oder Stahl / All made of iron or steel",
+            "it": "Sono tutti fatti di ferro o acciaio"
+          },
+          {
+            "de": "Alle die gleiche Farbe / All the same colour",
+            "it": "Hanno tutti lo stesso colore"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "mag_verbindungen-ho0rcui",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Yes! They discovered that magnetite always points north — because Earth is a magnet!",
+        "it": "Sì! Scoprirono che la magnetite punta sempre a nord — perché la Terra è un magnete!"
+      },
+      "explain": {
+        "de": "Correct! The Chinese discovered Earth's magnetism and used it to invent the compass.",
+        "it": "Corretto! I cinesi scoprirono il magnetismo terrestre e lo usarono per inventare la bussola."
+      },
+      "answer": {
+        "statement": {
+          "de": "Die alten Chinesen nutzten den Erdmagnetismus für den ersten Kompass. / The ancient Chinese used Earth's magnetism to build the first compass.",
+          "it": "Gli antichi cinesi usarono il magnetismo della Terra per costruire la prima bussola."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "mag_verbindungen-h97ecry",
+      "type": "choice",
+      "prompt": {
+        "de": "Eisen ist eines der 4 magnetischen Materialien. Wo im Erdinneren erzeugt Eisen ein Magnetfeld? / Iron is one of the 4 magnetic materials. Where in Earth does iron create a magnetic field?",
+        "it": "Il ferro è uno dei 4 materiali magnetici. Dove nella Terra il ferro crea un campo magnetico?"
+      },
+      "hint": {
+        "de": "Earth's outer core has liquid iron — that's what creates Earth's magnetic field!",
+        "it": "Il nucleo esterno della Terra ha ferro liquido — è quello che crea il campo magnetico terrestre!"
+      },
+      "explain": {
+        "de": "The liquid iron in the outer core creates Earth's magnetic field.",
+        "it": "Il ferro liquido nel nucleo esterno crea il campo magnetico della Terra."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "In der Atmosphäre / In the atmosphere",
+            "it": "Nell'atmosfera"
+          },
+          {
+            "de": "Im äußeren Erdkern / In the outer core",
+            "it": "Nel nucleo esterno"
+          },
+          {
+            "de": "Nur an der Oberfläche / On the surface only",
+            "it": "Solo in superficie"
+          },
+          {
+            "de": "In den Ozeanen / In the oceans",
+            "it": "Negli oceani"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_verbindungen-h1xx89ek",
+      "type": "choice",
+      "prompt": {
+        "de": "Elektromagnete und die Erde haben etwas gemeinsam. Was? / Electromagnets and Earth have something in common. What?",
+        "it": "Gli elettromagneti e la Terra hanno qualcosa in comune. Cosa?"
+      },
+      "hint": {
+        "de": "Denk daran: Im Erdkern erzeugt die Bewegung des Eisens einen elektrischen Strom — und der Strom bildet das Magnetfeld! / Remember: in Earth's core the movement of iron creates an electric current — and the current forms the magnetic field!",
+        "it": "Ricorda: nel nucleo terrestre il movimento del ferro crea una corrente elettrica — e la corrente forma il campo magnetico!"
+      },
+      "explain": {
+        "de": "Bei beiden erzeugt elektrischer Strom das Magnetfeld — das ist das gleiche Prinzip!",
+        "it": "In entrambi la corrente elettrica crea il campo magnetico — è lo stesso principio!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Beide sind sehr heiß / Both are very hot",
+            "it": "Entrambi sono molto caldi"
+          },
+          {
+            "de": "Beide drehen sich / Both spin",
+            "it": "Entrambi ruotano"
+          },
+          {
+            "de": "Bei beiden erzeugt elektrischer Strom ein Magnetfeld / In both, electric current creates a magnetic field",
+            "it": "In entrambi la corrente elettrica crea un campo magnetico"
+          },
+          {
+            "de": "Beide sind aus Eisen / Both are made of iron",
+            "it": "Entrambi sono fatti di ferro"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "mag_verbindungen-hpbm13e",
+      "type": "choice",
+      "prompt": {
+        "de": "Wohin zeigt die Nadel eines Kompasses immer? / Where does a compass needle always point?",
+        "it": "Dove punta sempre l'ago di una bussola?"
+      },
+      "hint": {
+        "de": "Denk an Wanderer im Wald: Der Kompass hilft ihnen, die Richtung zu finden! / Think of hikers in the forest: the compass helps them find their way!",
+        "it": "Pensa agli escursionisti nel bosco: la bussola li aiuta a trovare la direzione!"
+      },
+      "explain": {
+        "de": "Die Kompassnadel zeigt immer nach Norden — weil die Erde selbst ein riesiger Magnet ist!",
+        "it": "L'ago della bussola punta sempre a nord — perché la Terra stessa è un gigantesco magnete!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Nach Norden / North",
+            "it": "Verso nord"
+          },
+          {
+            "de": "Nach Süden / South",
+            "it": "Verso sud"
+          },
+          {
+            "de": "Nach Osten / East",
+            "it": "Verso est"
+          },
+          {
+            "de": "Zur Sonne / At the sun",
+            "it": "Verso il sole"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "mag_verbindungen-h9ezch5",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Genau! Beide nutzen elektrischen Strom, um Magnetismus zu erzeugen. / Exactly! Both use electric current to create magnetism.",
+        "it": "Esatto! Entrambi usano la corrente elettrica per creare magnetismo."
+      },
+      "explain": {
+        "de": "Richtig! Bei beiden erzeugt elektrischer Strom ein Magnetfeld — die Erde ist quasi ein riesiger natürlicher Elektromagnet.",
+        "it": "Corretto! In entrambi la corrente elettrica crea un campo magnetico — la Terra è quasi un gigantesco elettromagnete naturale."
+      },
+      "answer": {
+        "statement": {
+          "de": "Das Magnetfeld der Erde funktioniert nach demselben Prinzip wie ein Elektromagnet. / Earth's magnetic field works on the same principle as an electromagnet.",
+          "it": "Il campo magnetico della Terra funziona secondo lo stesso principio di un elettromagnete."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "mag_verbindungen-hh2kir3",
+      "type": "choice",
+      "prompt": {
+        "de": "Was kann ein Elektromagnet, was ein Dauermagnet nicht kann? / What can an electromagnet do that a permanent magnet cannot?",
+        "it": "Cosa può fare un elettromagnete che un magnete permanente non può fare?"
+      },
+      "hint": {
+        "de": "Ein Elektromagnet braucht Strom — ohne Strom funktioniert er nicht. Ein Dauermagnet ist immer magnetisch! / An electromagnet needs current — without current it doesn't work. A permanent magnet is always magnetic!",
+        "it": "Un elettromagnete ha bisogno di corrente — senza corrente non funziona. Un magnete permanente è sempre magnetico!"
+      },
+      "explain": {
+        "de": "Ein Elektromagnet kann ein- und ausgeschaltet werden! Genau deshalb wird er z. B. bei Kränen verwendet, die Autos hochheben.",
+        "it": "Un elettromagnete può essere acceso e spento! Per questo viene usato per esempio nelle gru che sollevano le auto."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Eisen anziehen / Attract iron",
+            "it": "Attrarre il ferro"
+          },
+          {
+            "de": "Ein- und ausgeschaltet werden / Be turned on and off",
+            "it": "Essere acceso e spento"
+          },
+          {
+            "de": "Nach Norden zeigen / Point north",
+            "it": "Indicare il nord"
+          },
+          {
+            "de": "In der Tasche getragen werden / Be carried in a pocket",
+            "it": "Essere portato in tasca"
+          }
+        ],
+        "correct": 1
+      }
+    }
+  ]
+}

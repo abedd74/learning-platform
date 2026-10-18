@@ -1,0 +1,345 @@
+{
+  "items": [
+    {
+      "id": "mag_sortieren-h1ka0q7r",
+      "type": "pairs",
+      "prompt": {
+        "de": "Ordne jeden Gegenstand dem richtigen Material zu. / Match each object to what it is made of:",
+        "it": "Collega ogni oggetto al suo materiale:"
+      },
+      "hint": {
+        "de": "Magnetic objects are made of iron or steel!",
+        "it": "Gli oggetti magnetici sono fatti di ferro o acciaio!"
+      },
+      "explain": {
+        "de": "Paper clip = steel (magnetic), Marble = glass (non-magnetic), Nail = iron (magnetic), Rubber band = rubber (non-magnetic).",
+        "it": "Graffetta = acciaio (magnetica), Biglia = vetro (non magnetica), Chiodo = ferro (magnetico), Elastico = gomma (non magnetico)."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Büroklammer / Paper clip"
+            },
+            "right": {
+              "de": "Stahl → magnetisch ✓ / Steel → magnetic ✓"
+            }
+          },
+          {
+            "left": {
+              "de": "Murmel / Marble"
+            },
+            "right": {
+              "de": "Glas → nicht magnetisch ✗ / Glass → non-magnetic ✗"
+            }
+          },
+          {
+            "left": {
+              "de": "Nagel / Nail"
+            },
+            "right": {
+              "de": "Eisen → magnetisch ✓ / Iron → magnetic ✓"
+            }
+          },
+          {
+            "left": {
+              "de": "Gummiband / Rubber band"
+            },
+            "right": {
+              "de": "Gummi → nicht magnetisch ✗ / Rubber → non-magnetic ✗"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "mag_sortieren-h13qxh65",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher dieser Gegenstände haftet an einem Magneten? / Which of these objects would stick to a magnet?",
+        "it": "Quale di questi oggetti si attacca a un magnete?"
+      },
+      "hint": {
+        "de": "Paper clips are made of steel!",
+        "it": "Le graffette sono fatte di acciaio!"
+      },
+      "explain": {
+        "de": "A paper clip sticks to a magnet because it is made of steel.",
+        "it": "Una graffetta si attacca al magnete perché è fatta di acciaio."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Eine Murmel / A marble",
+            "it": "Una biglia"
+          },
+          {
+            "de": "Eine Büroklammer / A paper clip",
+            "it": "Una graffetta"
+          },
+          {
+            "de": "Ein Gummiband / A rubber band",
+            "it": "Un elastico"
+          },
+          {
+            "de": "Ein Baustein / A building block",
+            "it": "Un mattoncino Lego"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_sortieren-h14frsjp",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Soda cans are made of aluminum — which is NOT a magnetic material!",
+        "it": "Le lattine sono fatte di alluminio — che NON è un materiale magnetico!"
+      },
+      "explain": {
+        "de": "Wrong! Soda cans are made of aluminum, which is not magnetic.",
+        "it": "Falso! Le lattine sono fatte di alluminio, che non è magnetico."
+      },
+      "answer": {
+        "statement": {
+          "de": "Eine Getränkedose ist magnetisch, weil sie aus Metall ist. / A soda can is magnetic because it is made of metal.",
+          "it": "Una lattina di bibita è magnetica perché è fatta di metallo."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_sortieren-hegfip7",
+      "type": "choice",
+      "prompt": {
+        "de": "Du testest Gegenstände mit einem Magneten. Welcher wird NICHT angezogen?",
+        "it": "Quale oggetto NON viene attratto da un magnete?"
+      },
+      "hint": {
+        "de": "Radiergummis sind aus Gummi — kein magnetisches Material!",
+        "it": "Le gomme sono fatte di gomma — non magnetica!"
+      },
+      "explain": {
+        "de": "Ein Radiergummi wird NICHT angezogen — Gummi ist nicht magnetisch.",
+        "it": "Una gomma da cancellare NON viene attratta — la gomma non è magnetica."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Eine Büroklammer",
+            "it": "Una graffetta"
+          },
+          {
+            "de": "Eine Schere",
+            "it": "Un paio di forbici"
+          },
+          {
+            "de": "Ein Radiergummi",
+            "it": "Una gomma da cancellare"
+          },
+          {
+            "de": "Ein Nagel",
+            "it": "Un chiodo"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "mag_sortieren-hxc5p5o",
+      "type": "multi",
+      "prompt": {
+        "de": "Wähle ALLE Gegenstände, die von einem Magneten angezogen werden. / Select ALL objects that would be attracted by a magnet:",
+        "it": "Seleziona TUTTI gli oggetti attratti da un magnete:"
+      },
+      "hint": {
+        "de": "Look for objects made of iron or steel!",
+        "it": "Cerca oggetti fatti di ferro o acciaio!"
+      },
+      "explain": {
+        "de": "Screw, thumbtack and staples are all made of steel or iron — magnetic!",
+        "it": "Vite, puntina e graffette sono fatte di acciaio o ferro — magnetiche!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schraube / Screw",
+            "it": "Vite"
+          },
+          {
+            "de": "Murmel / Marble",
+            "it": "Biglia"
+          },
+          {
+            "de": "Reißnagel / Thumbtack",
+            "it": "Puntina da disegno"
+          },
+          {
+            "de": "Stein / Rock",
+            "it": "Sasso"
+          },
+          {
+            "de": "Heftklammern / Staples",
+            "it": "Graffette"
+          },
+          {
+            "de": "Radiergummi / Eraser",
+            "it": "Gomma"
+          }
+        ],
+        "correct": [
+          0,
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "mag_sortieren-h10cwi7z",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum ist eine Suppendose magnetisch? / Why is a soup can magnetic?",
+        "it": "Perché una lattina di zuppa è magnetica?"
+      },
+      "hint": {
+        "de": "Denk an die 4 magnetischen Materialien — Stahl und Eisen sind beide dabei! / Think about the 4 magnetic materials — steel and iron are both on the list!",
+        "it": "Pensa ai 4 materiali magnetici — acciaio e ferro ci sono entrambi!"
+      },
+      "explain": {
+        "de": "Eine Suppendose besteht aus Stahl, und Stahl enthält Eisen — beides sind magnetische Materialien!",
+        "it": "Una lattina di zuppa è fatta di acciaio, che contiene ferro — entrambi sono materiali magnetici!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Weil sie rund ist / Because it is round",
+            "it": "Perché è rotonda"
+          },
+          {
+            "de": "Weil sie aus Stahl (Eisen) besteht / Because it is made of steel (iron)",
+            "it": "Perché è fatta di acciaio (ferro)"
+          },
+          {
+            "de": "Weil sie schwer ist / Because it is heavy",
+            "it": "Perché è pesante"
+          },
+          {
+            "de": "Weil sie im Supermarkt gekauft wurde / Because it was bought at a supermarket",
+            "it": "Perché è stata comprata al supermercato"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "mag_sortieren-hlnxv52",
+      "type": "text",
+      "prompt": {
+        "de": "Ergänze den Satz über Getränkedosen! / Complete the sentence about drinks cans!",
+        "it": "Completa la frase sulle lattine di bibite!"
+      },
+      "hint": {
+        "de": "Es ist ein leichtes, silbernes Metall — aber KEIN magnetisches Material! / It's a light, silver-coloured metal — but NOT a magnetic material!",
+        "it": "È un metallo leggero e argentato — ma NON un materiale magnetico!"
+      },
+      "explain": {
+        "de": "Getränkedosen bestehen aus Aluminium — und Aluminium ist nicht eines der 4 magnetischen Materialien.",
+        "it": "Le lattine di bibite sono fatte di alluminio — e l'alluminio non è uno dei 4 materiali magnetici."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Eine Getränkedose (z.B. Cola) besteht aus",
+          "it": "Una lattina di bibita (es. Cola) è fatta di"
+        },
+        "suffix": {
+          "de": "und ist deshalb NICHT magnetisch.<br>A drinks can (e.g. Coke) is made of ___ and is therefore NOT magnetic.",
+          "it": "e quindi NON è magnetica."
+        },
+        "accepted": [
+          "aluminium",
+          "aluminum",
+          "alu"
+        ]
+      }
+    },
+    {
+      "id": "mag_sortieren-h15petew",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Ferro sagt? / Is Ferro right?",
+        "it": "Ferro ha ragione?"
+      },
+      "hint": {
+        "de": "Nicht alle Metalle sind magnetisch! Nur Eisen, Stahl, Kobalt und Nickel. / Not all metals are magnetic! Only iron, steel, cobalt and nickel.",
+        "it": "Non tutti i metalli sono magnetici! Solo ferro, acciaio, cobalto e nichel."
+      },
+      "explain": {
+        "de": "Falsch! Aluminium ist zwar ein Metall, aber KEIN magnetisches Material. Cola-Dosen sind aus Aluminium — deshalb sind sie nicht magnetisch.",
+        "it": "Falso! L'alluminio è un metallo, ma NON è magnetico. Le lattine di Cola sono di alluminio — per questo non sono magnetiche."
+      },
+      "answer": {
+        "statement": {
+          "de": "„Alle Metalle sind magnetisch — deshalb ist auch eine Cola-Dose magnetisch.\" / \"All metals are magnetic — so a Coke can is magnetic too.\"",
+          "it": "\"Tutti i metalli sono magnetici — quindi anche una lattina di Cola è magnetica.\""
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "mag_sortieren-h1wuvbpr",
+      "type": "pairs",
+      "prompt": {
+        "de": "Ordne jede Dose dem richtigen Material zu! / Match each can to its material!",
+        "it": "Collega ogni lattina al materiale giusto!"
+      },
+      "hint": {
+        "de": "Suppendosen und Büroklammern = Stahl. Cola-Dosen und Alufolie = Aluminium. / Soup cans and paper clips = steel. Coke cans and tin foil = aluminium.",
+        "it": "Lattine di zuppa e graffette = acciaio. Lattine di Cola e foglio alluminio = alluminio."
+      },
+      "explain": {
+        "de": "Suppendose & Büroklammer = Stahl (magnetisch). Cola-Dose & Alufolie = Aluminium (nicht magnetisch).",
+        "it": "Lattina di zuppa e graffetta = acciaio (magnetici). Lattina di Cola e foglio alluminio = alluminio (non magnetici)."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Suppendose 🥫 / Soup can"
+            },
+            "right": {
+              "de": "Stahl → magnetisch ✓ / Steel → magnetic ✓"
+            }
+          },
+          {
+            "left": {
+              "de": "Cola-Dose 🥤 / Coke can"
+            },
+            "right": {
+              "de": "Aluminium → nicht magnetisch ✗ / Aluminium → non-magnetic ✗"
+            }
+          },
+          {
+            "left": {
+              "de": "Büroklammer 📎 / Paper clip"
+            },
+            "right": {
+              "de": "Stahl → magnetisch ✓ / Steel → magnetic ✓"
+            }
+          },
+          {
+            "left": {
+              "de": "Alufolie / Tin foil"
+            },
+            "right": {
+              "de": "Aluminium → nicht magnetisch ✗ / Aluminium → non-magnetic ✗"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

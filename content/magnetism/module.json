@@ -1,0 +1,111 @@
+{
+  "id": "magnetism",
+  "name": {
+    "de": "Magnetismus",
+    "it": "Magnetismo"
+  },
+  "icon": "🧲",
+  "subject": {
+    "de": "Sachunterricht",
+    "it": "Scienze"
+  },
+  "grades": [
+    3
+  ],
+  "archive": true,
+  "engine": "quiz",
+  "mascot": {
+    "key": "magnetism",
+    "name": "Ferro"
+  },
+  "idPrefix": "mag_",
+  "legacyStorageKey": "wq_editor_QB_magnetism",
+  "successTitle": {
+    "de": "Magnet-Expertin",
+    "it": "esperta di magneti"
+  },
+  "srs": {
+    "intervals": [
+      0,
+      1,
+      2,
+      4,
+      7,
+      14
+    ]
+  },
+  "topics": [
+    {
+      "id": "materialien",
+      "label": {
+        "de": "Magnetische Materialien"
+      },
+      "icon": "🧲",
+      "file": "materialien.json"
+    },
+    {
+      "id": "sortieren",
+      "label": {
+        "de": "Magnetisch oder nicht?"
+      },
+      "icon": "🔍",
+      "file": "sortieren.json"
+    },
+    {
+      "id": "kraefte",
+      "label": {
+        "de": "Anziehen & Abstoßen"
+      },
+      "icon": "💥",
+      "file": "kraefte.json"
+    },
+    {
+      "id": "pole",
+      "label": {
+        "de": "Die Pole"
+      },
+      "icon": "🔴",
+      "file": "pole.json"
+    },
+    {
+      "id": "magnetfeld",
+      "label": {
+        "de": "Das Magnetfeld"
+      },
+      "icon": "🌀",
+      "file": "magnetfeld.json"
+    },
+    {
+      "id": "erde",
+      "label": {
+        "de": "Die Erde als Magnet"
+      },
+      "icon": "🌍",
+      "file": "erde.json"
+    },
+    {
+      "id": "geschichte",
+      "label": {
+        "de": "Geschichte des Magnetismus"
+      },
+      "icon": "📜",
+      "file": "geschichte.json"
+    },
+    {
+      "id": "verbindungen",
+      "label": {
+        "de": "Verbindungen"
+      },
+      "icon": "🔗",
+      "file": "verbindungen.json"
+    },
+    {
+      "id": "anwendungen",
+      "label": {
+        "de": "Magnete im Alltag"
+      },
+      "icon": "⚙️",
+      "file": "anwendungen.json"
+    }
+  ]
+}
