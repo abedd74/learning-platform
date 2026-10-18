@@ -1,5 +1,10 @@
 {
-  "about": "What the app loads, in display order. Quiz modules have a module.json, packs a pack.json.",
-  "quiz": ["whales", "water", "book", "magnetism"],
-  "packs": ["nouns"]
+  "about": "What the app loads, in display order. A quiz module has a module.json, a pack a pack.json.",
+  "modules": [
+    { "id": "whales", "kind": "quiz" },
+    { "id": "nouns", "kind": "pack" },
+    { "id": "water", "kind": "quiz" },
+    { "id": "book", "kind": "quiz" },
+    { "id": "magnetism", "kind": "quiz" }
+  ]
 }

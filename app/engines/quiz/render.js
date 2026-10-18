@@ -189,6 +189,7 @@ function cycle(q, ctx) {
 
 // ── Deutsch mit Ella ───────────────────────────────────────────────────
 function gender(q, ctx) {
+  if (q.typed) return typedGender(q, ctx);
   const node = el('div', { class: 'answers answers-3 gender' });
   const buttons = new Map();
   for (const g of ['der', 'die', 'das']) {
@@ -214,6 +215,27 @@ function options(q, ctx) {
     node,
     reset() { buttons.forEach(b => { b.disabled = b.classList.contains('no'); b.classList.remove('chosen'); }); },
     reveal({ ok, response, expected }) { buttons.get(expected)?.classList.add('ok'); if (!ok) buttons.get(response)?.classList.add('no'); buttons.forEach(b => { b.disabled = true; }); },
+  };
+}
+
+function typedGender(q, ctx) {
+  const node = el('div', { class: 'answers-wrap' });
+  const input = el('input', { type: 'text', class: 'fill-input', autocapitalize: 'off', autocorrect: 'off', autocomplete: 'off', spellcheck: false, lang: 'de', placeholder: 'der / die / das', 'aria-label': ctx.i18n.t('session.gender') });
+  const note = el('div', { class: 'hint', hidden: true }, 'Schreibe der, die oder das! ✏️');
+  const submit = () => {
+    const v = input.value.trim().toLowerCase();
+    if (!v) { input.focus(); return; }
+    if (!['der', 'die', 'das'].includes(v)) { note.hidden = false; input.select(); return; }
+    note.hidden = true; input.disabled = true; check.disabled = true; ctx.onAnswer(v);
+  };
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+  const check = el('button', { class: 'btn primary', type: 'button', onClick: submit }, ctx.i18n.t('session.check'));
+  append(node, [el('div', { class: 'fill' }, input, el('span', { class: 'fill-text' }, q.noun.de)), note, el('div', { class: 'row end' }, check)]);
+  focusLater(input);
+  return {
+    node,
+    reset() { input.disabled = false; check.disabled = false; input.value = ''; input.classList.remove('no'); focusLater(input); },
+    reveal({ ok, expected }) { input.disabled = true; check.disabled = true; input.classList.add(ok ? 'ok' : 'no'); if (!ok) node.appendChild(el('div', { class: 'solution' }, `${ctx.i18n.t('session.solution')} `, el('b', {}, `${expected} ${q.noun.de}`))); },
   };
 }
 

@@ -23,7 +23,7 @@ import { check } from '../engines/quiz/check.js';
 const STORE_KEY = { quizSrs: K.quizSrs, gramSrs: K.gramSrs, mapSrs: K.mapSrs };
 
 export function createSession({
-  items, profile, store, today = todayOf(), now = Date.now, module = 'mixed', mode = 'mixed',
+  items, profile, store, today = todayOf(), now = Date.now, module = 'mixed', mode = 'mixed', label = null,
   rehearsalGap = PLAN.rehearsalGap, maxAttempts = 2,
 }) {
   if (!profile) throw new TypeError('session: profile is required');
@@ -62,13 +62,14 @@ export function createSession({
 
   function applyDay(card, outcome, wasNew, updated) {
     store.set(K.planDays(profile), recordAnswer(store.get(K.planDays(profile), {}), today, { first: outcome === 'first', isNew: wasNew }));
-    if (card.store === 'gramSrs') {
+    if (card.store === 'gramSrs' || card.tags?.includes('grammar')) {
       // the old trainer's day counters, kept for its dashboard and badges
       const days = store.get(K.gramDays(profile), {}) || {};
       const d = { a: 0, c: 0, ...(days[today] || {}) };
       d.a++; if (outcome === 'first') d.c++;
       if (wasNew) d.n = (d.n || 0) + 1;
-      if (updated) d.m = summarize(updated.all, today, srsConfig(card.cfg || {})).mastered;
+      const all = updated ? updated.all : (store.get(K.gramSrs(profile), {}) || {});
+      d.m = summarize(all, today, srsConfig(card.cfg || {})).mastered;
       store.set(K.gramDays(profile), { ...days, [today]: d });
     }
   }
@@ -80,6 +81,7 @@ export function createSession({
     const { item } = cur;
     const { ok, expected } = check(item.question, response);
     attempt++;
+    try { item.card.onAnswer?.({ ok, attempt, response, final: ok || attempt >= maxAttempts, rehearsal: item.rehearsal }); } catch {}
     if (ok || attempt >= maxAttempts) {
       const outcome = ok ? (attempt === 1 ? 'first' : 'retry') : 'wrong';
       if (!item.rehearsal) {
@@ -90,7 +92,7 @@ export function createSession({
         const updated = applyRecord(card, outcome);
         applyStats(card, outcome);
         applyDay(card, outcome, wasNew, updated);
-        results.push({ id: card.id, module: card.module, topic: card.topic, outcome, wasNew, reason: card.reason });
+        results.push({ id: card.id, module: card.module, topic: card.topic, outcome, wasNew, reason: card.reason, concept: card.concept, tags: card.tags });
         if (outcome !== 'first') {
           // re-ask later in the session; the re-ask changes no record
           const rest = rehearse(queue.slice(index + 1), { ...item, rehearsal: true }, rehearsalGap);
@@ -149,7 +151,7 @@ export function createSession({
     return s;
   }
 
-  return { current, answer, next, finish, summary, get finished() { return finished; }, get size() { return queue.length; } };
+  return { current, answer, next, finish, summary, label, get finished() { return finished; }, get size() { return queue.length; } };
 }
 
 /** Helper for callers: a card id for a quiz question. */

@@ -19,6 +19,9 @@ import { renderHome } from './ui/screens/home.js';
 import { renderModule } from './ui/screens/module.js';
 import { renderSessionScreen } from './ui/screens/session.js';
 import { renderResults } from './ui/screens/results.js';
+import { createEllaModule } from './engines/ella/index.js';
+
+const TINTS = { whales: 'var(--m-whales)', nouns: 'var(--m-ella)', states: 'var(--m-states)', water: 'var(--m-archive)', book: 'var(--m-archive)', magnetism: 'var(--m-archive)' };
 
 export async function start({ version = 'dev' } = {}) {
   const root = document.getElementById('app') || document.body.appendChild(el('div', { id: 'app' }));
@@ -32,13 +35,19 @@ export async function start({ version = 'dev' } = {}) {
   const i18n = createI18n({ store, strings: STRINGS });
   const content = createContent();
   const plannerCfg = planConfig();
+  const pending = {};
+  const live = { session: null, summary: null, after: null, extras: null };
 
   const ctx = {
     version, namespace, store, sync, errors, audio, i18n, content, plannerCfg,
     assetsBase: new URL('../assets/', import.meta.url).href,
-    modules: [], profile: null, lastSessionConfig: null,
-    go(name, params = {}) { router.navigate([name, ...(params.id ? [params.id] : [])], params.id ? {} : params.form ? { form: '1' } : {}); if (params.form) pending.form = params.form; },
+    modules: [], games: {}, profile: null, lastSessionConfig: null, lastHomeConfig: null, router: null,
+    go(name, params = {}) {
+      if (params.form) pending.form = params.form;
+      router.navigate([name, ...(params.id ? [params.id] : [])], params.form ? { form: '1' } : {});
+    },
     moduleName(id) { return ctx.modules.find(m => m.id === id)?.name?.de || id; },
+    get ella() { return ctx.modules.find(m => m.engine === 'ella') || null; },
     async cardsOf(mod) {
       if (mod.engine !== 'quiz') return mod.cards ? mod.cards(ctx) : [];
       const qs = await content.questions(mod);
@@ -48,28 +57,48 @@ export async function start({ version = 'dev' } = {}) {
       const lists = await Promise.all(ctx.modules.filter(m => !m.archive).map(m => ctx.cardsOf(m)));
       return lists.flat();
     },
-    startSession({ cards, module = 'mixed', mode = 'mixed' }) {
+    /**
+     * Start a session. Either `cards` (planned here; `grammar` adds Ella's grammar items)
+     * or ready-made `items`. `after(summary)` may return extras for the results screen.
+     */
+    startSession({ cards = null, items = null, module = 'mixed', mode = 'mixed', grammar = false, label = null, after = null, skipCheck = false }) {
       const today = todayOf();
-      const dayRec = store.get(K.planDays(ctx.profile.key), {})?.[today] || null;
-      const plan = store.get(K.plan(ctx.profile.key), null);
-      const planned = planSession({ cards, today, dayRecord: dayRec, plan, cfg: plannerCfg });
-      const items = planned.cards.map(card => ({ card, question: card.question }));
-      ctx.lastSessionConfig = { cards, module, mode };
-      live.session = createSession({ items, profile: ctx.profile.key, store, today, module, mode });
+      const ella = ctx.ella;
+      // a Meister-Check that waited too long comes first (old trainer rule)
+      if (!skipCheck && cards && ella && (module === 'mixed' || module === 'nouns')) {
+        const k = ella.overdueCheck();
+        if (k) { ctx.lastHomeConfig = { cards, module, mode, grammar }; ella.startMc(k, true); return; }
+      }
+      let list = items;
+      if (!list) {
+        const extra = grammar && ella ? ella.extraItems(4) : [];
+        const dayRec = store.get(K.planDays(ctx.profile.key), {})?.[today] || null;
+        const plan = store.get(K.plan(ctx.profile.key), null);
+        const planned = planSession({ cards, today, dayRecord: dayRec, plan, cfg: { ...plannerCfg, sessionSize: Math.max(1, plannerCfg.sessionSize - extra.length) } });
+        list = planned.cards.map(card => ({ card, question: card.question }));
+        for (const it of extra) list.splice(Math.floor(Math.random() * (list.length + 1)), 0, it);
+      }
+      ctx.lastSessionConfig = { cards, items, module, mode, grammar, label, after, skipCheck: true };
+      ctx.ellaStartMastered = ella ? ella.masteredNow() : 0;
+      live.after = after || (ella && (grammar || module === 'mixed' || module === 'nouns') ? sum => ella.afterTraining(sum, ctx.ellaStartMastered) : null);
+      live.session = createSession({ items: list, profile: ctx.profile.key, store, today, module, mode, label });
       router.navigate(['session']);
     },
   };
-  const pending = {};
-  const live = { session: null, summary: null };
 
-  // modules: quiz modules from content/, plus engines registered later (Ella, Wort-Regen)
   async function loadModules() {
-    const mods = await content.quizModules();
+    const index = await content.index();
     const out = [];
-    for (const m of mods) {
-      const cfg = srsConfig(m.srs || {});
-      const count = (await content.questions(m)).length;
-      out.push({ ...m, srs: cfg, count, tint: TINTS[m.id] || 'var(--card-tint)' });
+    for (const m of index) {
+      if (m.kind === 'quiz') {
+        const mod = await content.module(m.id);
+        if (!mod) continue;
+        const count = (await content.questions(mod)).length;
+        out.push({ ...mod, srs: srsConfig(mod.srs || {}), count, tint: TINTS[m.id] || 'var(--card-tint)' });
+      } else if (m.kind === 'pack' && m.id === 'nouns') {
+        const data = await content.nounPack(m.id);
+        if (data) out.push(createEllaModule(ctx, data));
+      }
     }
     ctx.modules = out;
   }
@@ -85,17 +114,23 @@ export async function start({ version = 'dev' } = {}) {
     async welcome() { ctx.profile = null; renderWelcome(root, ctx, { form: pending.form }); pending.form = null; },
     async home() { if (!requireProfile()) return screens.welcome(); await renderHome(root, ctx); },
     async module(id) { if (!requireProfile()) return screens.welcome(); await renderModule(root, ctx, { id }); },
+    async ella(sub, id) { if (!requireProfile()) return screens.welcome(); const m = ctx.ella; if (m) await m.route(root, ctx, sub, id); else router.navigate(['home']); },
     async game(id) { if (!requireProfile()) return screens.welcome(); const g = ctx.games?.[id]; if (g) await g(root, ctx); else router.navigate(['home']); },
     async session() {
       if (!requireProfile() || !live.session) return router.navigate(['home'], {}, { replace: true });
       renderSessionScreen(root, ctx, live.session, {
-        onDone: summary => { live.summary = summary; live.session = null; router.navigate(['results'], {}, { replace: true }); },
+        onDone: summary => {
+          live.summary = summary; live.session = null;
+          try { live.extras = live.after ? live.after(summary) : null; } catch (err) { errors.record(err); live.extras = null; }
+          router.navigate(['results'], {}, { replace: true });
+        },
         onQuit: () => { live.session = null; router.navigate(['home'], {}, { replace: true }); },
       });
     },
     async results() {
       if (!requireProfile() || !live.summary) return router.navigate(['home'], {}, { replace: true });
       renderResults(root, ctx, live.summary, {
+        extras: live.extras,
         onAgain: () => { const c = ctx.lastSessionConfig; live.summary = null; if (c) ctx.startSession(c); else router.navigate(['home']); },
         onDone: () => { live.summary = null; router.navigate(['home'], {}, { replace: true }); },
       });
@@ -105,20 +140,19 @@ export async function start({ version = 'dev' } = {}) {
 
   const router = createRouter({
     onChange: async route => {
-      const [name, id] = route.path;
+      const [name, ...rest] = route.path;
       const fn = screens[name] || (listProfiles(store).length && currentProfileKey(store) ? screens.home : screens.welcome);
-      try { await fn(id); }
+      try { await fn(...rest); }
       catch (err) { errors.record(err); mount(root, el('div', { class: 'col' }, el('div', { class: 'notice' }, i18n.t('error.content'), ' ', String(err?.message || err)))); }
     },
   });
+  ctx.router = router;
 
   try { await loadModules(); }
-  catch (err) { errors.record(err); mount(root, el('div', { class: 'col' }, el('div', { class: 'notice' }, i18n.t('error.content')))); return; }
+  catch (err) { errors.record(err); mount(root, el('div', { class: 'col' }, el('div', { class: 'notice' }, i18n.t('error.content'), ' ', String(err?.message || err)))); return; }
   document.addEventListener('pointerdown', () => audio.unlock(), { once: true, passive: true });
   window.addEventListener('familysync-pulled', () => { if (['home', 'module'].includes(router.current.path[0])) router.navigate(router.current.path, router.current.params, { replace: true }); });
   sync.init();
   router.start();
   return ctx;
 }
-
-const TINTS = { whales: 'var(--m-whales)', nouns: 'var(--m-ella)', states: 'var(--m-states)', water: 'var(--m-archive)', book: 'var(--m-archive)', magnetism: 'var(--m-archive)' };

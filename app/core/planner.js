@@ -120,7 +120,7 @@ export function planSession({ cards, today, dayRecord = null, plan = null, cfg =
       if (!cur || (c.level || 0) > (cur.level || 0)) byItem.set(k, c);
     }
     const fresh = shuffle([...byItem.values()].filter(c => !usedItems.has(c.item || c.id)), rng)
-      .sort((a, b) => (isPrep(b) - isPrep(a)));
+      .sort((a, b) => (isPrep(b) - isPrep(a)) || ((a.newPriority ?? 0) - (b.newPriority ?? 0)));
     let n = 0;
     for (const c of fresh) {
       if (n >= allowNew || chosen.length >= cfg.sessionSize) break;

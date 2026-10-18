@@ -22,10 +22,10 @@ export function createContent({ base, fetch = globalThis.fetch?.bind(globalThis)
     try { return await p; } catch (e) { cache.delete(rel); throw e; }
   }
 
-  /** { quiz: ['whales', …], packs: ['nouns'] } in display order */
+  /** [{id, kind: 'quiz' | 'pack'}, …] in display order */
   async function index() {
     const i = await json('index.json');
-    return { quiz: Array.isArray(i.quiz) ? i.quiz : [], packs: Array.isArray(i.packs) ? i.packs : [] };
+    return Array.isArray(i.modules) ? i.modules.filter(m => m && m.id && m.kind) : [];
   }
 
   /** module.json of a quiz module (null for a pack) */
@@ -42,8 +42,8 @@ export function createContent({ base, fetch = globalThis.fetch?.bind(globalThis)
 
   /** All quiz modules (module.json) in display order, with their id. */
   async function quizModules() {
-    const { quiz } = await index();
-    return Promise.all(quiz.map(id => json(`${id}/module.json`)));
+    const list = (await index()).filter(m => m.kind === 'quiz');
+    return Promise.all(list.map(m => json(`${m.id}/module.json`)));
   }
 
   /** The questions of one topic, each stamped with module and topic. */

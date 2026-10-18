@@ -57,8 +57,10 @@ export function check(q, response) {
       return { ok, expected: Object.fromEntries(Array.from({ length: n }, (_, i) => [i, i])) };
     }
     // Deutsch mit Ella items carry their solution as a string
-    case 'gender':
-      return { ok: response === q.noun?.g, expected: q.noun?.g };
+    case 'gender': {
+      const r = String(response ?? '').trim().toLowerCase();
+      return { ok: r === q.noun?.g, expected: q.noun?.g };
+    }
     case 'case':
       return { ok: response === q.solution, expected: q.solution };
     case 'pmcq':

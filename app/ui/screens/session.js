@@ -34,7 +34,7 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
     const q = item.question;
     const mod = ctx.modules.find(m => m.id === item.card.module);
     mascot.textContent = mod?.icon || '🦉';
-    const topicLabel = mod?.topics?.find(t => t.id === item.card.topic)?.label?.de || mod?.name?.de || '';
+    const topicLabel = session.label || mod?.topics?.find(t => t.id === item.card.topic)?.label?.de || mod?.name?.de || '';
     bubble.textContent = `${topicLabel ? topicLabel + ' · ' : ''}${cur.rehearsal ? i18n.t('session.again') : i18n.t('session.think')}`;
     paintProgress();
     clear(body);
@@ -51,7 +51,8 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
     if (!r.final) {
       // one retry with the hint
       const sheet = el('section', { class: 'sheet warn' }, el('div', { class: 'head' }, `💡 ${i18n.t('session.almost')}`));
-      if (q.hint?.de) sheet.appendChild(bilingual(i18n.pick(q.hint), { cls: 'hint-text' }));
+      const hint = typeof q.hintFor === 'function' ? q.hintFor(response) : q.hint;
+      if (hint?.de) sheet.appendChild(bilingual(i18n.pick(hint), { cls: 'hint-text' }));
       sheet.appendChild(el('button', { class: 'btn', type: 'button', onClick: () => { sheet.remove(); answerUi.reset(); } }, i18n.t('session.again')));
       body.appendChild(sheet);
       sheet.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -62,7 +63,10 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
     paintProgress();
     const sheet = el('section', { class: `sheet${r.ok ? '' : ' warn'}` });
     sheet.appendChild(el('div', { class: 'head' }, r.ok ? `✓ ${i18n.t(r.outcome === 'first' ? 'session.right' : 'session.right.retry')}` : i18n.t('session.wrong')));
-    if (q.explain?.de) sheet.appendChild(bilingual(i18n.pick(q.explain)));
+    const explain = (!r.ok && q.wrongExplain) ? q.wrongExplain : q.explain;
+    if (explain?.de) sheet.appendChild(bilingual(i18n.pick(explain)));
+    if (q.type === 'case') audio.speak({ text: `${q.solution} ${q.nounForm}` });
+    if (q.type === 'pfill' && q.t) audio.speak({ text: q.t.replace('___', q.correct) });
     if (q.type === 'gender' && q.noun) {
       sheet.appendChild(el('div', { class: 'hint-text' }, `${q.noun.g} ${q.noun.de}${q.noun.pl ? ` · die ${q.noun.pl}` : ''}${q.noun.it && i18n.showItalian ? ` · ${q.noun.it}` : ''}`));
       audio.speak({ clip: `a_${audio.slug(q.noun.de)}`, text: `${q.noun.g} ${q.noun.de}` });
@@ -99,6 +103,7 @@ function questionCard(q, ctx, mod) {
   if (q.type === 'case' || q.type === 'pfill' || q.type === 'pmcq') {
     if (q.em) card.appendChild(el('div', { class: 'em' }, q.em));
     card.appendChild(el('div', { class: 'q' }, q.sentence || q.sent || q.t || ''));
+    if (q.sentence_it && i18n.showItalian) card.appendChild(el('div', { class: 'it' }, q.sentence_it));
     if (q.task) card.appendChild(el('div', { class: 'soft' }, q.task));
     if (q.task_it && i18n.showItalian) card.appendChild(el('div', { class: 'it' }, q.task_it));
     if (q.base) card.appendChild(el('div', { class: 'chip' }, q.base));

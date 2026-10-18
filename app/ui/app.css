@@ -189,3 +189,13 @@ pre.log { white-space: pre-wrap; word-break: break-word; font-size: 12px; backgr
   .facts { gap: 8px; }
   .pairs { gap: 8px; }
 }
+
+/* ── Deutsch mit Ella ───────────────────────────────────────────────── */
+.zoo-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.zoo-chip { width: 52px; height: 52px; border-radius: 14px; border: 0; background: var(--card-tint); font-size: 28px; display: grid; place-items: center; cursor: pointer; }
+.zoo-chip.locked { opacity: .5; font-size: 20px; }
+.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+.badge { display: grid; justify-items: center; gap: 4px; padding: 10px 6px; border-radius: var(--radius-s); background: var(--card-tint); text-align: center; }
+.badge.locked { opacity: .4; filter: grayscale(1); }
+.badge .b-em { font-size: 28px; } .badge .b-lbl { font-size: 12px; font-weight: 800; color: var(--ink-soft); }
+.hint { font-size: 14px; color: var(--warn); font-weight: 800; text-align: center; }
