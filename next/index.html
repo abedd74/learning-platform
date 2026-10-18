@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F1F8FA">
+<title>Lernplattform (Vorschau)</title>
+<!-- Staging shell (DESIGN §10): the new app on a COPY of this device's data.
+     The namespace keeps every key apart from the live app ('next_…') and the
+     family sync stays off here. Removed at the switch. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="../app/ui/theme.css">
+<link rel="stylesheet" href="../app/ui/app.css">
+<script>window.LP_NAMESPACE = 'next_';</script>
+</head>
+<body>
+<div id="app"></div>
+<script type="module" src="../app/boot.js"></script>
+</body>
+</html>
