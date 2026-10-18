@@ -88,7 +88,7 @@ export const REGISTRY = [
     shape: '{"<regionId>:<skill>": {b, due, s, r, w, k, lz?}}' },
   { id: 'planDays',       re: /^plan_days_(.+)$/, build: p => `plan_days_${p}`,
     sync: 'maxPerEntry', scope: 'profile', since: 2,
-    shape: '{day: {a, c, n, ms, sess}} — answers, first-try right, new cards, practice ms, sessions, across all modules' },
+    shape: '{day: {a, c, n, ms, sess, by:{module:{a,c,n}}}} — answers, first-try right, new cards, practice ms, sessions; by: the same per module' },
   { id: 'plan',           re: /^plan_(?!days_)(.+)$/, build: p => `plan_${p}`,
     sync: 'newest', scope: 'profile', since: 2,
     shape: '{updatedAt, tests:{moduleId: day}, focus?:[moduleId]}' },

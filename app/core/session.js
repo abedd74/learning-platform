@@ -61,7 +61,7 @@ export function createSession({
   }
 
   function applyDay(card, outcome, wasNew, updated) {
-    store.set(K.planDays(profile), recordAnswer(store.get(K.planDays(profile), {}), today, { first: outcome === 'first', isNew: wasNew }));
+    store.set(K.planDays(profile), recordAnswer(store.get(K.planDays(profile), {}), today, { first: outcome === 'first', isNew: wasNew, module: card.module }));
     if (card.store === 'gramSrs' || card.tags?.includes('grammar')) {
       // the old trainer's day counters, kept for its dashboard and badges
       const days = store.get(K.gramDays(profile), {}) || {};

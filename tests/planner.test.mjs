@@ -38,15 +38,23 @@ test('more due cards than a session holds: the weakest boxes are taken, nothing 
   assert.ok(r.cards.every(c => c.rec.b <= 1), 'only boxes 0 and 1 were due enough');
 });
 
-test('new cards: per-session and per-day limits, none after the daily goal', () => {
+test('new cards: per-session limit and a per-module daily limit; an extra round is never empty', () => {
   const cards = deck({ fresh: 20 });
   assert.equal(planSession({ cards, today: D, rng }).counts.new, 5);
-  assert.equal(planSession({ cards, today: D, dayRecord: { a: 20, n: 8 }, rng }).counts.new, 2);
-  assert.equal(planSession({ cards, today: D, dayRecord: { a: 20, n: 10 }, rng }).counts.new, 0);
-  const r = planSession({ cards, today: D, dayRecord: { a: 50, n: 0 }, rng });
-  assert.equal(r.counts.new, 0);
-  assert.equal(r.goalReached, true);
-  assert.equal(r.cards.length, 0);                                // nothing known to fill with
+  assert.equal(planSession({ cards, today: D, dayRecord: { a: 20, n: 8, by: { whales: { n: 8 } } }, rng }).counts.new, 2);
+  assert.equal(planSession({ cards, today: D, dayRecord: { a: 20, n: 10, by: { whales: { n: 10 } } }, rng }).counts.new, 5, 'the limit is reached, but nothing else exists: extra round');
+  const known = deck({ review: 3 });
+  const r = planSession({ cards: [...cards, ...known], today: D, dayRecord: { a: 20, n: 10, by: { whales: { n: 10 } } }, rng });
+  assert.equal(r.counts.new, 0, 'with known cards to fill, the daily limit holds');
+  assert.equal(r.counts.filler, 3);
+  // the limit is per module: ten new whale cards today do not block Ella
+  const mixed = [...deck({ fresh: 10, module: 'whales' }), ...deck({ fresh: 10, module: 'nouns', topic: 'gender' })];
+  const r2 = planSession({ cards: mixed, today: D, dayRecord: { a: 20, n: 10, by: { whales: { n: 10 } } }, rng });
+  assert.equal(r2.counts.new, 5);
+  assert.ok(r2.cards.every(c => c.module === 'nouns'));
+  const goal = planSession({ cards, today: D, dayRecord: { a: 50, n: 0 }, rng });
+  assert.equal(goal.goalReached, true);
+  assert.equal(goal.counts.new, 5, 'after the goal: still an extra round when nothing is known');
 });
 
 test('filler is fair: weakest box first, then earliest due', () => {
@@ -125,11 +133,11 @@ test('rehearse puts a missed card back three cards later, or at the end', () => 
   assert.equal(rehearse(q, { id: 'x' })[3].reason, 'rehearsal');
 });
 
-test('day records count answers, first-try rights, new cards, time and sessions', () => {
-  let days = recordAnswer(undefined, D, { first: true, isNew: true });
-  days = recordAnswer(days, D, { first: false });
+test('day records count answers, first-try rights, new cards, time and sessions, per module too', () => {
+  let days = recordAnswer(undefined, D, { first: true, isNew: true, module: 'whales' });
+  days = recordAnswer(days, D, { first: false, module: 'nouns' });
   days = recordSession(days, D, 61234.6);
-  assert.deepEqual(days, { [D]: { a: 2, c: 1, n: 1, ms: 61235, sess: 1 } });
+  assert.deepEqual(days, { [D]: { a: 2, c: 1, n: 1, ms: 61235, sess: 1, by: { whales: { a: 1, c: 1, n: 1 }, nouns: { a: 1, c: 0, n: 0 } } } });
   const next = recordAnswer(days, '2026-10-19', { first: true });
   assert.equal(next[D].a, 2);
   assert.equal(next['2026-10-19'].a, 1);

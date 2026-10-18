@@ -41,7 +41,7 @@ This document is the contract. The table below is generated from the registry in
 | `family_sync_tombstones` | device | v1 | none (device-local) | {key: deletion ts} |
 | `family_profiles` | family | v2 | `profiles` | {v:1, profiles:{<P>: {name, avatar, grade, gentle, createdAt, updatedAt, deleted?}}} |
 | `map_srs_<P>` | profile | v2 | `srs` | {"<regionId>:<skill>": {b, due, s, r, w, k, lz?}} |
-| `plan_days_<P>` | profile | v2 | `maxPerEntry` | {day: {a, c, n, ms, sess}} — answers, first-try right, new cards, practice ms, sessions, across all modules |
+| `plan_days_<P>` | profile | v2 | `maxPerEntry` | {day: {a, c, n, ms, sess, by:{module:{a,c,n}}}} — answers, first-try right, new cards, practice ms, sessions; by: the same per module |
 | `plan_<P>` | profile | v2 | `newest` | {updatedAt, tests:{moduleId: day}, focus?:[moduleId]} |
 | `app_errors` | family | v2 | `errorLog` | [{ts, v, page, msg, stack}] — last 200 |
 | `app_profile` | device | v2 | none (device-local) | JSON string: <P> last chosen on this device |

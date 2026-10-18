@@ -23,7 +23,7 @@ test('right first time: record climbs, stats and day counters move, points 2/2',
   assert.equal(rec.b, 1);
   assert.equal(rec.due, '2026-10-19');
   assert.deepEqual(store.get(K.quizStats(P)).wal_1, { shown: 1, correct: 1, wrong: 0, lastSeen: '18.10.2026' });
-  assert.deepEqual(store.get(K.planDays(P))[D], { a: 1, c: 1, n: 1 });
+  assert.deepEqual(store.get(K.planDays(P))[D], { a: 1, c: 1, n: 1, by: { whales: { a: 1, c: 1, n: 1 } } });
   assert.equal(s.next(), false);
   const sum = s.finish();
   assert.equal(sum.pct, 1);

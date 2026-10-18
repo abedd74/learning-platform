@@ -103,13 +103,16 @@ export function planSession({ cards, today, dayRecord = null, plan = null, cfg =
     take(c, isPrep(c) && !isDue(c.rec, today) ? 'test-prep' : (isPrep(c) ? 'test-prep' : 'due'));
   }
 
-  // 2. new cards: not after the daily goal, not while the review backlog is big
+  // 2. new cards: not after the daily goal, not while the review backlog is big.
+  //    The per-day limit counts per module (as the old trainer did for itself).
   const reached = goalReached(dayRecord, cfg);
+  const newToday = m => (dayRecord?.by?.[m]?.n) ?? 0;
   let allowNew = 0;
   if (!reached && dueCount <= cfg.throttleDue) {
-    allowNew = Math.min(cfg.newPerSession, Math.max(0, cfg.newPerDay - (dayRecord?.n || 0)));
-    if (Object.keys(prep).length) allowNew = Math.min(cfg.newPerSession * cfg.testPrep.newFactor, allowNew * cfg.testPrep.newFactor);
+    allowNew = cfg.newPerSession;
+    if (Object.keys(prep).length) allowNew = cfg.newPerSession * cfg.testPrep.newFactor;
   }
+  const perModuleLeft = m => Math.max(0, cfg.newPerDay * (m in prep ? cfg.testPrep.newFactor : 1) - newToday(m));
   if (allowNew > 0) {
     // one card per item: the highest unlocked level
     const byItem = new Map();
@@ -122,10 +125,12 @@ export function planSession({ cards, today, dayRecord = null, plan = null, cfg =
     const fresh = shuffle([...byItem.values()].filter(c => !usedItems.has(c.item || c.id)), rng)
       .sort((a, b) => (isPrep(b) - isPrep(a)) || ((a.newPriority ?? 0) - (b.newPriority ?? 0)));
     let n = 0;
+    const usedPerModule = {};
     for (const c of fresh) {
       if (n >= allowNew || chosen.length >= cfg.sessionSize) break;
       if (!canTake(c)) continue;
-      take(c, 'new'); n++;
+      if ((usedPerModule[c.module] || 0) >= perModuleLeft(c.module)) continue;
+      take(c, 'new'); n++; usedPerModule[c.module] = (usedPerModule[c.module] || 0) + 1;
     }
   }
 
@@ -141,6 +146,17 @@ export function planSession({ cards, today, dayRecord = null, plan = null, cfg =
     }
   }
 
+  // 4. never an empty round: with nothing due and nothing known, offer new cards anyway (extra round)
+  if (chosen.length === 0) {
+    const fresh = shuffle(cards.filter(c => isNew(c.rec) && c.unlocked !== false), rng);
+    const seenItems = new Set();
+    for (const c of fresh) {
+      if (chosen.length >= Math.min(cfg.sessionSize, cfg.newPerSession)) break;
+      const k = c.item || c.id;
+      if (seenItems.has(k) || !canTake(c)) continue;
+      seenItems.add(k); take(c, 'new');
+    }
+  }
   const session = interleave(shuffle(chosen, rng));
   const counts = { due: 0, 'test-prep': 0, new: 0, filler: 0, dueTotal: dueCount };
   for (const c of session) counts[c.reason]++;
@@ -156,12 +172,18 @@ export function rehearse(queue, card, gap = DEFAULTS.rehearsalGap) {
 
 // ── day records: {day: {a, c, n, ms, sess}} ─────────────────────────────
 
-/** Count one answer into the day record (returns a new record object). */
-export function recordAnswer(days, today, { first, isNew = false }) {
+/** Count one answer into the day record (returns a new record object). `module` keeps per-module counts in `by`. */
+export function recordAnswer(days, today, { first, isNew = false, module = null }) {
   const d = { a: 0, c: 0, n: 0, ...(days?.[today] || {}) };
   d.a += 1;
   if (first) d.c += 1;
   if (isNew) d.n += 1;
+  if (module) {
+    const by = { ...(d.by || {}) };
+    const m = { a: 0, c: 0, n: 0, ...(by[module] || {}) };
+    m.a += 1; if (first) m.c += 1; if (isNew) m.n += 1;
+    by[module] = m; d.by = by;
+  }
   return { ...(days || {}), [today]: d };
 }
 
