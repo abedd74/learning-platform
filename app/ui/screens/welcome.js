@@ -31,6 +31,12 @@ export function renderWelcome(root, ctx, params = {}) {
     row.appendChild(el('button', { class: 'avatar new', type: 'button', onClick: () => ctx.go('welcome', { form: {} }) },
       el('span', { class: 'disc' }, '+'), el('span', { class: 'name' }, i18n.t('welcome.new'))));
     col.appendChild(row);
+    // staging: offer to copy this device's live data into the namespace (never the family code)
+    if (ctx.namespace && !profiles.length && !found.length) {
+      const liveKeys = (() => { try { return Object.keys(localStorage).filter(k => !k.startsWith(ctx.namespace) && /^(wq_|gram_|wr_)/.test(k)).length; } catch { return 0; } })();
+      if (liveKeys) col.appendChild(el('section', { class: 'card stack' }, el('div', { class: 'soft' }, 'Vorschau: Auf diesem Gerät gibt es schon Lerndaten. Die Vorschau arbeitet mit einer Kopie — die echte App bleibt unberührt.'),
+        el('button', { class: 'btn', type: 'button', onClick: () => { store.copyFromLive(); renderWelcome(root, ctx, {}); } }, 'Daten von diesem Gerät kopieren')));
+    }
     col.appendChild(el('div', { class: 'bottom' }, el('button', { class: 'btn ghost', type: 'button', onClick: () => ctx.go('eltern') }, i18n.t('welcome.parents'))));
   }
   mount(root, el('div', { class: 'stage' }, horizon(), col));
