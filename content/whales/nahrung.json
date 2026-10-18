@@ -1,0 +1,186 @@
+{
+  "items": [
+    {
+      "id": "wal_nahrung-hduazna",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde das englische Wort mit dem deutschen! / Match English and German:",
+        "it": "Collega la parola inglese con quella tedesca:"
+      },
+      "hint": {
+        "de": "Zwei Wörter klingen in beiden Sprachen fast gleich.",
+        "it": "Due parole suonano quasi uguali nelle due lingue."
+      },
+      "explain": {
+        "de": "seal = Robbe, squid = Tintenfisch, seabird = Seevogel, penguin = Pinguin.",
+        "it": "foca = Robbe, calamaro = Tintenfisch, uccello marino = Seevogel, pinguino = Pinguin."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "seal",
+              "it": "foca"
+            },
+            "right": {
+              "de": "Robbe"
+            }
+          },
+          {
+            "left": {
+              "de": "squid",
+              "it": "calamaro"
+            },
+            "right": {
+              "de": "Tintenfisch"
+            }
+          },
+          {
+            "left": {
+              "de": "seabird",
+              "it": "uccello marino"
+            },
+            "right": {
+              "de": "Seevogel"
+            }
+          },
+          {
+            "left": {
+              "de": "penguin",
+              "it": "pinguino"
+            },
+            "right": {
+              "de": "Pinguin"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "wal_nahrung-h1h0ib0a",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Bartenwale ernähren sich fast ausschließlich von tierischem ___.\"",
+        "it": "Quale parola manca? \"I Bartenwale si nutrono quasi esclusivamente di ___ animale.\""
+      },
+      "hint": {
+        "de": "Winzig kleine Tiere, die im Wasser schweben.",
+        "it": "Animaletti minuscoli che fluttuano nell'acqua."
+      },
+      "explain": {
+        "de": "Bartenwale ernähren sich fast ausschließlich von tierischem Plankton.",
+        "it": "I Bartenwale si nutrono quasi solo di plancton animale."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Plankton",
+            "it": "plancton"
+          },
+          {
+            "de": "Seegras",
+            "it": "alghe"
+          },
+          {
+            "de": "Tintenfisch",
+            "it": "calamaro"
+          },
+          {
+            "de": "Krebs",
+            "it": "granchio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_nahrung-h3g8xk9",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Je nach Walart fressen ___ zum Beispiel Fische, Tintenfische, Pinguine und Robben.\"",
+        "it": "Quale parola manca? \"A seconda della specie gli ___ mangiano pesci, calamari, pinguini e foche.\""
+      },
+      "hint": {
+        "de": "Um eine Robbe zu fangen, braucht man Zähne!",
+        "it": "Per catturare una foca servono i denti!"
+      },
+      "explain": {
+        "de": "Zahnwale fressen Fische, Tintenfische, Pinguine und Robben.",
+        "it": "Gli Zahnwale mangiano pesci, calamari, pinguini e foche."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Zahnwale",
+            "it": "Zahnwale"
+          },
+          {
+            "de": "Bartenwale",
+            "it": "Bartenwale"
+          },
+          {
+            "de": "Blauwale",
+            "it": "balenottere azzurre"
+          },
+          {
+            "de": "Buckelwale",
+            "it": "megattere"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_nahrung-h3zkbvr",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Vergleiche Zahnwale und Bartenwale!",
+        "it": "Confronta Zahnwale e Bartenwale!"
+      },
+      "explain": {
+        "de": "Falsch! Zahnwale jagen z. B. Fische und Robben, Bartenwale fressen fast nur Plankton.",
+        "it": "Falso! Gli Zahnwale cacciano pesci e foche, i Bartenwale mangiano quasi solo plancton."
+      },
+      "answer": {
+        "statement": {
+          "de": "Alle Wale fressen genau das Gleiche.",
+          "it": "Tutte le balene mangiano esattamente la stessa cosa."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_nahrung-hg2r95u",
+      "type": "choice",
+      "prompt": {
+        "de": "Ein Wal frisst Pinguine und Robben. Was für ein Wal ist er?",
+        "it": "Una balena mangia pinguini e foche. Che tipo di balena è?"
+      },
+      "hint": {
+        "de": "Mit Barten kann man nur ganz kleine Tiere aus dem Wasser filtern.",
+        "it": "Con i fanoni si filtrano solo animali piccolissimi."
+      },
+      "explain": {
+        "de": "Ein Zahnwal — er lebt räuberisch.",
+        "it": "Uno Zahnwal — vive da predatore."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "ein Zahnwal",
+            "it": "uno Zahnwal"
+          },
+          {
+            "de": "ein Bartenwal",
+            "it": "un Bartenwal"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

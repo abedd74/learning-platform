@@ -1,0 +1,545 @@
+{
+  "items": [
+    {
+      "id": "wal_arten-hc6sa2g",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal ist das? (Bild A)",
+        "it": "Che balena è?"
+      },
+      "hint": {
+        "de": "Er ist ganz weiß, hat eine runde Stirn und KEINE Rückenflosse.",
+        "it": "È tutto bianco, ha la fronte rotonda e NESSUNA pinna dorsale."
+      },
+      "explain": {
+        "de": "Das ist der Weißwal (Beluga).",
+        "it": "È: beluga (Weißwal (Beluga))."
+      },
+      "media": {
+        "figure": "figures/whales/78f0132f7f.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Weißwal (Beluga)",
+            "it": "beluga"
+          },
+          {
+            "de": "Delfin",
+            "it": "delfino"
+          },
+          {
+            "de": "Schwertwal (Orca)",
+            "it": "orca"
+          },
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-hc7hp4p",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal ist das? (Bild B)",
+        "it": "Che balena è?"
+      },
+      "hint": {
+        "de": "Klein, schlank, mit einer langen Schnauze und einer gebogenen Rückenflosse.",
+        "it": "Piccolo, snello, con un lungo muso e una pinna dorsale ricurva."
+      },
+      "explain": {
+        "de": "Das ist der Delfin.",
+        "it": "È: delfino (Delfin)."
+      },
+      "media": {
+        "figure": "figures/whales/b2d2123f8e.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Delfin",
+            "it": "delfino"
+          },
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          },
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-hc8746y",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal ist das? (Bild C)",
+        "it": "Che balena è?"
+      },
+      "hint": {
+        "de": "Schau auf den langen Stoßzahn vorne am Kopf!",
+        "it": "Guarda la lunga zanna davanti alla testa!"
+      },
+      "explain": {
+        "de": "Das ist der Narwal.",
+        "it": "È: narvalo (Narwal)."
+      },
+      "media": {
+        "figure": "figures/whales/ee63b106b9.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          },
+          {
+            "de": "Schwertwal (Orca)",
+            "it": "orca"
+          },
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Weißwal (Beluga)",
+            "it": "beluga"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-hc8wj97",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal ist das? (Bild D)",
+        "it": "Che balena è?"
+      },
+      "hint": {
+        "de": "Schwarz mit weißem Bauch und einem weißen Fleck hinter dem Auge — und eine hohe Rückenflosse wie ein Schwert.",
+        "it": "Nera con la pancia bianca e una macchia bianca dietro l'occhio — e una pinna dorsale alta come una spada."
+      },
+      "explain": {
+        "de": "Das ist der Schwertwal (Orca).",
+        "it": "È: orca (Schwertwal (Orca))."
+      },
+      "media": {
+        "figure": "figures/whales/346fa20662.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schwertwal (Orca)",
+            "it": "orca"
+          },
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          },
+          {
+            "de": "Delfin",
+            "it": "delfino"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-hc9lybg",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal ist das? (Bild E)",
+        "it": "Che balena è?"
+      },
+      "hint": {
+        "de": "Er hat riesige, lange Brustflossen und Furchen an der Kehle.",
+        "it": "Ha pinne pettorali enormi e lunghe e solchi sulla gola."
+      },
+      "explain": {
+        "de": "Das ist der Buckelwal.",
+        "it": "È: megattera (Buckelwal)."
+      },
+      "media": {
+        "figure": "figures/whales/e3bcb86cf5.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Weißwal (Beluga)",
+            "it": "beluga"
+          },
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-hcabddp",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal ist das? (Bild F)",
+        "it": "Che balena è?"
+      },
+      "hint": {
+        "de": "Sein Kopf ist riesig und eckig — fast wie ein Kasten. Der Unterkiefer ist ganz schmal.",
+        "it": "La sua testa è enorme e squadrata — quasi come una scatola. La mandibola è molto stretta."
+      },
+      "explain": {
+        "de": "Das ist der Pottwal.",
+        "it": "È: capodoglio (Pottwal)."
+      },
+      "media": {
+        "figure": "figures/whales/439e7e21f3.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          },
+          {
+            "de": "Delfin",
+            "it": "delfino"
+          },
+          {
+            "de": "Schwertwal (Orca)",
+            "it": "orca"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-hcb0sfy",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal ist das? (Bild G)",
+        "it": "Che balena è?"
+      },
+      "hint": {
+        "de": "Der längste von allen: 33 Meter! Dunkelblau oder grau, mit einer winzigen Rückenflosse.",
+        "it": "La più lunga di tutte: 33 metri! Blu scuro o grigia, con una minuscola pinna dorsale."
+      },
+      "explain": {
+        "de": "Das ist der Blauwal.",
+        "it": "È: balenottera azzurra (Blauwal)."
+      },
+      "media": {
+        "figure": "figures/whales/694387884b.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          },
+          {
+            "de": "Weißwal (Beluga)",
+            "it": "beluga"
+          },
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          },
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-h6na2zh",
+      "type": "choice",
+      "prompt": {
+        "de": "Dieser Wal hat Furchen an der Kehle und keine Zähne. Zu welcher Gruppe gehört er?",
+        "it": "Questa balena ha solchi sulla gola e nessun dente. A quale gruppo appartiene?"
+      },
+      "hint": {
+        "de": "Keine Zähne — was hat er stattdessen im Maul?",
+        "it": "Niente denti — che cosa ha in bocca al loro posto?"
+      },
+      "explain": {
+        "de": "Das ist ein Buckelwal — ein Bartenwal.",
+        "it": "È una megattera — un Bartenwal."
+      },
+      "media": {
+        "figure": "figures/whales/e3bcb86cf5.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "zu den Bartenwalen",
+            "it": "ai Bartenwale"
+          },
+          {
+            "de": "zu den Zahnwalen",
+            "it": "agli Zahnwale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-h1xvrud6",
+      "type": "choice",
+      "prompt": {
+        "de": "Dieser Wal jagt Robben und Pinguine. Zu welcher Gruppe gehört er?",
+        "it": "Questa balena caccia foche e pinguini. A quale gruppo appartiene?"
+      },
+      "hint": {
+        "de": "Zum Jagen braucht man Zähne!",
+        "it": "Per cacciare servono i denti!"
+      },
+      "explain": {
+        "de": "Das ist ein Orca (Schwertwal) — ein Zahnwal.",
+        "it": "È un'orca — uno Zahnwal."
+      },
+      "media": {
+        "figure": "figures/whales/346fa20662.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "zu den Zahnwalen",
+            "it": "agli Zahnwale"
+          },
+          {
+            "de": "zu den Bartenwalen",
+            "it": "ai Bartenwale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_arten-h16mh3n1",
+      "type": "pairs",
+      "prompt": {
+        "de": "Wie heißen diese Wale auf Deutsch? / Match the English and German names:",
+        "it": "Come si chiamano queste balene in tedesco?"
+      },
+      "hint": {
+        "de": "hump = Buckel, blue = blau. Dann bleiben nur noch zwei!",
+        "it": "hump = gobba (Buckel), blue = blu. Poi ne restano solo due!"
+      },
+      "explain": {
+        "de": "killer whale = Schwertwal, sperm whale = Pottwal, humpback whale = Buckelwal, blue whale = Blauwal.",
+        "it": "orca = Schwertwal, capodoglio = Pottwal, megattera = Buckelwal, balenottera azzurra = Blauwal."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "killer whale",
+              "it": "orca"
+            },
+            "right": {
+              "de": "Schwertwal (Orca)"
+            }
+          },
+          {
+            "left": {
+              "de": "sperm whale",
+              "it": "capodoglio"
+            },
+            "right": {
+              "de": "Pottwal"
+            }
+          },
+          {
+            "left": {
+              "de": "humpback whale",
+              "it": "megattera"
+            },
+            "right": {
+              "de": "Buckelwal"
+            }
+          },
+          {
+            "left": {
+              "de": "blue whale",
+              "it": "balenottera azzurra"
+            },
+            "right": {
+              "de": "Blauwal"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "wal_arten-hn74ymi",
+      "type": "multi",
+      "prompt": {
+        "de": "Auf deinen Walkarten steht T (toothed) oder B (baleen). Welche Wale haben ein B?",
+        "it": "Sulle tue carte c'è T (toothed) o B (baleen). Quali balene hanno la B?"
+      },
+      "hint": {
+        "de": "Es sind nur 2 — die beiden Riesen.",
+        "it": "Sono solo 2 — i due giganti."
+      },
+      "explain": {
+        "de": "Nur Buckelwal und Blauwal sind Bartenwale (B). Alle anderen Karten sind Zahnwale (T).",
+        "it": "Solo megattera e balenottera azzurra sono Bartenwale (B). Tutte le altre sono Zahnwale (T)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          },
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Großer Tümmler",
+            "it": "tursiope"
+          },
+          {
+            "de": "Weißwal (Beluga)",
+            "it": "beluga"
+          }
+        ],
+        "correct": [
+          0,
+          2
+        ]
+      }
+    },
+    {
+      "id": "wal_arten-h22xe28",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Schau auf die Liste im Zahnwale-Büchlein: Pottwal, Orca, D…",
+        "it": "Guarda la lista nel libretto degli Zahnwale: Pottwal, Orca, D…"
+      },
+      "explain": {
+        "de": "Richtig! Delfine gehören zu den Zahnwalen.",
+        "it": "Giusto! I delfini fanno parte degli Zahnwale."
+      },
+      "answer": {
+        "statement": {
+          "de": "Delfine sind Zahnwale.",
+          "it": "I delfini sono Zahnwale (odontoceti)."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "wal_arten-h1xl5xgs",
+      "type": "text",
+      "prompt": {
+        "de": "Wie heißt der Beluga auf Deutsch?",
+        "it": "Come si chiama il beluga in tedesco?"
+      },
+      "hint": {
+        "de": "Welche Farbe hat er? Farbe + „wal\".",
+        "it": "Di che colore è? Colore + \"wal\"."
+      },
+      "explain": {
+        "de": "Der Beluga heißt Weißwal (in deinem Material auch „Weißer Wal\" oder „Schweinswal\").",
+        "it": "Il beluga si chiama Weißwal (nel tuo materiale anche \"Weißer Wal\" o \"Schweinswal\")."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Der Beluga heißt auf Deutsch",
+          "it": "Il beluga in tedesco si chiama"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "weißwal",
+          "weisswal",
+          "weißer wal",
+          "weisser wal",
+          "schweinswal"
+        ]
+      }
+    },
+    {
+      "id": "wal_arten-hsmd4dp",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher dieser Wale ist KEIN Delfin?",
+        "it": "Quale di queste balene NON è un delfino?"
+      },
+      "hint": {
+        "de": "Der Große Tümmler heißt auf Englisch \"bottlenose dolphin\".",
+        "it": "Il Großer Tümmler in inglese è \"bottlenose dolphin\"."
+      },
+      "explain": {
+        "de": "Der Pottwal (sperm whale) ist kein Delfin. Der Große Tümmler schon!",
+        "it": "Il capodoglio non è un delfino. Il tursiope sì!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Großer Tümmler",
+            "it": "tursiope"
+          },
+          {
+            "de": "Amazonasdelfin",
+            "it": "delfino del Rio delle Amazzoni"
+          },
+          {
+            "de": "Commersondelfin",
+            "it": "cefalorinco di Commerson"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

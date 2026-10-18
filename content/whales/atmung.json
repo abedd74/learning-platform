@@ -1,0 +1,326 @@
+{
+  "items": [
+    {
+      "id": "wal_atmung-h1q48mtf",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Denk an das Bild in Heft 2: die Wolke über dem Blasloch.",
+        "it": "Pensa al disegno del quaderno 2: la nuvola sopra lo sfiatatoio."
+      },
+      "explain": {
+        "de": "Richtig! Beim Ausatmen sieht man oft eine feuchte Atemwolke über dem Blasloch.",
+        "it": "Giusto! Quando espira si vede spesso una nuvola di vapore sopra lo sfiatatoio."
+      },
+      "answer": {
+        "statement": {
+          "de": "Beim Ausatmen sieht man bei Walen oft eine feuchte Atemwolke.",
+          "it": "Quando espirano, nelle balene si vede spesso una nuvola di vapore."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "wal_atmung-hof911p",
+      "type": "choice",
+      "prompt": {
+        "de": "Zu welcher Tiergruppe gehören Wale?",
+        "it": "A quale gruppo di animali appartengono le balene?"
+      },
+      "hint": {
+        "de": "Sie atmen mit der Lunge — so wie wir Menschen.",
+        "it": "Respirano con i polmoni — come noi."
+      },
+      "explain": {
+        "de": "Wale sind Säugetiere, keine Fische!",
+        "it": "Le balene sono mammiferi, non pesci!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Fische",
+            "it": "pesci"
+          },
+          {
+            "de": "Säugetiere",
+            "it": "mammiferi"
+          },
+          {
+            "de": "Reptilien",
+            "it": "rettili"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "wal_atmung-h152f0e",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Kiemen haben nur Fische. Und Wale sind keine Fische!",
+        "it": "Le branchie le hanno solo i pesci. E le balene non sono pesci!"
+      },
+      "explain": {
+        "de": "Falsch! Wale haben keine Kiemen. Sie atmen mit der Lunge.",
+        "it": "Falso! Le balene non hanno branchie. Respirano con i polmoni."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wale atmen durch Kiemen.",
+          "it": "Le balene respirano con le branchie."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_atmung-hzmufh1",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Wale sind keine Fische und haben daher auch keine ___.\"",
+        "it": "Quale parola manca? \"Le balene non sono pesci e quindi non hanno ___.\""
+      },
+      "hint": {
+        "de": "Damit atmen Fische unter Wasser.",
+        "it": "Con quelle i pesci respirano sott'acqua."
+      },
+      "explain": {
+        "de": "Wale haben keine Kiemen.",
+        "it": "Le balene non hanno branchie."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kiemen",
+            "it": "branchie"
+          },
+          {
+            "de": "Flossen",
+            "it": "pinne"
+          },
+          {
+            "de": "Augen",
+            "it": "occhi"
+          },
+          {
+            "de": "Zähne",
+            "it": "denti"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_atmung-hl5tpcz",
+      "type": "text",
+      "prompt": {
+        "de": "Welches Wort fehlt?",
+        "it": "Quale parola manca?"
+      },
+      "hint": {
+        "de": "Die Walmama säugt ihr Baby mit Milch: S _ _ g e t i e r e.",
+        "it": "La mamma balena allatta il piccolo: S _ _ g e t i e r e."
+      },
+      "explain": {
+        "de": "Wale sind Säugetiere.",
+        "it": "Le balene sono mammiferi."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Wale sind keine Fische. Sie sind",
+          "it": "Le balene non sono pesci. Sono"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "säugetiere",
+          "saeugetiere",
+          "säugetier"
+        ]
+      }
+    },
+    {
+      "id": "wal_atmung-hgmb37",
+      "type": "choice",
+      "prompt": {
+        "de": "Womit atmen Wale?",
+        "it": "Con che cosa respirano le balene?"
+      },
+      "hint": {
+        "de": "So wie wir Menschen.",
+        "it": "Come noi esseri umani."
+      },
+      "explain": {
+        "de": "Wale atmen mit der Lunge, so wie wir Menschen.",
+        "it": "Le balene respirano con i polmoni, come noi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "mit der Lunge",
+            "it": "con i polmoni"
+          },
+          {
+            "de": "mit Kiemen",
+            "it": "con le branchie"
+          },
+          {
+            "de": "mit den Barten",
+            "it": "con i fanoni"
+          },
+          {
+            "de": "mit der Haut",
+            "it": "con la pelle"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_atmung-h153ic5b",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum müssen Wale regelmäßig an die Wasseroberfläche?",
+        "it": "Perché le balene devono salire regolarmente in superficie?"
+      },
+      "hint": {
+        "de": "Mit einer Lunge kann man unter Wasser nicht atmen.",
+        "it": "Con i polmoni non si può respirare sott'acqua."
+      },
+      "explain": {
+        "de": "Zum Luftholen müssen Wale regelmäßig an die Wasseroberfläche.",
+        "it": "Per respirare le balene devono salire regolarmente in superficie."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "um Luft zu holen",
+            "it": "per prendere aria"
+          },
+          {
+            "de": "um zu fressen",
+            "it": "per mangiare"
+          },
+          {
+            "de": "um zu schlafen",
+            "it": "per dormire"
+          },
+          {
+            "de": "um sich zu wärmen",
+            "it": "per scaldarsi"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_atmung-h5mfbt9",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Wale atmen durch Nasenlöcher, die sich oben auf dem ___ befinden.\"",
+        "it": "Quale parola manca? \"Le balene respirano da narici che si trovano sopra ___.\""
+      },
+      "hint": {
+        "de": "Ganz vorne und ganz oben am Wal.",
+        "it": "Tutto davanti e tutto in alto."
+      },
+      "explain": {
+        "de": "Die Nasenlöcher sind oben auf dem Kopf.",
+        "it": "Le narici sono sopra la testa."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Kopf",
+            "it": "la testa"
+          },
+          {
+            "de": "Bauch",
+            "it": "la pancia"
+          },
+          {
+            "de": "Rücken",
+            "it": "la schiena"
+          },
+          {
+            "de": "Maul",
+            "it": "la bocca"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_atmung-hgavjhk",
+      "type": "text",
+      "prompt": {
+        "de": "Welches Wort fehlt?",
+        "it": "Quale parola manca?"
+      },
+      "hint": {
+        "de": "Der Wal BLÄST dort Wasser heraus: Blas + Löcher.",
+        "it": "La balena da lì SOFFIA fuori l'acqua: Blas + Löcher."
+      },
+      "explain": {
+        "de": "Durch die Blaslöcher spritzt der Wal bei jedem Atemzug Wasser aus.",
+        "it": "Dagli sfiatatoi la balena spruzza acqua a ogni respiro."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die Nasenlöcher der Wale heißen",
+          "it": "Le narici delle balene si chiamano"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "blaslöcher",
+          "blasloecher",
+          "blasloch"
+        ]
+      }
+    },
+    {
+      "id": "wal_atmung-h1fnlrwd",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum kann man Wale schon von Weitem erkennen?",
+        "it": "Perché si possono riconoscere le balene già da lontano?"
+      },
+      "hint": {
+        "de": "Denk an die Fontäne über dem Wal!",
+        "it": "Pensa alla fontana sopra la balena!"
+      },
+      "explain": {
+        "de": "Durch die Blaslöcher spritzt der Wal bei jedem Atemzug Wasser aus.",
+        "it": "Dagli sfiatatoi la balena spruzza acqua a ogni respiro."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie spritzen beim Atmen Wasser aus.",
+            "it": "Spruzzano acqua quando respirano."
+          },
+          {
+            "de": "Sie singen sehr laut.",
+            "it": "Cantano molto forte."
+          },
+          {
+            "de": "Sie springen immer aus dem Wasser.",
+            "it": "Saltano sempre fuori dall'acqua."
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

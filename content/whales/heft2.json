@@ -1,0 +1,915 @@
+{
+  "items": [
+    {
+      "id": "wal_heft2-h1m8o2y6",
+      "type": "choice",
+      "prompt": {
+        "de": "Was trinken Walbabys nach der Geburt?",
+        "it": "Che cosa bevono i cuccioli di balena dopo la nascita?"
+      },
+      "hint": {
+        "de": "Wale sind Säugetiere — was bekommen alle Säugetier-Babys?",
+        "it": "Le balene sono mammiferi — cosa ricevono tutti i cuccioli di mammifero?"
+      },
+      "explain": {
+        "de": "Walbabys trinken Milch.",
+        "it": "I cuccioli di balena bevono latte."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Milch",
+            "it": "latte"
+          },
+          {
+            "de": "Salzwasser",
+            "it": "acqua salata"
+          },
+          {
+            "de": "Luft",
+            "it": "aria"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h11m8ast",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt die dicke Fettschicht unter der Haut der Wale?",
+        "it": "Come si chiama lo spesso strato di grasso sotto la pelle delle balene?"
+      },
+      "hint": {
+        "de": "Das Wort klingt lustig — wie „blubbern\".",
+        "it": "La parola suona buffa — come \"blubbern\" (gorgogliare)."
+      },
+      "explain": {
+        "de": "Die Fettschicht heißt Blubber.",
+        "it": "Lo strato di grasso si chiama Blubber."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Blubber",
+            "it": "Blubber"
+          },
+          {
+            "de": "Barten",
+            "it": "fanoni"
+          },
+          {
+            "de": "Krill",
+            "it": "krill"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h1jkldu1",
+      "type": "text",
+      "prompt": {
+        "de": "Welches Wort fehlt?",
+        "it": "Quale parola manca?"
+      },
+      "hint": {
+        "de": "B _ _ b b e r",
+        "it": "B _ _ b b e r"
+      },
+      "explain": {
+        "de": "Sie heißt Blubber und hält warm.",
+        "it": "Si chiama Blubber e tiene caldo."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die dicke Fettschicht der Wale heißt",
+          "it": "Lo spesso strato di grasso delle balene si chiama"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "blubber"
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-h3qhmuw",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Wale sind Säugetiere — so wie wir.",
+        "it": "Le balene sono mammiferi — come noi."
+      },
+      "explain": {
+        "de": "Falsch! Wale haben warmes Blut.",
+        "it": "Falso! Le balene hanno il sangue caldo."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wale haben kaltes Blut, so wie Fische.",
+          "it": "Le balene hanno il sangue freddo, come i pesci."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_heft2-h1ouuapj",
+      "type": "choice",
+      "prompt": {
+        "de": "Wozu dient der Blubber?",
+        "it": "A cosa serve il Blubber?"
+      },
+      "hint": {
+        "de": "Wale schwimmen auch in kalten Meeren.",
+        "it": "Le balene nuotano anche nei mari freddi."
+      },
+      "explain": {
+        "de": "Der Blubber hält warm.",
+        "it": "Il Blubber tiene caldo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er hält warm.",
+            "it": "Tiene caldo."
+          },
+          {
+            "de": "Er hilft beim Tauchen.",
+            "it": "Aiuta a immergersi."
+          },
+          {
+            "de": "Er hilft beim Hören.",
+            "it": "Aiuta a sentire."
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h12ppxm2",
+      "type": "choice",
+      "prompt": {
+        "de": "Was sieht man oft, wenn ein Wal ausatmet?",
+        "it": "Che cosa si vede spesso quando una balena espira?"
+      },
+      "hint": {
+        "de": "Sie kommt aus dem Blasloch.",
+        "it": "Esce dallo sfiatatoio."
+      },
+      "explain": {
+        "de": "Beim Ausatmen sieht man oft eine feuchte Atemwolke.",
+        "it": "Quando espira si vede spesso una nuvola di vapore."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "eine feuchte Atemwolke",
+            "it": "una nuvola di vapore"
+          },
+          {
+            "de": "einen Regenbogen",
+            "it": "un arcobaleno"
+          },
+          {
+            "de": "Blasen aus dem Maul",
+            "it": "bolle dalla bocca"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h1pu44ax",
+      "type": "text",
+      "prompt": {
+        "de": "Welches Wort fehlt?",
+        "it": "Quale parola manca?"
+      },
+      "hint": {
+        "de": "Ihre Babys trinken Milch. S _ _ g e t i e r e",
+        "it": "I loro cuccioli bevono latte. S _ _ g e t i e r e"
+      },
+      "explain": {
+        "de": "Wale und Delfine sind Säugetiere.",
+        "it": "Balene e delfini sono mammiferi."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Wale und Delfine sind keine Fische, sondern",
+          "it": "Balene e delfini non sono pesci, ma"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "säugetiere",
+          "saeugetiere",
+          "säugetier"
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-higybj4",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie nennt man die winzigen Krebse, die viele Bartenwale fressen?",
+        "it": "Come si chiamano i minuscoli crostacei che molti Bartenwale mangiano?"
+      },
+      "hint": {
+        "de": "Ein kurzes Wort mit K.",
+        "it": "Una parola corta con la K."
+      },
+      "explain": {
+        "de": "Die winzigen Krebse heißen Krill.",
+        "it": "I minuscoli crostacei si chiamano krill."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Krill",
+            "it": "krill"
+          },
+          {
+            "de": "Muscheln",
+            "it": "cozze"
+          },
+          {
+            "de": "Seesterne",
+            "it": "stelle marine"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h1fgy7c9",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Im Lapbook steht „Plankton\", in Heft 2 steht „Krill\" — beides sind winzige Tiere.",
+        "it": "Nel lapbook c'è \"Plankton\", nel quaderno 2 \"Krill\" — sono entrambi animaletti minuscoli."
+      },
+      "explain": {
+        "de": "Richtig! Krill = winzige Krebse = tierisches Plankton.",
+        "it": "Giusto! Krill = minuscoli crostacei = plancton animale."
+      },
+      "answer": {
+        "statement": {
+          "de": "Krill ist tierisches Plankton. Bartenwale filtern es mit den Barten aus dem Wasser.",
+          "it": "Il krill è plancton animale. I Bartenwale lo filtrano con i fanoni."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "wal_heft2-h3ai1h3",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie finden viele Delfine ihre Beute?",
+        "it": "Come trovano le prede molti delfini?"
+      },
+      "hint": {
+        "de": "Sie senden Laute aus und hören das Echo.",
+        "it": "Emettono suoni e ascoltano l'eco."
+      },
+      "explain": {
+        "de": "Viele Delfine finden Beute mit Echoortung.",
+        "it": "Molti delfini trovano le prede con l'ecolocalizzazione."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "mit Echoortung",
+            "it": "con l'ecolocalizzazione"
+          },
+          {
+            "de": "nur mit den Augen",
+            "it": "solo con gli occhi"
+          },
+          {
+            "de": "mit dem Geruch",
+            "it": "con l'olfatto"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h5gl4fi",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Laute senden Delfine bei der Echoortung aus?",
+        "it": "Quali suoni emettono i delfini nell'ecolocalizzazione?"
+      },
+      "hint": {
+        "de": "Klick, klick, klick …",
+        "it": "Clic, clic, clic …"
+      },
+      "explain": {
+        "de": "Delfine senden kurze Klicklaute aus.",
+        "it": "I delfini emettono brevi clic."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Klicklaute",
+            "it": "clic"
+          },
+          {
+            "de": "Pfeifen aus Metall",
+            "it": "fischi di metallo"
+          },
+          {
+            "de": "Trommeln",
+            "it": "tamburi"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h1jldebk",
+      "type": "order",
+      "prompt": {
+        "de": "So funktioniert die Echoortung. Bringe die Schritte in die richtige Reihenfolge!",
+        "it": "Così funziona l'ecolocalizzazione. Metti i passi nell'ordine giusto!"
+      },
+      "hint": {
+        "de": "Zuerst der Klick, am Ende weiß der Delfin Bescheid.",
+        "it": "Prima il clic, alla fine il delfino sa tutto."
+      },
+      "explain": {
+        "de": "Klicklaute → treffen auf ein Tier → kommen als Echo zurück → der Delfin weiß, wo und wie groß es ist.",
+        "it": "Clic → colpiscono un animale → tornano come eco → il delfino sa dove e quanto è grande."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Der Delfin sendet kurze Klicklaute aus.",
+            "it": "Il delfino emette brevi clic."
+          },
+          {
+            "de": "Die Laute treffen auf einen Fisch.",
+            "it": "I suoni colpiscono un pesce."
+          },
+          {
+            "de": "Die Laute kommen als Echo zurück.",
+            "it": "I suoni tornano come eco."
+          },
+          {
+            "de": "Der Delfin weiß: Dort ist etwas, so groß ist es, dorthin bewegt es sich.",
+            "it": "Il delfino sa: lì c'è qualcosa, è grande così, si muove là."
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-h1luqsix",
+      "type": "choice",
+      "prompt": {
+        "de": "Was erfährt der Delfin durch das Echo?",
+        "it": "Che cosa scopre il delfino grazie all'eco?"
+      },
+      "hint": {
+        "de": "Drei Dinge: wo, wie groß, wohin.",
+        "it": "Tre cose: dove, quanto grande, verso dove."
+      },
+      "explain": {
+        "de": "Der Delfin merkt: Dort ist etwas, wie groß es ist und wohin es sich bewegt.",
+        "it": "Il delfino capisce dove c'è qualcosa, quanto è grande e dove si muove."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "wo etwas ist, wie groß es ist und wohin es sich bewegt",
+            "it": "dove è qualcosa, quanto è grande e dove si muove"
+          },
+          {
+            "de": "welche Farbe es hat",
+            "it": "di che colore è"
+          },
+          {
+            "de": "wie es schmeckt",
+            "it": "che sapore ha"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-hba2aon",
+      "type": "choice",
+      "prompt": {
+        "de": "Wobei hilft die Echoortung besonders?",
+        "it": "In che cosa aiuta soprattutto l'ecolocalizzazione?"
+      },
+      "hint": {
+        "de": "Wenn man nichts sehen kann, muss man hören.",
+        "it": "Quando non si vede niente, bisogna sentire."
+      },
+      "explain": {
+        "de": "Echoortung hilft auch in dunklem oder trübem Wasser.",
+        "it": "L'ecolocalizzazione aiuta anche nell'acqua scura o torbida."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "in dunklem oder trübem Wasser",
+            "it": "nell'acqua scura o torbida"
+          },
+          {
+            "de": "beim Schlafen",
+            "it": "a dormire"
+          },
+          {
+            "de": "beim Springen",
+            "it": "a saltare"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h3yxq33",
+      "type": "multi",
+      "prompt": {
+        "de": "Welche Wale sind Bartenwale? Wähle ALLE aus!",
+        "it": "Quali balene sono Bartenwale? Scegli TUTTE!"
+      },
+      "hint": {
+        "de": "Es sind genau 3. Narwal, Beluga und Pottwal haben Zähne.",
+        "it": "Sono esattamente 3. Narvalo, beluga e capodoglio hanno i denti."
+      },
+      "explain": {
+        "de": "Grauwal, Finnwal und Blauwal sind Bartenwale (und der Buckelwal).",
+        "it": "Balena grigia, balenottera comune e balenottera azzurra sono Bartenwale (e la megattera)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Grauwal",
+            "it": "balena grigia"
+          },
+          {
+            "de": "Finnwal",
+            "it": "balenottera comune"
+          },
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          },
+          {
+            "de": "Beluga",
+            "it": "beluga"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          },
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-h1cylsn9",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie nennt man eine Gruppe von Delfinen?",
+        "it": "Come si chiama un gruppo di delfini?"
+      },
+      "hint": {
+        "de": "Das gleiche Wort wie der Ort, wo du jeden Tag hingehst!",
+        "it": "La stessa parola del posto dove vai ogni giorno!"
+      },
+      "explain": {
+        "de": "Eine Delfingruppe nennt man Schule.",
+        "it": "Un gruppo di delfini si chiama \"Schule\"."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schule",
+            "it": "Schule (scuola)"
+          },
+          {
+            "de": "Herde",
+            "it": "Herde (mandria)"
+          },
+          {
+            "de": "Klasse",
+            "it": "Klasse (classe)"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-hk9xlu5",
+      "type": "pairs",
+      "prompt": {
+        "de": "Bartenwale oder Delfine? Ordne zu!",
+        "it": "Bartenwale o delfini? Abbina!"
+      },
+      "hint": {
+        "de": "Delfine sind Zahnwale — und meist kleiner als die Riesen mit Barten.",
+        "it": "I delfini sono Zahnwale — e di solito più piccoli dei giganti con i fanoni."
+      },
+      "explain": {
+        "de": "Bartenwale: Barten, oft sehr groß. Delfine: Zähne, meist kleiner.",
+        "it": "Bartenwale: fanoni, spesso molto grandi. Delfini: denti, di solito più piccoli."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Bartenwale — Mundwerkzeug"
+            },
+            "right": {
+              "de": "Barten"
+            }
+          },
+          {
+            "left": {
+              "de": "Delfine — Mundwerkzeug"
+            },
+            "right": {
+              "de": "Zähne"
+            }
+          },
+          {
+            "left": {
+              "de": "Bartenwale — Größe"
+            },
+            "right": {
+              "de": "oft sehr groß"
+            }
+          },
+          {
+            "left": {
+              "de": "Delfine — Größe"
+            },
+            "right": {
+              "de": "meist kleiner"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-hskz6tq",
+      "type": "pairs",
+      "prompt": {
+        "de": "Und das hier? Ordne zu!",
+        "it": "E questo? Abbina!"
+      },
+      "hint": {
+        "de": "Wer hat Zähne zum Fischefangen? Wer wandert weit durch die Meere?",
+        "it": "Chi ha i denti per catturare pesci? Chi viaggia lontano attraverso i mari?"
+      },
+      "explain": {
+        "de": "Bartenwale: Krill, lange Wanderungen. Delfine: Fische und Tintenfische, Schulen.",
+        "it": "Bartenwale: krill, lunghe migrazioni. Delfini: pesci e calamari, gruppi (Schulen)."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Bartenwale — Nahrung"
+            },
+            "right": {
+              "de": "Krill und kleine Meerestiere"
+            }
+          },
+          {
+            "left": {
+              "de": "Delfine — Nahrung"
+            },
+            "right": {
+              "de": "Fische und Tintenfische"
+            }
+          },
+          {
+            "left": {
+              "de": "Bartenwale — Besonderheit"
+            },
+            "right": {
+              "de": "lange Wanderungen"
+            }
+          },
+          {
+            "left": {
+              "de": "Delfine — Besonderheit"
+            },
+            "right": {
+              "de": "leben in Schulen"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-h1pmq0vv",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Delfine jagen Fische — womit?",
+        "it": "I delfini cacciano pesci — con cosa?"
+      },
+      "explain": {
+        "de": "Falsch! Delfine sind Zahnwale.",
+        "it": "Falso! I delfini sono Zahnwale."
+      },
+      "answer": {
+        "statement": {
+          "de": "Delfine sind Bartenwale.",
+          "it": "I delfini sono Bartenwale."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_heft2-h17aiduc",
+      "type": "order",
+      "prompt": {
+        "de": "Die Wanderung der Wale: Bringe die 7 Sätze in die richtige Reihenfolge!",
+        "it": "La migrazione delle balene: metti le 7 frasi nell'ordine giusto!"
+      },
+      "hint": {
+        "de": "Es beginnt im Sommer mit dem Fressen und endet mit der Rückreise.",
+        "it": "Inizia d'estate con il mangiare e finisce con il viaggio di ritorno."
+      },
+      "explain": {
+        "de": "Sommer: fressen → Fettschicht → Herbst/Winter: Reise → warme Meere → Kalb wird geboren → Kalb trinkt Milch → Rückreise.",
+        "it": "Estate: mangiare → strato di grasso → autunno/inverno: viaggio → mari caldi → nasce il cucciolo → beve latte → ritorno."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Im Sommer fressen die Wale viel in kalten Meeren.",
+            "it": "D'estate le balene mangiano molto nei mari freddi."
+          },
+          {
+            "de": "Sie legen sich eine dickere Fettschicht zu.",
+            "it": "Si fanno uno strato di grasso più spesso."
+          },
+          {
+            "de": "Im Herbst oder Winter beginnt die lange Reise.",
+            "it": "In autunno o inverno inizia il lungo viaggio."
+          },
+          {
+            "de": "Die Wale schwimmen in wärmere Meere.",
+            "it": "Le balene nuotano verso mari più caldi."
+          },
+          {
+            "de": "Die Mutter bringt in warmem Wasser ein Kalb zur Welt.",
+            "it": "La madre partorisce un cucciolo nell'acqua calda."
+          },
+          {
+            "de": "Das Kalb trinkt Milch und wächst.",
+            "it": "Il cucciolo beve latte e cresce."
+          },
+          {
+            "de": "Mit mehr Kraft wandern die Tiere zurück.",
+            "it": "Con più forza gli animali tornano indietro."
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-h7z7gne",
+      "type": "choice",
+      "prompt": {
+        "de": "Wo bringen die Walmütter ihre Jungen zur Welt?",
+        "it": "Dove partoriscono le madri balena?"
+      },
+      "hint": {
+        "de": "Dafür schwimmen sie im Herbst oder Winter weit.",
+        "it": "Per questo in autunno o inverno nuotano lontano."
+      },
+      "explain": {
+        "de": "Die Jungen kommen in warmen Meeren zur Welt.",
+        "it": "I cuccioli nascono nei mari caldi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "in warmen Meeren",
+            "it": "nei mari caldi"
+          },
+          {
+            "de": "in kalten Meeren",
+            "it": "nei mari freddi"
+          },
+          {
+            "de": "an Land",
+            "it": "sulla terraferma"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h1lofdf4",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum fressen Wale im Sommer in kalten Meeren besonders viel?",
+        "it": "Perché d'estate le balene mangiano tanto nei mari freddi?"
+      },
+      "hint": {
+        "de": "Was brauchen sie für die lange Reise?",
+        "it": "Di cosa hanno bisogno per il lungo viaggio?"
+      },
+      "explain": {
+        "de": "In kalten Meeren gibt es viele kleine Meerestiere — so bauen die Wale ihre Fettschicht auf.",
+        "it": "Nei mari freddi ci sono molti piccoli animali — così le balene accumulano il grasso."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Dort gibt es viele kleine Meerestiere, und die Wale bauen eine Fettschicht auf.",
+            "it": "Lì ci sono molti piccoli animali marini e le balene accumulano grasso."
+          },
+          {
+            "de": "Dort ist das Wasser wärmer.",
+            "it": "Lì l'acqua è più calda."
+          },
+          {
+            "de": "Dort gibt es keine Feinde.",
+            "it": "Lì non ci sono nemici."
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-hit5vub",
+      "type": "multi",
+      "prompt": {
+        "de": "Was ist im Meer gefährlich für Wale und Delfine? Wähle ALLES aus!",
+        "it": "Che cosa è pericoloso nel mare per balene e delfini? Scegli TUTTO!"
+      },
+      "hint": {
+        "de": "Es sind genau 3 — alles Dinge, die von Menschen kommen.",
+        "it": "Sono esattamente 3 — tutte cose che vengono dagli esseri umani."
+      },
+      "explain": {
+        "de": "Gefährlich sind Müll wie Plastiktüten, Netze und der Lärm im Meer.",
+        "it": "Sono pericolosi i rifiuti come i sacchetti di plastica, le reti e il rumore nel mare."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Plastiktüten",
+            "it": "sacchetti di plastica"
+          },
+          {
+            "de": "Netze",
+            "it": "reti"
+          },
+          {
+            "de": "Lärm von Schiffen",
+            "it": "rumore delle navi"
+          },
+          {
+            "de": "Sand",
+            "it": "sabbia"
+          },
+          {
+            "de": "Seegras",
+            "it": "alghe"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "id": "wal_heft2-h1eu4v8n",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum ist Lärm im Meer ein Problem für Wale und Delfine?",
+        "it": "Perché il rumore nel mare è un problema per balene e delfini?"
+      },
+      "hint": {
+        "de": "Denk an die Echoortung und an die Walgesänge.",
+        "it": "Pensa all'ecolocalizzazione e ai canti delle balene."
+      },
+      "explain": {
+        "de": "Wale und Delfine brauchen Laute zum Orientieren und Kommunizieren — Lärm stört das.",
+        "it": "Balene e delfini hanno bisogno dei suoni per orientarsi e comunicare — il rumore disturba."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sie brauchen Laute, um sich zu orientieren und zu verständigen.",
+            "it": "Hanno bisogno dei suoni per orientarsi e comunicare."
+          },
+          {
+            "de": "Sie mögen keine Musik.",
+            "it": "Non amano la musica."
+          },
+          {
+            "de": "Lärm macht das Wasser trüb.",
+            "it": "Il rumore rende l'acqua torbida."
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_heft2-h194n10e",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Plastiktüten treiben lange im Wasser.",
+        "it": "I sacchetti di plastica galleggiano a lungo nell'acqua."
+      },
+      "explain": {
+        "de": "Falsch! Müll bleibt im Meer und kann wie Nahrung aussehen.",
+        "it": "Falso! I rifiuti restano nel mare e possono sembrare cibo."
+      },
+      "answer": {
+        "statement": {
+          "de": "Müll verschwindet im Meer immer sofort.",
+          "it": "I rifiuti nel mare spariscono sempre subito."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_heft2-hyx8ah0",
+      "type": "choice",
+      "prompt": {
+        "de": "Was kann das Meer schützen?",
+        "it": "Che cosa può proteggere il mare?"
+      },
+      "hint": {
+        "de": "Weniger Plastik = weniger Müll im Meer.",
+        "it": "Meno plastica = meno rifiuti nel mare."
+      },
+      "explain": {
+        "de": "Mehrwegflaschen nutzen schützt das Meer.",
+        "it": "Usare bottiglie riutilizzabili protegge il mare."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Mehrwegflaschen nutzen",
+            "it": "usare bottiglie riutilizzabili"
+          },
+          {
+            "de": "Müll ins Wasser werfen",
+            "it": "buttare rifiuti in acqua"
+          },
+          {
+            "de": "Plastik liegen lassen",
+            "it": "lasciare la plastica in giro"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

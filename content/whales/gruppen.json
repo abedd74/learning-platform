@@ -1,0 +1,377 @@
+{
+  "items": [
+    {
+      "id": "wal_gruppen-h1v3xasp",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Denk an die zwei kleinen Bücher in deinem Lapbook: Baleen whales und Toothed whales.",
+        "it": "Pensa ai due libretti nel tuo lapbook."
+      },
+      "explain": {
+        "de": "Richtig! Es gibt Zahnwale und Bartenwale.",
+        "it": "Giusto! Ci sono gli Zahnwale e i Bartenwale."
+      },
+      "answer": {
+        "statement": {
+          "de": "Man teilt die Wale in zwei große Gruppen ein: Zahnwale und Bartenwale.",
+          "it": "Le balene si dividono in due grandi gruppi: odontoceti (con denti) e misticeti (con fanoni)."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "wal_gruppen-h12aoew1",
+      "type": "multi",
+      "prompt": {
+        "de": "Was passt zu den ZAHNWALEN? Wähle alles Richtige aus!",
+        "it": "Che cosa vale per gli ZAHNWALE (con denti)? Scegli tutto ciò che è giusto!"
+      },
+      "hint": {
+        "de": "Es sind genau 3. Zahnwale sind die kleinere Gruppe.",
+        "it": "Sono esattamente 3. Gli Zahnwale sono il gruppo più piccolo."
+      },
+      "explain": {
+        "de": "Zahnwale: Zähne, ein Blasloch, bis zu 20 Meter lang.",
+        "it": "Zahnwale: denti, uno sfiatatoio, fino a 20 metri."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "nur ein Blasloch",
+            "it": "un solo sfiatatoio"
+          },
+          {
+            "de": "zwei Blaslöcher",
+            "it": "due sfiatatoi"
+          },
+          {
+            "de": "bis zu 20 Meter lang",
+            "it": "fino a 20 metri"
+          },
+          {
+            "de": "bis zu 35 Meter lang",
+            "it": "fino a 35 metri"
+          },
+          {
+            "de": "haben Zähne",
+            "it": "hanno denti"
+          },
+          {
+            "de": "haben Barten",
+            "it": "hanno fanoni"
+          }
+        ],
+        "correct": [
+          0,
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "id": "wal_gruppen-he6tkx8",
+      "type": "multi",
+      "prompt": {
+        "de": "Was passt zu den BARTENWALEN? Wähle alles Richtige aus!",
+        "it": "Che cosa vale per i BARTENWALE (con fanoni)? Scegli tutto ciò che è giusto!"
+      },
+      "hint": {
+        "de": "Es sind genau 4. Bartenwale sind riesig — und fressen ganz kleine Tiere!",
+        "it": "Sono esattamente 4. I Bartenwale sono enormi — e mangiano animali piccolissimi!"
+      },
+      "explain": {
+        "de": "Bartenwale: bis 130 Tonnen, zwei Blaslöcher, Plankton, z. B. Buckelwal und Blauwal.",
+        "it": "Bartenwale: fino a 130 t, due sfiatatoi, plancton, ad es. megattera e balenottera azzurra."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "bis zu 130 Tonnen schwer",
+            "it": "fino a 130 tonnellate"
+          },
+          {
+            "de": "bis zu 40 Tonnen schwer",
+            "it": "fino a 40 tonnellate"
+          },
+          {
+            "de": "zwei Blaslöcher",
+            "it": "due sfiatatoi"
+          },
+          {
+            "de": "fressen Robben und Pinguine",
+            "it": "mangiano foche e pinguini"
+          },
+          {
+            "de": "fressen tierisches Plankton",
+            "it": "mangiano plancton animale"
+          },
+          {
+            "de": "Buckelwal und Blauwal gehören dazu",
+            "it": "ne fanno parte megattera e balenottera azzurra"
+          }
+        ],
+        "correct": [
+          0,
+          2,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "wal_gruppen-hge7kri",
+      "type": "pairs",
+      "prompt": {
+        "de": "Wie lang? Wie schwer? Ordne zu!",
+        "it": "Quanto lunghi? Quanto pesanti? Abbina!"
+      },
+      "hint": {
+        "de": "Die Bartenwale haben immer die größere Zahl.",
+        "it": "I Bartenwale hanno sempre il numero più grande."
+      },
+      "explain": {
+        "de": "Bartenwale: 35 m, 130 t. Zahnwale: 20 m, 40 t.",
+        "it": "Bartenwale: 35 m, 130 t. Zahnwale: 20 m, 40 t."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Bartenwale — Länge",
+              "it": "Bartenwale — lunghezza"
+            },
+            "right": {
+              "de": "bis zu 35 Meter"
+            }
+          },
+          {
+            "left": {
+              "de": "Zahnwale — Länge",
+              "it": "Zahnwale — lunghezza"
+            },
+            "right": {
+              "de": "bis zu 20 Meter"
+            }
+          },
+          {
+            "left": {
+              "de": "Bartenwale — Gewicht",
+              "it": "Bartenwale — peso"
+            },
+            "right": {
+              "de": "bis zu 130 Tonnen"
+            }
+          },
+          {
+            "left": {
+              "de": "Zahnwale — Gewicht",
+              "it": "Zahnwale — peso"
+            },
+            "right": {
+              "de": "bis zu 40 Tonnen"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "wal_gruppen-h1d4yux7",
+      "type": "order",
+      "prompt": {
+        "de": "Ordne die Wale nach ihrer Länge — vom KLEINSTEN zum GRÖSSTEN!",
+        "it": "Metti in ordine le balene per lunghezza — dalla PIÙ PICCOLA alla PIÙ GRANDE!"
+      },
+      "hint": {
+        "de": "Der Delfin ist der kleinste (3 m), der Blauwal der größte (33 m). Der Pottwal ist länger als der Buckelwal!",
+        "it": "Il delfino è il più piccolo (3 m), la balenottera azzurra la più grande (33 m)."
+      },
+      "explain": {
+        "de": "Delfin 3 m → Narwal 5 m → Orca 8 m → Buckelwal 13 m → Pottwal 16 m → Blauwal 33 m.",
+        "it": "Delfino 3 m → narvalo 5 m → orca 8 m → megattera 13 m → capodoglio 16 m → balenottera azzurra 33 m."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Delfin",
+            "it": "delfino"
+          },
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          },
+          {
+            "de": "Schwertwal (Orca)",
+            "it": "orca"
+          },
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "wal_gruppen-hgjextw",
+      "type": "pairs",
+      "prompt": {
+        "de": "Welcher Wal ist wie lang?",
+        "it": "Quanto è lunga ogni balena?"
+      },
+      "hint": {
+        "de": "Fang mit dem größten und dem kleinsten an — die zwei kennst du sicher!",
+        "it": "Comincia dal più grande e dal più piccolo!"
+      },
+      "explain": {
+        "de": "Delfin 3 m, Orca 8 m, Pottwal 16 m, Blauwal 33 m.",
+        "it": "Delfino 3 m, orca 8 m, capodoglio 16 m, balenottera azzurra 33 m."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Delfin"
+            },
+            "right": {
+              "de": "3 m"
+            }
+          },
+          {
+            "left": {
+              "de": "Schwertwal (Orca)"
+            },
+            "right": {
+              "de": "8 m"
+            }
+          },
+          {
+            "left": {
+              "de": "Pottwal"
+            },
+            "right": {
+              "de": "16 m"
+            }
+          },
+          {
+            "left": {
+              "de": "Blauwal"
+            },
+            "right": {
+              "de": "33 m"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "wal_gruppen-hk19j2q",
+      "type": "choice",
+      "prompt": {
+        "de": "Der Pottwal hat Zähne und nur ein Blasloch. Zu welcher Gruppe gehört er?",
+        "it": "Il capodoglio ha denti e un solo sfiatatoio. A quale gruppo appartiene?"
+      },
+      "hint": {
+        "de": "Das Wort „Zähne\" steckt schon im Namen der Gruppe.",
+        "it": "La parola \"Zähne\" (denti) è già nel nome del gruppo."
+      },
+      "explain": {
+        "de": "Der Pottwal ist ein Zahnwal.",
+        "it": "Il capodoglio è uno Zahnwal."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "zu den Zahnwalen",
+            "it": "agli Zahnwale"
+          },
+          {
+            "de": "zu den Bartenwalen",
+            "it": "ai Bartenwale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_gruppen-h1jyx14h",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Wale gehören ALLE zu den Zahnwalen?",
+        "it": "Quali balene appartengono TUTTE agli Zahnwale?"
+      },
+      "hint": {
+        "de": "Blauwal und Buckelwal sind Bartenwale — sie dürfen nicht dabei sein.",
+        "it": "Balenottera azzurra e megattera sono Bartenwale — non devono esserci."
+      },
+      "explain": {
+        "de": "Orcas, Delfine, Weißwale und Pottwale sind Zahnwale.",
+        "it": "Orche, delfini, beluga e capodogli sono Zahnwale."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Orcas, Delfine, Weißwale, Pottwale",
+            "it": "orche, delfini, beluga, capodogli"
+          },
+          {
+            "de": "Blauwale, Buckelwale, Orcas",
+            "it": "balenottere azzurre, megattere, orche"
+          },
+          {
+            "de": "Buckelwale, Delfine, Blauwale",
+            "it": "megattere, delfini, balenottere azzurre"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_gruppen-h17ki7s5",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Gruppe wird größer und schwerer?",
+        "it": "Quale gruppo diventa più grande e pesante?"
+      },
+      "hint": {
+        "de": "Bis zu 35 Meter und 130 Tonnen …",
+        "it": "Fino a 35 metri e 130 tonnellate …"
+      },
+      "explain": {
+        "de": "Bartenwale: bis zu 35 Meter und 130 Tonnen. Zahnwale: bis zu 20 Meter und 40 Tonnen.",
+        "it": "Misticeti: fino a 35 m e 130 t. Odontoceti: fino a 20 m e 40 t."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "die Bartenwale",
+            "it": "i Bartenwale"
+          },
+          {
+            "de": "die Zahnwale",
+            "it": "gli Zahnwale"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

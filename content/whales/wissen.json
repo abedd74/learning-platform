@@ -1,0 +1,318 @@
+{
+  "items": [
+    {
+      "id": "wal_wissen-hdlvbqr",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Durch sogenannte Walgesänge ___ sich Wale miteinander.\"",
+        "it": "Quale parola manca? \"Con i cosiddetti canti le balene ___ tra loro.\""
+      },
+      "hint": {
+        "de": "Was machst du mit deinen Freundinnen in der Pause? Ihr redet — ihr … euch.",
+        "it": "Cosa fai con le amiche a ricreazione? Parlate — conversate."
+      },
+      "explain": {
+        "de": "Durch Walgesänge unterhalten sich Wale miteinander.",
+        "it": "Con i canti le balene comunicano tra loro."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "unterhalten",
+            "it": "parlano"
+          },
+          {
+            "de": "verstecken",
+            "it": "si nascondono"
+          },
+          {
+            "de": "ärgern",
+            "it": "si fanno dispetti"
+          },
+          {
+            "de": "füttern",
+            "it": "si nutrono"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_wissen-h12vllnb",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Der Buckelwal ist auch als ___ Wal bekannt.\"",
+        "it": "Quale parola manca? \"La megattera è conosciuta anche come la balena ___.\""
+      },
+      "hint": {
+        "de": "Seine Töne gleichen der Melodie eines Liedes.",
+        "it": "I suoi suoni somigliano alla melodia di una canzone."
+      },
+      "explain": {
+        "de": "Der Buckelwal ist als singender Wal bekannt.",
+        "it": "La megattera è conosciuta come la balena che canta."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "singender",
+            "it": "che canta"
+          },
+          {
+            "de": "springender",
+            "it": "che salta"
+          },
+          {
+            "de": "schlafender",
+            "it": "che dorme"
+          },
+          {
+            "de": "schnellster",
+            "it": "più veloce"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_wissen-hvpofeu",
+      "type": "choice",
+      "prompt": {
+        "de": "Welcher Wal gibt Töne von sich, die wie die Melodie eines Liedes klingen?",
+        "it": "Quale balena emette suoni che sembrano la melodia di una canzone?"
+      },
+      "hint": {
+        "de": "Auf Englisch: \"Humpback whales are masters of melody.\"",
+        "it": "In inglese: \"Humpback whales are masters of melody.\""
+      },
+      "explain": {
+        "de": "Der Buckelwal ist der singende Wal.",
+        "it": "La megattera è la balena che canta."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "der Buckelwal",
+            "it": "la megattera"
+          },
+          {
+            "de": "der Blauwal",
+            "it": "la balenottera azzurra"
+          },
+          {
+            "de": "der Schwertwal",
+            "it": "l'orca"
+          },
+          {
+            "de": "der Pottwal",
+            "it": "il capodoglio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_wissen-h1kcwulk",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der größte und schwerste Wal?",
+        "it": "Come si chiama la balena più grande e pesante?"
+      },
+      "hint": {
+        "de": "Er ist dunkelblau oder grau gefärbt.",
+        "it": "È di colore blu scuro o grigio."
+      },
+      "explain": {
+        "de": "Der schwerste und größte Wal ist der Blauwal.",
+        "it": "La balena più pesante e grande è la balenottera azzurra."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Schwertwal",
+            "it": "orca"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "wal_wissen-hs169jo",
+      "type": "text",
+      "prompt": {
+        "de": "Schreibe die Zahl!",
+        "it": "Scrivi il numero!"
+      },
+      "hint": {
+        "de": "Zweimal die gleiche Ziffer!",
+        "it": "Due volte la stessa cifra!"
+      },
+      "explain": {
+        "de": "Der Blauwal wird bis zu 33 Meter lang.",
+        "it": "La balenottera azzurra raggiunge i 33 metri."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Der Blauwal wird bis zu",
+          "it": "La balenottera azzurra diventa lunga fino a"
+        },
+        "suffix": {
+          "de": "Meter lang.",
+          "it": "metri."
+        },
+        "accepted": [
+          "33",
+          "dreiunddreißig"
+        ]
+      }
+    },
+    {
+      "id": "wal_wissen-hmtlwnt",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie schwer kann der größte Wal werden?",
+        "it": "Quanto può pesare la balena più grande?"
+      },
+      "hint": {
+        "de": "Eine glatte Zahl mit zwei Nullen.",
+        "it": "Un numero tondo con due zeri."
+      },
+      "explain": {
+        "de": "Der Blauwal wiegt bis zu 200 Tonnen.",
+        "it": "La balenottera azzurra pesa fino a 200 tonnellate."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "bis zu 130 Tonnen",
+            "it": "fino a 130 tonnellate"
+          },
+          {
+            "de": "bis zu 200 Tonnen",
+            "it": "fino a 200 tonnellate"
+          },
+          {
+            "de": "bis zu 500 Tonnen",
+            "it": "fino a 500 tonnellate"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "wal_wissen-htmopu4",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Der Blauwal ist dunkelblau oder ___ gefärbt.\"",
+        "it": "Quale parola manca? \"La balenottera azzurra è blu scuro o ___.\""
+      },
+      "hint": {
+        "de": "Schwarz-weiß ist ein anderer Wal — der Orca.",
+        "it": "Bianco e nero è un'altra balena — l'orca."
+      },
+      "explain": {
+        "de": "Der Blauwal ist dunkelblau oder grau gefärbt.",
+        "it": "La balenottera azzurra è blu scuro o grigia."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "grau",
+            "it": "grigia"
+          },
+          {
+            "de": "schwarz",
+            "it": "nera"
+          },
+          {
+            "de": "weiß",
+            "it": "bianca"
+          },
+          {
+            "de": "grün",
+            "it": "verde"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_wissen-hmn8tdl",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Farbe hat der Blauwal an der Körperunterseite?",
+        "it": "Di che colore è la balenottera azzurra sul lato inferiore del corpo?"
+      },
+      "hint": {
+        "de": "Eine Mischung aus zwei Farben: wie Sand.",
+        "it": "Un misto di due colori: come la sabbia."
+      },
+      "explain": {
+        "de": "An der Körperunterseite ist der Blauwal gelbbraun.",
+        "it": "Sul lato inferiore la balenottera azzurra è giallo-bruna."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "gelbbraun",
+            "it": "giallo-bruno"
+          },
+          {
+            "de": "weiß",
+            "it": "bianco"
+          },
+          {
+            "de": "dunkelblau",
+            "it": "blu scuro"
+          },
+          {
+            "de": "schwarz",
+            "it": "nero"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_wissen-h1xfpo9c",
+      "type": "choice",
+      "prompt": {
+        "de": "Wozu dienen die Walgesänge?",
+        "it": "A che cosa servono i canti delle balene?"
+      },
+      "hint": {
+        "de": "Auch du benutzt deine Stimme, um mit anderen zu …",
+        "it": "communicate = comunicare."
+      },
+      "explain": {
+        "de": "Durch die Walgesänge unterhalten sich Wale miteinander.",
+        "it": "I loro canti le aiutano a comunicare con le altre balene."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Die Wale unterhalten sich damit.",
+            "it": "per comunicare con altre balene"
+          },
+          {
+            "de": "Sie vertreiben damit die Haie.",
+            "it": "per spaventare gli squali"
+          },
+          {
+            "de": "Sie finden damit Plankton.",
+            "it": "per trovare il plancton"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

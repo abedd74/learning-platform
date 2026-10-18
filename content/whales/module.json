@@ -1,0 +1,135 @@
+{
+  "id": "whales",
+  "name": {
+    "de": "Wale",
+    "it": "Le balene"
+  },
+  "icon": "🐋",
+  "subject": {
+    "de": "Sachunterricht",
+    "it": "Scienze"
+  },
+  "grades": [
+    4
+  ],
+  "archive": false,
+  "engine": "quiz",
+  "mascot": {
+    "key": "whales",
+    "name": "Walli"
+  },
+  "idPrefix": "wal_",
+  "legacyStorageKey": "wq_editor_QB_whales",
+  "successTitle": {
+    "de": "Wal-Expertin",
+    "it": "esperta di balene"
+  },
+  "srs": {
+    "intervals": [
+      0,
+      1,
+      2,
+      4,
+      7,
+      14
+    ]
+  },
+  "topics": [
+    {
+      "id": "koerper",
+      "label": {
+        "de": "Der Körper"
+      },
+      "icon": "🐋",
+      "file": "koerper.json"
+    },
+    {
+      "id": "gruppen",
+      "label": {
+        "de": "Zahnwal oder Bartenwal?"
+      },
+      "icon": "⚖️",
+      "file": "gruppen.json"
+    },
+    {
+      "id": "barten",
+      "label": {
+        "de": "Bartenwale"
+      },
+      "icon": "🪮",
+      "file": "barten.json"
+    },
+    {
+      "id": "zahn",
+      "label": {
+        "de": "Zahnwale"
+      },
+      "icon": "🦷",
+      "file": "zahn.json"
+    },
+    {
+      "id": "wissen",
+      "label": {
+        "de": "Wissenswertes"
+      },
+      "icon": "🎵",
+      "file": "wissen.json"
+    },
+    {
+      "id": "orca",
+      "label": {
+        "de": "Der Orca"
+      },
+      "icon": "🖤",
+      "file": "orca.json"
+    },
+    {
+      "id": "feinde",
+      "label": {
+        "de": "Feinde"
+      },
+      "icon": "🦈",
+      "file": "feinde.json"
+    },
+    {
+      "id": "nahrung",
+      "label": {
+        "de": "Nahrung"
+      },
+      "icon": "🦐",
+      "file": "nahrung.json"
+    },
+    {
+      "id": "arten",
+      "label": {
+        "de": "Walarten"
+      },
+      "icon": "🐬",
+      "file": "arten.json"
+    },
+    {
+      "id": "atmung",
+      "label": {
+        "de": "Atmung"
+      },
+      "icon": "💨",
+      "file": "atmung.json"
+    },
+    {
+      "id": "nachkommen",
+      "label": {
+        "de": "Nachkommen & Wachstum"
+      },
+      "icon": "🍼",
+      "file": "nachkommen.json"
+    },
+    {
+      "id": "heft2",
+      "label": {
+        "de": "Wale und Delfine (Heft 2)"
+      },
+      "icon": "🐬",
+      "file": "heft2.json"
+    }
+  ]
+}

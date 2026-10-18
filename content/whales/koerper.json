@@ -1,0 +1,499 @@
+{
+  "items": [
+    {
+      "id": "wal_koerper-h1hd73jk",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Körperteil mit der Nummer 1?",
+        "it": "Come si chiama la parte del corpo con il numero 1?"
+      },
+      "hint": {
+        "de": "Sie sitzt oben auf dem Rücken des Wals.",
+        "it": "Si trova sopra, sul dorso della balena."
+      },
+      "explain": {
+        "de": "Nummer 1 ist: Rückenflosse (Finne).",
+        "it": "Il numero 1 è: Rückenflosse (Finne)."
+      },
+      "media": {
+        "figure": "figures/whales/03e338c343.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Rückenflosse (Finne)",
+            "it": "pinna dorsale"
+          },
+          {
+            "de": "Barten im Maul",
+            "it": "fanoni in bocca"
+          },
+          {
+            "de": "Furchen",
+            "it": "solchi della gola"
+          },
+          {
+            "de": "Schwanzflosse (Fluke)",
+            "it": "pinna caudale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1hdwilt",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Körperteil mit der Nummer 2?",
+        "it": "Come si chiama la parte del corpo con il numero 2?"
+      },
+      "hint": {
+        "de": "Dort spritzt der Wal beim Atmen Wasser aus.",
+        "it": "Da lì la balena spruzza acqua quando respira."
+      },
+      "explain": {
+        "de": "Nummer 2 ist: Blaslöcher.",
+        "it": "Il numero 2 è: Blaslöcher."
+      },
+      "media": {
+        "figure": "figures/whales/bea9e80ee9.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Blaslöcher",
+            "it": "sfiatatoi"
+          },
+          {
+            "de": "Auge",
+            "it": "occhio"
+          },
+          {
+            "de": "Brustflosse (Flipper)",
+            "it": "pinna pettorale"
+          },
+          {
+            "de": "Rückenflosse (Finne)",
+            "it": "pinna dorsale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1helxo2",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Körperteil mit der Nummer 3?",
+        "it": "Come si chiama la parte del corpo con il numero 3?"
+      },
+      "hint": {
+        "de": "Damit filtert der Bartenwal sein Futter — statt Zähnen.",
+        "it": "Con quelli il Bartenwal filtra il cibo — al posto dei denti."
+      },
+      "explain": {
+        "de": "Nummer 3 ist: Barten im Maul.",
+        "it": "Il numero 3 è: Barten im Maul."
+      },
+      "media": {
+        "figure": "figures/whales/fc82b1b498.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Barten im Maul",
+            "it": "fanoni in bocca"
+          },
+          {
+            "de": "Furchen",
+            "it": "solchi della gola"
+          },
+          {
+            "de": "Schwanzflosse (Fluke)",
+            "it": "pinna caudale"
+          },
+          {
+            "de": "Blaslöcher",
+            "it": "sfiatatoi"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1hfbcqb",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Körperteil mit der Nummer 4?",
+        "it": "Come si chiama la parte del corpo con il numero 4?"
+      },
+      "hint": {
+        "de": "Damit sieht der Wal.",
+        "it": "Con quello la balena vede."
+      },
+      "explain": {
+        "de": "Nummer 4 ist: Auge.",
+        "it": "Il numero 4 è: Auge."
+      },
+      "media": {
+        "figure": "figures/whales/ff433a96cd.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Auge",
+            "it": "occhio"
+          },
+          {
+            "de": "Brustflosse (Flipper)",
+            "it": "pinna pettorale"
+          },
+          {
+            "de": "Rückenflosse (Finne)",
+            "it": "pinna dorsale"
+          },
+          {
+            "de": "Barten im Maul",
+            "it": "fanoni in bocca"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1hg0rsk",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Körperteil mit der Nummer 5?",
+        "it": "Come si chiama la parte del corpo con il numero 5?"
+      },
+      "hint": {
+        "de": "Lange Falten unten an der Kehle.",
+        "it": "Lunghe pieghe sotto, sulla gola."
+      },
+      "explain": {
+        "de": "Nummer 5 ist: Furchen.",
+        "it": "Il numero 5 è: Furchen."
+      },
+      "media": {
+        "figure": "figures/whales/2a2b074b57.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Furchen",
+            "it": "solchi della gola"
+          },
+          {
+            "de": "Schwanzflosse (Fluke)",
+            "it": "pinna caudale"
+          },
+          {
+            "de": "Blaslöcher",
+            "it": "sfiatatoi"
+          },
+          {
+            "de": "Auge",
+            "it": "occhio"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1hgq6ut",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Körperteil mit der Nummer 6?",
+        "it": "Come si chiama la parte del corpo con il numero 6?"
+      },
+      "hint": {
+        "de": "Die lange Flosse an der Seite — beim Buckelwal ist sie riesig.",
+        "it": "La lunga pinna sul fianco — nella megattera è enorme."
+      },
+      "explain": {
+        "de": "Nummer 6 ist: Brustflosse (Flipper).",
+        "it": "Il numero 6 è: Brustflosse (Flipper)."
+      },
+      "media": {
+        "figure": "figures/whales/e01a547d98.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Brustflosse (Flipper)",
+            "it": "pinna pettorale"
+          },
+          {
+            "de": "Rückenflosse (Finne)",
+            "it": "pinna dorsale"
+          },
+          {
+            "de": "Barten im Maul",
+            "it": "fanoni in bocca"
+          },
+          {
+            "de": "Furchen",
+            "it": "solchi della gola"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1hhflx2",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Körperteil mit der Nummer 7?",
+        "it": "Come si chiama la parte del corpo con il numero 7?"
+      },
+      "hint": {
+        "de": "Ganz hinten am Wal — damit schwimmt er vorwärts.",
+        "it": "In fondo alla balena — con quella nuota in avanti."
+      },
+      "explain": {
+        "de": "Nummer 7 ist: Schwanzflosse (Fluke).",
+        "it": "Il numero 7 è: Schwanzflosse (Fluke)."
+      },
+      "media": {
+        "figure": "figures/whales/24f4f693a3.svg"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schwanzflosse (Fluke)",
+            "it": "pinna caudale"
+          },
+          {
+            "de": "Blaslöcher",
+            "it": "sfiatatoi"
+          },
+          {
+            "de": "Auge",
+            "it": "occhio"
+          },
+          {
+            "de": "Brustflosse (Flipper)",
+            "it": "pinna pettorale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1ygn27i",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde das englische Wort mit dem deutschen Körperteil! / Match the English word to the German one:",
+        "it": "Collega la parola inglese con quella tedesca:"
+      },
+      "hint": {
+        "de": "Drei Wörter stehen im Deutschen in Klammern dahinter — schau genau hin!",
+        "it": "Tre parole compaiono tra parentesi anche in tedesco — guarda bene!"
+      },
+      "explain": {
+        "de": "dorsal fin = Rückenflosse (Finne), fluke = Schwanzflosse, flipper = Brustflosse, blowholes = Blaslöcher.",
+        "it": "pinna dorsale = Rückenflosse, pinna caudale = Schwanzflosse, pinna pettorale = Brustflosse, sfiatatoi = Blaslöcher."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "dorsal fin",
+              "it": "pinna dorsale"
+            },
+            "right": {
+              "de": "Rückenflosse (Finne)"
+            }
+          },
+          {
+            "left": {
+              "de": "fluke",
+              "it": "pinna caudale"
+            },
+            "right": {
+              "de": "Schwanzflosse (Fluke)"
+            }
+          },
+          {
+            "left": {
+              "de": "flipper",
+              "it": "pinna pettorale"
+            },
+            "right": {
+              "de": "Brustflosse (Flipper)"
+            }
+          },
+          {
+            "left": {
+              "de": "blowholes",
+              "it": "sfiatatoi"
+            },
+            "right": {
+              "de": "Blaslöcher"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "wal_koerper-h1qcekpc",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie nennt man die Schwanzflosse des Wals noch?",
+        "it": "Come si chiama anche la pinna caudale della balena?"
+      },
+      "hint": {
+        "de": "Alle vier fangen mit F an! Die Schwanzflosse ist ganz hinten — wie das Ende von „Flu-ke\".",
+        "it": "Tutte e quattro iniziano con F! La pinna caudale è in fondo."
+      },
+      "explain": {
+        "de": "Die Schwanzflosse heißt auch Fluke.",
+        "it": "La pinna caudale si chiama anche Fluke."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Finne",
+            "it": "Finne"
+          },
+          {
+            "de": "Fluke",
+            "it": "Fluke"
+          },
+          {
+            "de": "Flipper",
+            "it": "Flipper"
+          },
+          {
+            "de": "Furche",
+            "it": "Furche"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "wal_koerper-h1b9evt7",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Flosse ist die „Finne\"?",
+        "it": "Quale pinna è la \"Finne\"?"
+      },
+      "hint": {
+        "de": "Die Finne sitzt oben auf dem Wal.",
+        "it": "La Finne si trova sopra, sul dorso."
+      },
+      "explain": {
+        "de": "Die Finne ist die Rückenflosse.",
+        "it": "La Finne è la pinna dorsale."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "die Rückenflosse",
+            "it": "la pinna dorsale"
+          },
+          {
+            "de": "die Schwanzflosse",
+            "it": "la pinna caudale"
+          },
+          {
+            "de": "die Brustflosse",
+            "it": "la pinna pettorale"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-hxhovbs",
+      "type": "text",
+      "prompt": {
+        "de": "Ergänze das Wort in Klammern!",
+        "it": "Completa la parola tra parentesi!"
+      },
+      "hint": {
+        "de": "Es klingt wie ein berühmter Delfin aus dem Fernsehen …",
+        "it": "Suona come un famoso delfino della TV …"
+      },
+      "explain": {
+        "de": "Die Brustflosse heißt auch Flipper.",
+        "it": "La pinna pettorale si chiama anche Flipper."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die Brustflosse nennt man auch",
+          "it": "La pinna pettorale si chiama anche"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "flipper"
+        ]
+      }
+    },
+    {
+      "id": "wal_koerper-h1h43l74",
+      "type": "choice",
+      "prompt": {
+        "de": "Wo sitzen die Blaslöcher?",
+        "it": "Dove si trovano gli sfiatatoi?"
+      },
+      "hint": {
+        "de": "Der Wal muss zum Atmen nur ein kleines Stück auftauchen.",
+        "it": "La balena deve emergere solo un pochino per respirare."
+      },
+      "explain": {
+        "de": "Die Blaslöcher sitzen oben auf dem Kopf.",
+        "it": "Gli sfiatatoi sono sopra la testa."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "oben auf dem Kopf",
+            "it": "sopra la testa"
+          },
+          {
+            "de": "am Bauch",
+            "it": "sulla pancia"
+          },
+          {
+            "de": "an der Schwanzflosse",
+            "it": "sulla pinna caudale"
+          },
+          {
+            "de": "im Maul",
+            "it": "in bocca"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_koerper-h1c0cmk4",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Auf Englisch heißen sie \"throat pleats\" — throat = Kehle.",
+        "it": "In inglese si chiamano \"throat pleats\" — throat = gola."
+      },
+      "explain": {
+        "de": "Falsch! Die Furchen sind lange Falten unten an der Kehle.",
+        "it": "Falso! I solchi sono lunghe pieghe sotto, sulla gola."
+      },
+      "answer": {
+        "statement": {
+          "de": "Die Furchen des Wals sind an der Rückenflosse.",
+          "it": "I solchi della balena sono sulla pinna dorsale."
+        },
+        "correct": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,292 @@
+{
+  "items": [
+    {
+      "id": "wal_zahn-hb8ns6j",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie lang können Zahnwale werden?",
+        "it": "Quanto possono diventare lunghi gli Zahnwale?"
+      },
+      "hint": {
+        "de": "Zahnwale sind die kleinere Gruppe.",
+        "it": "Gli Zahnwale sono il gruppo più piccolo."
+      },
+      "explain": {
+        "de": "Zahnwale können bis zu 20 Meter lang werden.",
+        "it": "Gli Zahnwale possono raggiungere i 20 metri."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "bis zu 20 Meter",
+            "it": "fino a 20 metri"
+          },
+          {
+            "de": "bis zu 33 Meter",
+            "it": "fino a 33 metri"
+          },
+          {
+            "de": "bis zu 35 Meter",
+            "it": "fino a 35 metri"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_zahn-h8z740u",
+      "type": "text",
+      "prompt": {
+        "de": "Schreibe die Zahl!",
+        "it": "Scrivi il numero!"
+      },
+      "hint": {
+        "de": "Das Doppelte von 20.",
+        "it": "Il doppio di 20."
+      },
+      "explain": {
+        "de": "Zahnwale werden bis zu 40 Tonnen schwer.",
+        "it": "Gli Zahnwale pesano fino a 40 tonnellate."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Zahnwale können bis zu 20 Meter lang und bis zu",
+          "it": "Gli Zahnwale possono diventare lunghi 20 metri e pesare fino a"
+        },
+        "suffix": {
+          "de": "Tonnen schwer werden.",
+          "it": "tonnellate."
+        },
+        "accepted": [
+          "40",
+          "vierzig"
+        ]
+      }
+    },
+    {
+      "id": "wal_zahn-h1cvueo6",
+      "type": "text",
+      "prompt": {
+        "de": "Welches Wort fehlt?",
+        "it": "Quale parola manca?"
+      },
+      "hint": {
+        "de": "Weniger als die Bartenwale — die haben zwei.",
+        "it": "Meno dei Bartenwale — loro ne hanno due."
+      },
+      "explain": {
+        "de": "Zahnwale haben nur ein Blasloch.",
+        "it": "Gli Zahnwale hanno un solo sfiatatoio."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Zahnwale haben Zähne und nur",
+          "it": "Gli Zahnwale hanno denti e solo"
+        },
+        "suffix": {
+          "de": "Blasloch.",
+          "it": "sfiatatoio."
+        },
+        "accepted": [
+          "ein",
+          "1",
+          "eins"
+        ]
+      }
+    },
+    {
+      "id": "wal_zahn-hmgqfvk",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Zahnwale leben ___ und ernähren sich je nach Art von Fischen, Tintenfischen, Krebsen, Pinguinen oder Robben.\"",
+        "it": "Quale parola manca? \"Gli Zahnwale vivono da ___ e si nutrono di pesci, calamari, granchi, pinguini o foche.\""
+      },
+      "hint": {
+        "de": "Sie JAGEN andere Tiere — wie ein Räuber.",
+        "it": "CACCIANO altri animali — come un predone (Räuber)."
+      },
+      "explain": {
+        "de": "Zahnwale leben räuberisch — sie jagen ihre Beute.",
+        "it": "Gli Zahnwale vivono da predatori — cacciano le prede."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "räuberisch",
+            "it": "predatori"
+          },
+          {
+            "de": "friedlich",
+            "it": "pacifici"
+          },
+          {
+            "de": "einsam",
+            "it": "solitari"
+          },
+          {
+            "de": "langsam",
+            "it": "lenti"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_zahn-h1gqgoe1",
+      "type": "multi",
+      "prompt": {
+        "de": "Welche Wale gehören zu den Zahnwalen? Wähle ALLE aus!",
+        "it": "Quali balene sono Zahnwale? Scegli TUTTE!"
+      },
+      "hint": {
+        "de": "Es sind genau 4. Zwei in der Liste sind Bartenwale!",
+        "it": "Sono esattamente 4. Due nella lista sono Bartenwale!"
+      },
+      "explain": {
+        "de": "Pottwal, Orca, Delfin und Schnabelwal sind Zahnwale (und auch der Weißwal).",
+        "it": "Capodoglio, orca, delfino e zifio sono Zahnwale (e anche il beluga)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Orca",
+            "it": "orca"
+          },
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          },
+          {
+            "de": "Delfin",
+            "it": "delfino"
+          },
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Schnabelwal",
+            "it": "zifio"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "id": "wal_zahn-h1v8gxow",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche zwei Wörter fehlen? „Zu den Zahnwalen gehören der ___, der Orca, der ___, der Schnabelwal und der Weißwal.\"",
+        "it": "Quali due parole mancano nella lista degli Zahnwale?"
+      },
+      "hint": {
+        "de": "Blauwal und Buckelwal haben Barten — sie passen nicht.",
+        "it": "Balenottera azzurra e megattera hanno i fanoni — non vanno bene."
+      },
+      "explain": {
+        "de": "Pottwal, Orca, Delfin, Schnabelwal und Weißwal sind Zahnwale.",
+        "it": "Capodoglio, orca, delfino, zifio e beluga sono Zahnwale."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Pottwal und Delfin",
+            "it": "capodoglio e delfino"
+          },
+          {
+            "de": "Blauwal und Delfin",
+            "it": "balenottera azzurra e delfino"
+          },
+          {
+            "de": "Pottwal und Buckelwal",
+            "it": "capodoglio e megattera"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_zahn-h14gdxil",
+      "type": "multi",
+      "prompt": {
+        "de": "Was fressen Zahnwale — je nach Art? Wähle ALLES aus!",
+        "it": "Che cosa mangiano gli Zahnwale — a seconda della specie? Scegli TUTTO!"
+      },
+      "hint": {
+        "de": "Nur EINE Sache stimmt nicht — Zahnwale fressen keine Pflanzen.",
+        "it": "Solo UNA cosa è sbagliata — gli Zahnwale non mangiano piante."
+      },
+      "explain": {
+        "de": "Zahnwale fressen Fische, Tintenfische, Krebse, Pinguine oder Robben.",
+        "it": "Gli Zahnwale mangiano pesci, calamari, granchi, pinguini o foche."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Fische",
+            "it": "pesci"
+          },
+          {
+            "de": "Tintenfische",
+            "it": "calamari"
+          },
+          {
+            "de": "Seegras",
+            "it": "alghe"
+          },
+          {
+            "de": "Robben",
+            "it": "foche"
+          },
+          {
+            "de": "Pinguine",
+            "it": "pinguini"
+          },
+          {
+            "de": "Krebse",
+            "it": "granchi"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "wal_zahn-htlt9rq",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Auf deinen Walkarten steht ein T bei ihm — T wie \"toothed\".",
+        "it": "Sulle tue carte c'è una T — T come \"toothed\"."
+      },
+      "explain": {
+        "de": "Richtig! Weißwal = Beluga. In deinem Lapbook steht für ihn auch „Schweinswal\".",
+        "it": "Giusto! Weißwal = beluga. Nel tuo lapbook è chiamato anche \"Schweinswal\"."
+      },
+      "answer": {
+        "statement": {
+          "de": "Der Weißwal heißt auch Beluga und ist ein Zahnwal.",
+          "it": "Il Weißwal si chiama anche beluga ed è uno Zahnwal."
+        },
+        "correct": true
+      }
+    }
+  ]
+}

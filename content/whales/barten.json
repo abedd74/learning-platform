@@ -1,0 +1,305 @@
+{
+  "items": [
+    {
+      "id": "wal_barten-h1999pne",
+      "type": "multi",
+      "prompt": {
+        "de": "Welche Wale sind Bartenwale? Wähle ALLE aus! (Aus deinem Lapbook und aus Heft 2.)",
+        "it": "Quali balene sono Bartenwale? Scegli TUTTE! (Dal lapbook e dal quaderno 2.)"
+      },
+      "hint": {
+        "de": "Es sind genau 4. Pottwal und Narwal haben Zähne!",
+        "it": "Sono esattamente 4. Capodoglio e narvalo hanno i denti!"
+      },
+      "explain": {
+        "de": "Bartenwale: Blauwal, Buckelwal, Grauwal und Finnwal.",
+        "it": "Bartenwale: balenottera azzurra, megattera, balena grigia, balenottera comune."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Blauwal",
+            "it": "balenottera azzurra"
+          },
+          {
+            "de": "Buckelwal",
+            "it": "megattera"
+          },
+          {
+            "de": "Grauwal",
+            "it": "balena grigia"
+          },
+          {
+            "de": "Finnwal",
+            "it": "balenottera comune"
+          },
+          {
+            "de": "Pottwal",
+            "it": "capodoglio"
+          },
+          {
+            "de": "Narwal",
+            "it": "narvalo"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "id": "wal_barten-h1a6vrxy",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie lang können Bartenwale werden?",
+        "it": "Quanto possono diventare lunghi i Bartenwale?"
+      },
+      "hint": {
+        "de": "20 Meter — das sind die Zahnwale. Bartenwale werden noch größer.",
+        "it": "20 metri sono gli Zahnwale. I Bartenwale diventano ancora più grandi."
+      },
+      "explain": {
+        "de": "Bartenwale werden bis zu 35 Meter lang.",
+        "it": "I Bartenwale raggiungono i 35 metri."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "bis zu 20 Meter",
+            "it": "fino a 20 metri"
+          },
+          {
+            "de": "bis zu 35 Meter",
+            "it": "fino a 35 metri"
+          },
+          {
+            "de": "bis zu 55 Meter",
+            "it": "fino a 55 metri"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "wal_barten-h15ish4y",
+      "type": "text",
+      "prompt": {
+        "de": "Schreibe die Zahl!",
+        "it": "Scrivi il numero!"
+      },
+      "hint": {
+        "de": "Mehr als 100 — aber weniger als der Blauwal-Rekord von 200.",
+        "it": "Più di 100 — ma meno del record di 200 della balenottera azzurra."
+      },
+      "explain": {
+        "de": "Bartenwale wiegen bis zu 130 Tonnen.",
+        "it": "I Bartenwale pesano fino a 130 tonnellate."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Bartenwale erreichen ein Gewicht von bis zu",
+          "it": "I Bartenwale raggiungono un peso fino a"
+        },
+        "suffix": {
+          "de": "Tonnen.",
+          "it": "tonnellate."
+        },
+        "accepted": [
+          "130",
+          "hundertdreißig",
+          "einhundertdreißig"
+        ]
+      }
+    },
+    {
+      "id": "wal_barten-hll5gpt",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Bartenwale haben keine ___, sondern mehrere Hundert Barten im Maul.\"",
+        "it": "Quale parola manca? \"I Bartenwale non hanno ___, ma centinaia di fanoni in bocca.\""
+      },
+      "hint": {
+        "de": "Die andere Gruppe heißt ZAHNwale — die haben sie.",
+        "it": "L'altro gruppo si chiama ZAHNwale — loro li hanno."
+      },
+      "explain": {
+        "de": "Bartenwale haben keine Zähne, sondern Barten.",
+        "it": "I Bartenwale non hanno denti, ma fanoni."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Zähne",
+            "it": "denti"
+          },
+          {
+            "de": "Flossen",
+            "it": "pinne"
+          },
+          {
+            "de": "Augen",
+            "it": "occhi"
+          },
+          {
+            "de": "Kiemen",
+            "it": "branchie"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_barten-h1syi37k",
+      "type": "text",
+      "prompt": {
+        "de": "Welches Wort fehlt?",
+        "it": "Quale parola manca?"
+      },
+      "hint": {
+        "de": "Mehr als die Zahnwale — die haben nur eins.",
+        "it": "Più degli Zahnwale — loro ne hanno solo uno."
+      },
+      "explain": {
+        "de": "Bartenwale besitzen zwei Blaslöcher.",
+        "it": "I Bartenwale hanno due sfiatatoi."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Bartenwale besitzen",
+          "it": "I Bartenwale possiedono"
+        },
+        "suffix": {
+          "de": "Blaslöcher.",
+          "it": "sfiatatoi."
+        },
+        "accepted": [
+          "zwei",
+          "2"
+        ]
+      }
+    },
+    {
+      "id": "wal_barten-h1laqh67",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Bartenwale fressen tierisches Plankton bzw. kleinere ___.\"",
+        "it": "Quale parola manca? \"I Bartenwale mangiano plancton animale o piccoli ___.\""
+      },
+      "hint": {
+        "de": "Robben und Pinguine sind viel zu groß für die Barten.",
+        "it": "Foche e pinguini sono troppo grandi per i fanoni."
+      },
+      "explain": {
+        "de": "Bartenwale fressen Plankton bzw. kleinere Meerestiere. Manche Arten fressen auch Fische.",
+        "it": "I Bartenwale mangiano plancton o piccoli animali marini. Alcune specie anche pesci."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Meerestiere",
+            "it": "animali marini"
+          },
+          {
+            "de": "Robben",
+            "it": "foche"
+          },
+          {
+            "de": "Pinguine",
+            "it": "pinguini"
+          },
+          {
+            "de": "Haie",
+            "it": "squali"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_barten-h1htt1mp",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Zu den Bartenwalen gehören unter anderem der Blauwal und der ___.\"",
+        "it": "Quale parola manca? \"Dei Bartenwale fanno parte tra gli altri la balenottera azzurra e ___.\""
+      },
+      "hint": {
+        "de": "Es ist der singende Wal.",
+        "it": "È la balena che canta."
+      },
+      "explain": {
+        "de": "Blauwal und Buckelwal sind Bartenwale.",
+        "it": "Balenottera azzurra e megattera sono Bartenwale."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Buckelwal",
+            "it": "la megattera"
+          },
+          {
+            "de": "Pottwal",
+            "it": "il capodoglio"
+          },
+          {
+            "de": "Schwertwal",
+            "it": "l'orca"
+          },
+          {
+            "de": "Delfin",
+            "it": "il delfino"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_barten-hgx21ph",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Wie heißt das, was sie stattdessen im Maul haben? Es steckt im Namen!",
+        "it": "Come si chiama ciò che hanno in bocca al posto dei denti? È nel nome!"
+      },
+      "explain": {
+        "de": "Falsch! Bartenwale haben keine Zähne, sondern mehrere Hundert Barten.",
+        "it": "Falso! I Bartenwale non hanno denti, ma centinaia di fanoni."
+      },
+      "answer": {
+        "statement": {
+          "de": "Bartenwale haben viele kleine, spitze Zähne.",
+          "it": "I Bartenwale hanno tanti piccoli denti appuntiti."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_barten-hdhzyie",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Sie haben keine Zähne — wie fangen sie dann das winzige Plankton?",
+        "it": "Non hanno denti — come catturano il plancton?"
+      },
+      "explain": {
+        "de": "Richtig! Bartenwale haben keine Zähne — sie filtern ihre Nahrung mit den Barten im Oberkiefer.",
+        "it": "Giusto! Non hanno denti ma filtrano il cibo con i fanoni."
+      },
+      "answer": {
+        "statement": {
+          "de": "Bartenwale filtern ihre Nahrung mit den Barten aus dem Wasser.",
+          "it": "I misticeti filtrano il cibo attraverso i fanoni nella mascella superiore."
+        },
+        "correct": true
+      }
+    }
+  ]
+}

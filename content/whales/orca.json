@@ -1,0 +1,238 @@
+{
+  "items": [
+    {
+      "id": "wal_orca-ha3dxj0",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie wird der Orca auch genannt?",
+        "it": "Come viene chiamata anche l'orca in tedesco?"
+      },
+      "hint": {
+        "de": "Seine hohe Rückenflosse sieht aus wie eine Waffe von Rittern.",
+        "it": "La sua alta pinna dorsale sembra un'arma dei cavalieri (spada = Schwert)."
+      },
+      "explain": {
+        "de": "Der Orca wird auch Schwertwal genannt.",
+        "it": "L'orca è chiamata anche Schwertwal."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schwertwal",
+            "it": "Schwertwal"
+          },
+          {
+            "de": "Pottwal",
+            "it": "Pottwal"
+          },
+          {
+            "de": "Weißwal",
+            "it": "Weißwal"
+          },
+          {
+            "de": "Schnabelwal",
+            "it": "Schnabelwal"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_orca-h29ih66",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Der Orca ist als größtes ___ der Welt bekannt.\"",
+        "it": "Quale parola manca? \"L'orca è conosciuta come il più grande ___ del mondo.\""
+      },
+      "hint": {
+        "de": "Er jagt seine Beute — wie ein Räuber.",
+        "it": "Caccia le sue prede — come un predone."
+      },
+      "explain": {
+        "de": "Der Orca ist als größtes Raubtier der Welt bekannt.",
+        "it": "L'orca è conosciuta come il più grande predatore del mondo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Raubtier",
+            "it": "predatore"
+          },
+          {
+            "de": "Säugetier",
+            "it": "mammifero"
+          },
+          {
+            "de": "Haustier",
+            "it": "animale domestico"
+          },
+          {
+            "de": "Krebstier",
+            "it": "crostaceo"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_orca-hmxx5z3",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Orcas sind ein Team!",
+        "it": "Le orche sono una squadra!"
+      },
+      "explain": {
+        "de": "Falsch! Der Orca jagt zusammen mit anderen Orcas.",
+        "it": "Falso! L'orca caccia insieme ad altre orche."
+      },
+      "answer": {
+        "statement": {
+          "de": "Der Orca jagt seine Beute immer ganz allein.",
+          "it": "L'orca caccia le prede sempre tutta sola."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_orca-h1rxfwc7",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie schnell kann ein Orca schwimmen?",
+        "it": "A che velocità può nuotare un'orca?"
+      },
+      "hint": {
+        "de": "Etwa so schnell wie ein Auto in der Stadt.",
+        "it": "Più o meno come un'auto in città."
+      },
+      "explain": {
+        "de": "Der Orca erreicht bis zu 55 km pro Stunde.",
+        "it": "L'orca raggiunge i 55 km all'ora."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "bis zu 55 km/h",
+            "it": "fino a 55 km/h"
+          },
+          {
+            "de": "bis zu 88 km/h",
+            "it": "fino a 88 km/h"
+          },
+          {
+            "de": "bis zu 111 km/h",
+            "it": "fino a 111 km/h"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_orca-h5pn2de",
+      "type": "text",
+      "prompt": {
+        "de": "Schreibe die Zahl!",
+        "it": "Scrivi il numero!"
+      },
+      "hint": {
+        "de": "Zweimal die gleiche Ziffer — wie beim Blauwal (33), nur mit 5.",
+        "it": "Due volte la stessa cifra — come per la balenottera (33), ma con il 5."
+      },
+      "explain": {
+        "de": "Bis zu 55 km pro Stunde.",
+        "it": "Fino a 55 km all'ora."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Der Orca kann eine Geschwindigkeit von bis zu",
+          "it": "L'orca può raggiungere una velocità fino a"
+        },
+        "suffix": {
+          "de": "km pro Stunde erreichen.",
+          "it": "km all'ora."
+        },
+        "accepted": [
+          "55",
+          "fünfundfünfzig"
+        ]
+      }
+    },
+    {
+      "id": "wal_orca-h1pydrha",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Orcas sind ___ und haben einen weißen Bauch.\"",
+        "it": "Quale parola manca? \"Le orche sono ___ e hanno la pancia bianca.\""
+      },
+      "hint": {
+        "de": "Denk an das Bild auf deinem „Toothed whales\"-Büchlein.",
+        "it": "Pensa al disegno sul tuo libretto \"Toothed whales\"."
+      },
+      "explain": {
+        "de": "Orcas sind schwarz und haben einen weißen Bauch.",
+        "it": "Le orche sono nere con la pancia bianca."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "schwarz",
+            "it": "nere"
+          },
+          {
+            "de": "grau",
+            "it": "grigie"
+          },
+          {
+            "de": "dunkelblau",
+            "it": "blu scuro"
+          },
+          {
+            "de": "gelbbraun",
+            "it": "giallo-brune"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_orca-h18k4mfq",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Typisch ist der weiße Fleck, der sich hinter dem ___ befindet.\"",
+        "it": "Quale parola manca? \"Tipica è la macchia bianca che si trova dietro ___.\""
+      },
+      "hint": {
+        "de": "Damit sieht der Orca.",
+        "it": "Con quello l'orca vede."
+      },
+      "explain": {
+        "de": "Der weiße Fleck ist hinter dem Auge.",
+        "it": "La macchia bianca è dietro l'occhio."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Auge",
+            "it": "l'occhio"
+          },
+          {
+            "de": "Blasloch",
+            "it": "lo sfiatatoio"
+          },
+          {
+            "de": "Maul",
+            "it": "la bocca"
+          },
+          {
+            "de": "Flipper",
+            "it": "la pinna pettorale"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

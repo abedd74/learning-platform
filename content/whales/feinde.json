@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "id": "wal_feinde-hvgvn0t",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Wer traut sich schon an ein so riesiges Tier?",
+        "it": "Chi osa attaccare un animale così enorme?"
+      },
+      "explain": {
+        "de": "Falsch! Wale haben aufgrund ihrer Größe nur wenige Fressfeinde.",
+        "it": "Falso! Per le loro dimensioni le balene hanno pochi nemici."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wale haben sehr viele Fressfeinde.",
+          "it": "Le balene hanno moltissimi nemici naturali."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_feinde-h1p9soy2",
+      "type": "choice",
+      "prompt": {
+        "de": "Warum haben Wale nur wenige Fressfeinde?",
+        "it": "Perché le balene hanno pochi nemici naturali?"
+      },
+      "hint": {
+        "de": "Ein Blauwal ist 33 Meter lang — wer greift so ein Tier an?",
+        "it": "Una balenottera azzurra è lunga 33 metri — chi attacca un animale così?"
+      },
+      "explain": {
+        "de": "Wale haben aufgrund ihrer Größe nur wenige Fressfeinde.",
+        "it": "Per le loro dimensioni le balene hanno pochi nemici."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "wegen ihrer Größe",
+            "it": "per le loro dimensioni"
+          },
+          {
+            "de": "weil sie so schnell sind",
+            "it": "perché sono così veloci"
+          },
+          {
+            "de": "weil sie giftig sind",
+            "it": "perché sono velenose"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_feinde-h173ui2k",
+      "type": "multi",
+      "prompt": {
+        "de": "Wer gehört zu den Feinden der Wale? Wähle ALLE aus!",
+        "it": "Chi sono i nemici delle balene? Scegli TUTTI!"
+      },
+      "hint": {
+        "de": "Es sind genau 2 — die zwei Bildkarten in deiner roten Tasche.",
+        "it": "Sono esattamente 2 — le due carte nella tua tasca rossa."
+      },
+      "explain": {
+        "de": "Zu den Feinden gehören Menschen und größere Haie.",
+        "it": "I nemici sono gli esseri umani e gli squali più grandi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Menschen",
+            "it": "esseri umani"
+          },
+          {
+            "de": "größere Haie",
+            "it": "squali più grandi"
+          },
+          {
+            "de": "Robben",
+            "it": "foche"
+          },
+          {
+            "de": "Pinguine",
+            "it": "pinguini"
+          },
+          {
+            "de": "Seevögel",
+            "it": "uccelli marini"
+          }
+        ],
+        "correct": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "wal_feinde-hj2a3wo",
+      "type": "text",
+      "prompt": {
+        "de": "Welches Wort fehlt?",
+        "it": "Quale parola manca?"
+      },
+      "hint": {
+        "de": "Ein Raubfisch mit vielen Zähnen — auf Englisch \"shark\".",
+        "it": "Un pesce predatore con tanti denti — in inglese \"shark\"."
+      },
+      "explain": {
+        "de": "Menschen und größere Haie.",
+        "it": "Esseri umani e squali più grandi."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Zu den Fressfeinden der Wale gehören Menschen und größere",
+          "it": "Tra i nemici delle balene ci sono gli esseri umani e i grandi"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "haie",
+          "hai",
+          "haifische"
+        ]
+      }
+    },
+    {
+      "id": "wal_feinde-h4xcbf4",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Manchmal werden kleinere Wale auch von größeren ___ angegriffen.\"",
+        "it": "Quale parola manca? \"A volte le balene più piccole vengono attaccate anche da ___ più grandi.\""
+      },
+      "hint": {
+        "de": "Denk an den Orca — er ist selbst ein Wal und ein Raubtier.",
+        "it": "Pensa all'orca — è lei stessa una balena e un predatore."
+      },
+      "explain": {
+        "de": "Kleinere Wale werden manchmal von größeren Walen angegriffen.",
+        "it": "Le balene piccole a volte sono attaccate da balene più grandi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Walen",
+            "it": "balene"
+          },
+          {
+            "de": "Robben",
+            "it": "foche"
+          },
+          {
+            "de": "Fischen",
+            "it": "pesci"
+          },
+          {
+            "de": "Krebsen",
+            "it": "granchi"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

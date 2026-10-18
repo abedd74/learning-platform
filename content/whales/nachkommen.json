@@ -1,0 +1,302 @@
+{
+  "items": [
+    {
+      "id": "wal_nachkommen-hw35tsr",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie viele Junge bekommt eine Walmama für gewöhnlich?",
+        "it": "Quanti piccoli ha di solito una mamma balena?"
+      },
+      "hint": {
+        "de": "Ein Walbaby ist schon bei der Geburt riesig!",
+        "it": "Un cucciolo di balena è enorme già alla nascita!"
+      },
+      "explain": {
+        "de": "Wale gebären meist nur ein einziges Junges.",
+        "it": "Le balene partoriscono di solito un solo piccolo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "nur ein Junges",
+            "it": "un solo piccolo"
+          },
+          {
+            "de": "zwei bis drei Junge",
+            "it": "due o tre piccoli"
+          },
+          {
+            "de": "mindestens fünf Junge",
+            "it": "almeno cinque piccoli"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_nachkommen-h9j7n8b",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Walli sagt?",
+        "it": "Walli ha ragione?"
+      },
+      "hint": {
+        "de": "Die richtige Zahl ist viel, viel kleiner.",
+        "it": "Il numero giusto è molto, molto più piccolo."
+      },
+      "explain": {
+        "de": "Falsch! Meist kommt nur ein einziges Junges zur Welt.",
+        "it": "Falso! Di solito nasce un solo piccolo."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wale bringen immer mindestens fünf Walbabys zur Welt.",
+          "it": "Le balene mettono al mondo sempre almeno cinque cuccioli."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wal_nachkommen-hur3e89",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Wale gebären meist nur ein ___ Junges.\"",
+        "it": "Quale parola manca? \"Le balene partoriscono di solito un ___ piccolo.\""
+      },
+      "hint": {
+        "de": "Es bedeutet: nur eins, nicht mehr.",
+        "it": "Significa: uno solo, non di più."
+      },
+      "explain": {
+        "de": "Wale gebären meist nur ein einziges Junges.",
+        "it": "Le balene partoriscono di solito un solo piccolo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "einziges",
+            "it": "solo"
+          },
+          {
+            "de": "kleines",
+            "it": "piccolo"
+          },
+          {
+            "de": "schnelles",
+            "it": "veloce"
+          },
+          {
+            "de": "weißes",
+            "it": "bianco"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_nachkommen-h1trpl2j",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie lange dauert die Tragezeit der Wale?",
+        "it": "Quanto dura la gravidanza delle balene?"
+      },
+      "hint": {
+        "de": "Die kürzeste Tragezeit ist so lang wie bei uns Menschen.",
+        "it": "La gravidanza più breve dura come quella umana."
+      },
+      "explain": {
+        "de": "Die Tragezeit dauert zwischen neun und 16 Monaten.",
+        "it": "La gravidanza dura tra nove e 16 mesi."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "zwischen neun und 16 Monaten",
+            "it": "tra nove e 16 mesi"
+          },
+          {
+            "de": "zwischen zwei und fünf Monaten",
+            "it": "tra due e cinque mesi"
+          },
+          {
+            "de": "genau 33 Monate",
+            "it": "esattamente 33 mesi"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_nachkommen-hw9ozqt",
+      "type": "text",
+      "prompt": {
+        "de": "Schreibe die Zahl!",
+        "it": "Scrivi il numero!"
+      },
+      "hint": {
+        "de": "Etwas mehr als ein Jahr (12 Monate) — plus 4.",
+        "it": "Un po' più di un anno (12 mesi) — più 4."
+      },
+      "explain": {
+        "de": "Zwischen neun und 16 Monaten.",
+        "it": "Tra nove e 16 mesi."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die Tragezeit der Wale kann zwischen neun und",
+          "it": "La gravidanza delle balene può durare tra nove e"
+        },
+        "suffix": {
+          "de": "Monaten dauern.",
+          "it": "mesi."
+        },
+        "accepted": [
+          "16",
+          "sechzehn"
+        ]
+      }
+    },
+    {
+      "id": "wal_nachkommen-h16s5zmb",
+      "type": "text",
+      "prompt": {
+        "de": "Schreibe die Zahl als Wort oder Ziffer!",
+        "it": "Scrivi il numero in lettere o in cifre!"
+      },
+      "hint": {
+        "de": "Genauso lang wie bei einem Menschenbaby.",
+        "it": "Come per un bambino."
+      },
+      "explain": {
+        "de": "Mindestens neun Monate (und bis zu 16).",
+        "it": "Almeno nove mesi (e fino a 16)."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die Tragezeit der Wale dauert mindestens",
+          "it": "La gravidanza delle balene dura almeno"
+        },
+        "suffix": {
+          "de": "Monate.",
+          "it": "mesi."
+        },
+        "accepted": [
+          "neun",
+          "9"
+        ]
+      }
+    },
+    {
+      "id": "wal_nachkommen-h2ukldf",
+      "type": "choice",
+      "prompt": {
+        "de": "Welches Wort fehlt? „Nach der Geburt muss der junge Wal sofort an die Wasseroberfläche, um erst einmal tief ___.\"",
+        "it": "Quale parola manca? \"Dopo la nascita il piccolo deve salire subito in superficie per ___ profondamente.\""
+      },
+      "hint": {
+        "de": "Der kleine Wal hat eine Lunge — was braucht er sofort?",
+        "it": "Il piccolo ha i polmoni — di cosa ha bisogno subito?"
+      },
+      "explain": {
+        "de": "Der junge Wal muss sofort an die Wasseroberfläche, um tief einzuatmen.",
+        "it": "Il piccolo deve salire subito in superficie per respirare profondamente."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "einzuatmen",
+            "it": "inspirare"
+          },
+          {
+            "de": "zu tauchen",
+            "it": "immergersi"
+          },
+          {
+            "de": "zu fressen",
+            "it": "mangiare"
+          },
+          {
+            "de": "zu schlafen",
+            "it": "dormire"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_nachkommen-h3s4h6t",
+      "type": "choice",
+      "prompt": {
+        "de": "Was muss ein junger Wal sofort nach der Geburt tun?",
+        "it": "Che cosa deve fare un piccolo di balena subito dopo la nascita?"
+      },
+      "hint": {
+        "de": "Wale atmen mit der Lunge — und unter Wasser gibt es keine Luft.",
+        "it": "Le balene respirano con i polmoni — e sott'acqua non c'è aria."
+      },
+      "explain": {
+        "de": "Der junge Wal muss sofort an die Wasseroberfläche, um tief einzuatmen.",
+        "it": "Il piccolo deve salire subito in superficie per respirare profondamente."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "an die Wasseroberfläche schwimmen und tief einatmen",
+            "it": "nuotare in superficie e respirare profondamente"
+          },
+          {
+            "de": "tief hinabtauchen und sich verstecken",
+            "it": "immergersi in profondità e nascondersi"
+          },
+          {
+            "de": "Plankton fressen",
+            "it": "mangiare plancton"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "wal_nachkommen-hcc61jb",
+      "type": "order",
+      "prompt": {
+        "de": "Das Wachstum eines Schwertwals: Bringe die 4 Bilder in die richtige Reihenfolge!",
+        "it": "La crescita di un'orca: metti le 4 immagini nell'ordine giusto!"
+      },
+      "hint": {
+        "de": "Zuerst wächst das Baby im Bauch der Mama — das nennt man Embryo.",
+        "it": "Prima il piccolo cresce nella pancia della mamma — si chiama embrione."
+      },
+      "explain": {
+        "de": "Embryo → Geburt → Mama und Babyorca → Ausgewachsener Orca.",
+        "it": "Embrione → nascita → mamma e piccolo → orca adulta."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Embryo",
+            "it": "embrione"
+          },
+          {
+            "de": "Geburt",
+            "it": "nascita"
+          },
+          {
+            "de": "Mama und Babyorca",
+            "it": "mamma e piccolo di orca"
+          },
+          {
+            "de": "Ausgewachsener Orca",
+            "it": "orca adulta"
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    }
+  ]
+}
