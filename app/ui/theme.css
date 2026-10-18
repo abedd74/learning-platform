@@ -1,0 +1,111 @@
+/* Lernplattform — design tokens. Direction B "Stille See" (DECISIONS 2026-10-18,
+   docs/DESIGN-UI.md, mock in docs/design-mock). Every screen takes its
+   colours, type, spacing, radii, shadows and motion from here; no component
+   may use a literal colour. One deliberate light look (a children's app used
+   in daylight); color-scheme is pinned so form controls match.
+
+   Fonts: Quicksand (headlines) and Nunito (body), self-hosted in assets/fonts
+   (OFL) from phase 3 on; the stacks below fall back cleanly until then. */
+
+:root {
+  color-scheme: light;
+
+  /* ── atmosphere ───────────────────────────────────────────── */
+  --sky-1: #F1F8FA;          /* top of the sky */
+  --sky-2: #DCEEF2;          /* lower sky */
+  --lake-1: #BFDDE3;         /* near wave */
+  --lake-2: #9FCBD4;         /* far wave */
+  --bg: var(--sky-1);
+  --bg-gradient: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 70%, var(--lake-1) 100%);
+
+  /* ── ink ──────────────────────────────────────────────────── */
+  --ink: #1E3A47;            /* text */
+  --ink-soft: #4F6B77;       /* secondary text */
+  --muted: #8AA1AA;          /* captions, placeholders */
+  --line: rgba(30, 58, 71, .10);
+
+  /* ── surfaces ─────────────────────────────────────────────── */
+  --card: #FFFFFF;
+  --card-tint: #EEF6F8;      /* chips, inactive dots, rings */
+  --sheet: #FFFFFF;
+
+  /* ── accent and semantic colours ──────────────────────────── */
+  --accent: #2E8C9B;         /* lake teal: primary buttons, focus, "now" */
+  --accent-ink: #FFFFFF;
+  --accent-soft: #D7ECEF;
+  --ok: #5FAE8A;             /* right answers, mastered */
+  --ok-soft: #DFF2E9;
+  --warn: #E8B45C;           /* a mistake (never red): gentle amber */
+  --warn-soft: #FBF0D8;
+  --streak: #E8B45C;         /* sand: streak, "new" */
+  --danger: #C9635B;         /* only in Eltern mode (delete, restore) */
+
+  /* ── module tints (tile backgrounds behind the mascot) ─────── */
+  --m-whales: #E3EFF4;
+  --m-ella: #EAE8F4;
+  --m-states: #E4F1EA;
+  --m-wordrain: #FBF1DE;
+  --m-archive: #EFE9E3;
+
+  /* ── type ─────────────────────────────────────────────────── */
+  --font-display: 'Quicksand', 'Nunito', 'Avenir Next', system-ui, sans-serif;
+  --font-body: 'Nunito', 'Avenir Next', system-ui, sans-serif;
+  --fs-xs: 12px;
+  --fs-s: 14px;
+  --fs-m: 17px;              /* body */
+  --fs-l: 20px;
+  --fs-xl: 24px;             /* question text on the phone */
+  --fs-2xl: 28px;            /* question text on the iPad */
+  --fs-3xl: clamp(30px, 4.2vw, 40px);   /* screen headline */
+  --fs-num: 44px;            /* the big number */
+  --lh-tight: 1.1;
+  --lh-body: 1.5;
+  --track-caps: .08em;
+
+  /* ── layout ───────────────────────────────────────────────── */
+  --col: 680px;              /* content column (the map module may exceed it) */
+  --gutter: max(18px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(18px, env(safe-area-inset-right, 0px));
+  --gap-s: 8px;
+  --gap-m: 14px;
+  --gap-l: 18px;
+  --gap-xl: 28px;
+  --tap: 60px;               /* minimum height of anything tappable */
+  --tap-min: 44px;           /* icon buttons */
+
+  /* ── shape ────────────────────────────────────────────────── */
+  --radius: 20px;            /* cards, sheets */
+  --radius-s: 14px;          /* answer tiles, facts */
+  --radius-pill: 999px;
+  --ring: 3px;               /* selection ring */
+  --shadow: 0 10px 30px rgba(30, 58, 71, .08), 0 2px 6px rgba(30, 58, 71, .04);
+  --shadow-up: 0 -8px 30px rgba(30, 58, 71, .10);
+
+  /* ── motion (calm) ────────────────────────────────────────── */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --dur-fast: 140ms;         /* taps */
+  --dur: 260ms;              /* cards settling in, sheet rising */
+  --dur-slow: 600ms;         /* the result ring filling */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur: 0ms; --dur-slow: 0ms; }
+}
+
+/* ── base ───────────────────────────────────────────────────── */
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-m);
+  line-height: var(--lh-body);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: var(--ring) solid var(--accent); outline-offset: 2px; }
+img, svg { max-width: 100%; }
+[hidden] { display: none !important; }
+.num { font-variant-numeric: tabular-nums; }
