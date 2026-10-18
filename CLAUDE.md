@@ -24,7 +24,7 @@ The owner is not a developer. Explain in plain words, keep messages short (often
 
 ## 3. Progress data is sacred
 
-The children's progress lives in `localStorage` on each device and is mirrored to Firestore by `sync.js` (key by key, with merge rules). The full key list and shapes are in `docs/STOCKTAKE.md` §6 and, from phase 1 on, in `app/core/storage.js` (the only place that may spell a key name).
+The children's progress lives in `localStorage` on each device and is mirrored to Firestore by the family sync (key by key, with merge rules). The contract is `docs/MIGRATION.md`; the registry is `app/core/storage.js` (the only place that may spell a key name); the merge rules are `app/core/merges.js`. A test keeps the document and the registry equal.
 
 - Existing keys keep their exact names and shapes. New data goes into new keys, added to the registry and, if synced, to the rule list in `sync.js` with a merge function and a property test.
 - Profile names are part of today's key names (`wq_srs_<P>`, `gram_srs_<P>` …). They come from the device and the family sync at runtime — never from the code.
