@@ -15,5 +15,8 @@
     "check": "npm run --silent validate && npm run --silent test && npm run --silent pii",
     "smoke": "node --test \"tests/smoke/*.smoke.mjs\"",
     "dump-ids": "node tools/dump-live-ids.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
   }
 }
