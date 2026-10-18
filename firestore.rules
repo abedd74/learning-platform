@@ -12,7 +12,7 @@
 // families/<family code>/stores/<key> = {json: string, ts: int} or a tombstone
 // {deleted: true, ts: int}; written with PATCH (create or full replace), read
 // with get and list. From phase 1 on, daily snapshots
-// families/<family code>/snapshots/<YYYY-MM-DD> = {json: string, ts: int, keys: int}.
+// families/<family code>/snapshots/<YYYY-MM-DD> = {json: string, ts: int, n: int} (n = number of keys).
 // There are no accounts: the long random family code in the path is the secret.
 //
 // Also recommended (Google Cloud console, not part of these rules): restrict the
@@ -34,10 +34,10 @@ service cloud.firestore {
     }
 
     function validSnapshot(d) {
-      return d.keys().hasOnly(['json', 'ts', 'keys'])
+      return d.keys().hasOnly(['json', 'ts', 'n'])
         && d.json is string && d.json.size() < 1000000
         && d.ts is int
-        && (!('keys' in d) || d.keys is int);
+        && (!('n' in d) || d.n is int);
     }
 
     // The family document itself is never used, and families can never be listed.
