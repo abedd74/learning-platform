@@ -213,7 +213,7 @@ Not found: surnames, school name, teacher, town, birthdays, photos, phone number
 
 - **Every commit.** The first names have been in `index.html` since the initial commit `62d2d64` (7 March 2026), so every one of the 67 commits contains them in its file tree; 36 commits add or change lines with the names. A clean history therefore means rewriting all commits, not a few.
 - **Commit messages** naming a child or her grade: `274cc52`, `22acfc1`, `3070f8c`, `7d5034b`.
-- **Author identity:** 37 commits carry `<username>@MacBook-Pro-2.local` as e-mail (identifies the Mac and the account name); 30 carry the Gmail address. Both would be visible after any rewrite that keeps the authors.
+- **Author identity:** 37 commits carry `<account>@<computer>.local` as e-mail (identifies the Mac and the account name); 30 carry the Gmail address. Both would be visible after any rewrite that keeps the authors.
 - **Files that ever existed:** only `index.html`, `grammatik.html`, `wortregen.html`, `sync.js` and `audio/*.mp3`. No photos, PDFs, worksheets or notes were ever committed.
 - **Secrets:** the family code never appears in any commit (checked all revisions for the URL parameter and the storage key). The Firebase project id and web API key are present since `2a7ae87`.
 
