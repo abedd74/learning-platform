@@ -1,0 +1,15 @@
+#!/bin/sh
+# Runs before every commit: personal-data scan of the staged files,
+# content validator and unit tests. Enable once per clone:
+#   git config core.hooksPath tools/hooks
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+node tools/check-pii.mjs --staged --require-words || {
+  echo "pre-commit: blocked by the personal-data scan (see above)."; exit 1; }
+
+node tools/validate-content.mjs || {
+  echo "pre-commit: content is not valid (see above)."; exit 1; }
+
+out=$(node --test "tests/*.test.mjs" 2>&1) || {
+  echo "$out" | grep -E '✖|Error|expected|actual' | head -40
+  echo "pre-commit: unit tests failed — run: npm test"; exit 1; }

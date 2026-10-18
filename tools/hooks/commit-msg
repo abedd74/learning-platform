@@ -1,0 +1,5 @@
+#!/bin/sh
+# Scans the commit message for personal data and secrets.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+node tools/check-pii.mjs --message "$1" --require-words || {
+  echo "commit-msg: blocked — reword the message (see above)."; exit 1; }
