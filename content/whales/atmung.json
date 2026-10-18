@@ -83,16 +83,16 @@
       "id": "wal_atmung-hzmufh1",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Wale sind keine Fische und haben daher auch keine ___.\"",
-        "it": "Quale parola manca? \"Le balene non sono pesci e quindi non hanno ___.\""
+        "de": "Welches Wort fehlt? Weil Wale keine Fische sind, haben sie auch keine ___.",
+        "it": "Quale parola manca? Poiché le balene non sono pesci, non hanno nemmeno ___."
       },
       "hint": {
         "de": "Damit atmen Fische unter Wasser.",
         "it": "Con quelle i pesci respirano sott'acqua."
       },
       "explain": {
-        "de": "Wale haben keine Kiemen.",
-        "it": "Le balene non hanno branchie."
+        "de": "Weil Wale keine Fische sind, haben sie auch keine Kiemen.",
+        "it": "Poiché le balene non sono pesci, non hanno nemmeno branchie."
       },
       "answer": {
         "options": [
@@ -225,16 +225,16 @@
       "id": "wal_atmung-h5mfbt9",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Wale atmen durch Nasenlöcher, die sich oben auf dem ___ befinden.\"",
-        "it": "Quale parola manca? \"Le balene respirano da narici che si trovano sopra ___.\""
+        "de": "Welches Wort fehlt? Die Nasenlöcher der Wale liegen oben auf dem ___.",
+        "it": "Quale parola manca? Le narici delle balene si trovano sopra ___."
       },
       "hint": {
         "de": "Ganz vorne und ganz oben am Wal.",
         "it": "Tutto davanti e tutto in alto."
       },
       "explain": {
-        "de": "Die Nasenlöcher sind oben auf dem Kopf.",
-        "it": "Le narici sono sopra la testa."
+        "de": "Die Nasenlöcher der Wale liegen oben auf dem Kopf.",
+        "it": "Le narici delle balene si trovano sopra la testa."
       },
       "answer": {
         "options": [

@@ -98,16 +98,16 @@
       "id": "wal_zahn-hmgqfvk",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Zahnwale leben ___ und ernähren sich je nach Art von Fischen, Tintenfischen, Krebsen, Pinguinen oder Robben.\"",
-        "it": "Quale parola manca? \"Gli Zahnwale vivono da ___ e si nutrono di pesci, calamari, granchi, pinguini o foche.\""
+        "de": "Welches Wort fehlt? Je nach Art fressen Zahnwale Fische, Tintenfische, Krebse, Pinguine oder Robben – sie leben ___.",
+        "it": "Quale parola manca? A seconda della specie gli Zahnwale mangiano pesci, calamari, granchi, pinguini o foche: vivono da ___."
       },
       "hint": {
         "de": "Sie JAGEN andere Tiere — wie ein Räuber.",
         "it": "CACCIANO altri animali — come un predone (Räuber)."
       },
       "explain": {
-        "de": "Zahnwale leben räuberisch — sie jagen ihre Beute.",
-        "it": "Gli Zahnwale vivono da predatori — cacciano le prede."
+        "de": "Je nach Art fressen Zahnwale Fische, Tintenfische, Krebse, Pinguine oder Robben – sie leben räuberisch. Sie jagen ihre Beute.",
+        "it": "A seconda della specie gli Zahnwale mangiano pesci, calamari, granchi, pinguini o foche: vivono da predatori. Cacciano le loro prede."
       },
       "answer": {
         "options": [

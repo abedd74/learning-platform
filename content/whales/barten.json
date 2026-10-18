@@ -118,16 +118,16 @@
       "id": "wal_barten-hll5gpt",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Bartenwale haben keine ___, sondern mehrere Hundert Barten im Maul.\"",
-        "it": "Quale parola manca? \"I Bartenwale non hanno ___, ma centinaia di fanoni in bocca.\""
+        "de": "Welches Wort fehlt? Im Maul der Bartenwale wachsen keine ___, sondern Hunderte von Barten.",
+        "it": "Quale parola manca? Nella bocca dei Bartenwale non crescono ___, ma centinaia di fanoni."
       },
       "hint": {
         "de": "Die andere Gruppe heißt ZAHNwale — die haben sie.",
         "it": "L'altro gruppo si chiama ZAHNwale — loro li hanno."
       },
       "explain": {
-        "de": "Bartenwale haben keine Zähne, sondern Barten.",
-        "it": "I Bartenwale non hanno denti, ma fanoni."
+        "de": "Im Maul der Bartenwale wachsen keine Zähne, sondern Hunderte von Barten.",
+        "it": "Nella bocca dei Bartenwale non crescono denti, ma centinaia di fanoni."
       },
       "answer": {
         "options": [
@@ -185,16 +185,16 @@
       "id": "wal_barten-h1laqh67",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Bartenwale fressen tierisches Plankton bzw. kleinere ___.\"",
-        "it": "Quale parola manca? \"I Bartenwale mangiano plancton animale o piccoli ___.\""
+        "de": "Welches Wort fehlt? Bartenwale filtern tierisches Plankton und andere kleine ___ aus dem Wasser.",
+        "it": "Quale parola manca? I Bartenwale filtrano dall'acqua plancton animale e altri piccoli ___."
       },
       "hint": {
         "de": "Robben und Pinguine sind viel zu groß für die Barten.",
         "it": "Foche e pinguini sono troppo grandi per i fanoni."
       },
       "explain": {
-        "de": "Bartenwale fressen Plankton bzw. kleinere Meerestiere. Manche Arten fressen auch Fische.",
-        "it": "I Bartenwale mangiano plancton o piccoli animali marini. Alcune specie anche pesci."
+        "de": "Bartenwale filtern tierisches Plankton und andere kleine Meerestiere aus dem Wasser. Manche Arten fressen auch Fische.",
+        "it": "I Bartenwale filtrano dall'acqua plancton animale e altri piccoli animali marini. Alcune specie mangiano anche pesci."
       },
       "answer": {
         "options": [
@@ -222,16 +222,16 @@
       "id": "wal_barten-h1htt1mp",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Zu den Bartenwalen gehören unter anderem der Blauwal und der ___.\"",
-        "it": "Quale parola manca? \"Dei Bartenwale fanno parte tra gli altri la balenottera azzurra e ___.\""
+        "de": "Welches Wort fehlt? Der Blauwal ist ein Bartenwal – genau wie der ___.",
+        "it": "Quale parola manca? La balenottera azzurra è un Bartenwal, proprio come ___."
       },
       "hint": {
         "de": "Es ist der singende Wal.",
         "it": "È la balena che canta."
       },
       "explain": {
-        "de": "Blauwal und Buckelwal sind Bartenwale.",
-        "it": "Balenottera azzurra e megattera sono Bartenwale."
+        "de": "Der Blauwal ist ein Bartenwal – genau wie der Buckelwal.",
+        "it": "La balenottera azzurra è un Bartenwal, proprio come la megattera."
       },
       "answer": {
         "options": [

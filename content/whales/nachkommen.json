@@ -60,16 +60,16 @@
       "id": "wal_nachkommen-hur3e89",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Wale gebären meist nur ein ___ Junges.\"",
-        "it": "Quale parola manca? \"Le balene partoriscono di solito un ___ piccolo.\""
+        "de": "Welches Wort fehlt? Meist bringt eine Walmutter nur ein ___ Junges zur Welt.",
+        "it": "Quale parola manca? Di solito una mamma balena mette al mondo un ___ piccolo."
       },
       "hint": {
         "de": "Es bedeutet: nur eins, nicht mehr.",
         "it": "Significa: uno solo, non di più."
       },
       "explain": {
-        "de": "Wale gebären meist nur ein einziges Junges.",
-        "it": "Le balene partoriscono di solito un solo piccolo."
+        "de": "Meist bringt eine Walmutter nur ein einziges Junges zur Welt.",
+        "it": "Di solito una mamma balena mette al mondo un solo piccolo."
       },
       "answer": {
         "options": [
@@ -190,16 +190,16 @@
       "id": "wal_nachkommen-h2ukldf",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Nach der Geburt muss der junge Wal sofort an die Wasseroberfläche, um erst einmal tief ___.\"",
-        "it": "Quale parola manca? \"Dopo la nascita il piccolo deve salire subito in superficie per ___ profondamente.\""
+        "de": "Welches Wort fehlt? Gleich nach der Geburt schwimmt der junge Wal an die Wasseroberfläche, um tief ___.",
+        "it": "Quale parola manca? Subito dopo la nascita il piccolo nuota in superficie per ___ profondamente."
       },
       "hint": {
         "de": "Der kleine Wal hat eine Lunge — was braucht er sofort?",
         "it": "Il piccolo ha i polmoni — di cosa ha bisogno subito?"
       },
       "explain": {
-        "de": "Der junge Wal muss sofort an die Wasseroberfläche, um tief einzuatmen.",
-        "it": "Il piccolo deve salire subito in superficie per respirare profondamente."
+        "de": "Gleich nach der Geburt schwimmt der junge Wal an die Wasseroberfläche, um tief einzuatmen.",
+        "it": "Subito dopo la nascita il piccolo nuota in superficie per inspirare profondamente."
       },
       "answer": {
         "options": [

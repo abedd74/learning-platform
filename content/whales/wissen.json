@@ -4,16 +4,16 @@
       "id": "wal_wissen-hdlvbqr",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Durch sogenannte Walgesänge ___ sich Wale miteinander.\"",
-        "it": "Quale parola manca? \"Con i cosiddetti canti le balene ___ tra loro.\""
+        "de": "Welches Wort fehlt? Mit ihren Walgesängen ___ sich die Wale miteinander.",
+        "it": "Quale parola manca? Con i loro canti le balene ___ tra loro."
       },
       "hint": {
         "de": "Was machst du mit deinen Freundinnen in der Pause? Ihr redet — ihr … euch.",
         "it": "Cosa fai con le amiche a ricreazione? Parlate — conversate."
       },
       "explain": {
-        "de": "Durch Walgesänge unterhalten sich Wale miteinander.",
-        "it": "Con i canti le balene comunicano tra loro."
+        "de": "Mit ihren Walgesängen unterhalten sich die Wale miteinander.",
+        "it": "Con i loro canti le balene parlano tra loro."
       },
       "answer": {
         "options": [
@@ -41,16 +41,16 @@
       "id": "wal_wissen-h12vllnb",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Der Buckelwal ist auch als ___ Wal bekannt.\"",
-        "it": "Quale parola manca? \"La megattera è conosciuta anche come la balena ___.\""
+        "de": "Welches Wort fehlt? Unter allen Walen ist der Buckelwal als ___ Wal berühmt.",
+        "it": "Quale parola manca? Tra tutte le balene, la megattera è famosa come la balena ___."
       },
       "hint": {
         "de": "Seine Töne gleichen der Melodie eines Liedes.",
         "it": "I suoi suoni somigliano alla melodia di una canzone."
       },
       "explain": {
-        "de": "Der Buckelwal ist als singender Wal bekannt.",
-        "it": "La megattera è conosciuta come la balena che canta."
+        "de": "Unter allen Walen ist der Buckelwal als singender Wal berühmt.",
+        "it": "Tra tutte le balene, la megattera è famosa come la balena che canta."
       },
       "answer": {
         "options": [
@@ -211,16 +211,16 @@
       "id": "wal_wissen-htmopu4",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Der Blauwal ist dunkelblau oder ___ gefärbt.\"",
-        "it": "Quale parola manca? \"La balenottera azzurra è blu scuro o ___.\""
+        "de": "Welches Wort fehlt? Die Farbe des Blauwals ist dunkelblau oder ___.",
+        "it": "Quale parola manca? La balenottera azzurra può essere blu scuro o ___."
       },
       "hint": {
         "de": "Schwarz-weiß ist ein anderer Wal — der Orca.",
         "it": "Bianco e nero è un'altra balena — l'orca."
       },
       "explain": {
-        "de": "Der Blauwal ist dunkelblau oder grau gefärbt.",
-        "it": "La balenottera azzurra è blu scuro o grigia."
+        "de": "Die Farbe des Blauwals ist dunkelblau oder grau.",
+        "it": "La balenottera azzurra può essere blu scuro o grigia."
       },
       "answer": {
         "options": [

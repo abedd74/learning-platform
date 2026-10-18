@@ -135,16 +135,16 @@
       "id": "wal_feinde-h4xcbf4",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Manchmal werden kleinere Wale auch von größeren ___ angegriffen.\"",
-        "it": "Quale parola manca? \"A volte le balene più piccole vengono attaccate anche da ___ più grandi.\""
+        "de": "Welches Wort fehlt? Kleinere Wale werden manchmal sogar von größeren ___ gejagt.",
+        "it": "Quale parola manca? Le balene più piccole a volte vengono cacciate perfino da ___ più grandi."
       },
       "hint": {
         "de": "Denk an den Orca — er ist selbst ein Wal und ein Raubtier.",
         "it": "Pensa all'orca — è lei stessa una balena e un predatore."
       },
       "explain": {
-        "de": "Kleinere Wale werden manchmal von größeren Walen angegriffen.",
-        "it": "Le balene piccole a volte sono attaccate da balene più grandi."
+        "de": "Kleinere Wale werden manchmal sogar von größeren Walen gejagt.",
+        "it": "Le balene più piccole a volte vengono cacciate perfino da balene più grandi."
       },
       "answer": {
         "options": [

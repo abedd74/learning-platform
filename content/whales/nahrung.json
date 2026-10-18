@@ -60,16 +60,16 @@
       "id": "wal_nahrung-h1h0ib0a",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Bartenwale ernähren sich fast ausschließlich von tierischem ___.\"",
-        "it": "Quale parola manca? \"I Bartenwale si nutrono quasi esclusivamente di ___ animale.\""
+        "de": "Welches Wort fehlt? Fast die ganze Nahrung der Bartenwale besteht aus tierischem ___.",
+        "it": "Quale parola manca? Quasi tutto il cibo dei Bartenwale è ___ animale."
       },
       "hint": {
         "de": "Winzig kleine Tiere, die im Wasser schweben.",
         "it": "Animaletti minuscoli che fluttuano nell'acqua."
       },
       "explain": {
-        "de": "Bartenwale ernähren sich fast ausschließlich von tierischem Plankton.",
-        "it": "I Bartenwale si nutrono quasi solo di plancton animale."
+        "de": "Fast die ganze Nahrung der Bartenwale besteht aus tierischem Plankton.",
+        "it": "Quasi tutto il cibo dei Bartenwale è plancton animale."
       },
       "answer": {
         "options": [
@@ -97,16 +97,16 @@
       "id": "wal_nahrung-h3g8xk9",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Je nach Walart fressen ___ zum Beispiel Fische, Tintenfische, Pinguine und Robben.\"",
-        "it": "Quale parola manca? \"A seconda della specie gli ___ mangiano pesci, calamari, pinguini e foche.\""
+        "de": "Welches Wort fehlt? Fische, Tintenfische, Pinguine und Robben – das fressen die ___, je nach Art.",
+        "it": "Quale parola manca? Pesci, calamari, pinguini e foche: ecco cosa mangiano gli ___, a seconda della specie."
       },
       "hint": {
         "de": "Um eine Robbe zu fangen, braucht man Zähne!",
         "it": "Per catturare una foca servono i denti!"
       },
       "explain": {
-        "de": "Zahnwale fressen Fische, Tintenfische, Pinguine und Robben.",
-        "it": "Gli Zahnwale mangiano pesci, calamari, pinguini e foche."
+        "de": "Fische, Tintenfische, Pinguine und Robben – das fressen die Zahnwale, je nach Art.",
+        "it": "Pesci, calamari, pinguini e foche: ecco cosa mangiano gli Zahnwale, a seconda della specie."
       },
       "answer": {
         "options": [

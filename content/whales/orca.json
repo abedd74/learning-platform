@@ -41,16 +41,16 @@
       "id": "wal_orca-h29ih66",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Der Orca ist als größtes ___ der Welt bekannt.\"",
-        "it": "Quale parola manca? \"L'orca è conosciuta come il più grande ___ del mondo.\""
+        "de": "Welches Wort fehlt? Kein ___ der Welt ist größer als der Orca.",
+        "it": "Quale parola manca? Nessun ___ al mondo è più grande dell'orca."
       },
       "hint": {
         "de": "Er jagt seine Beute — wie ein Räuber.",
         "it": "Caccia le sue prede — come un predone."
       },
       "explain": {
-        "de": "Der Orca ist als größtes Raubtier der Welt bekannt.",
-        "it": "L'orca è conosciuta come il più grande predatore del mondo."
+        "de": "Kein Raubtier der Welt ist größer als der Orca.",
+        "it": "Nessun predatore al mondo è più grande dell'orca."
       },
       "answer": {
         "options": [
@@ -164,16 +164,16 @@
       "id": "wal_orca-h1pydrha",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Orcas sind ___ und haben einen weißen Bauch.\"",
-        "it": "Quale parola manca? \"Le orche sono ___ e hanno la pancia bianca.\""
+        "de": "Welches Wort fehlt? Der Bauch des Orcas ist weiß, sein Rücken ist ___.",
+        "it": "Quale parola manca? Le orche hanno la pancia bianca, per il resto sono ___."
       },
       "hint": {
         "de": "Denk an das Bild auf deinem „Toothed whales\"-Büchlein.",
         "it": "Pensa al disegno sul tuo libretto \"Toothed whales\"."
       },
       "explain": {
-        "de": "Orcas sind schwarz und haben einen weißen Bauch.",
-        "it": "Le orche sono nere con la pancia bianca."
+        "de": "Der Bauch des Orcas ist weiß, sein Rücken ist schwarz.",
+        "it": "Le orche hanno la pancia bianca, per il resto sono nere."
       },
       "answer": {
         "options": [
@@ -201,16 +201,16 @@
       "id": "wal_orca-h18k4mfq",
       "type": "choice",
       "prompt": {
-        "de": "Welches Wort fehlt? „Typisch ist der weiße Fleck, der sich hinter dem ___ befindet.\"",
-        "it": "Quale parola manca? \"Tipica è la macchia bianca che si trova dietro ___.\""
+        "de": "Welches Wort fehlt? Den Orca erkennt man an dem weißen Fleck hinter dem ___.",
+        "it": "Quale parola manca? L'orca si riconosce dalla macchia bianca dietro ___."
       },
       "hint": {
         "de": "Damit sieht der Orca.",
         "it": "Con quello l'orca vede."
       },
       "explain": {
-        "de": "Der weiße Fleck ist hinter dem Auge.",
-        "it": "La macchia bianca è dietro l'occhio."
+        "de": "Den Orca erkennt man an dem weißen Fleck hinter dem Auge.",
+        "it": "L'orca si riconosce dalla macchia bianca dietro l'occhio."
       },
       "answer": {
         "options": [
