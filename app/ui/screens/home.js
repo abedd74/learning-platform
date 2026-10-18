@@ -33,13 +33,16 @@ export async function renderHome(root, ctx) {
   const prep = testPrepModules(plan, today, ctx.plannerCfg);
 
   const col = el('div', { class: 'col enter' });
+  const toggles = el('div', { class: 'row', style: { marginLeft: 'auto', flexWrap: 'nowrap' } },
+    el('button', { class: `icon-btn${i18n.showItalian ? ' on' : ''}`, type: 'button', title: i18n.t('home.italian'), 'aria-pressed': String(i18n.showItalian), onClick: () => { i18n.setShowItalian(!i18n.showItalian); renderHome(root, ctx); } }, '🇮🇹'),
+    el('button', { class: `icon-btn${ctx.audio.enabled ? ' on' : ''}`, type: 'button', title: i18n.t('home.sound'), 'aria-pressed': String(ctx.audio.enabled), onClick: () => { ctx.audio.setEnabled(!ctx.audio.enabled); renderHome(root, ctx); } }, ctx.audio.enabled ? '🔊' : '🔇'));
   col.appendChild(el('div', { class: 'greet' }, el('span', { class: 'disc' }, profile.avatar),
-    el('div', {}, el('h1', {}, i18n.t('home.hello', { name: profile.name })), el('div', { class: 'soft' }, i18n.t('home.sub')))));
+    el('div', {}, el('h1', {}, i18n.t('home.hello', { name: profile.name })), el('div', { class: 'soft' }, i18n.t('home.sub'))), toggles));
 
   // the Heute card
   const todayCard = el('section', { class: 'card today' });
   todayCard.appendChild(el('div', { class: 'row spread' }, el('span', { class: 'eyebrow' }, i18n.t('home.today')),
-    el('span', { class: 'streak' }, n ? `🔥 ${i18n.t('home.streak', { n })}` : `✨ ${i18n.t('home.streak.none')}`)));
+    el('span', { class: 'streak' }, n ? `🔥 ${n === 1 ? i18n.t('home.streak.one') : i18n.t('home.streak', { n })}` : `✨ ${i18n.t('home.streak.none')}`)));
   const big = dueTotal || newInSession;
   const what = dueTotal === 0 ? (newInSession ? i18n.t('home.waiting.new', { n: newInSession }) : i18n.t('home.waiting.none')) : dueTotal === 1 ? i18n.t('home.waiting.one') : i18n.t('home.waiting', { n: dueTotal });
   const modulesLine = planned.cards.length ? [...new Set(planned.cards.map(c => ctx.moduleName(c.module)))].join(' · ') : '';
