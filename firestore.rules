@@ -1,0 +1,68 @@
+// Firestore security rules for the Lernplattform family sync.
+//
+// DRAFT — not deployed. Deploy only with the owner's yes (DESIGN §7, phase 6):
+//   1. Open the Firebase console → Firestore → Rules and copy the CURRENT rules
+//      into a note first (so they can be restored).
+//   2. Paste these rules, use the Rules Playground to try: get/list on
+//      families/<code>/stores, a PATCH with {json, ts}, a PATCH with
+//      {deleted, ts}, a list on /families (must be denied).
+//   3. Publish, then open the app on one device and check the sync status.
+//
+// What the app does (sync.js): per storage key one document
+// families/<family code>/stores/<key> = {json: string, ts: int} or a tombstone
+// {deleted: true, ts: int}; written with PATCH (create or full replace), read
+// with get and list. From phase 1 on, daily snapshots
+// families/<family code>/snapshots/<YYYY-MM-DD> = {json: string, ts: int, keys: int}.
+// There are no accounts: the long random family code in the path is the secret.
+//
+// Also recommended (Google Cloud console, not part of these rules): restrict the
+// web API key to the site's address as HTTP referrer and to the Firestore API.
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function plausibleCode(code) {
+      return code.size() >= 16 && code.size() <= 64;
+    }
+
+    function validStore(d) {
+      return d.keys().hasOnly(['json', 'ts', 'deleted'])
+        && d.ts is int
+        && (!('json' in d) || (d.json is string && d.json.size() < 900000))
+        && (!('deleted' in d) || d.deleted is bool);
+    }
+
+    function validSnapshot(d) {
+      return d.keys().hasOnly(['json', 'ts', 'keys'])
+        && d.json is string && d.json.size() < 1000000
+        && d.ts is int
+        && (!('keys' in d) || d.keys is int);
+    }
+
+    // The family document itself is never used, and families can never be listed.
+    match /families/{code} {
+      allow read, write: if false;
+
+      match /stores/{key} {
+        allow get, list: if plausibleCode(code);
+        allow create, update: if plausibleCode(code) && validStore(request.resource.data);
+        allow delete: if false;   // deletions travel as tombstones (deleted: true)
+      }
+
+      match /snapshots/{day} {
+        allow get, list: if plausibleCode(code);
+        allow create: if plausibleCode(code)
+          && day.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+          && validSnapshot(request.resource.data);
+        allow update: if false;   // a day's snapshot is written once
+        allow delete: if plausibleCode(code);   // pruning beyond the last 30 days
+      }
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
