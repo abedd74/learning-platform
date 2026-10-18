@@ -109,3 +109,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 img, svg { max-width: 100%; }
 [hidden] { display: none !important; }
 .num { font-variant-numeric: tabular-nums; }
+
+/* ── the three articles (Deutsch mit Ella, Wort-Regen) ────────────── */
+:root {
+  --c-der: #2E6F9B; --c-der-soft: #DCEBF4;
+  --c-die: #B9535B; --c-die-soft: #F6DEDF;
+  --c-das: #4F8F5C; --c-das-soft: #DFEFE2;
+}

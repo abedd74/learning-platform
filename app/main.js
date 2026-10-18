@@ -20,6 +20,7 @@ import { renderModule } from './ui/screens/module.js';
 import { renderSessionScreen } from './ui/screens/session.js';
 import { renderResults } from './ui/screens/results.js';
 import { createEllaModule } from './engines/ella/index.js';
+import { createWordRain } from './engines/wordrain/index.js';
 
 const TINTS = { whales: 'var(--m-whales)', nouns: 'var(--m-ella)', states: 'var(--m-states)', water: 'var(--m-archive)', book: 'var(--m-archive)', magnetism: 'var(--m-archive)' };
 
@@ -101,6 +102,8 @@ export async function start({ version = 'dev' } = {}) {
       }
     }
     ctx.modules = out;
+    const ella = ctx.ella;
+    if (ella) { const game = createWordRain(ctx, [...ella.byDe.values()]); ctx.games.wordrain = root => game.render(root); }
   }
 
   function requireProfile() {
