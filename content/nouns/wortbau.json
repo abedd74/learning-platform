@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "kind": "pfill",
+      "em": "🙆",
+      "t": "Aus erlauben wird die Erlaub___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "nis",
+      "hint": "Sprich es laut: die Erlaubnis, die Erlaubschaft — was klingt richtig?",
+      "explain": "die Erlaubnis! Und Achtung: sie ist eine DIE-Ausnahme."
+    },
+    {
+      "kind": "pfill",
+      "em": "👭",
+      "t": "Aus Freund wird die Freund___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "schaft",
+      "hint": "Freunde gehören zusammen — welcher Baustein passt?",
+      "explain": "die Freundschaft — und -schaft ist immer DIE!"
+    },
+    {
+      "kind": "pfill",
+      "em": "🎢",
+      "t": "Aus erleben wird das Erleb___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "nis",
+      "hint": "Sprich es laut — dein Ohr kennt die Antwort!",
+      "explain": "das Erlebnis!"
+    },
+    {
+      "kind": "pfill",
+      "em": "🏆",
+      "t": "Aus Meister wird die Meister___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "schaft",
+      "hint": "Wer wird Deutscher Meister? Es geht um die Meister…?",
+      "explain": "die Meisterschaft — -schaft, also DIE!"
+    },
+    {
+      "kind": "pfill",
+      "em": "🤫",
+      "t": "Aus geheim wird das Geheim___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "nis",
+      "hint": "Psst! Sprich es leise: das Geheim…?",
+      "explain": "das Geheimnis!"
+    },
+    {
+      "kind": "pfill",
+      "em": "💰",
+      "t": "Aus reich wird der Reich___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "tum",
+      "hint": "Der König hat viel Gold — seinen Reich…?",
+      "explain": "der Reichtum — ein Angeber: eines der zwei DER-Wörter auf -tum!"
+    },
+    {
+      "kind": "pfill",
+      "em": "🏰",
+      "t": "Aus Ritter wird das Ritter___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "tum",
+      "hint": "Die Zeit der Ritter heißt das Ritter…?",
+      "explain": "das Rittertum — kein Angeber, also DAS!"
+    },
+    {
+      "kind": "pfill",
+      "em": "👨‍👩‍👧‍👦",
+      "t": "Aus verwandt wird die Verwandt___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "schaft",
+      "hint": "Oma, Opa, Tante, Onkel — alle zusammen sind die Verwandt…?",
+      "explain": "die Verwandtschaft — -schaft, also DIE!"
+    },
+    {
+      "kind": "pfill",
+      "em": "🌱",
+      "t": "Aus wachsen wird das Wachs___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "tum",
+      "hint": "Die Blume wächst — man sieht ihr Wachs…?",
+      "explain": "das Wachstum — fast alle -tum-Wörter sind DAS!"
+    },
+    {
+      "kind": "pfill",
+      "em": "🧠",
+      "t": "Aus erkennen wird die Erkennt___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "nis",
+      "hint": "Sprich es laut: die Erkenntnis — hörst du den Baustein?",
+      "explain": "die Erkenntnis — mit Doppel-n! Und sie ist eine DIE-Ausnahme."
+    },
+    {
+      "kind": "pfill",
+      "em": "🤦",
+      "t": "Aus irren wird der Irr___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "tum",
+      "hint": "Wer sich irrt, macht einen Irr…?",
+      "explain": "der Irrtum — der zweite Angeber mit DER!"
+    },
+    {
+      "kind": "pfill",
+      "em": "⚔️",
+      "t": "Aus Feind wird die Feind___.",
+      "base": "-nis, -schaft oder -tum?",
+      "opts": [
+        "nis",
+        "schaft",
+        "tum"
+      ],
+      "correct": "schaft",
+      "hint": "Das Gegenteil von Freundschaft ist die Feind…?",
+      "explain": "die Feindschaft — -schaft, also DIE!"
+    }
+  ]
+}

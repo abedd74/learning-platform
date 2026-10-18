@@ -1,0 +1,74 @@
+{
+  "tiere": {
+    "label": {
+      "de": "Tiere"
+    },
+    "icon": "🐾"
+  },
+  "menschen": {
+    "label": {
+      "de": "Menschen"
+    },
+    "icon": "👨‍👩‍👧"
+  },
+  "koerper": {
+    "label": {
+      "de": "Körper"
+    },
+    "icon": "💪"
+  },
+  "essen": {
+    "label": {
+      "de": "Essen"
+    },
+    "icon": "🍎"
+  },
+  "schule": {
+    "label": {
+      "de": "Schule"
+    },
+    "icon": "🏫"
+  },
+  "haus": {
+    "label": {
+      "de": "Haus"
+    },
+    "icon": "🏠"
+  },
+  "kleidung": {
+    "label": {
+      "de": "Kleidung"
+    },
+    "icon": "👕"
+  },
+  "natur": {
+    "label": {
+      "de": "Natur"
+    },
+    "icon": "🌳"
+  },
+  "stadt": {
+    "label": {
+      "de": "Stadt"
+    },
+    "icon": "🏙️"
+  },
+  "zeit": {
+    "label": {
+      "de": "Zeit"
+    },
+    "icon": "⏰"
+  },
+  "dinge": {
+    "label": {
+      "de": "Dinge"
+    },
+    "icon": "📦"
+  },
+  "abstrakt": {
+    "label": {
+      "de": "Gedanken & Gefühle"
+    },
+    "icon": "💭"
+  }
+}

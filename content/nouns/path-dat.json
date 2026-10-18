@@ -1,0 +1,265 @@
+{
+  "units": [
+    {
+      "n": 1,
+      "title": "🎁 Die neue Frage: Wem?",
+      "lessonHtml": "<p>Du kennst schon das <b>Ziel</b> („Wen oder was?\" 🪄).\nAber manche Sätze haben noch jemanden: den <b>Empfänger</b> —\nder etwas <b>bekommt</b> oder dem geholfen wird!</p>\n<div style=\"text-align:center; font-size:1.1rem; font-weight:800; margin:14px 0;\">\nIch gebe <span style=\"border-bottom:3px solid var(--prime);\">dem Hund</span> die Wurst. 🐕🎁\n</div>\n<p>Die Wurst ist das Ziel (Wen oder was?). Aber <b>wer bekommt sie?</b>\nFrag: <b style=\"color:var(--prime);\">„Wem?\"</b> → dem Hund!</p>\n<p>Der Empfänger steht im <b>Dativ</b>. Neues Geheimwort! 🎓</p>\n<p class=\"it\">Chi <b>riceve</b> qualcosa si trova con la domanda „Wem?\" (a chi?) — e sta nel <b>dativo</b>.</p>",
+      "items": [
+        {
+          "kind": "pmcq",
+          "em": "🐕",
+          "sent": "Ich gebe dem Hund die Wurst.",
+          "task": "Wem gebe ich die Wurst?",
+          "task_it": "A chi do la salsiccia?",
+          "opts": [
+            "dem Hund",
+            "die Wurst",
+            "ich"
+          ],
+          "correct": "dem Hund",
+          "hint": "Die Wurst ist das Ziel — aber wer BEKOMMT sie?",
+          "explain": "Wem gebe ich die Wurst? → dem Hund. Der Hund ist der Empfänger — Dativ!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "🐈",
+          "sent": "Oma schenkt der Katze einen Ball.",
+          "task": "Wem schenkt Oma den Ball?",
+          "task_it": "A chi regala la palla?",
+          "opts": [
+            "der Katze",
+            "einen Ball",
+            "Oma"
+          ],
+          "correct": "der Katze",
+          "hint": "Der Ball ist das Geschenk — wer bekommt es?",
+          "explain": "Wem schenkt Oma den Ball? → der Katze. Die Katze ist die Empfängerin!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "👦",
+          "sent": "Ella hilft dem Bruder.",
+          "task": "Wem hilft Ella?",
+          "task_it": "A chi aiuta Ella?",
+          "opts": [
+            "dem Bruder",
+            "Ella",
+            "hilft"
+          ],
+          "correct": "dem Bruder",
+          "hint": "Helfen ist wie ein Geschenk: Wer bekommt die Hilfe?",
+          "explain": "Wem hilft Ella? → dem Bruder. Hilfe-Empfänger = Dativ!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "👂",
+          "sent": "Was klingt richtig?",
+          "task": "Hör genau hin!",
+          "task_it": "Quale suona giusto?",
+          "opts": [
+            "Ich spiele mit dem Ball.",
+            "Ich spiele mit den Ball."
+          ],
+          "correct": "Ich spiele mit dem Ball.",
+          "hint": "Sprich beide Sätze leise — dein Ohr weiß es!",
+          "explain": "„Mit DEM Ball\" — dein Ohr kennt den Dativ schon! Gleich lernst du das System."
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "title": "🎭 Im Dativ ziehen sich ALLE um!",
+      "lessonHtml": "<p>Beim Akkusativ hat sich nur DER verändert. Der Dativ ist eine\ngroße Verkleidungsparty — <b>alle ziehen sich um</b>:</p>\n<div style=\"background:var(--card2, #f4f1fa); border-radius:14px; padding:12px; margin:12px 0; text-align:center; font-weight:800; font-size:1.05rem; line-height:2;\">\n<span style=\"color:var(--c-der);\">der</span> ➡️ <b style=\"color:var(--c-der);\">DEM</b> &nbsp;(ein ➡️ <b>einem</b>)<br>\n<span style=\"color:var(--c-die);\">die</span> ➡️ <b style=\"color:var(--c-die);\">DER</b> &nbsp;(eine ➡️ <b>einer</b>) 😲<br>\n<span style=\"color:var(--c-das);\">das</span> ➡️ <b style=\"color:var(--c-das);\">DEM</b> &nbsp;(ein ➡️ <b>einem</b>)\n</div>\n<p>Die Überraschung: <b>die Katze</b> wird zu „mit <b>der</b> Katze\"!\nUnd der + das bekommen beide <b>dem</b>.</p>\n<p class=\"it\">Nel dativo cambiano TUTTI: der→dem, die→der (sorpresa!), das→dem.</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "🐕",
+          "t": "Ich spiele mit ___ Hund.",
+          "base": "der Hund",
+          "opts": [
+            "der",
+            "den",
+            "dem"
+          ],
+          "correct": "dem",
+          "hint": "Dativ-Party: der zieht sich um zu …?",
+          "explain": "der Hund → mit DEM Hund. Im Dativ: der → dem!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🐈",
+          "t": "Ich spiele mit ___ Katze.",
+          "base": "die Katze",
+          "opts": [
+            "die",
+            "der",
+            "dem"
+          ],
+          "correct": "der",
+          "hint": "Die Überraschung aus der Tabelle: die wird zu …?",
+          "explain": "die Katze → mit DER Katze. Das ist die Dativ-Überraschung!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🚗",
+          "t": "Wir fahren mit ___ Auto.",
+          "base": "das Auto",
+          "opts": [
+            "das",
+            "dem",
+            "den"
+          ],
+          "correct": "dem",
+          "hint": "das zieht sich um — genau wie der!",
+          "explain": "das Auto → mit DEM Auto. der und das bekommen beide „dem\"!"
+        },
+        {
+          "kind": "pfill",
+          "em": "👧",
+          "t": "Sie spielt mit ___ Freundin.",
+          "base": "eine Freundin (die Freundin)",
+          "opts": [
+            "eine",
+            "einer",
+            "einem"
+          ],
+          "correct": "einer",
+          "hint": "die → der, also eine → …?",
+          "explain": "eine Freundin → mit EINER Freundin. eine wird zu einer!"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "title": "🧲 Die Magnet-Wörter",
+      "lessonHtml": "<p>Fünf kleine Wörter sind wie Magnete: Nach ihnen kommt\n<b>IMMER</b> der Dativ — ohne Ausnahme!</p>\n<div style=\"text-align:center; font-weight:900; font-size:1.25rem; color:var(--prime); line-height:1.8; margin:12px 0;\">\nmit · bei · zu · von · aus 🧲\n</div>\n<p>Sprich sie dreimal wie einen Zauberspruch:\n<i>mit-bei-zu-von-aus!</i> 🎵</p>\n<p><b>mit</b> dem Ball · <b>bei</b> der Oma · <b>zu</b> der Schule ·\n<b>von</b> dem Lehrer · <b>aus</b> dem Haus</p>\n<p class=\"it\">Dopo <b>mit, bei, zu, von, aus</b> viene SEMPRE il dativo — impara la filastrocca!</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "👵",
+          "t": "Wir wohnen bei ___ Oma.",
+          "base": "die Oma",
+          "opts": [
+            "die",
+            "der",
+            "dem"
+          ],
+          "correct": "der",
+          "hint": "„bei\" ist ein Magnet-Wort → Dativ! Und die wird zu …?",
+          "explain": "bei DER Oma — Magnet-Wort „bei\" + Dativ-Überraschung die→der!"
+        },
+        {
+          "kind": "pfill",
+          "em": "✉️",
+          "t": "Der Brief ist von ___ Lehrer.",
+          "base": "der Lehrer",
+          "opts": [
+            "der",
+            "den",
+            "dem"
+          ],
+          "correct": "dem",
+          "hint": "„von\" ist ein Magnet-Wort → Dativ!",
+          "explain": "von DEM Lehrer — nach „von\" kommt immer der Dativ."
+        },
+        {
+          "kind": "pfill",
+          "em": "🏫",
+          "t": "Ich komme aus ___ Schule.",
+          "base": "die Schule",
+          "opts": [
+            "die",
+            "der",
+            "das"
+          ],
+          "correct": "der",
+          "hint": "„aus\" ist ein Magnet-Wort — und die Schule ist ein DIE-Wort!",
+          "explain": "aus DER Schule — Magnet-Wort + die→der."
+        },
+        {
+          "kind": "pmcq",
+          "em": "🧲",
+          "sent": "Welche Wörter sind die Dativ-Magnete?",
+          "task": "Der Zauberspruch!",
+          "task_it": "Quali sono le parole-magnete?",
+          "opts": [
+            "mit, bei, zu, von, aus",
+            "und, oder, aber",
+            "ich, du, er"
+          ],
+          "correct": "mit, bei, zu, von, aus",
+          "hint": "Der Zauberspruch aus der Lektion — mit-bei-…?",
+          "explain": "mit, bei, zu, von, aus — nach ihnen kommt IMMER der Dativ!"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "title": "💝 Verben mit Empfänger",
+      "lessonHtml": "<p>Manche Verben haben eingebaute Empfänger — bei ihnen fragst du\nautomatisch <b>„Wem?\"</b>:</p>\n<div style=\"text-align:center; font-weight:800; font-size:1.05rem; line-height:2; margin:12px 0;\">\ngeben 🎁 · helfen 🤝 · gehören 🏷️<br>schmecken 😋 · danken 🙏\n</div>\n<p><b>Ich helfe dem Kind.</b> — Wem helfe ich? → dem Kind!</p>\n<p><b>Die Pizza schmeckt dem Bruder.</b> — Wem schmeckt sie? → dem Bruder!</p>\n<p class=\"it\">Verbi con destinatario: dare, aiutare, appartenere, piacere (di gusto), ringraziare — chiedono sempre „Wem?\".</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "🧒",
+          "t": "Ich helfe ___ Kind.",
+          "base": "das Kind",
+          "opts": [
+            "das",
+            "dem",
+            "den"
+          ],
+          "correct": "dem",
+          "hint": "„helfen\" will einen Empfänger — Wem helfe ich?",
+          "explain": "Ich helfe DEM Kind — helfen + Dativ, das→dem!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🚲",
+          "t": "Das Fahrrad gehört ___ Mädchen.",
+          "base": "das Mädchen",
+          "opts": [
+            "dem",
+            "das",
+            "den"
+          ],
+          "correct": "dem",
+          "hint": "„gehören\": Wem gehört das Fahrrad?",
+          "explain": "Es gehört DEM Mädchen — gehören + Dativ!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🍕",
+          "t": "Die Pizza schmeckt ___ Bruder.",
+          "base": "der Bruder",
+          "opts": [
+            "der",
+            "dem",
+            "den"
+          ],
+          "correct": "dem",
+          "hint": "Wem schmeckt die Pizza? Der Bruder ist ein DER-Wort.",
+          "explain": "Sie schmeckt DEM Bruder — schmecken + Dativ, der→dem!"
+        },
+        {
+          "kind": "pfill",
+          "em": "👩‍🏫",
+          "t": "Wir danken ___ Lehrerin.",
+          "base": "die Lehrerin",
+          "opts": [
+            "der",
+            "die",
+            "einer"
+          ],
+          "correct": "der",
+          "hint": "„danken\": Wem danken wir? Und die wird zu …?",
+          "explain": "Wir danken DER Lehrerin — danken + Dativ, die→der!"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "🏆 Alles zusammen!",
+      "lessonHtml": "<p>Du kennst jetzt beide Geheimfragen:</p>\n<div style=\"font-weight:800; line-height:2; margin:12px 0;\">\n🎯 Ziel: <b>„Wen oder was?\"</b> → Akkusativ (nur der→den)<br>\n🎁 Empfänger: <b>„Wem?\"</b> → Dativ (alle ziehen sich um!)<br>\n🧲 mit-bei-zu-von-aus → immer Dativ!\n</div>\n<p>Jetzt kommen 6 echte Sätze mit deinen eigenen Wörtern.\nSchaffst du sie, bist du <b>Dativ-Detektivin</b>! 🕵️‍♀️</p>\n<p class=\"it\">Ora 6 frasi vere con le TUE parole — diventa detective del dativo!</p>"
+    }
+  ]
+}

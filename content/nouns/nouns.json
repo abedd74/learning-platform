@@ -1,0 +1,3354 @@
+{
+  "items": [
+    {
+      "de": "Affe",
+      "g": "der",
+      "pl": "Affen",
+      "it": "la scimmia",
+      "itG": "f",
+      "em": "🐒",
+      "cat": "tiere",
+      "obl": "Affen"
+    },
+    {
+      "de": "Ameise",
+      "g": "die",
+      "pl": "Ameisen",
+      "it": "la formica",
+      "itG": "f",
+      "em": "🐜",
+      "cat": "tiere"
+    },
+    {
+      "de": "Biene",
+      "g": "die",
+      "pl": "Bienen",
+      "it": "l'ape",
+      "itG": "f",
+      "em": "🐝",
+      "cat": "tiere"
+    },
+    {
+      "de": "Bär",
+      "g": "der",
+      "pl": "Bären",
+      "it": "l'orso",
+      "itG": "m",
+      "em": "🐻",
+      "cat": "tiere",
+      "obl": "Bären"
+    },
+    {
+      "de": "Dachs",
+      "g": "der",
+      "pl": "Dachse",
+      "it": "il tasso",
+      "itG": "m",
+      "em": "🦡",
+      "cat": "tiere"
+    },
+    {
+      "de": "Ente",
+      "g": "die",
+      "pl": "Enten",
+      "it": "l'anatra",
+      "itG": "f",
+      "em": "🦆",
+      "cat": "tiere"
+    },
+    {
+      "de": "Eule",
+      "g": "die",
+      "pl": "Eulen",
+      "it": "il gufo",
+      "itG": "m",
+      "em": "🦉",
+      "cat": "tiere"
+    },
+    {
+      "de": "Fisch",
+      "g": "der",
+      "pl": "Fische",
+      "it": "il pesce",
+      "itG": "m",
+      "em": "🐟",
+      "cat": "tiere"
+    },
+    {
+      "de": "Fuchs",
+      "g": "der",
+      "pl": "Füchse",
+      "it": "la volpe",
+      "itG": "f",
+      "em": "🦊",
+      "cat": "tiere"
+    },
+    {
+      "de": "Hase",
+      "g": "der",
+      "pl": "Hasen",
+      "it": "la lepre",
+      "itG": "f",
+      "em": "🐰",
+      "cat": "tiere",
+      "obl": "Hasen"
+    },
+    {
+      "de": "Huhn",
+      "g": "das",
+      "pl": "Hühner",
+      "it": "la gallina",
+      "itG": "f",
+      "em": "🐔",
+      "cat": "tiere"
+    },
+    {
+      "de": "Hund",
+      "g": "der",
+      "pl": "Hunde",
+      "it": "il cane",
+      "itG": "m",
+      "em": "🐕",
+      "cat": "tiere"
+    },
+    {
+      "de": "Igel",
+      "g": "der",
+      "pl": "Igel",
+      "it": "il riccio",
+      "itG": "m",
+      "em": "🦔",
+      "cat": "tiere"
+    },
+    {
+      "de": "Katze",
+      "g": "die",
+      "pl": "Katzen",
+      "it": "il gatto",
+      "itG": "m",
+      "em": "🐱",
+      "cat": "tiere"
+    },
+    {
+      "de": "Kuh",
+      "g": "die",
+      "pl": "Kühe",
+      "it": "la mucca",
+      "itG": "f",
+      "em": "🐄",
+      "cat": "tiere"
+    },
+    {
+      "de": "Käfer",
+      "g": "der",
+      "pl": "Käfer",
+      "it": "lo scarabeo",
+      "itG": "m",
+      "em": "🪲",
+      "cat": "tiere"
+    },
+    {
+      "de": "Maus",
+      "g": "die",
+      "pl": "Mäuse",
+      "it": "il topo",
+      "itG": "m",
+      "em": "🐭",
+      "cat": "tiere"
+    },
+    {
+      "de": "Ochse",
+      "g": "der",
+      "pl": "Ochsen",
+      "it": "il bue",
+      "itG": "m",
+      "em": "🐂",
+      "cat": "tiere",
+      "obl": "Ochsen"
+    },
+    {
+      "de": "Pferd",
+      "g": "das",
+      "pl": "Pferde",
+      "it": "il cavallo",
+      "itG": "m",
+      "em": "🐴",
+      "cat": "tiere"
+    },
+    {
+      "de": "Pony",
+      "g": "das",
+      "pl": "Ponys",
+      "it": "il pony",
+      "itG": "m",
+      "em": "🐴",
+      "cat": "tiere"
+    },
+    {
+      "de": "Qualle",
+      "g": "die",
+      "pl": "Quallen",
+      "it": "la medusa",
+      "itG": "f",
+      "em": "🪼",
+      "cat": "tiere"
+    },
+    {
+      "de": "Raupe",
+      "g": "die",
+      "pl": "Raupen",
+      "it": "il bruco",
+      "itG": "m",
+      "em": "🐛",
+      "cat": "tiere"
+    },
+    {
+      "de": "Reh",
+      "g": "das",
+      "pl": "Rehe",
+      "it": "il capriolo",
+      "itG": "m",
+      "em": "🦌",
+      "cat": "tiere"
+    },
+    {
+      "de": "Schlange",
+      "g": "die",
+      "pl": "Schlangen",
+      "it": "il serpente",
+      "itG": "m",
+      "em": "🐍",
+      "cat": "tiere"
+    },
+    {
+      "de": "Spinne",
+      "g": "die",
+      "pl": "Spinnen",
+      "it": "il ragno",
+      "itG": "m",
+      "em": "🕷️",
+      "cat": "tiere"
+    },
+    {
+      "de": "Tiger",
+      "g": "der",
+      "pl": "Tiger",
+      "it": "la tigre",
+      "itG": "f",
+      "em": "🐯",
+      "cat": "tiere"
+    },
+    {
+      "de": "Tier",
+      "g": "das",
+      "pl": "Tiere",
+      "it": "l'animale",
+      "itG": "m",
+      "em": "🐾",
+      "cat": "tiere"
+    },
+    {
+      "de": "Vogel",
+      "g": "der",
+      "pl": "Vögel",
+      "it": "l'uccello",
+      "itG": "m",
+      "em": "🐦",
+      "cat": "tiere"
+    },
+    {
+      "de": "Wurm",
+      "g": "der",
+      "pl": "Würmer",
+      "it": "il verme",
+      "itG": "m",
+      "em": "🪱",
+      "cat": "tiere"
+    },
+    {
+      "de": "Frau",
+      "g": "die",
+      "pl": "Frauen",
+      "it": "la donna",
+      "itG": "f",
+      "em": "👩",
+      "cat": "menschen"
+    },
+    {
+      "de": "Mann",
+      "g": "der",
+      "pl": "Männer",
+      "it": "l'uomo",
+      "itG": "m",
+      "em": "👨",
+      "cat": "menschen"
+    },
+    {
+      "de": "Junge",
+      "g": "der",
+      "pl": "Jungen",
+      "it": "il ragazzo",
+      "itG": "m",
+      "em": "👦",
+      "cat": "menschen",
+      "obl": "Jungen"
+    },
+    {
+      "de": "Mädchen",
+      "g": "das",
+      "pl": "Mädchen",
+      "it": "la ragazza",
+      "itG": "f",
+      "em": "👧",
+      "cat": "menschen"
+    },
+    {
+      "de": "Kind",
+      "g": "das",
+      "pl": "Kinder",
+      "it": "il bambino / la bambina",
+      "itG": "m",
+      "em": "🧒",
+      "cat": "menschen"
+    },
+    {
+      "de": "Baby",
+      "g": "das",
+      "pl": "Babys",
+      "it": "il neonato",
+      "itG": "m",
+      "em": "👶",
+      "cat": "menschen"
+    },
+    {
+      "de": "Bruder",
+      "g": "der",
+      "pl": "Brüder",
+      "it": "il fratello",
+      "itG": "m",
+      "em": "👦",
+      "cat": "menschen"
+    },
+    {
+      "de": "Schwester",
+      "g": "die",
+      "pl": "Schwestern",
+      "it": "la sorella",
+      "itG": "f",
+      "em": "👧",
+      "cat": "menschen"
+    },
+    {
+      "de": "Mutter",
+      "g": "die",
+      "pl": "Mütter",
+      "it": "la mamma",
+      "itG": "f",
+      "em": "👩",
+      "cat": "menschen"
+    },
+    {
+      "de": "Vater",
+      "g": "der",
+      "pl": "Väter",
+      "it": "il papà",
+      "itG": "m",
+      "em": "👨",
+      "cat": "menschen"
+    },
+    {
+      "de": "Tante",
+      "g": "die",
+      "pl": "Tanten",
+      "it": "la zia",
+      "itG": "f",
+      "em": "👩",
+      "cat": "menschen"
+    },
+    {
+      "de": "Onkel",
+      "g": "der",
+      "pl": "Onkel",
+      "it": "lo zio",
+      "itG": "m",
+      "em": "👨",
+      "cat": "menschen"
+    },
+    {
+      "de": "Tochter",
+      "g": "die",
+      "pl": "Töchter",
+      "it": "la figlia",
+      "itG": "f",
+      "em": "👧",
+      "cat": "menschen"
+    },
+    {
+      "de": "Herr",
+      "g": "der",
+      "pl": "Herren",
+      "it": "il signore",
+      "itG": "m",
+      "em": "🎩",
+      "cat": "menschen",
+      "obl": "Herrn"
+    },
+    {
+      "de": "Mensch",
+      "g": "der",
+      "pl": "Menschen",
+      "it": "la persona",
+      "itG": "f",
+      "em": "🧍",
+      "cat": "menschen",
+      "obl": "Menschen"
+    },
+    {
+      "de": "Nachbar",
+      "g": "der",
+      "pl": "Nachbarn",
+      "it": "il vicino",
+      "itG": "m",
+      "em": "🏘️",
+      "cat": "menschen",
+      "obl": "Nachbarn"
+    },
+    {
+      "de": "Freund",
+      "g": "der",
+      "pl": "Freunde",
+      "it": "l'amico",
+      "itG": "m",
+      "em": "🤝",
+      "cat": "menschen"
+    },
+    {
+      "de": "Arzt",
+      "g": "der",
+      "pl": "Ärzte",
+      "it": "il medico",
+      "itG": "m",
+      "em": "👨‍⚕️",
+      "cat": "menschen"
+    },
+    {
+      "de": "Lehrer",
+      "g": "der",
+      "pl": "Lehrer",
+      "it": "il maestro",
+      "itG": "m",
+      "em": "👨‍🏫",
+      "cat": "menschen"
+    },
+    {
+      "de": "Lehrerin",
+      "g": "die",
+      "pl": "Lehrerinnen",
+      "it": "la maestra",
+      "itG": "f",
+      "em": "👩‍🏫",
+      "cat": "menschen"
+    },
+    {
+      "de": "Verkäufer",
+      "g": "der",
+      "pl": "Verkäufer",
+      "it": "il venditore",
+      "itG": "m",
+      "em": "🛒",
+      "cat": "menschen"
+    },
+    {
+      "de": "König",
+      "g": "der",
+      "pl": "Könige",
+      "it": "il re",
+      "itG": "m",
+      "em": "👑",
+      "cat": "menschen"
+    },
+    {
+      "de": "Hexe",
+      "g": "die",
+      "pl": "Hexen",
+      "it": "la strega",
+      "itG": "f",
+      "em": "🧙‍♀️",
+      "cat": "menschen"
+    },
+    {
+      "de": "Riese",
+      "g": "der",
+      "pl": "Riesen",
+      "it": "il gigante",
+      "itG": "m",
+      "em": "🗻",
+      "cat": "menschen",
+      "obl": "Riesen"
+    },
+    {
+      "de": "Clown",
+      "g": "der",
+      "pl": "Clowns",
+      "it": "il pagliaccio",
+      "itG": "m",
+      "em": "🤡",
+      "cat": "menschen"
+    },
+    {
+      "de": "Chef",
+      "g": "der",
+      "pl": "Chefs",
+      "it": "il capo",
+      "itG": "m",
+      "em": "💼",
+      "cat": "menschen"
+    },
+    {
+      "de": "Arm",
+      "g": "der",
+      "pl": "Arme",
+      "it": "il braccio",
+      "itG": "m",
+      "em": "💪",
+      "cat": "koerper"
+    },
+    {
+      "de": "Auge",
+      "g": "das",
+      "pl": "Augen",
+      "it": "l'occhio",
+      "itG": "m",
+      "em": "👁️",
+      "cat": "koerper"
+    },
+    {
+      "de": "Bein",
+      "g": "das",
+      "pl": "Beine",
+      "it": "la gamba",
+      "itG": "f",
+      "em": "🦵",
+      "cat": "koerper"
+    },
+    {
+      "de": "Finger",
+      "g": "der",
+      "pl": "Finger",
+      "it": "il dito",
+      "itG": "m",
+      "em": "☝️",
+      "cat": "koerper"
+    },
+    {
+      "de": "Fuß",
+      "g": "der",
+      "pl": "Füße",
+      "it": "il piede",
+      "itG": "m",
+      "em": "🦶",
+      "cat": "koerper"
+    },
+    {
+      "de": "Hals",
+      "g": "der",
+      "pl": "Hälse",
+      "it": "il collo",
+      "itG": "m",
+      "em": "🧣",
+      "cat": "koerper"
+    },
+    {
+      "de": "Hand",
+      "g": "die",
+      "pl": "Hände",
+      "it": "la mano",
+      "itG": "f",
+      "em": "✋",
+      "cat": "koerper"
+    },
+    {
+      "de": "Herz",
+      "g": "das",
+      "pl": "Herzen",
+      "it": "il cuore",
+      "itG": "m",
+      "em": "❤️",
+      "cat": "koerper"
+    },
+    {
+      "de": "Knie",
+      "g": "das",
+      "pl": "Knie",
+      "it": "il ginocchio",
+      "itG": "m",
+      "em": "🦵",
+      "cat": "koerper"
+    },
+    {
+      "de": "Kopf",
+      "g": "der",
+      "pl": "Köpfe",
+      "it": "la testa",
+      "itG": "f",
+      "em": "🗣️",
+      "cat": "koerper"
+    },
+    {
+      "de": "Körper",
+      "g": "der",
+      "pl": "Körper",
+      "it": "il corpo",
+      "itG": "m",
+      "em": "🧍",
+      "cat": "koerper"
+    },
+    {
+      "de": "Mund",
+      "g": "der",
+      "pl": "Münder",
+      "it": "la bocca",
+      "itG": "f",
+      "em": "👄",
+      "cat": "koerper"
+    },
+    {
+      "de": "Nase",
+      "g": "die",
+      "pl": "Nasen",
+      "it": "il naso",
+      "itG": "m",
+      "em": "👃",
+      "cat": "koerper"
+    },
+    {
+      "de": "Ohr",
+      "g": "das",
+      "pl": "Ohren",
+      "it": "l'orecchio",
+      "itG": "m",
+      "em": "👂",
+      "cat": "koerper"
+    },
+    {
+      "de": "Rücken",
+      "g": "der",
+      "pl": "Rücken",
+      "it": "la schiena",
+      "itG": "f",
+      "em": "🧍",
+      "cat": "koerper"
+    },
+    {
+      "de": "Zahn",
+      "g": "der",
+      "pl": "Zähne",
+      "it": "il dente",
+      "itG": "m",
+      "em": "🦷",
+      "cat": "koerper"
+    },
+    {
+      "de": "Zeh",
+      "g": "der",
+      "pl": "Zehen",
+      "it": "il dito del piede",
+      "itG": "m",
+      "em": "🦶",
+      "cat": "koerper"
+    },
+    {
+      "de": "Gesicht",
+      "g": "das",
+      "pl": "Gesichter",
+      "it": "il viso",
+      "itG": "m",
+      "em": "🙂",
+      "cat": "koerper"
+    },
+    {
+      "de": "Haar",
+      "g": "das",
+      "pl": "Haare",
+      "it": "il capello",
+      "itG": "m",
+      "em": "💇",
+      "cat": "koerper"
+    },
+    {
+      "de": "Träne",
+      "g": "die",
+      "pl": "Tränen",
+      "it": "la lacrima",
+      "itG": "f",
+      "em": "😢",
+      "cat": "koerper"
+    },
+    {
+      "de": "Apfel",
+      "g": "der",
+      "pl": "Äpfel",
+      "it": "la mela",
+      "itG": "f",
+      "em": "🍎",
+      "cat": "essen"
+    },
+    {
+      "de": "Beere",
+      "g": "die",
+      "pl": "Beeren",
+      "it": "la bacca",
+      "itG": "f",
+      "em": "🫐",
+      "cat": "essen"
+    },
+    {
+      "de": "Birne",
+      "g": "die",
+      "pl": "Birnen",
+      "it": "la pera",
+      "itG": "f",
+      "em": "🍐",
+      "cat": "essen"
+    },
+    {
+      "de": "Brot",
+      "g": "das",
+      "pl": "Brote",
+      "it": "il pane",
+      "itG": "m",
+      "em": "🍞",
+      "cat": "essen"
+    },
+    {
+      "de": "Butter",
+      "g": "die",
+      "pl": null,
+      "it": "il burro",
+      "itG": "m",
+      "em": "🧈",
+      "cat": "essen"
+    },
+    {
+      "de": "Ei",
+      "g": "das",
+      "pl": "Eier",
+      "it": "l'uovo",
+      "itG": "m",
+      "em": "🥚",
+      "cat": "essen"
+    },
+    {
+      "de": "Eis",
+      "g": "das",
+      "pl": null,
+      "it": "il gelato",
+      "itG": "m",
+      "em": "🍦",
+      "cat": "essen"
+    },
+    {
+      "de": "Gemüse",
+      "g": "das",
+      "pl": null,
+      "it": "la verdura",
+      "itG": "f",
+      "em": "🥦",
+      "cat": "essen"
+    },
+    {
+      "de": "Gurke",
+      "g": "die",
+      "pl": "Gurken",
+      "it": "il cetriolo",
+      "itG": "m",
+      "em": "🥒",
+      "cat": "essen"
+    },
+    {
+      "de": "Käse",
+      "g": "der",
+      "pl": null,
+      "it": "il formaggio",
+      "itG": "m",
+      "em": "🧀",
+      "cat": "essen"
+    },
+    {
+      "de": "Kirsche",
+      "g": "die",
+      "pl": "Kirschen",
+      "it": "la ciliegia",
+      "itG": "f",
+      "em": "🍒",
+      "cat": "essen"
+    },
+    {
+      "de": "Kuchen",
+      "g": "der",
+      "pl": "Kuchen",
+      "it": "la torta",
+      "itG": "f",
+      "em": "🍰",
+      "cat": "essen"
+    },
+    {
+      "de": "Milch",
+      "g": "die",
+      "pl": null,
+      "it": "il latte",
+      "itG": "m",
+      "em": "🥛",
+      "cat": "essen"
+    },
+    {
+      "de": "Nudel",
+      "g": "die",
+      "pl": "Nudeln",
+      "it": "la pasta",
+      "itG": "f",
+      "em": "🍝",
+      "cat": "essen"
+    },
+    {
+      "de": "Nuss",
+      "g": "die",
+      "pl": "Nüsse",
+      "it": "la noce",
+      "itG": "f",
+      "em": "🥜",
+      "cat": "essen"
+    },
+    {
+      "de": "Obst",
+      "g": "das",
+      "pl": null,
+      "it": "la frutta",
+      "itG": "f",
+      "em": "🍇",
+      "cat": "essen"
+    },
+    {
+      "de": "Pflaume",
+      "g": "die",
+      "pl": "Pflaumen",
+      "it": "la prugna",
+      "itG": "f",
+      "em": "🟣",
+      "cat": "essen"
+    },
+    {
+      "de": "Pilz",
+      "g": "der",
+      "pl": "Pilze",
+      "it": "il fungo",
+      "itG": "m",
+      "em": "🍄",
+      "cat": "essen"
+    },
+    {
+      "de": "Pizza",
+      "g": "die",
+      "pl": "Pizzen",
+      "it": "la pizza",
+      "itG": "f",
+      "em": "🍕",
+      "cat": "essen"
+    },
+    {
+      "de": "Quark",
+      "g": "der",
+      "pl": null,
+      "it": "il formaggio fresco",
+      "itG": "m",
+      "em": "🥣",
+      "cat": "essen"
+    },
+    {
+      "de": "Saft",
+      "g": "der",
+      "pl": "Säfte",
+      "it": "il succo",
+      "itG": "m",
+      "em": "🧃",
+      "cat": "essen"
+    },
+    {
+      "de": "Salz",
+      "g": "das",
+      "pl": null,
+      "it": "il sale",
+      "itG": "m",
+      "em": "🧂",
+      "cat": "essen"
+    },
+    {
+      "de": "Soße",
+      "g": "die",
+      "pl": "Soßen",
+      "it": "la salsa",
+      "itG": "f",
+      "em": "🥣",
+      "cat": "essen"
+    },
+    {
+      "de": "Tee",
+      "g": "der",
+      "pl": null,
+      "it": "il tè",
+      "itG": "m",
+      "em": "🍵",
+      "cat": "essen"
+    },
+    {
+      "de": "Wurst",
+      "g": "die",
+      "pl": "Würste",
+      "it": "la salsiccia",
+      "itG": "f",
+      "em": "🌭",
+      "cat": "essen"
+    },
+    {
+      "de": "Zucker",
+      "g": "der",
+      "pl": null,
+      "it": "lo zucchero",
+      "itG": "m",
+      "em": "🍬",
+      "cat": "essen"
+    },
+    {
+      "de": "Zwiebel",
+      "g": "die",
+      "pl": "Zwiebeln",
+      "it": "la cipolla",
+      "itG": "f",
+      "em": "🧅",
+      "cat": "essen"
+    },
+    {
+      "de": "Frühstück",
+      "g": "das",
+      "pl": null,
+      "it": "la colazione",
+      "itG": "f",
+      "em": "🥐",
+      "cat": "essen"
+    },
+    {
+      "de": "Buch",
+      "g": "das",
+      "pl": "Bücher",
+      "it": "il libro",
+      "itG": "m",
+      "em": "📖",
+      "cat": "schule"
+    },
+    {
+      "de": "Heft",
+      "g": "das",
+      "pl": "Hefte",
+      "it": "il quaderno",
+      "itG": "m",
+      "em": "📓",
+      "cat": "schule"
+    },
+    {
+      "de": "Stift",
+      "g": "der",
+      "pl": "Stifte",
+      "it": "la matita",
+      "itG": "f",
+      "em": "✏️",
+      "cat": "schule"
+    },
+    {
+      "de": "Füller",
+      "g": "der",
+      "pl": "Füller",
+      "it": "la stilografica",
+      "itG": "f",
+      "em": "🖊️",
+      "cat": "schule"
+    },
+    {
+      "de": "Kleber",
+      "g": "der",
+      "pl": "Kleber",
+      "it": "la colla",
+      "itG": "f",
+      "em": "🧴",
+      "cat": "schule"
+    },
+    {
+      "de": "Lineal",
+      "g": "das",
+      "pl": "Lineale",
+      "it": "il righello",
+      "itG": "m",
+      "em": "📏",
+      "cat": "schule"
+    },
+    {
+      "de": "Papier",
+      "g": "das",
+      "pl": "Papiere",
+      "it": "la carta",
+      "itG": "f",
+      "em": "📄",
+      "cat": "schule"
+    },
+    {
+      "de": "Pinsel",
+      "g": "der",
+      "pl": "Pinsel",
+      "it": "il pennello",
+      "itG": "m",
+      "em": "🖌️",
+      "cat": "schule"
+    },
+    {
+      "de": "Schere",
+      "g": "die",
+      "pl": "Scheren",
+      "it": "le forbici",
+      "itG": "f",
+      "em": "✂️",
+      "cat": "schule"
+    },
+    {
+      "de": "Schrift",
+      "g": "die",
+      "pl": "Schriften",
+      "it": "la scrittura",
+      "itG": "f",
+      "em": "✍️",
+      "cat": "schule"
+    },
+    {
+      "de": "Schule",
+      "g": "die",
+      "pl": "Schulen",
+      "it": "la scuola",
+      "itG": "f",
+      "em": "🏫",
+      "cat": "schule"
+    },
+    {
+      "de": "Tafel",
+      "g": "die",
+      "pl": "Tafeln",
+      "it": "la lavagna",
+      "itG": "f",
+      "em": "🖼️",
+      "cat": "schule"
+    },
+    {
+      "de": "Tasche",
+      "g": "die",
+      "pl": "Taschen",
+      "it": "la borsa",
+      "itG": "f",
+      "em": "👜",
+      "cat": "schule"
+    },
+    {
+      "de": "Text",
+      "g": "der",
+      "pl": "Texte",
+      "it": "il testo",
+      "itG": "m",
+      "em": "📝",
+      "cat": "schule"
+    },
+    {
+      "de": "Klasse",
+      "g": "die",
+      "pl": "Klassen",
+      "it": "la classe",
+      "itG": "f",
+      "em": "🏫",
+      "cat": "schule"
+    },
+    {
+      "de": "Zeugnis",
+      "g": "das",
+      "pl": "Zeugnisse",
+      "it": "la pagella",
+      "itG": "f",
+      "em": "📜",
+      "cat": "schule"
+    },
+    {
+      "de": "Ergebnis",
+      "g": "das",
+      "pl": "Ergebnisse",
+      "it": "il risultato",
+      "itG": "m",
+      "em": "✅",
+      "cat": "schule"
+    },
+    {
+      "de": "Wort",
+      "g": "das",
+      "pl": "Wörter",
+      "it": "la parola",
+      "itG": "f",
+      "em": "💬",
+      "cat": "schule"
+    },
+    {
+      "de": "Satz",
+      "g": "der",
+      "pl": "Sätze",
+      "it": "la frase",
+      "itG": "f",
+      "em": "💬",
+      "cat": "schule"
+    },
+    {
+      "de": "Zahl",
+      "g": "die",
+      "pl": "Zahlen",
+      "it": "il numero",
+      "itG": "m",
+      "em": "🔢",
+      "cat": "schule"
+    },
+    {
+      "de": "Nummer",
+      "g": "die",
+      "pl": "Nummern",
+      "it": "il numero",
+      "itG": "m",
+      "em": "🔢",
+      "cat": "schule"
+    },
+    {
+      "de": "Name",
+      "g": "der",
+      "pl": "Namen",
+      "it": "il nome",
+      "itG": "m",
+      "em": "🏷️",
+      "cat": "schule",
+      "obl": "Namen"
+    },
+    {
+      "de": "Seite",
+      "g": "die",
+      "pl": "Seiten",
+      "it": "la pagina",
+      "itG": "f",
+      "em": "📄",
+      "cat": "schule"
+    },
+    {
+      "de": "Thema",
+      "g": "das",
+      "pl": "Themen",
+      "it": "il tema",
+      "itG": "m",
+      "em": "💭",
+      "cat": "schule"
+    },
+    {
+      "de": "Lexikon",
+      "g": "das",
+      "pl": "Lexika",
+      "it": "l'enciclopedia",
+      "itG": "f",
+      "em": "📚",
+      "cat": "schule"
+    },
+    {
+      "de": "Computer",
+      "g": "der",
+      "pl": "Computer",
+      "it": "il computer",
+      "itG": "m",
+      "em": "💻",
+      "cat": "schule"
+    },
+    {
+      "de": "Internet",
+      "g": "das",
+      "pl": null,
+      "it": "internet",
+      "itG": "m",
+      "em": "🌐",
+      "cat": "schule"
+    },
+    {
+      "de": "Handy",
+      "g": "das",
+      "pl": "Handys",
+      "it": "il cellulare",
+      "itG": "m",
+      "em": "📱",
+      "cat": "schule"
+    },
+    {
+      "de": "E-Mail",
+      "g": "die",
+      "pl": "E-Mails",
+      "it": "l'email",
+      "itG": "f",
+      "em": "📧",
+      "cat": "schule"
+    },
+    {
+      "de": "Radio",
+      "g": "das",
+      "pl": "Radios",
+      "it": "la radio",
+      "itG": "f",
+      "em": "📻",
+      "cat": "schule"
+    },
+    {
+      "de": "Telefon",
+      "g": "das",
+      "pl": "Telefone",
+      "it": "il telefono",
+      "itG": "m",
+      "em": "☎️",
+      "cat": "schule"
+    },
+    {
+      "de": "Fehler",
+      "g": "der",
+      "pl": "Fehler",
+      "it": "l'errore",
+      "itG": "m",
+      "em": "❌",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Comic",
+      "g": "der",
+      "pl": "Comics",
+      "it": "il fumetto",
+      "itG": "m",
+      "em": "💥",
+      "cat": "schule"
+    },
+    {
+      "de": "Bad",
+      "g": "das",
+      "pl": "Bäder",
+      "it": "il bagno",
+      "itG": "m",
+      "em": "🛁",
+      "cat": "haus"
+    },
+    {
+      "de": "Bett",
+      "g": "das",
+      "pl": "Betten",
+      "it": "il letto",
+      "itG": "m",
+      "em": "🛏️",
+      "cat": "haus"
+    },
+    {
+      "de": "Bild",
+      "g": "das",
+      "pl": "Bilder",
+      "it": "il quadro",
+      "itG": "m",
+      "em": "🖼️",
+      "cat": "haus"
+    },
+    {
+      "de": "Brille",
+      "g": "die",
+      "pl": "Brillen",
+      "it": "gli occhiali",
+      "itG": "m",
+      "em": "👓",
+      "cat": "haus"
+    },
+    {
+      "de": "Decke",
+      "g": "die",
+      "pl": "Decken",
+      "it": "la coperta",
+      "itG": "f",
+      "em": "🧺",
+      "cat": "haus"
+    },
+    {
+      "de": "Fenster",
+      "g": "das",
+      "pl": "Fenster",
+      "it": "la finestra",
+      "itG": "f",
+      "em": "🪟",
+      "cat": "haus"
+    },
+    {
+      "de": "Feuer",
+      "g": "das",
+      "pl": "Feuer",
+      "it": "il fuoco",
+      "itG": "m",
+      "em": "🔥",
+      "cat": "haus"
+    },
+    {
+      "de": "Flur",
+      "g": "der",
+      "pl": "Flure",
+      "it": "il corridoio",
+      "itG": "m",
+      "em": "🚪",
+      "cat": "haus"
+    },
+    {
+      "de": "Gabel",
+      "g": "die",
+      "pl": "Gabeln",
+      "it": "la forchetta",
+      "itG": "f",
+      "em": "🍴",
+      "cat": "haus"
+    },
+    {
+      "de": "Haus",
+      "g": "das",
+      "pl": "Häuser",
+      "it": "la casa",
+      "itG": "f",
+      "em": "🏠",
+      "cat": "haus"
+    },
+    {
+      "de": "Küche",
+      "g": "die",
+      "pl": "Küchen",
+      "it": "la cucina",
+      "itG": "f",
+      "em": "🍳",
+      "cat": "haus"
+    },
+    {
+      "de": "Löffel",
+      "g": "der",
+      "pl": "Löffel",
+      "it": "il cucchiaio",
+      "itG": "m",
+      "em": "🥄",
+      "cat": "haus"
+    },
+    {
+      "de": "Messer",
+      "g": "das",
+      "pl": "Messer",
+      "it": "il coltello",
+      "itG": "m",
+      "em": "🔪",
+      "cat": "haus"
+    },
+    {
+      "de": "Müll",
+      "g": "der",
+      "pl": null,
+      "it": "la spazzatura",
+      "itG": "f",
+      "em": "🗑️",
+      "cat": "haus"
+    },
+    {
+      "de": "Puppe",
+      "g": "die",
+      "pl": "Puppen",
+      "it": "la bambola",
+      "itG": "f",
+      "em": "🪆",
+      "cat": "haus"
+    },
+    {
+      "de": "Raum",
+      "g": "der",
+      "pl": "Räume",
+      "it": "la stanza",
+      "itG": "f",
+      "em": "🚪",
+      "cat": "haus"
+    },
+    {
+      "de": "Schlüssel",
+      "g": "der",
+      "pl": "Schlüssel",
+      "it": "la chiave",
+      "itG": "f",
+      "em": "🔑",
+      "cat": "haus"
+    },
+    {
+      "de": "Schrank",
+      "g": "der",
+      "pl": "Schränke",
+      "it": "l'armadio",
+      "itG": "m",
+      "em": "🗄️",
+      "cat": "haus"
+    },
+    {
+      "de": "Sessel",
+      "g": "der",
+      "pl": "Sessel",
+      "it": "la poltrona",
+      "itG": "f",
+      "em": "🛋️",
+      "cat": "haus"
+    },
+    {
+      "de": "Spiegel",
+      "g": "der",
+      "pl": "Spiegel",
+      "it": "lo specchio",
+      "itG": "m",
+      "em": "🪞",
+      "cat": "haus"
+    },
+    {
+      "de": "Stuhl",
+      "g": "der",
+      "pl": "Stühle",
+      "it": "la sedia",
+      "itG": "f",
+      "em": "🪑",
+      "cat": "haus"
+    },
+    {
+      "de": "Tasse",
+      "g": "die",
+      "pl": "Tassen",
+      "it": "la tazza",
+      "itG": "f",
+      "em": "☕",
+      "cat": "haus"
+    },
+    {
+      "de": "Teller",
+      "g": "der",
+      "pl": "Teller",
+      "it": "il piatto",
+      "itG": "m",
+      "em": "🍽️",
+      "cat": "haus"
+    },
+    {
+      "de": "Tisch",
+      "g": "der",
+      "pl": "Tische",
+      "it": "il tavolo",
+      "itG": "m",
+      "em": "🍽️",
+      "cat": "haus"
+    },
+    {
+      "de": "Tür",
+      "g": "die",
+      "pl": "Türen",
+      "it": "la porta",
+      "itG": "f",
+      "em": "🚪",
+      "cat": "haus"
+    },
+    {
+      "de": "Uhr",
+      "g": "die",
+      "pl": "Uhren",
+      "it": "l'orologio",
+      "itG": "m",
+      "em": "⏰",
+      "cat": "haus"
+    },
+    {
+      "de": "Vase",
+      "g": "die",
+      "pl": "Vasen",
+      "it": "il vaso",
+      "itG": "m",
+      "em": "🏺",
+      "cat": "haus"
+    },
+    {
+      "de": "Zimmer",
+      "g": "das",
+      "pl": "Zimmer",
+      "it": "la stanza",
+      "itG": "f",
+      "em": "🛋️",
+      "cat": "haus"
+    },
+    {
+      "de": "Kalender",
+      "g": "der",
+      "pl": "Kalender",
+      "it": "il calendario",
+      "itG": "m",
+      "em": "📅",
+      "cat": "haus"
+    },
+    {
+      "de": "Seife",
+      "g": "die",
+      "pl": "Seifen",
+      "it": "il sapone",
+      "itG": "m",
+      "em": "🧼",
+      "cat": "haus"
+    },
+    {
+      "de": "Windel",
+      "g": "die",
+      "pl": "Windeln",
+      "it": "il pannolino",
+      "itG": "m",
+      "em": "👶",
+      "cat": "haus"
+    },
+    {
+      "de": "Lampe",
+      "g": "die",
+      "pl": "Lampen",
+      "it": "la lampada",
+      "itG": "f",
+      "em": "💡",
+      "cat": "haus"
+    },
+    {
+      "de": "Teddy",
+      "g": "der",
+      "pl": "Teddys",
+      "it": "l'orsacchiotto",
+      "itG": "m",
+      "em": "🧸",
+      "cat": "haus"
+    },
+    {
+      "de": "Würfel",
+      "g": "der",
+      "pl": "Würfel",
+      "it": "il dado",
+      "itG": "m",
+      "em": "🎲",
+      "cat": "haus"
+    },
+    {
+      "de": "Kamm",
+      "g": "der",
+      "pl": "Kämme",
+      "it": "il pettine",
+      "itG": "m",
+      "em": "💈",
+      "cat": "haus"
+    },
+    {
+      "de": "Block",
+      "g": "der",
+      "pl": "Blöcke",
+      "it": "il blocco",
+      "itG": "m",
+      "em": "🗒️",
+      "cat": "haus"
+    },
+    {
+      "de": "Pflaster",
+      "g": "das",
+      "pl": "Pflaster",
+      "it": "il cerotto",
+      "itG": "m",
+      "em": "🩹",
+      "cat": "haus"
+    },
+    {
+      "de": "Hemd",
+      "g": "das",
+      "pl": "Hemden",
+      "it": "la camicia",
+      "itG": "f",
+      "em": "👔",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Hose",
+      "g": "die",
+      "pl": "Hosen",
+      "it": "i pantaloni",
+      "itG": "m",
+      "em": "👖",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Hut",
+      "g": "der",
+      "pl": "Hüte",
+      "it": "il cappello",
+      "itG": "m",
+      "em": "🎩",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Jacke",
+      "g": "die",
+      "pl": "Jacken",
+      "it": "la giacca",
+      "itG": "f",
+      "em": "🧥",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Kleid",
+      "g": "das",
+      "pl": "Kleider",
+      "it": "il vestito",
+      "itG": "m",
+      "em": "👗",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Mütze",
+      "g": "die",
+      "pl": "Mützen",
+      "it": "il berretto",
+      "itG": "m",
+      "em": "🧢",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Rock",
+      "g": "der",
+      "pl": "Röcke",
+      "it": "la gonna",
+      "itG": "f",
+      "em": "🩳",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Schal",
+      "g": "der",
+      "pl": "Schals",
+      "it": "la sciarpa",
+      "itG": "f",
+      "em": "🧣",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Schuh",
+      "g": "der",
+      "pl": "Schuhe",
+      "it": "la scarpa",
+      "itG": "f",
+      "em": "👟",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Pullover",
+      "g": "der",
+      "pl": "Pullover",
+      "it": "il maglione",
+      "itG": "m",
+      "em": "👕",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Stoff",
+      "g": "der",
+      "pl": "Stoffe",
+      "it": "la stoffa",
+      "itG": "f",
+      "em": "🧵",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Knopf",
+      "g": "der",
+      "pl": "Knöpfe",
+      "it": "il bottone",
+      "itG": "m",
+      "em": "🔘",
+      "cat": "kleidung"
+    },
+    {
+      "de": "Ast",
+      "g": "der",
+      "pl": "Äste",
+      "it": "il ramo",
+      "itG": "m",
+      "em": "🌿",
+      "cat": "natur"
+    },
+    {
+      "de": "Baum",
+      "g": "der",
+      "pl": "Bäume",
+      "it": "l'albero",
+      "itG": "m",
+      "em": "🌳",
+      "cat": "natur"
+    },
+    {
+      "de": "Berg",
+      "g": "der",
+      "pl": "Berge",
+      "it": "la montagna",
+      "itG": "f",
+      "em": "⛰️",
+      "cat": "natur"
+    },
+    {
+      "de": "Blatt",
+      "g": "das",
+      "pl": "Blätter",
+      "it": "la foglia",
+      "itG": "f",
+      "em": "🍃",
+      "cat": "natur"
+    },
+    {
+      "de": "Blitz",
+      "g": "der",
+      "pl": "Blitze",
+      "it": "il fulmine",
+      "itG": "m",
+      "em": "⚡",
+      "cat": "natur"
+    },
+    {
+      "de": "Blume",
+      "g": "die",
+      "pl": "Blumen",
+      "it": "il fiore",
+      "itG": "m",
+      "em": "🌸",
+      "cat": "natur"
+    },
+    {
+      "de": "Blüte",
+      "g": "die",
+      "pl": "Blüten",
+      "it": "il bocciolo",
+      "itG": "m",
+      "em": "🌺",
+      "cat": "natur"
+    },
+    {
+      "de": "Erde",
+      "g": "die",
+      "pl": null,
+      "it": "la terra",
+      "itG": "f",
+      "em": "🌍",
+      "cat": "natur"
+    },
+    {
+      "de": "Feld",
+      "g": "das",
+      "pl": "Felder",
+      "it": "il campo",
+      "itG": "m",
+      "em": "🌾",
+      "cat": "natur"
+    },
+    {
+      "de": "Fluss",
+      "g": "der",
+      "pl": "Flüsse",
+      "it": "il fiume",
+      "itG": "m",
+      "em": "🏞️",
+      "cat": "natur"
+    },
+    {
+      "de": "Garten",
+      "g": "der",
+      "pl": "Gärten",
+      "it": "il giardino",
+      "itG": "m",
+      "em": "🌷",
+      "cat": "natur"
+    },
+    {
+      "de": "Gras",
+      "g": "das",
+      "pl": "Gräser",
+      "it": "l'erba",
+      "itG": "f",
+      "em": "🌱",
+      "cat": "natur"
+    },
+    {
+      "de": "Himmel",
+      "g": "der",
+      "pl": null,
+      "it": "il cielo",
+      "itG": "m",
+      "em": "☁️",
+      "cat": "natur"
+    },
+    {
+      "de": "Höhle",
+      "g": "die",
+      "pl": "Höhlen",
+      "it": "la grotta",
+      "itG": "f",
+      "em": "🕳️",
+      "cat": "natur"
+    },
+    {
+      "de": "Insel",
+      "g": "die",
+      "pl": "Inseln",
+      "it": "l'isola",
+      "itG": "f",
+      "em": "🏝️",
+      "cat": "natur"
+    },
+    {
+      "de": "Land",
+      "g": "das",
+      "pl": "Länder",
+      "it": "il paese",
+      "itG": "m",
+      "em": "🗺️",
+      "cat": "natur"
+    },
+    {
+      "de": "Licht",
+      "g": "das",
+      "pl": "Lichter",
+      "it": "la luce",
+      "itG": "f",
+      "em": "💡",
+      "cat": "natur"
+    },
+    {
+      "de": "Loch",
+      "g": "das",
+      "pl": "Löcher",
+      "it": "il buco",
+      "itG": "m",
+      "em": "🕳️",
+      "cat": "natur"
+    },
+    {
+      "de": "Luft",
+      "g": "die",
+      "pl": null,
+      "it": "l'aria",
+      "itG": "f",
+      "em": "🌬️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Meer",
+      "g": "das",
+      "pl": "Meere",
+      "it": "il mare",
+      "itG": "m",
+      "em": "🌊",
+      "cat": "natur"
+    },
+    {
+      "de": "Mond",
+      "g": "der",
+      "pl": "Monde",
+      "it": "la luna",
+      "itG": "f",
+      "em": "🌙",
+      "cat": "natur"
+    },
+    {
+      "de": "Nebel",
+      "g": "der",
+      "pl": null,
+      "it": "la nebbia",
+      "itG": "f",
+      "em": "🌫️",
+      "cat": "natur"
+    },
+    {
+      "de": "Quelle",
+      "g": "die",
+      "pl": "Quellen",
+      "it": "la sorgente",
+      "itG": "f",
+      "em": "💧",
+      "cat": "natur"
+    },
+    {
+      "de": "Rasen",
+      "g": "der",
+      "pl": null,
+      "it": "il prato",
+      "itG": "m",
+      "em": "🌱",
+      "cat": "natur"
+    },
+    {
+      "de": "Regen",
+      "g": "der",
+      "pl": null,
+      "it": "la pioggia",
+      "itG": "f",
+      "em": "🌧️",
+      "cat": "natur"
+    },
+    {
+      "de": "Sand",
+      "g": "der",
+      "pl": null,
+      "it": "la sabbia",
+      "itG": "f",
+      "em": "🏖️",
+      "cat": "natur"
+    },
+    {
+      "de": "Schnee",
+      "g": "der",
+      "pl": null,
+      "it": "la neve",
+      "itG": "f",
+      "em": "❄️",
+      "cat": "natur"
+    },
+    {
+      "de": "See",
+      "g": "der",
+      "pl": "Seen",
+      "it": "il lago",
+      "itG": "m",
+      "em": "🏞️",
+      "cat": "natur"
+    },
+    {
+      "de": "Sonne",
+      "g": "die",
+      "pl": null,
+      "it": "il sole",
+      "itG": "m",
+      "em": "☀️",
+      "cat": "natur"
+    },
+    {
+      "de": "Stein",
+      "g": "der",
+      "pl": "Steine",
+      "it": "la pietra",
+      "itG": "f",
+      "em": "🪨",
+      "cat": "natur"
+    },
+    {
+      "de": "Stern",
+      "g": "der",
+      "pl": "Sterne",
+      "it": "la stella",
+      "itG": "f",
+      "em": "⭐",
+      "cat": "natur"
+    },
+    {
+      "de": "Strand",
+      "g": "der",
+      "pl": "Strände",
+      "it": "la spiaggia",
+      "itG": "f",
+      "em": "🏖️",
+      "cat": "natur"
+    },
+    {
+      "de": "Strauch",
+      "g": "der",
+      "pl": "Sträucher",
+      "it": "il cespuglio",
+      "itG": "m",
+      "em": "🌳",
+      "cat": "natur"
+    },
+    {
+      "de": "Sturm",
+      "g": "der",
+      "pl": "Stürme",
+      "it": "la tempesta",
+      "itG": "f",
+      "em": "🌪️",
+      "cat": "natur"
+    },
+    {
+      "de": "Tal",
+      "g": "das",
+      "pl": "Täler",
+      "it": "la valle",
+      "itG": "f",
+      "em": "🏞️",
+      "cat": "natur"
+    },
+    {
+      "de": "Tanne",
+      "g": "die",
+      "pl": "Tannen",
+      "it": "l'abete",
+      "itG": "m",
+      "em": "🌲",
+      "cat": "natur"
+    },
+    {
+      "de": "Vulkan",
+      "g": "der",
+      "pl": "Vulkane",
+      "it": "il vulcano",
+      "itG": "m",
+      "em": "🌋",
+      "cat": "natur"
+    },
+    {
+      "de": "Wald",
+      "g": "der",
+      "pl": "Wälder",
+      "it": "il bosco",
+      "itG": "m",
+      "em": "🌲",
+      "cat": "natur"
+    },
+    {
+      "de": "Wasser",
+      "g": "das",
+      "pl": null,
+      "it": "l'acqua",
+      "itG": "f",
+      "em": "💧",
+      "cat": "natur"
+    },
+    {
+      "de": "Welt",
+      "g": "die",
+      "pl": null,
+      "it": "il mondo",
+      "itG": "m",
+      "em": "🌍",
+      "cat": "natur"
+    },
+    {
+      "de": "Wiese",
+      "g": "die",
+      "pl": "Wiesen",
+      "it": "il prato",
+      "itG": "m",
+      "em": "🌼",
+      "cat": "natur"
+    },
+    {
+      "de": "Wind",
+      "g": "der",
+      "pl": null,
+      "it": "il vento",
+      "itG": "m",
+      "em": "💨",
+      "cat": "natur"
+    },
+    {
+      "de": "Wurzel",
+      "g": "die",
+      "pl": "Wurzeln",
+      "it": "la radice",
+      "itG": "f",
+      "em": "🌱",
+      "cat": "natur"
+    },
+    {
+      "de": "Zaun",
+      "g": "der",
+      "pl": "Zäune",
+      "it": "il recinto",
+      "itG": "m",
+      "em": "🚧",
+      "cat": "natur"
+    },
+    {
+      "de": "Stamm",
+      "g": "der",
+      "pl": "Stämme",
+      "it": "il tronco",
+      "itG": "m",
+      "em": "🪵",
+      "cat": "natur"
+    },
+    {
+      "de": "Hitze",
+      "g": "die",
+      "pl": null,
+      "it": "il caldo",
+      "itG": "m",
+      "em": "🥵",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Kälte",
+      "g": "die",
+      "pl": null,
+      "it": "il freddo",
+      "itG": "m",
+      "em": "🥶",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Wärme",
+      "g": "die",
+      "pl": null,
+      "it": "il calore",
+      "itG": "m",
+      "em": "♨️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Temperatur",
+      "g": "die",
+      "pl": "Temperaturen",
+      "it": "la temperatura",
+      "itG": "f",
+      "em": "🌡️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Ampel",
+      "g": "die",
+      "pl": "Ampeln",
+      "it": "il semaforo",
+      "itG": "m",
+      "em": "🚦",
+      "cat": "stadt"
+    },
+    {
+      "de": "Auto",
+      "g": "das",
+      "pl": "Autos",
+      "it": "l'auto",
+      "itG": "f",
+      "em": "🚗",
+      "cat": "stadt"
+    },
+    {
+      "de": "Bahn",
+      "g": "die",
+      "pl": "Bahnen",
+      "it": "il treno",
+      "itG": "m",
+      "em": "🚆",
+      "cat": "stadt"
+    },
+    {
+      "de": "Bank",
+      "g": "die",
+      "pl": "Bänke",
+      "it": "la panchina",
+      "itG": "f",
+      "em": "🪑",
+      "cat": "stadt"
+    },
+    {
+      "de": "Boot",
+      "g": "das",
+      "pl": "Boote",
+      "it": "la barca",
+      "itG": "f",
+      "em": "🛶",
+      "cat": "stadt"
+    },
+    {
+      "de": "Brücke",
+      "g": "die",
+      "pl": "Brücken",
+      "it": "il ponte",
+      "itG": "m",
+      "em": "🌉",
+      "cat": "stadt"
+    },
+    {
+      "de": "Bus",
+      "g": "der",
+      "pl": "Busse",
+      "it": "l'autobus",
+      "itG": "m",
+      "em": "🚌",
+      "cat": "stadt"
+    },
+    {
+      "de": "Fahrrad",
+      "g": "das",
+      "pl": "Fahrräder",
+      "it": "la bicicletta",
+      "itG": "f",
+      "em": "🚲",
+      "cat": "stadt"
+    },
+    {
+      "de": "Flugzeug",
+      "g": "das",
+      "pl": "Flugzeuge",
+      "it": "l'aereo",
+      "itG": "m",
+      "em": "✈️",
+      "cat": "stadt"
+    },
+    {
+      "de": "Kirche",
+      "g": "die",
+      "pl": "Kirchen",
+      "it": "la chiesa",
+      "itG": "f",
+      "em": "⛪",
+      "cat": "stadt"
+    },
+    {
+      "de": "Platz",
+      "g": "der",
+      "pl": "Plätze",
+      "it": "la piazza",
+      "itG": "f",
+      "em": "🏙️",
+      "cat": "stadt"
+    },
+    {
+      "de": "Stadt",
+      "g": "die",
+      "pl": "Städte",
+      "it": "la città",
+      "itG": "f",
+      "em": "🏙️",
+      "cat": "stadt"
+    },
+    {
+      "de": "Straße",
+      "g": "die",
+      "pl": "Straßen",
+      "it": "la strada",
+      "itG": "f",
+      "em": "🛣️",
+      "cat": "stadt"
+    },
+    {
+      "de": "Taxi",
+      "g": "das",
+      "pl": "Taxis",
+      "it": "il taxi",
+      "itG": "m",
+      "em": "🚕",
+      "cat": "stadt"
+    },
+    {
+      "de": "Tor",
+      "g": "das",
+      "pl": "Tore",
+      "it": "il portone",
+      "itG": "m",
+      "em": "🥅",
+      "cat": "stadt"
+    },
+    {
+      "de": "Verkehr",
+      "g": "der",
+      "pl": null,
+      "it": "il traffico",
+      "itG": "m",
+      "em": "🚦",
+      "cat": "stadt"
+    },
+    {
+      "de": "Weg",
+      "g": "der",
+      "pl": "Wege",
+      "it": "il sentiero",
+      "itG": "m",
+      "em": "🛤️",
+      "cat": "stadt"
+    },
+    {
+      "de": "Zug",
+      "g": "der",
+      "pl": "Züge",
+      "it": "il treno",
+      "itG": "m",
+      "em": "🚂",
+      "cat": "stadt"
+    },
+    {
+      "de": "Zoo",
+      "g": "der",
+      "pl": "Zoos",
+      "it": "lo zoo",
+      "itG": "m",
+      "em": "🦁",
+      "cat": "stadt"
+    },
+    {
+      "de": "Theater",
+      "g": "das",
+      "pl": "Theater",
+      "it": "il teatro",
+      "itG": "m",
+      "em": "🎭",
+      "cat": "stadt"
+    },
+    {
+      "de": "Schiff",
+      "g": "das",
+      "pl": "Schiffe",
+      "it": "la nave",
+      "itG": "f",
+      "em": "🚢",
+      "cat": "stadt"
+    },
+    {
+      "de": "Gebäude",
+      "g": "das",
+      "pl": "Gebäude",
+      "it": "l'edificio",
+      "itG": "m",
+      "em": "🏢",
+      "cat": "stadt"
+    },
+    {
+      "de": "Turm",
+      "g": "der",
+      "pl": "Türme",
+      "it": "la torre",
+      "itG": "f",
+      "em": "🗼",
+      "cat": "stadt"
+    },
+    {
+      "de": "Abend",
+      "g": "der",
+      "pl": "Abende",
+      "it": "la sera",
+      "itG": "f",
+      "em": "🌆",
+      "cat": "zeit"
+    },
+    {
+      "de": "Jahr",
+      "g": "das",
+      "pl": "Jahre",
+      "it": "l'anno",
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit"
+    },
+    {
+      "de": "Monat",
+      "g": "der",
+      "pl": "Monate",
+      "it": "il mese",
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit"
+    },
+    {
+      "de": "Minute",
+      "g": "die",
+      "pl": "Minuten",
+      "it": "il minuto",
+      "itG": "m",
+      "em": "⏱️",
+      "cat": "zeit"
+    },
+    {
+      "de": "Sekunde",
+      "g": "die",
+      "pl": "Sekunden",
+      "it": "il secondo",
+      "itG": "m",
+      "em": "⏱️",
+      "cat": "zeit"
+    },
+    {
+      "de": "Stunde",
+      "g": "die",
+      "pl": "Stunden",
+      "it": "l'ora",
+      "itG": "f",
+      "em": "🕐",
+      "cat": "zeit"
+    },
+    {
+      "de": "Woche",
+      "g": "die",
+      "pl": "Wochen",
+      "it": "la settimana",
+      "itG": "f",
+      "em": "🗓️",
+      "cat": "zeit"
+    },
+    {
+      "de": "Tag",
+      "g": "der",
+      "pl": "Tage",
+      "it": "il giorno",
+      "itG": "m",
+      "em": "🌞",
+      "cat": "zeit"
+    },
+    {
+      "de": "Nacht",
+      "g": "die",
+      "pl": "Nächte",
+      "it": "la notte",
+      "itG": "f",
+      "em": "🌙",
+      "cat": "zeit"
+    },
+    {
+      "de": "Mittag",
+      "g": "der",
+      "pl": "Mittage",
+      "it": "il mezzogiorno",
+      "itG": "m",
+      "em": "🕛",
+      "cat": "zeit"
+    },
+    {
+      "de": "Zeit",
+      "g": "die",
+      "pl": null,
+      "it": "il tempo",
+      "itG": "m",
+      "em": "⏳",
+      "cat": "zeit"
+    },
+    {
+      "de": "Herbst",
+      "g": "der",
+      "pl": "Herbste",
+      "it": "l'autunno",
+      "itG": "m",
+      "em": "🍂",
+      "cat": "zeit"
+    },
+    {
+      "de": "Frühling",
+      "g": "der",
+      "pl": "Frühlinge",
+      "it": "la primavera",
+      "itG": "f",
+      "em": "🌷",
+      "cat": "zeit"
+    },
+    {
+      "de": "Sommer",
+      "g": "der",
+      "pl": "Sommer",
+      "it": "l'estate",
+      "itG": "f",
+      "em": "☀️",
+      "cat": "zeit"
+    },
+    {
+      "de": "Winter",
+      "g": "der",
+      "pl": "Winter",
+      "it": "l'inverno",
+      "itG": "m",
+      "em": "⛄",
+      "cat": "zeit"
+    },
+    {
+      "de": "Geburtstag",
+      "g": "der",
+      "pl": "Geburtstage",
+      "it": "il compleanno",
+      "itG": "m",
+      "em": "🎂",
+      "cat": "zeit"
+    },
+    {
+      "de": "Urlaub",
+      "g": "der",
+      "pl": "Urlaube",
+      "it": "la vacanza",
+      "itG": "f",
+      "em": "🏖️",
+      "cat": "zeit"
+    },
+    {
+      "de": "Morgen",
+      "g": "der",
+      "pl": "Morgen",
+      "it": "il mattino",
+      "itG": "m",
+      "em": "🌅",
+      "cat": "zeit"
+    },
+    {
+      "de": "Angst",
+      "g": "die",
+      "pl": "Ängste",
+      "it": "la paura",
+      "itG": "f",
+      "em": "😨",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Ball",
+      "g": "der",
+      "pl": "Bälle",
+      "it": "la palla",
+      "itG": "f",
+      "em": "⚽",
+      "cat": "dinge"
+    },
+    {
+      "de": "Brief",
+      "g": "der",
+      "pl": "Briefe",
+      "it": "la lettera",
+      "itG": "f",
+      "em": "✉️",
+      "cat": "dinge"
+    },
+    {
+      "de": "Dach",
+      "g": "das",
+      "pl": "Dächer",
+      "it": "il tetto",
+      "itG": "m",
+      "em": "🏠",
+      "cat": "dinge"
+    },
+    {
+      "de": "Draht",
+      "g": "der",
+      "pl": "Drähte",
+      "it": "il filo",
+      "itG": "m",
+      "em": "🔗",
+      "cat": "dinge"
+    },
+    {
+      "de": "Durst",
+      "g": "der",
+      "pl": null,
+      "it": "la sete",
+      "itG": "f",
+      "em": "🥤",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Ende",
+      "g": "das",
+      "pl": "Enden",
+      "it": "la fine",
+      "itG": "f",
+      "em": "🏁",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Entfernung",
+      "g": "die",
+      "pl": "Entfernungen",
+      "it": "la distanza",
+      "itG": "f",
+      "em": "📏",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Fach",
+      "g": "das",
+      "pl": "Fächer",
+      "it": "la materia",
+      "itG": "f",
+      "em": "📚",
+      "cat": "dinge"
+    },
+    {
+      "de": "Fahrzeug",
+      "g": "das",
+      "pl": "Fahrzeuge",
+      "it": "il veicolo",
+      "itG": "m",
+      "em": "🚗",
+      "cat": "dinge"
+    },
+    {
+      "de": "Farbe",
+      "g": "die",
+      "pl": "Farben",
+      "it": "il colore",
+      "itG": "m",
+      "em": "🎨",
+      "cat": "dinge"
+    },
+    {
+      "de": "Freude",
+      "g": "die",
+      "pl": null,
+      "it": "la gioia",
+      "itG": "f",
+      "em": "😄",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Frieden",
+      "g": "der",
+      "pl": null,
+      "it": "la pace",
+      "itG": "f",
+      "em": "🕊️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Gefahr",
+      "g": "die",
+      "pl": "Gefahren",
+      "it": "il pericolo",
+      "itG": "m",
+      "em": "⚠️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Gepäck",
+      "g": "das",
+      "pl": null,
+      "it": "il bagaglio",
+      "itG": "m",
+      "em": "🧳",
+      "cat": "dinge"
+    },
+    {
+      "de": "Glas",
+      "g": "das",
+      "pl": "Gläser",
+      "it": "il bicchiere",
+      "itG": "m",
+      "em": "🥛",
+      "cat": "dinge"
+    },
+    {
+      "de": "Glück",
+      "g": "das",
+      "pl": null,
+      "it": "la fortuna",
+      "itG": "f",
+      "em": "🍀",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Grund",
+      "g": "der",
+      "pl": "Gründe",
+      "it": "il motivo",
+      "itG": "m",
+      "em": "🤔",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Heizung",
+      "g": "die",
+      "pl": "Heizungen",
+      "it": "il riscaldamento",
+      "itG": "m",
+      "em": "♨️",
+      "cat": "dinge"
+    },
+    {
+      "de": "Hunger",
+      "g": "der",
+      "pl": null,
+      "it": "la fame",
+      "itG": "f",
+      "em": "🍽️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Idee",
+      "g": "die",
+      "pl": "Ideen",
+      "it": "l'idea",
+      "itG": "f",
+      "em": "💡",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Kampf",
+      "g": "der",
+      "pl": "Kämpfe",
+      "it": "la lotta",
+      "itG": "f",
+      "em": "🥊",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Kreis",
+      "g": "der",
+      "pl": "Kreise",
+      "it": "il cerchio",
+      "itG": "m",
+      "em": "⭕",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Lärm",
+      "g": "der",
+      "pl": null,
+      "it": "il rumore",
+      "itG": "m",
+      "em": "📢",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Lied",
+      "g": "das",
+      "pl": "Lieder",
+      "it": "la canzone",
+      "itG": "f",
+      "em": "🎵",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Liter",
+      "g": "der",
+      "pl": "Liter",
+      "it": "il litro",
+      "itG": "m",
+      "em": "🧴",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Meter",
+      "g": "der",
+      "pl": "Meter",
+      "it": "il metro",
+      "itG": "m",
+      "em": "📏",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Musik",
+      "g": "die",
+      "pl": null,
+      "it": "la musica",
+      "itG": "f",
+      "em": "🎶",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Ordnung",
+      "g": "die",
+      "pl": null,
+      "it": "l'ordine",
+      "itG": "m",
+      "em": "🧹",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Paket",
+      "g": "das",
+      "pl": "Pakete",
+      "it": "il pacco",
+      "itG": "m",
+      "em": "📦",
+      "cat": "dinge"
+    },
+    {
+      "de": "Pass",
+      "g": "der",
+      "pl": "Pässe",
+      "it": "il passaporto",
+      "itG": "m",
+      "em": "🛂",
+      "cat": "dinge"
+    },
+    {
+      "de": "Programm",
+      "g": "das",
+      "pl": "Programme",
+      "it": "il programma",
+      "itG": "m",
+      "em": "📺",
+      "cat": "dinge"
+    },
+    {
+      "de": "Punkt",
+      "g": "der",
+      "pl": "Punkte",
+      "it": "il punto",
+      "itG": "m",
+      "em": "⚫",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Quadrat",
+      "g": "das",
+      "pl": "Quadrate",
+      "it": "il quadrato",
+      "itG": "m",
+      "em": "⬜",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Rad",
+      "g": "das",
+      "pl": "Räder",
+      "it": "la ruota",
+      "itG": "f",
+      "em": "🛞",
+      "cat": "dinge"
+    },
+    {
+      "de": "Reihe",
+      "g": "die",
+      "pl": "Reihen",
+      "it": "la fila",
+      "itG": "f",
+      "em": "🔢",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Ring",
+      "g": "der",
+      "pl": "Ringe",
+      "it": "l'anello",
+      "itG": "m",
+      "em": "💍",
+      "cat": "dinge"
+    },
+    {
+      "de": "Ruhe",
+      "g": "die",
+      "pl": null,
+      "it": "la calma",
+      "itG": "f",
+      "em": "🤫",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Sache",
+      "g": "die",
+      "pl": "Sachen",
+      "it": "la cosa",
+      "itG": "f",
+      "em": "📦",
+      "cat": "dinge"
+    },
+    {
+      "de": "Schatz",
+      "g": "der",
+      "pl": "Schätze",
+      "it": "il tesoro",
+      "itG": "m",
+      "em": "💎",
+      "cat": "dinge"
+    },
+    {
+      "de": "Schloss",
+      "g": "das",
+      "pl": "Schlösser",
+      "it": "il castello",
+      "itG": "m",
+      "em": "🏰",
+      "cat": "dinge"
+    },
+    {
+      "de": "Schnur",
+      "g": "die",
+      "pl": "Schnüre",
+      "it": "la corda",
+      "itG": "f",
+      "em": "🪢",
+      "cat": "dinge"
+    },
+    {
+      "de": "Schutz",
+      "g": "der",
+      "pl": null,
+      "it": "la protezione",
+      "itG": "f",
+      "em": "🛡️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Seil",
+      "g": "das",
+      "pl": "Seile",
+      "it": "la corda",
+      "itG": "f",
+      "em": "🪢",
+      "cat": "dinge"
+    },
+    {
+      "de": "Spaß",
+      "g": "der",
+      "pl": null,
+      "it": "il divertimento",
+      "itG": "m",
+      "em": "🎉",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Spaziergang",
+      "g": "der",
+      "pl": "Spaziergänge",
+      "it": "la passeggiata",
+      "itG": "f",
+      "em": "🚶",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Sport",
+      "g": "der",
+      "pl": null,
+      "it": "lo sport",
+      "itG": "m",
+      "em": "🏃",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Stimme",
+      "g": "die",
+      "pl": "Stimmen",
+      "it": "la voce",
+      "itG": "f",
+      "em": "🗣️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Stück",
+      "g": "das",
+      "pl": "Stücke",
+      "it": "il pezzo",
+      "itG": "m",
+      "em": "🧩",
+      "cat": "dinge"
+    },
+    {
+      "de": "Versuch",
+      "g": "der",
+      "pl": "Versuche",
+      "it": "il tentativo",
+      "itG": "m",
+      "em": "🧪",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Zeitung",
+      "g": "die",
+      "pl": "Zeitungen",
+      "it": "il giornale",
+      "itG": "m",
+      "em": "📰",
+      "cat": "dinge"
+    },
+    {
+      "de": "Null",
+      "g": "die",
+      "pl": "Nullen",
+      "it": "lo zero",
+      "itG": "m",
+      "em": "0️⃣",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Verein",
+      "g": "der",
+      "pl": "Vereine",
+      "it": "l'associazione",
+      "itG": "f",
+      "em": "⚽",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Chance",
+      "g": "die",
+      "pl": "Chancen",
+      "it": "l'occasione",
+      "itG": "f",
+      "em": "🎯",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Chor",
+      "g": "der",
+      "pl": "Chöre",
+      "it": "il coro",
+      "itG": "m",
+      "em": "🎤",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Euro",
+      "g": "der",
+      "pl": "Euros",
+      "it": "l'euro",
+      "itG": "m",
+      "em": "💶",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Cent",
+      "g": "der",
+      "pl": "Cents",
+      "it": "il centesimo",
+      "itG": "m",
+      "em": "🪙",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Erlebnis",
+      "g": "das",
+      "pl": "Erlebnisse",
+      "it": "l'avventura",
+      "itG": "f",
+      "em": "🎢",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Geheimnis",
+      "g": "das",
+      "pl": "Geheimnisse",
+      "it": "il segreto",
+      "itG": "m",
+      "em": "🤫",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Hindernis",
+      "g": "das",
+      "pl": "Hindernisse",
+      "it": "l'ostacolo",
+      "itG": "m",
+      "em": "🚧",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Ereignis",
+      "g": "das",
+      "pl": "Ereignisse",
+      "it": "l'evento",
+      "itG": "m",
+      "em": "✨",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Erlaubnis",
+      "g": "die",
+      "pl": null,
+      "it": "il permesso",
+      "itG": "m",
+      "em": "🙆",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Erkenntnis",
+      "g": "die",
+      "pl": "Erkenntnisse",
+      "it": "la scoperta",
+      "itG": "f",
+      "em": "🧠",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Freundschaft",
+      "g": "die",
+      "pl": "Freundschaften",
+      "it": "l'amicizia",
+      "itG": "f",
+      "em": "👭",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Mannschaft",
+      "g": "die",
+      "pl": "Mannschaften",
+      "it": "la squadra",
+      "itG": "f",
+      "em": "🏅",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Meisterschaft",
+      "g": "die",
+      "pl": "Meisterschaften",
+      "it": "il campionato",
+      "itG": "m",
+      "em": "🏆",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Feindschaft",
+      "g": "die",
+      "pl": "Feindschaften",
+      "it": "l'inimicizia",
+      "itG": "f",
+      "em": "⚔️",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Bereitschaft",
+      "g": "die",
+      "pl": null,
+      "it": "la disponibilità",
+      "itG": "f",
+      "em": "🙋",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Verwandtschaft",
+      "g": "die",
+      "pl": null,
+      "it": "la parentela",
+      "itG": "f",
+      "em": "👨‍👩‍👧‍👦",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Wissenschaft",
+      "g": "die",
+      "pl": "Wissenschaften",
+      "it": "la scienza",
+      "itG": "f",
+      "em": "🔬",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Reichtum",
+      "g": "der",
+      "pl": "Reichtümer",
+      "it": "la ricchezza",
+      "itG": "f",
+      "em": "💰",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Irrtum",
+      "g": "der",
+      "pl": "Irrtümer",
+      "it": "l'errore",
+      "itG": "m",
+      "em": "🤦",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Wachstum",
+      "g": "das",
+      "pl": null,
+      "it": "la crescita",
+      "itG": "f",
+      "em": "🌱",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Rittertum",
+      "g": "das",
+      "pl": null,
+      "it": "la cavalleria",
+      "itG": "f",
+      "em": "🏰",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Eigentum",
+      "g": "das",
+      "pl": null,
+      "it": "la proprietà",
+      "itG": "f",
+      "em": "💼",
+      "cat": "abstrakt"
+    },
+    {
+      "de": "Januar",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "Februar",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "März",
+      "g": "der",
+      "pl": null,
+      "it": "marzo",
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "April",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "Mai",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "Juni",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "Juli",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "August",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "September",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "Oktober",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "November",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "Dezember",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "📅",
+      "cat": "zeit",
+      "rule": "monat"
+    },
+    {
+      "de": "Montag",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "🗓️",
+      "cat": "zeit",
+      "rule": "tag"
+    },
+    {
+      "de": "Dienstag",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "🗓️",
+      "cat": "zeit",
+      "rule": "tag"
+    },
+    {
+      "de": "Mittwoch",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "🗓️",
+      "cat": "zeit",
+      "rule": "tag"
+    },
+    {
+      "de": "Donnerstag",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "🗓️",
+      "cat": "zeit",
+      "rule": "tag"
+    },
+    {
+      "de": "Freitag",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "🗓️",
+      "cat": "zeit",
+      "rule": "tag"
+    },
+    {
+      "de": "Samstag",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "🗓️",
+      "cat": "zeit",
+      "rule": "tag"
+    },
+    {
+      "de": "Sonntag",
+      "g": "der",
+      "pl": null,
+      "it": null,
+      "itG": "m",
+      "em": "🗓️",
+      "cat": "zeit",
+      "rule": "tag"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "nouns",
+  "about": "German nouns with article, plural and Italian, used by Deutsch mit Ella and Wort-Regen. Card ids are the noun itself (keys of gram_srs_<P>).",
+  "srs": {
+    "intervals": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      90
+    ],
+    "fuzz": 1
+  },
+  "files": {
+    "nouns": "nouns.json",
+    "categories": "categories.json",
+    "templates": "templates.json",
+    "paths": {
+      "akk": "path-akk.json",
+      "dat": "path-dat.json",
+      "nomen": "path-nomen.json"
+    },
+    "wortbau": "wortbau.json"
+  }
+}

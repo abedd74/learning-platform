@@ -1,0 +1,289 @@
+{
+  "akk": [
+    {
+      "t": "Ich sehe %A %N.",
+      "it": "Io vedo...",
+      "cats": [
+        "tiere",
+        "menschen",
+        "haus",
+        "stadt",
+        "natur",
+        "dinge",
+        "kleidung",
+        "schule"
+      ],
+      "also": [
+        "Fehler"
+      ]
+    },
+    {
+      "t": "Ella hat %A %N.",
+      "it": "Ella ha...",
+      "cats": [
+        "tiere",
+        "haus",
+        "kleidung",
+        "schule",
+        "dinge",
+        "essen"
+      ],
+      "also": [
+        "Idee",
+        "Chance"
+      ]
+    },
+    {
+      "t": "Wir suchen %A %N.",
+      "it": "Cerchiamo...",
+      "cats": [
+        "tiere",
+        "haus",
+        "kleidung",
+        "schule",
+        "dinge"
+      ]
+    },
+    {
+      "t": "Er malt %A %N.",
+      "it": "Lui disegna...",
+      "cats": [
+        "tiere",
+        "natur",
+        "haus",
+        "stadt",
+        "essen"
+      ],
+      "also": [
+        "Kreis",
+        "Quadrat",
+        "Punkt"
+      ]
+    },
+    {
+      "t": "Sie kauft %A %N.",
+      "it": "Lei compra...",
+      "cats": [
+        "essen",
+        "kleidung",
+        "haus",
+        "dinge"
+      ],
+      "also": [
+        "Buch",
+        "Heft",
+        "Stift",
+        "Füller",
+        "Kleber",
+        "Lineal",
+        "Papier",
+        "Pinsel",
+        "Schere",
+        "Tasche",
+        "Block",
+        "Lexikon",
+        "Comic",
+        "Computer",
+        "Handy",
+        "Radio",
+        "Telefon"
+      ]
+    },
+    {
+      "t": "Ich esse %A %N.",
+      "it": "Io mangio...",
+      "only": [
+        "Apfel",
+        "Birne",
+        "Brot",
+        "Ei",
+        "Kuchen",
+        "Pizza",
+        "Wurst",
+        "Gurke",
+        "Kirsche",
+        "Pflaume",
+        "Nuss",
+        "Pilz",
+        "Beere"
+      ]
+    },
+    {
+      "t": "Ich trinke %A %N.",
+      "it": "Io bevo...",
+      "only": [
+        "Saft",
+        "Tee",
+        "Milch"
+      ]
+    },
+    {
+      "t": "Wir besuchen %A %N.",
+      "it": "Visitiamo...",
+      "cats": [
+        "menschen"
+      ],
+      "also": [
+        "Zoo",
+        "Schloss",
+        "Stadt",
+        "Theater",
+        "Insel"
+      ]
+    },
+    {
+      "t": "Sie füttert %A %N.",
+      "it": "Lei dà da mangiare a...",
+      "cats": [
+        "tiere"
+      ]
+    },
+    {
+      "t": "Ich brauche %A %N.",
+      "it": "Ho bisogno di...",
+      "cats": [
+        "schule",
+        "kleidung",
+        "haus",
+        "dinge"
+      ],
+      "also": [
+        "Idee",
+        "Euro"
+      ]
+    },
+    {
+      "t": "Ich höre %A %N.",
+      "it": "Io sento...",
+      "only": [
+        "Lied",
+        "Musik",
+        "Stimme",
+        "Lärm",
+        "Chor"
+      ]
+    },
+    {
+      "t": "Wir machen %A %N.",
+      "it": "Facciamo...",
+      "only": [
+        "Spaziergang",
+        "Versuch",
+        "Kreis",
+        "Punkt"
+      ]
+    },
+    {
+      "t": "Findest du %A %N?",
+      "it": "Trovi...?",
+      "cats": [
+        "tiere",
+        "schule",
+        "dinge",
+        "kleidung",
+        "haus"
+      ],
+      "also": [
+        "Fehler"
+      ]
+    },
+    {
+      "t": "Ella möchte %A %N.",
+      "it": "Ella vuole...",
+      "cats": [
+        "essen",
+        "dinge",
+        "kleidung",
+        "tiere"
+      ]
+    }
+  ],
+  "dat": [
+    {
+      "t": "Ich spiele mit %A %N.",
+      "it": "Gioco con...",
+      "cats": [
+        "tiere",
+        "menschen"
+      ],
+      "also": [
+        "Ball",
+        "Puppe",
+        "Teddy",
+        "Würfel",
+        "Computer"
+      ]
+    },
+    {
+      "t": "Sie fährt mit %A %N.",
+      "it": "Lei viaggia con...",
+      "only": [
+        "Auto",
+        "Bus",
+        "Zug",
+        "Fahrrad",
+        "Bahn",
+        "Schiff",
+        "Boot",
+        "Taxi"
+      ]
+    },
+    {
+      "t": "Wir wohnen bei %A %N.",
+      "it": "Abitiamo da...",
+      "cats": [
+        "menschen"
+      ]
+    },
+    {
+      "t": "Das Geschenk ist von %A %N.",
+      "it": "Il regalo è di...",
+      "cats": [
+        "menschen"
+      ]
+    },
+    {
+      "t": "Ich helfe %A %N.",
+      "it": "Io aiuto...",
+      "cats": [
+        "menschen"
+      ],
+      "also": [
+        "Hund",
+        "Katze",
+        "Vogel",
+        "Igel"
+      ]
+    },
+    {
+      "t": "Wir danken %A %N.",
+      "it": "Ringraziamo...",
+      "cats": [
+        "menschen"
+      ]
+    },
+    {
+      "t": "Das Buch gehört %A %N.",
+      "it": "Il libro appartiene a...",
+      "cats": [
+        "menschen"
+      ]
+    },
+    {
+      "t": "Er kommt aus %A %N.",
+      "it": "Lui esce da...",
+      "only": [
+        "Haus",
+        "Schule",
+        "Garten",
+        "Zimmer",
+        "Kirche",
+        "Wald",
+        "Stadt",
+        "Küche",
+        "Theater",
+        "Zoo"
+      ]
+    }
+  ]
+}

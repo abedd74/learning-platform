@@ -1,0 +1,268 @@
+{
+  "units": [
+    {
+      "n": 1,
+      "title": "🎯 Wer macht was?",
+      "lessonHtml": "<p>Ella sagt: In vielen Sätzen gibt es jemanden, der etwas <b>macht</b> —\nund ein <b>Ziel</b>, mit dem etwas passiert.</p>\n<p class=\"it\">In molte frasi c'è chi <b>fa</b> qualcosa — e un <b>bersaglio</b> a cui succede qualcosa.</p>\n<div style=\"text-align:center; font-size:1.15rem; font-weight:800; margin:14px 0;\">\nDer Hund frisst <span style=\"border-bottom:3px solid var(--prime);\">die Wurst</span>. 🐕➡️🌭\n</div>\n<p>Der Hund macht etwas (er frisst). Die Wurst ist das <b>Ziel</b>!</p>\n<p class=\"it\">Il cane fa qualcosa (mangia). La salsiccia è il bersaglio!</p>\n<p style=\"margin-top:10px;\">Findest du gleich selbst das Ziel? 🕵️‍♀️</p>",
+      "items": [
+        {
+          "kind": "pmcq",
+          "em": "🐕",
+          "sent": "Der Hund frisst die Wurst.",
+          "task": "Was ist das Ziel?",
+          "task_it": "Qual è il bersaglio?",
+          "opts": [
+            "der Hund",
+            "die Wurst",
+            "frisst"
+          ],
+          "correct": "die Wurst",
+          "hint": "Frag dich: MIT WEM oder WOMIT passiert etwas? Der Hund frisst — und was wird gefressen?",
+          "explain": "Die Wurst wird gefressen — sie ist das Ziel!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "🍎",
+          "sent": "Mama kauft einen Apfel.",
+          "task": "Was ist das Ziel?",
+          "task_it": "Qual è il bersaglio?",
+          "opts": [
+            "Mama",
+            "einen Apfel",
+            "kauft"
+          ],
+          "correct": "einen Apfel",
+          "hint": "Mama macht etwas (sie kauft). Was wird gekauft?",
+          "explain": "Der Apfel wird gekauft — er ist das Ziel!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "🐊",
+          "sent": "Odd stiehlt ein Krokodil.",
+          "task": "Was ist das Ziel?",
+          "task_it": "Qual è il bersaglio?",
+          "opts": [
+            "Odd",
+            "ein Krokodil",
+            "stiehlt"
+          ],
+          "correct": "ein Krokodil",
+          "hint": "Kennst du das Buch? 😄 Odd macht etwas — wer wird gestohlen?",
+          "explain": "Das Krokodil wird gestohlen — es ist das Ziel! (Genau wie im Krokodildieb!)"
+        },
+        {
+          "kind": "pmcq",
+          "em": "📖",
+          "sent": "Ella liest ein Buch.",
+          "task": "Was ist das Ziel?",
+          "task_it": "Qual è il bersaglio?",
+          "opts": [
+            "Ella",
+            "liest",
+            "ein Buch"
+          ],
+          "correct": "ein Buch",
+          "hint": "Ella macht etwas (sie liest). Was wird gelesen?",
+          "explain": "Das Buch wird gelesen — es ist das Ziel!"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "title": "🪄 Die Zauberfrage: Wen oder was?",
+      "lessonHtml": "<p>So findest du das Ziel <b>immer</b>: Stell die Zauberfrage</p>\n<div style=\"text-align:center; font-size:1.3rem; font-weight:900; color:var(--prime); margin:12px 0;\">\n„Wen oder was?\" 🪄\n</div>\n<p><b>Ich sehe den Ball.</b> → Wen oder was sehe ich? → <b>den Ball!</b></p>\n<p class=\"it\">Per trovare il bersaglio chiedi sempre: „Wen oder was?\" (chi o che cosa?)</p>\n<p style=\"margin-top:10px;\">Und jetzt kommt der feine Name: Das Ziel steht im\n<b style=\"color:var(--prime);\">Akkusativ</b>. Das ist alles — nur ein Name für das Ziel! 🎓</p>\n<p class=\"it\">Il bersaglio si chiama <b>Akkusativ</b> — è solo un nome!</p>",
+      "items": [
+        {
+          "kind": "pmcq",
+          "em": "⚽",
+          "sent": "Ich sehe den Ball.",
+          "task": "Wen oder was sehe ich?",
+          "task_it": "Chi o che cosa vedo?",
+          "opts": [
+            "ich",
+            "den Ball",
+            "sehe"
+          ],
+          "correct": "den Ball",
+          "hint": "Die Zauberfrage zeigt immer auf das Ziel!",
+          "explain": "Wen oder was sehe ich? → den Ball. Der Ball steht im Akkusativ!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "👓",
+          "sent": "Papa sucht die Brille.",
+          "task": "Wen oder was sucht Papa?",
+          "task_it": "Chi o che cosa cerca papà?",
+          "opts": [
+            "Papa",
+            "sucht",
+            "die Brille"
+          ],
+          "correct": "die Brille",
+          "hint": "Frag: Wen oder was wird gesucht?",
+          "explain": "Wen oder was sucht Papa? → die Brille. Die Brille ist das Ziel — Akkusativ!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "👂",
+          "sent": "Was klingt richtig?",
+          "task": "Hör genau hin!",
+          "task_it": "Quale suona giusto?",
+          "opts": [
+            "Ich sehe den Hund.",
+            "Ich sehe der Hund."
+          ],
+          "correct": "Ich sehe den Hund.",
+          "hint": "Sprich beide Sätze leise — dein Ohr kennt die Antwort schon!",
+          "explain": "Dein Ohr wusste es! „Ich sehe DEN Hund\" — gleich lernst du, warum."
+        },
+        {
+          "kind": "pmcq",
+          "em": "🎓",
+          "sent": "Das Ziel im Satz steht im …?",
+          "task": "Wie heißt der feine Name?",
+          "task_it": "Come si chiama il bersaglio?",
+          "opts": [
+            "Akkusativ",
+            "Alphabet",
+            "Adjektiv"
+          ],
+          "correct": "Akkusativ",
+          "hint": "Der Name beginnt mit A und endet mit -kkusativ 😉",
+          "explain": "Genau! Ziel = Akkusativ. Du kennst jetzt das Geheimwort!"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "title": "🔑 Das Geheimnis: Nur DER ändert sich!",
+      "lessonHtml": "<p>Jetzt kommt das <b>ganze Geheimnis</b> des Akkusativs — bereit?</p>\n<div style=\"background:var(--card2, #f4f1fa); border-radius:14px; padding:12px; margin:12px 0; text-align:center; font-weight:800; font-size:1.05rem; line-height:2;\">\n<span style=\"color:var(--c-der);\">der</span> ➡️ <b style=\"font-size:1.2rem; color:var(--c-der);\">DEN</b> &nbsp;(ein ➡️ <b>einen</b>)<br>\n<span style=\"color:var(--c-die);\">die</span> ➡️ <span style=\"color:var(--c-die);\">die</span> &nbsp;<span style=\"opacity:.6;\">(bleibt gleich!)</span><br>\n<span style=\"color:var(--c-das);\">das</span> ➡️ <span style=\"color:var(--c-das);\">das</span> &nbsp;<span style=\"opacity:.6;\">(bleibt gleich!)</span>\n</div>\n<div style=\"text-align:center; font-weight:900; font-size:1.1rem; color:var(--prime); margin:10px 0;\">\nNur DER verändert sich! 🕵️‍♀️\n</div>\n<p>die Katze, das Buch — beim Ziel <b>alles wie immer</b>.\nNur der Hund wird zu „<b>den</b> Hund\" und ein Apfel zu „<b>einen</b> Apfel\".</p>\n<p class=\"it\">Cambia solo il maschile: der→den, ein→einen. Femminile e neutro restano uguali!</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "🐕",
+          "t": "Ich sehe ___ Hund.",
+          "base": "der Hund",
+          "opts": [
+            "der",
+            "den",
+            "dem"
+          ],
+          "correct": "den",
+          "hint": "Der Hund ist das Ziel — und nur DER ändert sich: der → …?",
+          "explain": "der Hund → Ich sehe DEN Hund. Nur DER ändert sich!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🐈",
+          "t": "Ich sehe ___ Katze.",
+          "base": "die Katze",
+          "opts": [
+            "die",
+            "den",
+            "das"
+          ],
+          "correct": "die",
+          "hint": "Die Katze — ändert sich DIE beim Ziel? Schau auf das Geheimnis!",
+          "explain": "die Katze bleibt DIE Katze — nur DER ändert sich!"
+        },
+        {
+          "kind": "pfill",
+          "em": "📖",
+          "t": "Ella liest ___ Buch.",
+          "base": "das Buch",
+          "opts": [
+            "das",
+            "den",
+            "dem"
+          ],
+          "correct": "das",
+          "hint": "Das Buch — ändert sich DAS beim Ziel?",
+          "explain": "das Buch bleibt DAS Buch — nur DER ändert sich!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🍎",
+          "t": "Mama kauft ___ Apfel.",
+          "base": "ein Apfel (der Apfel)",
+          "opts": [
+            "ein",
+            "einen",
+            "einem"
+          ],
+          "correct": "einen",
+          "hint": "Der Apfel ist ein DER-Wort — also wird „ein\" zu …?",
+          "explain": "ein Apfel → Mama kauft EINEN Apfel. Bei DER-Wörtern: ein → einen!"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "title": "💛 Verben, die den Akkusativ lieben",
+      "lessonHtml": "<p>Diese Verben haben <b>immer</b> ein Ziel — du benutzt sie jeden Tag:</p>\n<div style=\"text-align:center; font-weight:800; font-size:1.05rem; line-height:2; margin:12px 0;\">\nhaben 🤲 · sehen 👀 · brauchen 🙏<br>suchen 🔍 · kaufen 🛒 · essen 🍽️<br>und: <b>es gibt</b> ✨\n</div>\n<p><b>Ich habe einen Bruder.</b> — Wen oder was habe ich? → einen Bruder!</p>\n<p class=\"it\">Questi verbi vogliono sempre l'accusativo: avere, vedere, cercare, comprare, mangiare, „es gibt\"…</p>\n<p>Denk dran: Nur DER-Wörter ändern sich! 🔑</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "👦",
+          "t": "Ich habe ___ Bruder.",
+          "base": "ein Bruder (der Bruder)",
+          "opts": [
+            "ein",
+            "einen",
+            "einem"
+          ],
+          "correct": "einen",
+          "hint": "„haben\" will ein Ziel — und der Bruder ist ein DER-Wort!",
+          "explain": "Ich habe EINEN Bruder — haben will den Akkusativ, und DER-Wörter ändern sich!"
+        },
+        {
+          "kind": "pfill",
+          "em": "⚽",
+          "t": "Wir brauchen ___ Ball.",
+          "base": "ein Ball (der Ball)",
+          "opts": [
+            "ein",
+            "einen",
+            "eine"
+          ],
+          "correct": "einen",
+          "hint": "Der Ball — ein DER-Wort. Also: ein → …?",
+          "explain": "Wir brauchen EINEN Ball. brauchen + DER-Wort → einen!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🎂",
+          "t": "Es gibt ___ Kuchen!",
+          "base": "ein Kuchen (der Kuchen)",
+          "opts": [
+            "ein",
+            "einen",
+            "einem"
+          ],
+          "correct": "einen",
+          "hint": "„es gibt\" will IMMER den Akkusativ — und der Kuchen ist ein DER-Wort!",
+          "explain": "Es gibt EINEN Kuchen! „es gibt\" will immer den Akkusativ."
+        },
+        {
+          "kind": "pfill",
+          "em": "🍕",
+          "t": "Sie isst ___ Pizza.",
+          "base": "eine Pizza (die Pizza)",
+          "opts": [
+            "eine",
+            "einen",
+            "einer"
+          ],
+          "correct": "eine",
+          "hint": "Die Pizza ist ein DIE-Wort — ändert sich das beim Ziel?",
+          "explain": "Sie isst EINE Pizza — DIE-Wörter bleiben gleich, nur DER ändert sich!"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "🏆 Alles zusammen!",
+      "lessonHtml": "<p>Du kennst jetzt das ganze Geheimnis:</p>\n<div style=\"font-weight:800; line-height:2; margin:12px 0;\">\n1️⃣ Finde das Ziel: <b>„Wen oder was?\"</b> 🪄<br>\n2️⃣ Nur <b>DER</b> ändert sich: der→den, ein→einen 🔑<br>\n3️⃣ die und das bleiben wie immer 😊\n</div>\n<p>Jetzt kommen 6 echte Sätze mit deinen eigenen Wörtern.\nSchaffst du sie, bist du offiziell <b>Akkusativ-Detektivin</b>! 🕵️‍♀️</p>\n<p class=\"it\">Ora 6 frasi vere con le TUE parole. Se ce la fai, sei ufficialmente una detective dell'accusativo!</p>"
+    }
+  ]
+}

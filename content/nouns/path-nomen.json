@@ -1,0 +1,201 @@
+{
+  "units": [
+    {
+      "n": 1,
+      "title": "👭 -schaft ist immer DIE!",
+      "lessonHtml": "<p>Kleine Bausteine am Wortende verraten dir ein Geheimnis:\n<b>-nis</b>, <b>-schaft</b> und <b>-tum</b> machen aus Wörtern <b>Nomen</b> —\ndie schreibt man groß, das kennst du schon aus der Schule! 🏫</p>\n<p class=\"it\">I mattoncini <b>-nis</b>, <b>-schaft</b> e <b>-tum</b> alla fine di una parola\ncreano un nome — e si scrive con la maiuscola!</p>\n<p>Aber die Bausteine können noch mehr: Sie verraten oft den <b>Artikel</b>!\nDer erste Baustein ist der einfachste:</p>\n<div style=\"text-align:center; font-size:1.2rem; font-weight:900; color:var(--c-die); margin:12px 0;\">\n-schaft → immer DIE! 💯\n</div>\n<p><b style=\"color:var(--c-die);\">die</b> Freundschaft,\n<b style=\"color:var(--c-die);\">die</b> Mannschaft,\n<b style=\"color:var(--c-die);\">die</b> Wissenschaft — <b>ohne Ausnahme</b>.</p>\n<p class=\"it\">Le parole in -schaft sono SEMPRE femminili: die. Senza eccezioni!</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "🏅",
+          "t": "___ Mannschaft jubelt nach dem Spiel.",
+          "base": "endet auf -schaft",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "die",
+          "hint": "Schau auf das Wortende: -schaft ist immer …?",
+          "explain": "die Mannschaft — -schaft ist immer DIE!"
+        },
+        {
+          "kind": "pfill",
+          "em": "👭",
+          "t": "___ Freundschaft ist ein Schatz.",
+          "base": "endet auf -schaft",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "die",
+          "hint": "-schaft verrät dir den Artikel — ganz ohne Nachdenken!",
+          "explain": "die Freundschaft — der Baustein macht es dir leicht!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🏘️",
+          "t": "___ Nachbarschaft feiert ein Fest.",
+          "base": "endet auf -schaft",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "die",
+          "hint": "Dieses Wort hast du noch nie geübt — aber der Baustein verrät alles!",
+          "explain": "die Nachbarschaft! Die Regel gilt sogar bei Wörtern, die du gar nicht kennst."
+        },
+        {
+          "kind": "pmcq",
+          "em": "🔑",
+          "sent": "Wörter mit -schaft sind …",
+          "task": "Was stimmt?",
+          "task_it": "Cosa è vero?",
+          "opts": [
+            "immer DIE",
+            "immer DER",
+            "mal so, mal so"
+          ],
+          "correct": "immer DIE",
+          "hint": "Es gibt keine einzige Ausnahme!",
+          "explain": "-schaft ist immer DIE. Deine sicherste Artikel-Regel!"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "title": "👑 -tum ist fast immer DAS",
+      "lessonHtml": "<p>Der zweite Baustein: <b>-tum</b>. Fast alle -tum-Wörter sind\n<b style=\"color:var(--c-das);\">DAS</b>:</p>\n<p style=\"text-align:center; font-weight:800; margin:10px 0;\">\n<b style=\"color:var(--c-das);\">das</b> Eigentum · <b style=\"color:var(--c-das);\">das</b> Rittertum ·\n<b style=\"color:var(--c-das);\">das</b> Wachstum</p>\n<p><b>ABER:</b> Zwei Angeber wollen unbedingt DER sein — das <b>Angeber-Paar</b>:</p>\n<div style=\"text-align:center; font-size:1.15rem; font-weight:900; color:var(--c-der); margin:12px 0;\">\nDER Reichtum 💰 &nbsp;·&nbsp; DER Irrtum 🤦\n</div>\n<p>Merk dir nur diese zwei — alle anderen -tum-Wörter sind DAS!</p>\n<p class=\"it\">Le parole in -tum sono quasi sempre <b>das</b> — tranne due \"spacconi\":\n<b>der Reichtum</b> (la ricchezza) e <b>der Irrtum</b> (l'errore).</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "🏰",
+          "t": "___ Rittertum war die Zeit der Burgen.",
+          "base": "endet auf -tum",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "das",
+          "hint": "Ist Rittertum ein Angeber? Nein! Also gilt die normale Regel …",
+          "explain": "das Rittertum — kein Angeber, also DAS!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🌱",
+          "t": "Ella staunt über ___ Wachstum der Blume.",
+          "base": "endet auf -tum",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "das",
+          "hint": "Wachstum gehört nicht zum Angeber-Paar …",
+          "explain": "das Wachstum — fast alle -tum-Wörter sind DAS!"
+        },
+        {
+          "kind": "pfill",
+          "em": "💰",
+          "t": "___ Reichtum des Königs ist riesig.",
+          "base": "Achtung! 😏",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "der",
+          "hint": "Reichtum ist einer der zwei Angeber!",
+          "explain": "DER Reichtum — der erste Angeber! (Der zweite ist der Irrtum.)"
+        },
+        {
+          "kind": "pmcq",
+          "em": "🕵️‍♀️",
+          "sent": "Welche zwei -tum-Wörter sind DER?",
+          "task": "Finde das Angeber-Paar!",
+          "task_it": "Trova la coppia di spacconi!",
+          "opts": [
+            "Reichtum und Irrtum",
+            "Wachstum und Rittertum",
+            "Eigentum und Wachstum"
+          ],
+          "correct": "Reichtum und Irrtum",
+          "hint": "Reich sein und sich irren — das sind die zwei Angeber!",
+          "explain": "DER Reichtum und DER Irrtum — alle anderen -tum-Wörter sind DAS!"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "title": "🎁 -nis, die Wundertüte",
+      "lessonHtml": "<p>Der dritte Baustein ist eine <b>Wundertüte</b>: Bei <b>-nis</b> gibt es\nleider keine sichere Regel. 🎁</p>\n<p><b>Meistens</b> ist -nis <b style=\"color:var(--c-das);\">DAS</b>:</p>\n<p style=\"text-align:center; font-weight:800; margin:10px 0;\">\n<b style=\"color:var(--c-das);\">das</b> Geheimnis · <b style=\"color:var(--c-das);\">das</b> Erlebnis ·\n<b style=\"color:var(--c-das);\">das</b> Hindernis · <b style=\"color:var(--c-das);\">das</b> Ergebnis</p>\n<p>Aber ein paar sind <b style=\"color:var(--c-die);\">DIE</b> — die musst du dir einfach merken:</p>\n<div style=\"text-align:center; font-size:1.1rem; font-weight:900; color:var(--c-die); margin:12px 0;\">\nDIE Erlaubnis 🙆 &nbsp;·&nbsp; DIE Erkenntnis 🧠\n</div>\n<p>Kein Trick, kein Zauber — Ella übt sie mit dir, bis sie sitzen! 🦉</p>\n<p class=\"it\">Per -nis non c'è una regola sicura: di solito <b>das</b>, ma alcune parole\nsono <b>die</b> (die Erlaubnis = il permesso, die Erkenntnis = la scoperta). Vanno imparate!</p>",
+      "items": [
+        {
+          "kind": "pfill",
+          "em": "🤫",
+          "t": "Ella verrät ___ Geheimnis nicht.",
+          "base": "endet auf -nis",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "das",
+          "hint": "-nis ist meistens …?",
+          "explain": "das Geheimnis — die Wundertüte zeigt meistens DAS!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🙆",
+          "t": "Mama gibt mir ___ Erlaubnis.",
+          "base": "Achtung, Ausnahme!",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "die",
+          "hint": "Erlaubnis ist eine der Merk-Wörter aus der Lektion!",
+          "explain": "DIE Erlaubnis — eine der wenigen DIE-Ausnahmen bei -nis!"
+        },
+        {
+          "kind": "pmcq",
+          "em": "🎁",
+          "sent": "Welches -nis-Wort ist DIE?",
+          "task": "Finde die Ausnahme!",
+          "task_it": "Trova l'eccezione!",
+          "opts": [
+            "Erlaubnis",
+            "Erlebnis",
+            "Hindernis"
+          ],
+          "correct": "Erlaubnis",
+          "hint": "Denk an die zwei Merk-Wörter: Erlaubnis und Erkenntnis!",
+          "explain": "die Erlaubnis (und die Erkenntnis) — die anderen sind DAS!"
+        },
+        {
+          "kind": "pfill",
+          "em": "🚧",
+          "t": "Das Pony springt über ___ Hindernis.",
+          "base": "endet auf -nis",
+          "opts": [
+            "der",
+            "die",
+            "das"
+          ],
+          "correct": "das",
+          "hint": "Ist Hindernis ein Merk-Wort? Nein — also gilt: meistens …",
+          "explain": "das Hindernis — keine Ausnahme, also DAS!"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "title": "🏆 Wort-Baustelle: Alles zusammen!",
+      "lessonHtml": "<p>Du kennst jetzt alle drei Bausteine:</p>\n<div style=\"font-weight:800; line-height:2; margin:12px 0;\">\n1️⃣ <b>-schaft</b> → immer <b style=\"color:var(--c-die);\">DIE</b> 💯<br>\n2️⃣ <b>-tum</b> → fast immer <b style=\"color:var(--c-das);\">DAS</b> —\nnur <b style=\"color:var(--c-der);\">der</b> Reichtum und <b style=\"color:var(--c-der);\">der</b> Irrtum nicht 👑<br>\n3️⃣ <b>-nis</b> → meistens <b style=\"color:var(--c-das);\">DAS</b>,\naber <b style=\"color:var(--c-die);\">die</b> Erlaubnis und <b style=\"color:var(--c-die);\">die</b> Erkenntnis 🎁\n</div>\n<p>Jetzt kommen 6 Fragen aus der Wort-Baustelle: Artikel finden UND\nselbst Nomen bauen! Schaffst du sie, bist du <b>Baustein-Detektivin</b>! 🧩</p>\n<p class=\"it\">Ora 6 domande dal cantiere delle parole — trova l'articolo e costruisci i nomi.\nSe ce la fai, sei detective dei mattoncini!</p>"
+    }
+  ]
+}
