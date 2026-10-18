@@ -5,7 +5,7 @@
    in daylight); color-scheme is pinned so form controls match.
 
    Fonts: Quicksand (headlines) and Nunito (body), self-hosted in assets/fonts
-   (OFL) from phase 3 on; the stacks below fall back cleanly until then. */
+   (OFL; the shell links assets/fonts/fonts.css). The stacks fall back cleanly. */
 
 :root {
   color-scheme: light;
