@@ -1,0 +1,30 @@
+# Runs on every push and pull request. Free for public repositories.
+# The private word list stays on the Mac, so here the personal-data scan
+# checks the structural rules only (secrets, e-mail, phone, paths).
+name: check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Content, unit tests, personal-data scan
+        run: npm run check
+      - name: Smoke test in WebKit (Safari's engine)
+        if: hashFiles('tests/smoke/*.smoke.mjs') != ''
+        run: |
+          npx playwright install --with-deps webkit
+          npm run smoke
