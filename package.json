@@ -1,0 +1,19 @@
+{
+  "name": "lernplattform",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A small learning app for primary-school children (static, GitHub Pages).",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "serve": "node tools/serve.mjs",
+    "validate": "node tools/validate-content.mjs",
+    "pii": "node tools/check-pii.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "check": "npm run --silent validate && npm run --silent test && npm run --silent pii",
+    "smoke": "node --test \"tests/smoke/*.smoke.mjs\"",
+    "dump-ids": "node tools/dump-live-ids.mjs"
+  }
+}
