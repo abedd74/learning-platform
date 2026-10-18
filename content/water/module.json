@@ -1,0 +1,111 @@
+{
+  "id": "water",
+  "name": {
+    "de": "Wasserkreislauf",
+    "it": "Il ciclo dell'acqua"
+  },
+  "icon": "💧",
+  "subject": {
+    "de": "Sachunterricht",
+    "it": "Scienze"
+  },
+  "grades": [
+    3
+  ],
+  "archive": true,
+  "engine": "quiz",
+  "mascot": {
+    "key": "water",
+    "name": "Tropfi"
+  },
+  "idPrefix": "",
+  "legacyStorageKey": "wq_editor_QB",
+  "successTitle": {
+    "de": "Wasser-Expertin",
+    "it": "esperta dell'acqua"
+  },
+  "srs": {
+    "intervals": [
+      0,
+      1,
+      2,
+      4,
+      7,
+      14
+    ]
+  },
+  "topics": [
+    {
+      "id": "wissenswertes",
+      "label": {
+        "de": "Wissenswertes über Wasser",
+        "it": "Curiosità sull'acqua"
+      },
+      "icon": "🌍",
+      "file": "wissenswertes.json"
+    },
+    {
+      "id": "teilchen",
+      "label": {
+        "de": "Wasserteilchen",
+        "it": "Le particelle d'acqua"
+      },
+      "icon": "🔬",
+      "file": "teilchen.json"
+    },
+    {
+      "id": "formen",
+      "label": {
+        "de": "Formen des Wassers",
+        "it": "Gli stati dell'acqua"
+      },
+      "icon": "🧊",
+      "file": "formen.json"
+    },
+    {
+      "id": "kreislauf",
+      "label": {
+        "de": "Wasserkreislauf",
+        "it": "Il ciclo dell'acqua"
+      },
+      "icon": "🔄",
+      "file": "kreislauf.json"
+    },
+    {
+      "id": "niederschlag",
+      "label": {
+        "de": "Niederschlagsarten",
+        "it": "Tipi di precipitazione"
+      },
+      "icon": "🌧️",
+      "file": "niederschlag.json"
+    },
+    {
+      "id": "sparen",
+      "label": {
+        "de": "Wasser sparen",
+        "it": "Risparmiare acqua"
+      },
+      "icon": "💚",
+      "file": "sparen.json"
+    }
+  ],
+  "cycleSteps": {
+    "de": [
+      "Sonne erwärmt",
+      "Verdunsten",
+      "Wolkenbildung",
+      "Niederschlag",
+      "Abfluss",
+      "Grundwasser"
+    ],
+    "en": [
+      "Sun warms",
+      "Evaporation",
+      "Condensation",
+      "Precipitation",
+      "Runoff",
+      "Groundwater"
+    ]
+  }
+}

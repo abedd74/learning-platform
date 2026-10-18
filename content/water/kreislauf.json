@@ -1,0 +1,698 @@
+{
+  "items": [
+    {
+      "id": "kreislauf-h1quow5a",
+      "type": "order",
+      "prompt": {
+        "de": "Bringe die 6 Schritte des Wasserkreislaufs in die richtige Reihenfolge!",
+        "it": "Metti in ordine i 6 passi del ciclo dell'acqua!"
+      },
+      "hint": {
+        "de": "Starte mit der Sonne ☀️ — was passiert dann mit dem Wasser im Meer?",
+        "it": "Inizia con il sole ☀️ — cosa succede poi all'acqua nel mare?"
+      },
+      "explain": {
+        "de": "Sonne → Verdunsten → Wolken → Regen/Schnee → Flüsse/Seen → Grundwasser.",
+        "it": "Sole → evaporazione → nuvole → pioggia/neve → fiumi/laghi → falda freatica."
+      },
+      "answer": {
+        "items": [
+          {
+            "de": "Die Sonne wärmt das Wasser und die Luft.",
+            "it": "Il sole scalda l'acqua e l'aria."
+          },
+          {
+            "de": "Das Wasser verdunstet und steigt als Wasserdampf auf.",
+            "it": "L'acqua evapora e sale come vapore acqueo."
+          },
+          {
+            "de": "Der Wasserdampf kühlt ab und bildet Wolken.",
+            "it": "Il vapore acqueo si raffredda e forma le nuvole."
+          },
+          {
+            "de": "Es regnet oder schneit auf die Erde herab.",
+            "it": "Piove o nevica sulla Terra."
+          },
+          {
+            "de": "Das Wasser fließt in Flüsse und Seen zurück ins Meer.",
+            "it": "L'acqua scorre in fiumi e laghi, ritornando al mare."
+          },
+          {
+            "de": "Ein Teil des Wassers versickert im Boden — Grundwasser entsteht.",
+            "it": "Una parte dell'acqua penetra nel suolo — si forma l'acqua sotterranea."
+          }
+        ],
+        "correct": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "id": "kreislauf-h2px23m",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Nur reines Wasser verdunstet — das Salz bleibt im Meer zurück!",
+        "it": "Solo l'acqua pura evapora — il sale rimane nel mare!"
+      },
+      "explain": {
+        "de": "Falsch! Nur reines Wasser verdunstet. Das Salz bleibt im Meer.",
+        "it": "Falso! Solo l'acqua pura evapora. Il sale rimane nel mare."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wenn Meerwasser verdunstet, steigt das Salz mit dem Wasser in die Luft.",
+          "it": "Quando l'acqua del mare evapora, il sale sale insieme all'acqua."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "kreislauf-hlshvap",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist der wichtigste Antrieb für den Wasserkreislauf?",
+        "it": "Qual è il motore principale del ciclo dell'acqua?"
+      },
+      "hint": {
+        "de": "Ohne ihre Wärme würde das Wasser nie verdunsten und der Kreislauf stehen!",
+        "it": "Senza il suo calore, l'acqua non evaporerebbe mai e il ciclo si fermerebbe!"
+      },
+      "explain": {
+        "de": "Die Sonne — ihre Wärme lässt das Wasser verdunsten und den Kreislauf starten.",
+        "it": "Il sole — il suo calore fa evaporare l'acqua e avvia il ciclo."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Der Wind",
+            "it": "Il vento"
+          },
+          {
+            "de": "Die Sonne",
+            "it": "Il sole"
+          },
+          {
+            "de": "Der Mond",
+            "it": "La luna"
+          },
+          {
+            "de": "Der Regen",
+            "it": "La pioggia"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "kreislauf-h1jj2h8b",
+      "type": "text",
+      "prompt": {
+        "de": "Die Menge des Wassers auf der Erde bleibt immer _____.",
+        "it": "La quantità d'acqua sulla Terra rimane sempre _____."
+      },
+      "hint": {
+        "de": "Wasser verschwindet nie — es verändert nur seinen Zustand. Es bleibt immer...?",
+        "it": "L'acqua non scompare mai — cambia solo stato. Rimane sempre...?"
+      },
+      "explain": {
+        "de": "gleich — Wasser wird nie mehr und nie weniger, es kreist nur im Kreislauf.",
+        "it": "uguale — l'acqua non aumenta né diminuisce, cicla soltanto."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Die Menge des Wassers auf der Erde bleibt immer",
+          "it": "La quantità d'acqua sulla Terra rimane sempre"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "gleich",
+          "die gleiche",
+          "dieselbe"
+        ]
+      }
+    },
+    {
+      "id": "kreislauf-h13carbr",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Denk an Schritt 6 des Wasserkreislaufs — wohin geht ein Teil des Regens?",
+        "it": "Pensa al passo 6 del ciclo — dove va una parte della pioggia?"
+      },
+      "explain": {
+        "de": "Richtig! Ein Teil des Regenwassers versickert im Boden und wird zu Grundwasser.",
+        "it": "Giusto! Una parte dell'acqua piovana penetra nel suolo e diventa acqua sotterranea."
+      },
+      "answer": {
+        "statement": {
+          "de": "Grundwasser entsteht, wenn Regenwasser in den Boden versickert.",
+          "it": "L'acqua sotterranea si forma quando l'acqua piovana penetra nel suolo."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "kreislauf-h1jms5wv",
+      "type": "choice",
+      "prompt": {
+        "de": "Im Wasserkreislauf steigt Wasser als Dampf in die Luft. Welcher Begriff passt?",
+        "it": "Nel ciclo dell'acqua, l'acqua sale come vapore nell'aria. Quale termine è corretto?"
+      },
+      "hint": {
+        "de": "Das Meerwasser kocht nicht! Es passiert langsam, ohne 100°C — also ist es nicht Verdampfen, sondern...?",
+        "it": "L'acqua del mare non bolle! Avviene lentamente, senza 100°C — quindi non è ebollizione, ma...?"
+      },
+      "explain": {
+        "de": "Verdunsten — im Wasserkreislauf verdunstet das Wasser langsam (kein Kochen, keine 100°C!).",
+        "it": "Evaporazione (Verdunsten) — nel ciclo dell'acqua l'acqua evapora lentamente (nessuna ebollizione!)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Verdampfen",
+            "it": "Ebollizione"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          },
+          {
+            "de": "Kondensieren",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Schmelzen",
+            "it": "Fusione"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "kreislauf-h1jion6l",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Das Meer kocht nicht! Die Sonne wärmt die Oberfläche und das Wasser verdunstet langsam.",
+        "it": "Il mare non bolle! Il sole scalda la superficie e l'acqua evapora lentamente."
+      },
+      "explain": {
+        "de": "Falsch! Im Wasserkreislauf verdunstet (nicht verdampft) das Wasser — ganz ohne 100°C.",
+        "it": "Falso! Nel ciclo dell'acqua l'acqua evapora lentamente (Verdunsten), non bolle (Verdampfen)."
+      },
+      "answer": {
+        "statement": {
+          "de": "Im Wasserkreislauf verdampft das Wasser aus dem Meer, weil es dort 100°C heiß wird.",
+          "it": "Nel ciclo dell'acqua, l'acqua del mare evapora per ebollizione perché raggiunge i 100°C."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "kreislauf-hh820p0",
+      "type": "cycle",
+      "prompt": {
+        "de": "Was ist der erste Schritt im Wasserkreislauf?",
+        "it": "Qual è il primo passo nel ciclo dell'acqua?"
+      },
+      "hint": {
+        "de": "Ohne diesen Schritt könnte Wasser nicht verdunsten! Was gibt dem Wasser die Energie?",
+        "it": "Senza questo passo l'acqua non evaporerebbe! Cosa dà energia all'acqua?"
+      },
+      "explain": {
+        "de": "Sonne erwärmt — die Sonne liefert die Energie, damit Wasser verdunsten kann.",
+        "it": "Il sole scalda — il sole fornisce l'energia affinché l'acqua possa evaporare."
+      },
+      "answer": {
+        "lang": "de",
+        "gapStep": 0,
+        "options": [
+          {
+            "de": "Sonne erwärmt",
+            "it": "Il sole scalda"
+          },
+          {
+            "de": "Niederschlag",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Abfluss",
+            "it": "Deflusso"
+          },
+          {
+            "de": "Grundwasser",
+            "it": "Acqua sotterranea"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h1ob9dts",
+      "type": "cycle",
+      "prompt": {
+        "de": "Die Sonne erwärmt das Wasser. Was passiert als Nächstes?",
+        "it": "Il sole scalda l'acqua. Cosa succede dopo?"
+      },
+      "hint": {
+        "de": "Das Wasser verlässt die Oberfläche als unsichtbarer Dampf — was ist dieser Vorgang?",
+        "it": "L'acqua lascia la superficie come vapore invisibile — come si chiama questo processo?"
+      },
+      "explain": {
+        "de": "Verdunsten — Wasser verdunstet langsam von der Oberfläche und steigt als Dampf auf.",
+        "it": "Evaporazione — l'acqua evapora lentamente dalla superficie e sale come vapore."
+      },
+      "answer": {
+        "lang": "de",
+        "gapStep": 1,
+        "options": [
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          },
+          {
+            "de": "Kondensieren",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Niederschlag",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Abfluss",
+            "it": "Deflusso"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h1bbgo9f",
+      "type": "cycle",
+      "prompt": {
+        "de": "Der Wasserdampf steigt auf und kühlt ab. Was entsteht dabei?",
+        "it": "Il vapore acqueo sale e si raffredda. Cosa si forma?"
+      },
+      "hint": {
+        "de": "Wenn Dampf abkühlt, kondensiert er zu winzigen Tropfen — was siehst du dann am Himmel?",
+        "it": "Quando il vapore si raffredda, condensa in goccioline — cosa vedi nel cielo?"
+      },
+      "explain": {
+        "de": "Wolkenbildung — der Wasserdampf kondensiert zu Tropfen und bildet Wolken.",
+        "it": "Formazione di nuvole — il vapore condensa in goccioline e forma le nuvole."
+      },
+      "answer": {
+        "lang": "de",
+        "gapStep": 2,
+        "options": [
+          {
+            "de": "Wolkenbildung",
+            "it": "Formazione nuvole"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          },
+          {
+            "de": "Niederschlag",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Grundwasser",
+            "it": "Acqua sotterranea"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-hetr9yw",
+      "type": "cycle",
+      "prompt": {
+        "de": "Die Wolken werden schwer. Was fällt aus ihnen herab?",
+        "it": "Le nuvole diventano pesanti. Cosa cade da esse?"
+      },
+      "hint": {
+        "de": "Regen, Schnee, Hagel — wenn Wolken ihre Last abgeben, nennt man das...?",
+        "it": "Pioggia, neve, grandine — quando le nuvole si alleggeriscono, si chiama...?"
+      },
+      "explain": {
+        "de": "Niederschlag — Regen, Schnee oder Hagel fällt aus den Wolken auf die Erde.",
+        "it": "Precipitazione — pioggia, neve o grandine cade dalle nuvole sulla terra."
+      },
+      "answer": {
+        "lang": "de",
+        "gapStep": 3,
+        "options": [
+          {
+            "de": "Niederschlag",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          },
+          {
+            "de": "Abfluss",
+            "it": "Deflusso"
+          },
+          {
+            "de": "Sonne erwärmt",
+            "it": "Il sole scalda"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h5dwo38",
+      "type": "cycle",
+      "prompt": {
+        "de": "Das Wasser landet auf dem Boden. Wie fließt es zurück ins Meer?",
+        "it": "L'acqua atterra sul terreno. Come torna al mare?"
+      },
+      "hint": {
+        "de": "Das Wasser fließt bergab — in Bäche und Flüsse, immer Richtung Meer!",
+        "it": "L'acqua scorre verso il basso — in ruscelli e fiumi, sempre verso il mare!"
+      },
+      "explain": {
+        "de": "Abfluss — das Wasser fließt über Bäche und Flüsse zurück ins Meer.",
+        "it": "Deflusso — l'acqua scorre attraverso ruscelli e fiumi fino al mare."
+      },
+      "answer": {
+        "lang": "de",
+        "gapStep": 4,
+        "options": [
+          {
+            "de": "Abfluss",
+            "it": "Deflusso"
+          },
+          {
+            "de": "Grundwasser",
+            "it": "Acqua sotterranea"
+          },
+          {
+            "de": "Wolkenbildung",
+            "it": "Formazione nuvole"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h159gojh",
+      "type": "cycle",
+      "prompt": {
+        "de": "Etwas Wasser versickert im Boden statt in Flüsse zu fließen. Wie nennt man das?",
+        "it": "Un po' d'acqua si infiltra nel terreno invece di scorrere nei fiumi. Come si chiama?"
+      },
+      "hint": {
+        "de": "Dieses Wasser sickert tief in die Erde — es ist unser Trinkwasser!",
+        "it": "Quest'acqua si infiltra nel profondo — è la nostra acqua potabile!"
+      },
+      "explain": {
+        "de": "Grundwasser — Wasser versickert im Boden und bildet unser wertvolles Grundwasser.",
+        "it": "Acqua sotterranea — l'acqua si infiltra nel terreno e forma la nostra falda freatica."
+      },
+      "answer": {
+        "lang": "de",
+        "gapStep": 5,
+        "options": [
+          {
+            "de": "Grundwasser",
+            "it": "Acqua sotterranea"
+          },
+          {
+            "de": "Abfluss",
+            "it": "Deflusso"
+          },
+          {
+            "de": "Niederschlag",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-hrphjcl",
+      "type": "cycle",
+      "prompt": {
+        "de": "What starts the water cycle? Find the missing box.",
+        "it": "Cosa avvia il ciclo dell'acqua? Trova la casella mancante."
+      },
+      "hint": {
+        "de": "The energy that makes water evaporate comes from our nearest star!",
+        "it": "L'energia che fa evaporare l'acqua viene dalla nostra stella più vicina!"
+      },
+      "explain": {
+        "de": "Sun warms — the sun heats the water and provides energy for evaporation (= Sonne erwärmt).",
+        "it": "Il sole scalda — il sole riscalda l'acqua e fornisce energia per l'evaporazione."
+      },
+      "answer": {
+        "lang": "en",
+        "gapStep": 0,
+        "options": [
+          {
+            "de": "Sun warms",
+            "it": "Il sole scalda"
+          },
+          {
+            "de": "Precipitation",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Runoff",
+            "it": "Deflusso"
+          },
+          {
+            "de": "Groundwater",
+            "it": "Acqua sotterranea"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-hhpgspl",
+      "type": "cycle",
+      "prompt": {
+        "de": "The sun heats the water. What happens next?",
+        "it": "Il sole scalda l'acqua. Cosa succede dopo?"
+      },
+      "hint": {
+        "de": "Heated water rises into the air as invisible water vapour — what is this called?",
+        "it": "L'acqua riscaldata sale nell'aria come vapore invisibile — come si chiama?"
+      },
+      "explain": {
+        "de": "Evaporation — water turns into vapour and rises (= Verdunsten in German).",
+        "it": "Evaporazione — l'acqua diventa vapore e sale (= Verdunsten in tedesco)."
+      },
+      "answer": {
+        "lang": "en",
+        "gapStep": 1,
+        "options": [
+          {
+            "de": "Evaporation",
+            "it": "Evaporazione"
+          },
+          {
+            "de": "Condensation",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Precipitation",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Runoff",
+            "it": "Deflusso"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h1024qte",
+      "type": "cycle",
+      "prompt": {
+        "de": "Water vapour rises and cools down high in the sky. What forms?",
+        "it": "Il vapore acqueo sale e si raffredda in alto nel cielo. Cosa si forma?"
+      },
+      "hint": {
+        "de": "Cool air turns vapour into tiny water droplets — what do you see in the sky?",
+        "it": "L'aria fredda trasforma il vapore in goccioline — cosa vedi nel cielo?"
+      },
+      "explain": {
+        "de": "Condensation — vapour cools into droplets and forms clouds (= Wolkenbildung).",
+        "it": "Condensazione — il vapore si raffredda in goccioline e forma le nuvole (= Wolkenbildung)."
+      },
+      "answer": {
+        "lang": "en",
+        "gapStep": 2,
+        "options": [
+          {
+            "de": "Condensation",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Evaporation",
+            "it": "Evaporazione"
+          },
+          {
+            "de": "Precipitation",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Groundwater",
+            "it": "Acqua sotterranea"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h59sa93",
+      "type": "cycle",
+      "prompt": {
+        "de": "The clouds get heavy with water. What falls to the ground?",
+        "it": "Le nuvole si riempiono d'acqua. Cosa cade al suolo?"
+      },
+      "hint": {
+        "de": "Rain, snow, hail — when clouds release water, we call it all...?",
+        "it": "Pioggia, neve, grandine — quando le nuvole rilasciano acqua, la chiamiamo...?"
+      },
+      "explain": {
+        "de": "Precipitation — rain, snow or hail falling from clouds (= Niederschlag).",
+        "it": "Precipitazione — pioggia, neve o grandine che cade dalle nuvole (= Niederschlag)."
+      },
+      "answer": {
+        "lang": "en",
+        "gapStep": 3,
+        "options": [
+          {
+            "de": "Precipitation",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Evaporation",
+            "it": "Evaporazione"
+          },
+          {
+            "de": "Condensation",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Runoff",
+            "it": "Deflusso"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h1vz0dln",
+      "type": "cycle",
+      "prompt": {
+        "de": "Water lands on the ground. How does it travel back to the sea?",
+        "it": "L'acqua atterra sul terreno. Come viaggia verso il mare?"
+      },
+      "hint": {
+        "de": "Water always flows downhill — into streams and rivers all the way to the sea.",
+        "it": "L'acqua scorre sempre verso il basso — in ruscelli e fiumi fino al mare."
+      },
+      "explain": {
+        "de": "Runoff — water flows downhill into streams and rivers back to the sea (= Abfluss).",
+        "it": "Deflusso — l'acqua scorre verso il basso in ruscelli e fiumi fino al mare (= Abfluss)."
+      },
+      "answer": {
+        "lang": "en",
+        "gapStep": 4,
+        "options": [
+          {
+            "de": "Runoff",
+            "it": "Deflusso"
+          },
+          {
+            "de": "Groundwater",
+            "it": "Acqua sotterranea"
+          },
+          {
+            "de": "Condensation",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Evaporation",
+            "it": "Evaporazione"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "kreislauf-h1hwguwp",
+      "type": "cycle",
+      "prompt": {
+        "de": "Some water soaks into the ground instead of flowing into rivers. What is this?",
+        "it": "Parte dell'acqua si infiltra nel terreno invece di scorrere nei fiumi. Cos'è?"
+      },
+      "hint": {
+        "de": "This water goes deep underground — it's the water we drink from wells and taps!",
+        "it": "Quest'acqua va in profondità — è l'acqua che beviamo dai pozzi e dai rubinetti!"
+      },
+      "explain": {
+        "de": "Groundwater — water seeps into the soil and becomes groundwater (= Grundwasser).",
+        "it": "Acqua sotterranea — l'acqua si infiltra nel suolo e diventa falda freatica (= Grundwasser)."
+      },
+      "answer": {
+        "lang": "en",
+        "gapStep": 5,
+        "options": [
+          {
+            "de": "Groundwater",
+            "it": "Acqua sotterranea"
+          },
+          {
+            "de": "Runoff",
+            "it": "Deflusso"
+          },
+          {
+            "de": "Precipitation",
+            "it": "Precipitazione"
+          },
+          {
+            "de": "Evaporation",
+            "it": "Evaporazione"
+          }
+        ],
+        "correct": 0
+      }
+    }
+  ]
+}

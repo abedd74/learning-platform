@@ -1,0 +1,176 @@
+{
+  "items": [
+    {
+      "id": "wissenswertes-hf9iw65",
+      "type": "text",
+      "prompt": {
+        "de": "Wasser besteht aus Sauerstoff und _____.",
+        "it": "L'acqua è composta da ossigeno e _____."
+      },
+      "hint": {
+        "de": "Das Wort klingt wie \"Wasser...\" und endet auf \"-stoff\"!",
+        "it": "La parola suona come \"Wasser-...\" e finisce con \"-stoff\"!"
+      },
+      "explain": {
+        "de": "Wasserstoff — Wasser = Sauerstoff + Wasserstoff.",
+        "it": "Idrogeno — acqua = ossigeno + idrogeno."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Wasser besteht aus Sauerstoff und",
+          "it": "L'acqua è composta da ossigeno e"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "wasserstoff"
+        ]
+      }
+    },
+    {
+      "id": "wissenswertes-h1y0qhay",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Reines Wasser hat gar keine Farbe, keinen Geruch und keinen Geschmack!",
+        "it": "L'acqua pura non ha colore, odore né sapore!"
+      },
+      "explain": {
+        "de": "Falsch! Reines Wasser ist farblos, geruchlos und geschmacklos.",
+        "it": "Falso! L'acqua pura è incolore, inodore e insapore."
+      },
+      "answer": {
+        "statement": {
+          "de": "Reines Wasser hat eine blaue Farbe und schmeckt süß.",
+          "it": "L'acqua pura è blu e ha un sapore dolce."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wissenswertes-hk5ls33",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie viel der Erdoberfläche ist mit Wasser bedeckt?",
+        "it": "Quanto della superficie terrestre è coperto d'acqua?"
+      },
+      "hint": {
+        "de": "Es ist mehr als die Hälfte — auf der Erde gibt es viel mehr Wasser als Land!",
+        "it": "È più della metà — sulla Terra c'è molto più acqua che terra!"
+      },
+      "explain": {
+        "de": "Zwei Drittel (2/3) der Erdoberfläche sind Wasser.",
+        "it": "Due terzi (2/3) della superficie terrestre sono acqua."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Ein Drittel (1/3)",
+            "it": "Un terzo (1/3)"
+          },
+          {
+            "de": "Die Hälfte (1/2)",
+            "it": "La metà (1/2)"
+          },
+          {
+            "de": "Zwei Drittel (2/3)",
+            "it": "Due terzi (2/3)"
+          },
+          {
+            "de": "Fast alles (9/10)",
+            "it": "Quasi tutto (9/10)"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "wissenswertes-h1u3yshq",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Leider nicht! Ungefähr 1 von 12 Menschen hat kein sauberes Wasser.",
+        "it": "Purtroppo no! Circa 1 persona su 12 non ha acqua pulita."
+      },
+      "explain": {
+        "de": "Falsch! Ca. 1 von 12 Menschen hat keinen Zugang zu sauberem Trinkwasser.",
+        "it": "Falso! Circa 1 persona su 12 non ha accesso all'acqua potabile pulita."
+      },
+      "answer": {
+        "statement": {
+          "de": "Alle Menschen auf der Welt haben genug sauberes Trinkwasser.",
+          "it": "Tutte le persone nel mondo hanno abbastanza acqua potabile pulita."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "wissenswertes-h1v5241",
+      "type": "choice",
+      "prompt": {
+        "de": "In wie vielen verschiedenen Zuständen kann Wasser vorkommen?",
+        "it": "In quanti stati diversi può trovarsi l'acqua?"
+      },
+      "hint": {
+        "de": "Denk an: Eis... flüssiges Wasser... und Wasserdampf!",
+        "it": "Pensa a: ghiaccio, acqua liquida e vapore acqueo!"
+      },
+      "explain": {
+        "de": "3 Zustände: fest (Eis), flüssig (Wasser), gasförmig (Wasserdampf).",
+        "it": "3 stati: solido (ghiaccio), liquido (acqua), gassoso (vapore)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "1",
+            "it": "1"
+          },
+          {
+            "de": "2",
+            "it": "2"
+          },
+          {
+            "de": "3",
+            "it": "3"
+          },
+          {
+            "de": "4",
+            "it": "4"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "wissenswertes-h199zsts",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Denk an alle Lebewesen — ohne Wasser kann keines von ihnen überleben!",
+        "it": "Pensa a tutti gli esseri viventi — senza acqua nessuno può sopravvivere!"
+      },
+      "explain": {
+        "de": "Richtig! Alle Lebewesen — Menschen, Tiere und Pflanzen — brauchen Wasser zum Leben.",
+        "it": "Giusto! Tutti gli esseri viventi — umani, animali e piante — hanno bisogno di acqua."
+      },
+      "answer": {
+        "statement": {
+          "de": "Nicht nur Menschen, sondern auch Tiere und Pflanzen brauchen Wasser zum Leben.",
+          "it": "Non solo gli esseri umani, ma anche gli animali e le piante hanno bisogno di acqua per vivere."
+        },
+        "correct": true
+      }
+    }
+  ]
+}

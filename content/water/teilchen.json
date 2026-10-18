@@ -1,0 +1,177 @@
+{
+  "items": [
+    {
+      "id": "teilchen-hvbuon",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Wasserteilchen sind IMMER in Bewegung — auch wenn das Wasser ruhig aussieht!",
+        "it": "Le particelle d'acqua sono SEMPRE in movimento — anche se l'acqua sembra ferma!"
+      },
+      "explain": {
+        "de": "Falsch! Wasserteilchen bewegen sich immer, egal wie ruhig das Wasser aussieht.",
+        "it": "Falso! Le particelle d'acqua si muovono sempre, qualunque sia l'aspetto dell'acqua."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wenn Wasser in einem Glas steht und ruhig aussieht, stehen die Teilchen still.",
+          "it": "Se l'acqua è ferma in un bicchiere, le particelle sono immobili."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "teilchen-h1cisn8g",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie verhalten sich Wasserteilchen zueinander?",
+        "it": "Come si comportano le particelle d'acqua tra loro?"
+      },
+      "hint": {
+        "de": "Sie ziehen sich an und stoßen sich ab — welches Objekt macht dasselbe?",
+        "it": "Si attraggono e si respingono — quale oggetto fa la stessa cosa?"
+      },
+      "explain": {
+        "de": "Wie kleine Magnete — sie ziehen sich an und stoßen sich manchmal ab.",
+        "it": "Come piccoli magneti — si attraggono e a volte si respingono."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Wie kleine Magnete",
+            "it": "Come piccoli magneti"
+          },
+          {
+            "de": "Sie ignorieren sich völlig",
+            "it": "Si ignorano completamente"
+          },
+          {
+            "de": "Wie Bälle, die immer abstoßen",
+            "it": "Come palle che si respingono"
+          },
+          {
+            "de": "Wie Puzzleteile",
+            "it": "Come pezzi di puzzle"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "teilchen-h8009vh",
+      "type": "text",
+      "prompt": {
+        "de": "Wasserteilchen sind so klein, dass man sie nicht _____ kann.",
+        "it": "Le particelle d'acqua sono così piccole che non si possono _____."
+      },
+      "hint": {
+        "de": "Mit den Augen — was macht man damit normalerweise mit Dingen?",
+        "it": "Con gli occhi — cosa si fa normalmente con le cose?"
+      },
+      "explain": {
+        "de": "sehen — sie sind zu klein für das menschliche Auge!",
+        "it": "vedere — sono troppo piccole per l'occhio umano!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "Wasserteilchen sind so klein, dass man sie nicht",
+          "it": "Le particelle d'acqua sono così piccole che non si possono"
+        },
+        "suffix": {
+          "de": "kann.",
+          "it": "."
+        },
+        "accepted": [
+          "sehen",
+          "erkennen"
+        ]
+      }
+    },
+    {
+      "id": "teilchen-h12m1ze3",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Irgendwann kommt man zu den kleinsten Teilchen — die lassen sich nicht mehr teilen!",
+        "it": "Ad un certo punto si arriva alle particelle più piccole, non ulteriormente divisibili!"
+      },
+      "explain": {
+        "de": "Falsch! Irgendwann erreicht man die kleinsten Wasserteilchen — die sind unteilbar.",
+        "it": "Falso! Ad un certo punto si arriva alle particelle più piccole, che sono indivisibili."
+      },
+      "answer": {
+        "statement": {
+          "de": "Einen Wassertropfen kann man immer weiter und weiter teilen, ohne Ende.",
+          "it": "Una goccia d'acqua può essere divisa all'infinito."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "teilchen-h18pxi18",
+      "type": "choice",
+      "prompt": {
+        "de": "In welchem Zustand sind die Wasserteilchen am engsten zusammengepackt?",
+        "it": "In quale stato dell'acqua le particelle sono più vicine tra loro?"
+      },
+      "hint": {
+        "de": "Im festen Zustand sitzen die Teilchen ganz eng beieinander und können sich kaum bewegen!",
+        "it": "Nello stato solido le particelle sono molto vicine e si muovono a malapena!"
+      },
+      "explain": {
+        "de": "Fest (Eis) — die Teilchen sind eng gepackt und kaum in Bewegung.",
+        "it": "Solido (ghiaccio) — le particelle sono compatte e quasi immobili."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Flüssig (Wasser)",
+            "it": "Liquido (acqua)"
+          },
+          {
+            "de": "Fest (Eis)",
+            "it": "Solido (ghiaccio)"
+          },
+          {
+            "de": "Gasförmig (Wasserdampf)",
+            "it": "Gassoso (vapore)"
+          },
+          {
+            "de": "In allen Zuständen gleich",
+            "it": "Uguale in tutti gli stati"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "teilchen-h19v5oiv",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Wärme gibt den Teilchen mehr Energie — und mehr Energie bedeutet mehr Bewegung!",
+        "it": "Il calore dà più energia alle particelle — e più energia significa più movimento!"
+      },
+      "explain": {
+        "de": "Richtig! Wärme = mehr Energie = die Teilchen bewegen sich schneller.",
+        "it": "Giusto! Calore = più energia = le particelle si muovono più velocemente."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wenn man Wasser erhitzt, bewegen sich die Wasserteilchen schneller.",
+          "it": "Quando si scalda l'acqua, le particelle si muovono più velocemente."
+        },
+        "correct": true
+      }
+    }
+  ]
+}

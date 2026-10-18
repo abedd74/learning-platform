@@ -1,0 +1,178 @@
+{
+  "items": [
+    {
+      "id": "sparen-hix3uel",
+      "type": "choice",
+      "prompt": {
+        "de": "Was verbraucht am wenigsten Wasser?",
+        "it": "Cosa consuma meno acqua di tutti?"
+      },
+      "hint": {
+        "de": "Ein Bad braucht sehr viel Wasser — eine kurze Dusche viel weniger!",
+        "it": "Un bagno usa moltissima acqua — una doccia breve molto meno!"
+      },
+      "explain": {
+        "de": "Kurz duschen — ein Vollbad verbraucht viel mehr Wasser als eine Dusche.",
+        "it": "Una doccia breve — un bagno usa molto più acqua di una doccia."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Ein Vollbad nehmen",
+            "it": "Fare un bagno completo"
+          },
+          {
+            "de": "Kurz duschen",
+            "it": "Fare una doccia breve"
+          },
+          {
+            "de": "Zweimal am Tag duschen",
+            "it": "Fare la doccia due volte"
+          },
+          {
+            "de": "Wäsche per Hand waschen",
+            "it": "Lavare i panni a mano"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "sparen-h1iuqmj4",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Der Hahn läuft, aber du brauchst das Wasser gerade nicht — was solltest du tun?",
+        "it": "Il rubinetto scorre, ma non hai bisogno di quell'acqua — cosa dovresti fare?"
+      },
+      "explain": {
+        "de": "Falsch! Den Hahn zudrehen spart viel Wasser!",
+        "it": "Falso! Chiudere il rubinetto risparmia molta acqua!"
+      },
+      "answer": {
+        "statement": {
+          "de": "Beim Zähneputzen kann man den Wasserhahn ruhig anlassen.",
+          "it": "Mentre ci si lava i denti, si può lasciare il rubinetto aperto."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "sparen-h1en90x9",
+      "type": "text",
+      "prompt": {
+        "de": "Beim Händewaschen sollte man den Hahn zudrehen, während man sich _____.",
+        "it": "Mentre ci si lava le mani, bisogna chiudere il rubinetto mentre ci si _____."
+      },
+      "hint": {
+        "de": "Was macht man mit der Seife an den Händen? Man ... sich ein!",
+        "it": "Cosa si fa con il sapone sulle mani? Ci si _____!"
+      },
+      "explain": {
+        "de": "einseift — Hahn zu beim Einseifen, Hahn auf zum Abspülen!",
+        "it": "insapona — rubinetto chiuso mentre ci si insapona, aperto per sciacquarsi!"
+      },
+      "answer": {
+        "prefix": {
+          "de": "Beim Händewaschen sollte man den Hahn zudrehen, während man sich",
+          "it": "Mentre ci si lava le mani, bisogna chiudere il rubinetto mentre ci si"
+        },
+        "suffix": {
+          "de": ".",
+          "it": "."
+        },
+        "accepted": [
+          "einseift",
+          "einseifen",
+          "die hände einseift"
+        ]
+      }
+    },
+    {
+      "id": "sparen-h1hr0vod",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Klein = weniger Wasser! Genau dafür gibt es zwei Knöpfe!",
+        "it": "Piccolo = meno acqua! Ecco esattamente a cosa servono i due tasti!"
+      },
+      "explain": {
+        "de": "Richtig! Der kleine Knopf spart Wasser. Immer wenn möglich den kleinen Knopf drücken!",
+        "it": "Giusto! Il tasto piccolo risparmia acqua. Usarlo sempre quando possibile!"
+      },
+      "answer": {
+        "statement": {
+          "de": "Beim Toilettenspülen spart der kleine Knopf Wasser gegenüber dem großen Knopf.",
+          "it": "Tirare il tasto piccolo dello sciacquone risparmia acqua rispetto a quello grande."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "sparen-h28mxww",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Zwei halbleere Maschinen brauchen doppelt so viel Wasser wie eine volle!",
+        "it": "Due lavatrici mezze piene usano il doppio dell'acqua rispetto a una piena!"
+      },
+      "explain": {
+        "de": "Richtig! Eine volle Waschmaschine spart Wasser gegenüber mehreren halbleeren Ladungen.",
+        "it": "Giusto! Una lavatrice piena risparmia acqua rispetto a più carichi mezzi pieni."
+      },
+      "answer": {
+        "statement": {
+          "de": "Man spart Wasser, wenn man die Waschmaschine immer voll belädt, bevor man sie anstellt.",
+          "it": "Si risparmia acqua se si riempie completamente la lavatrice prima di avviarla."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "sparen-h1gduyk4",
+      "type": "choice",
+      "prompt": {
+        "de": "Welche Aktivität verbraucht zu Hause am meisten Wasser?",
+        "it": "Quale attività domestica consuma più acqua?"
+      },
+      "hint": {
+        "de": "Ein Vollbad kann bis zu 200 Liter Wasser verbrauchen — das ist mit Abstand am meisten!",
+        "it": "Un bagno completo può consumare fino a 200 litri d'acqua — di gran lunga il massimo!"
+      },
+      "explain": {
+        "de": "Baden oder Duschen — ein Vollbad verbraucht bis zu 200 Liter Wasser!",
+        "it": "Bagno o doccia — un bagno completo consuma fino a 200 litri d'acqua!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Zähneputzen",
+            "it": "Lavarsi i denti"
+          },
+          {
+            "de": "Hände waschen",
+            "it": "Lavarsi le mani"
+          },
+          {
+            "de": "Baden oder Duschen",
+            "it": "Bagno o doccia"
+          },
+          {
+            "de": "Trinken",
+            "it": "Bere"
+          }
+        ],
+        "correct": 2
+      }
+    }
+  ]
+}

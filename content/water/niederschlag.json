@@ -1,0 +1,281 @@
+{
+  "items": [
+    {
+      "id": "niederschlag-hs4lvml",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde jede Niederschlagsart mit ihrer richtigen Beschreibung!",
+        "it": "Collega ogni tipo di precipitazione con la sua descrizione!"
+      },
+      "hint": {
+        "de": "Tipp: Hagel ist groß und gefroren, Tau entsteht morgens an Pflanzen!",
+        "it": "Suggerimento: la grandine è grande e ghiacciata, la rugiada si forma sulle piante!"
+      },
+      "explain": {
+        "de": "Regen→Tropfen≥0,5mm | Hagel→gefroren≥5mm | Tau→Pflanzen | Schnee→Eiskristalle.",
+        "it": "Pioggia→gocce≥0,5mm | Grandine→ghiacciata≥5mm | Rugiada→piante | Neve→cristalli."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Regen",
+              "it": "Pioggia"
+            },
+            "right": {
+              "de": "Tropfen mit mind. 0,5 mm Durchmesser",
+              "it": "Gocce di almeno 0,5 mm di diametro"
+            }
+          },
+          {
+            "left": {
+              "de": "Hagel",
+              "it": "Grandine"
+            },
+            "right": {
+              "de": "Gefrorene Schichten, mindestens 5 mm groß",
+              "it": "Strati ghiacciati, almeno 5 mm di dimensione"
+            }
+          },
+          {
+            "left": {
+              "de": "Tau",
+              "it": "Rugiada"
+            },
+            "right": {
+              "de": "Wasserdampf kondensiert an Pflanzen zu Tröpfchen",
+              "it": "Il vapore condensa sulle piante in goccioline"
+            }
+          },
+          {
+            "left": {
+              "de": "Schnee",
+              "it": "Neve"
+            },
+            "right": {
+              "de": "Wasserdampf wird direkt zu Eiskristallen",
+              "it": "Il vapore diventa direttamente cristalli di ghiaccio"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "niederschlag-hk0q55z",
+      "type": "choice",
+      "prompt": {
+        "de": "Was unterscheidet Nieselregen von normalem Regen?",
+        "it": "Cosa distingue la pioggerella dalla pioggia normale?"
+      },
+      "hint": {
+        "de": "Nieselregen hat sehr kleine Tropfen — kleiner als 0,5 mm!",
+        "it": "La pioggerella ha gocce molto piccole — meno di 0,5 mm!"
+      },
+      "explain": {
+        "de": "Die Größe: Nieselregen < 0,5 mm, normaler Regen ≥ 0,5 mm Durchmesser.",
+        "it": "La dimensione: pioggerella < 0,5 mm, pioggia normale ≥ 0,5 mm di diametro."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Die Farbe der Tropfen",
+            "it": "Il colore delle gocce"
+          },
+          {
+            "de": "Die Größe der Tropfen",
+            "it": "La dimensione delle gocce"
+          },
+          {
+            "de": "Die Temperatur",
+            "it": "La temperatura"
+          },
+          {
+            "de": "Den Geruch",
+            "it": "L'odore"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "niederschlag-h1g36gvg",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Kleiner wäre Graupel — der ist nur 2–5 mm. Hagel ist ≥ 5 mm!",
+        "it": "Più piccolo sarebbe Graupel (grandine morbida, 2–5 mm). La grandine vera ≥ 5 mm!"
+      },
+      "explain": {
+        "de": "Richtig! Hagel ≥ 5 mm mit gefrorenen Schichten. Kleiner = Graupel (2–5 mm).",
+        "it": "Giusto! Grandine ≥ 5 mm con strati congelati. Più piccola = grandine morbida (2–5mm)."
+      },
+      "answer": {
+        "statement": {
+          "de": "Hagel ist immer mindestens 5 mm groß.",
+          "it": "La grandine è sempre grande almeno 5 mm."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "niederschlag-h1bkjwxa",
+      "type": "choice",
+      "prompt": {
+        "de": "Was entsteht, wenn Wasserdampf bei über 0°C an Pflanzen und Oberflächen kondensiert?",
+        "it": "Cosa si forma quando il vapore acqueo condensa sulle piante a temperature sopra 0°C?"
+      },
+      "hint": {
+        "de": "Morgens auf dem Gras — kleine glitzernde Tröpfchen! Wie heißt das?",
+        "it": "Al mattino sull'erba — piccole goccioline scintillanti! Come si chiama?"
+      },
+      "explain": {
+        "de": "Tau — Wasserdampf kondensiert bei Temperaturen über 0°C zu Tröpfchen.",
+        "it": "Rugiada — il vapore acqueo condensa a temperature sopra 0°C in goccioline."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Reif",
+            "it": "Brina"
+          },
+          {
+            "de": "Tau",
+            "it": "Rugiada"
+          },
+          {
+            "de": "Nieselregen",
+            "it": "Pioggerella"
+          },
+          {
+            "de": "Graupel",
+            "it": "Grandine morbida"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "niederschlag-h2sj5ye",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Reif ist wie Tau — aber bei Minustemperaturen friert er zu Eis!",
+        "it": "La brina è come la rugiada — ma a temperature sotto zero gela subito!"
+      },
+      "explain": {
+        "de": "Richtig! Reif = Tau oder Wasserdampf, der bei Minustemperaturen zu Eis gefriert.",
+        "it": "Giusto! Brina = rugiada o vapore acqueo che gela a temperature sotto zero."
+      },
+      "answer": {
+        "statement": {
+          "de": "Reif entsteht, wenn Tau oder Wasserdampf direkt zu Eis gefriert.",
+          "it": "La brina si forma quando la rugiada o il vapore acqueo gela direttamente."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "niederschlag-hwe67fk",
+      "type": "choice",
+      "prompt": {
+        "de": "Was ist Graupel?",
+        "it": "Cos'è il Graupel (grandine morbida)?"
+      },
+      "hint": {
+        "de": "Graupel ist größer als Nieselregen, aber kleiner und viel weicher als Hagel!",
+        "it": "Il Graupel è più grande della pioggerella, ma più piccolo e morbido della grandine!"
+      },
+      "explain": {
+        "de": "Weiche, gefrorene Körner, 2–5 mm — kleiner und weicher als Hagel (≥ 5 mm).",
+        "it": "Chicchi ghiacciati morbidi, 2–5 mm — più piccoli e morbidi della grandine (≥ 5 mm)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Sehr kleiner Regen (unter 0,5 mm)",
+            "it": "Pioggia molto piccola (sotto 0,5 mm)"
+          },
+          {
+            "de": "Weiche, gefrorene Körner von 2–5 mm",
+            "it": "Chicchi ghiacciati morbidi di 2–5 mm"
+          },
+          {
+            "de": "Großer Hagel über 10 mm",
+            "it": "Grandine grande oltre 10 mm"
+          },
+          {
+            "de": "Gefrorener Tau auf Oberflächen",
+            "it": "Rugiada ghiacciata sulle superfici"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "niederschlag-h1eugbtw",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde auch diese Niederschlagsarten mit der richtigen Beschreibung!",
+        "it": "Collega anche questi tipi di precipitazione con la descrizione corretta!"
+      },
+      "hint": {
+        "de": "Tipp: Tau und Reif unterscheiden sich durch die Temperatur — über oder unter 0°C!",
+        "it": "Suggerimento: rugiada e brina si differenziano per la temperatura — sopra o sotto 0°C!"
+      },
+      "explain": {
+        "de": "Nieselregen→<0,5mm | Graupel→weich 2–5mm | Reif→Minusgrade | Tau→über 0°C.",
+        "it": "Pioggerella→<0,5mm | Graupel→morbido 2–5mm | Brina→sotto zero | Rugiada→sopra 0°C."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "Nieselregen",
+              "it": "Pioggerella"
+            },
+            "right": {
+              "de": "Sehr feine Tropfen, kleiner als 0,5 mm",
+              "it": "Gocce finissime, più piccole di 0,5 mm"
+            }
+          },
+          {
+            "left": {
+              "de": "Graupel",
+              "it": "Graupel"
+            },
+            "right": {
+              "de": "Weiche Eiskörner, 2 bis 5 mm groß",
+              "it": "Chicchi di ghiaccio morbidi, da 2 a 5 mm"
+            }
+          },
+          {
+            "left": {
+              "de": "Reif",
+              "it": "Brina"
+            },
+            "right": {
+              "de": "Wasserdampf gefriert bei Minustemperaturen zu Eis",
+              "it": "Il vapore gela a temperature sotto zero"
+            }
+          },
+          {
+            "left": {
+              "de": "Tau",
+              "it": "Rugiada"
+            },
+            "right": {
+              "de": "Wasserdampf kondensiert bei über 0°C zu Tröpfchen",
+              "it": "Il vapore condensa sopra 0°C in goccioline"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

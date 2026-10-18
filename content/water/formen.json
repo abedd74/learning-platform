@@ -1,0 +1,737 @@
+{
+  "items": [
+    {
+      "id": "formen-hyy9wof",
+      "type": "choice",
+      "prompt": {
+        "de": "Bei welcher Temperatur wird flüssiges Wasser zu Eis?",
+        "it": "A quale temperatura l'acqua liquida diventa ghiaccio?"
+      },
+      "hint": {
+        "de": "Es ist der Gefrierpunkt — eine runde, leicht zu merkende Zahl!",
+        "it": "È il punto di congelamento — un numero tondo e facile da ricordare!"
+      },
+      "explain": {
+        "de": "0°C ist der Gefrierpunkt von Wasser.",
+        "it": "0°C è il punto di congelamento dell'acqua."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "0°C",
+            "it": "0°C"
+          },
+          {
+            "de": "4°C",
+            "it": "4°C"
+          },
+          {
+            "de": "-10°C",
+            "it": "-10°C"
+          },
+          {
+            "de": "100°C",
+            "it": "100°C"
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "formen-hi8tjrx",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Verdunsten = langsame Oberfläche, jede Temperatur. Verdampfen = Kochen bei 100°C. Unterschiedlich!",
+        "it": "Verdunsten = evaporazione lenta. Verdampfen = ebollizione a 100°C. Sono diversi!"
+      },
+      "explain": {
+        "de": "Falsch! Verdunsten ist langsam an der Oberfläche. Verdampfen (Sieden) nur bei 100°C.",
+        "it": "Falso! Evaporazione lenta vs. ebollizione a 100°C — processi diversi!"
+      },
+      "answer": {
+        "statement": {
+          "de": "Verdunsten und Verdampfen bedeuten dasselbe.",
+          "it": "Evaporazione e ebollizione significano la stessa cosa."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "formen-h1iw6r19",
+      "type": "image",
+      "prompt": {
+        "de": "Ice + heat = ?",
+        "it": "Ghiaccio + calore = ?"
+      },
+      "hint": {
+        "de": "When ice gets warmer, it melts! What does melted ice become?",
+        "it": "Quando il ghiaccio si scalda, si scioglie! Cosa diventa il ghiaccio sciolto?"
+      },
+      "explain": {
+        "de": "Water 💧 — ice melts when heat is added (+heat = schmelzen).",
+        "it": "Acqua 💧 — il ghiaccio si scioglie quando viene aggiunto calore."
+      },
+      "answer": {
+        "options": [
+          {
+            "emoji": "💧",
+            "label": {
+              "de": "Water"
+            }
+          },
+          {
+            "emoji": "🧊",
+            "label": {
+              "de": "More ice"
+            }
+          },
+          {
+            "emoji": "💨",
+            "label": {
+              "de": "Steam"
+            }
+          },
+          {
+            "emoji": "⛄",
+            "label": {
+              "de": "Snowman"
+            }
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "formen-h41rq3a",
+      "type": "image",
+      "prompt": {
+        "de": "Water − heat = ?",
+        "it": "Acqua − calore = ?"
+      },
+      "hint": {
+        "de": "When water loses heat and gets very cold, it freezes! What does it become?",
+        "it": "Quando l'acqua perde calore e si raffredda, gela! Cosa diventa?"
+      },
+      "explain": {
+        "de": "Ice 🧊 — water freezes when heat is removed (−heat = gefrieren).",
+        "it": "Ghiaccio 🧊 — l'acqua gela quando perde calore."
+      },
+      "answer": {
+        "options": [
+          {
+            "emoji": "💨",
+            "label": {
+              "de": "Steam"
+            }
+          },
+          {
+            "emoji": "💧",
+            "label": {
+              "de": "Water"
+            }
+          },
+          {
+            "emoji": "🧊",
+            "label": {
+              "de": "Ice"
+            }
+          },
+          {
+            "emoji": "☁️",
+            "label": {
+              "de": "Cloud"
+            }
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "formen-hjrp4x5",
+      "type": "text",
+      "prompt": {
+        "de": "Wenn flüssiges Wasser kälter als 0°C wird, _____ es.",
+        "it": "Quando l'acqua liquida diventa più fredda di 0°C, _____."
+      },
+      "hint": {
+        "de": "Es wird zu Eis! Welches Verb beschreibt das? Es ___ !",
+        "it": "Diventa ghiaccio! Quale verbo si usa?"
+      },
+      "explain": {
+        "de": "gefriert — das Wasser gefriert zu Eis.",
+        "it": "gela — l'acqua gela e diventa ghiaccio."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Wenn flüssiges Wasser kälter als 0°C wird,",
+          "it": "Quando l'acqua liquida diventa più fredda di 0°C,"
+        },
+        "suffix": {
+          "de": "es.",
+          "it": "."
+        },
+        "accepted": [
+          "gefriert",
+          "friert",
+          "erstarrt"
+        ]
+      }
+    },
+    {
+      "id": "formen-hvlte5r",
+      "type": "choice",
+      "prompt": {
+        "de": "Was passiert mit Wasserdampf, wenn er in kältere Luftschichten aufsteigt?",
+        "it": "Cosa succede al vapore acqueo quando sale in strati d'aria più freddi?"
+      },
+      "hint": {
+        "de": "Kältere Luft lässt den Dampf wieder flüssig werden — was entsteht am Himmel?",
+        "it": "L'aria fredda fa condensare il vapore — cosa si forma nel cielo?"
+      },
+      "explain": {
+        "de": "Er kondensiert zu winzigen Wassertröpfchen und bildet Wolken.",
+        "it": "Si condensa in minuscole goccioline e forma le nuvole."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Er verschwindet einfach",
+            "it": "Scompare e basta"
+          },
+          {
+            "de": "Er kondensiert und bildet Wolken",
+            "it": "Si condensa e forma nuvole"
+          },
+          {
+            "de": "Er wird sofort zu Eis",
+            "it": "Diventa subito ghiaccio"
+          },
+          {
+            "de": "Er fällt sofort als Regen",
+            "it": "Cade subito come pioggia"
+          }
+        ],
+        "correct": 1
+      }
+    },
+    {
+      "id": "formen-hz6xdae",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Vorgang, wenn Eis sich in Wasser verwandelt?",
+        "it": "Come si chiama il processo quando il ghiaccio si trasforma in acqua?"
+      },
+      "hint": {
+        "de": "Eis + Wärme = Wasser. Der Vorgang heißt S _ _ _ _ _ _ _!",
+        "it": "Ghiaccio + calore = acqua. Il processo si chiama \"fusione\"!"
+      },
+      "explain": {
+        "de": "Schmelzen — fest (Eis) + Wärme → flüssig (Wasser).",
+        "it": "Fusione (Schmelzen) — solido (ghiaccio) + calore → liquido (acqua)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Gefrieren",
+            "it": "Congelamento"
+          },
+          {
+            "de": "Kondensieren",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Schmelzen",
+            "it": "Fusione"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "formen-h1bv2r29",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Vorgang, wenn Wasser bei 100°C zu Wasserdampf wird?",
+        "it": "Come si chiama il processo quando l'acqua a 100°C diventa vapore acqueo?"
+      },
+      "hint": {
+        "de": "Das passiert im Kochtopf bei genau 100°C — das Wasser kocht und wird zu Dampf!",
+        "it": "Succede nella pentola esattamente a 100°C — l'acqua bolle e diventa vapore!"
+      },
+      "explain": {
+        "de": "Verdampfen (Sieden) — flüssig + 100°C → gasförmig. Nicht zu verwechseln mit Verdunsten!",
+        "it": "Ebollizione (Verdampfen) — liquido + 100°C → gassoso. Da non confondere con l'evaporazione!"
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schmelzen",
+            "it": "Fusione"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione lenta"
+          },
+          {
+            "de": "Kondensieren",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Verdampfen",
+            "it": "Ebollizione"
+          }
+        ],
+        "correct": 3
+      }
+    },
+    {
+      "id": "formen-h18081rh",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Vorgang, wenn Wasserdampf sich abkühlt und wieder zu Wasser wird?",
+        "it": "Come si chiama il processo quando il vapore acqueo si raffredda e torna acqua?"
+      },
+      "hint": {
+        "de": "Das sieht man an einem kalten Glas — Tröpfchen bilden sich außen. Dampf wird wieder flüssig!",
+        "it": "Si vede su un bicchiere freddo — si formano goccioline fuori. Il vapore torna liquido!"
+      },
+      "explain": {
+        "de": "Kondensieren — gasförmig (Dampf) + Kälte → flüssig (Wasser).",
+        "it": "Condensazione (Kondensieren) — gassoso (vapore) + freddo → liquido (acqua)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Verdampfen",
+            "it": "Ebollizione"
+          },
+          {
+            "de": "Schmelzen",
+            "it": "Fusione"
+          },
+          {
+            "de": "Kondensieren",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Gefrieren",
+            "it": "Congelamento"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "formen-h122w6zz",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde jeden Aggregatzustand mit dem passenden Beispiel!",
+        "it": "Collega ogni stato dell'acqua con l'esempio corretto!"
+      },
+      "hint": {
+        "de": "Gefroren = fest, fließend = flüssig, unsichtbar in der Luft = gasförmig!",
+        "it": "Congelato = solido, scorrente = liquido, invisibile nell'aria = gassoso!"
+      },
+      "explain": {
+        "de": "fest→Eis | flüssig→Wasser | gasförmig→Wasserdampf.",
+        "it": "solido→ghiaccio | liquido→acqua | gassoso→vapore acqueo."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "fest",
+              "it": "solido"
+            },
+            "right": {
+              "de": "Eis",
+              "it": "ghiaccio"
+            }
+          },
+          {
+            "left": {
+              "de": "flüssig",
+              "it": "liquido"
+            },
+            "right": {
+              "de": "Wasser",
+              "it": "acqua"
+            }
+          },
+          {
+            "left": {
+              "de": "gasförmig",
+              "it": "gassoso"
+            },
+            "right": {
+              "de": "Wasserdampf",
+              "it": "vapore acqueo"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "formen-hapb1q3",
+      "type": "image",
+      "prompt": {
+        "de": "Water + lots of heat (100°C) = ?",
+        "it": "Acqua + molto calore (100°C) = ?"
+      },
+      "hint": {
+        "de": "When water is heated to 100°C it boils! What does it become? (Hint: Verdampfen!)",
+        "it": "Quando l'acqua è scaldata a 100°C bolle! Cosa diventa? (Suggerimento: ebollizione!)"
+      },
+      "explain": {
+        "de": "Steam 💨 — water boils at 100°C and becomes steam (= Verdampfen).",
+        "it": "Vapore 💨 — l'acqua bolle a 100°C e diventa vapore (= ebollizione)."
+      },
+      "answer": {
+        "options": [
+          {
+            "emoji": "💨",
+            "label": {
+              "de": "Steam"
+            }
+          },
+          {
+            "emoji": "🧊",
+            "label": {
+              "de": "Ice"
+            }
+          },
+          {
+            "emoji": "💧",
+            "label": {
+              "de": "More water"
+            }
+          },
+          {
+            "emoji": "☁️",
+            "label": {
+              "de": "Cloud"
+            }
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "formen-h1xlhiwd",
+      "type": "image",
+      "prompt": {
+        "de": "Steam − heat = ?",
+        "it": "Vapore − calore = ?"
+      },
+      "hint": {
+        "de": "When steam cools down, it turns back into liquid. What is that? (Hint: Kondensieren!)",
+        "it": "Quando il vapore si raffredda, torna liquido. Cos'è? (Suggerimento: condensazione!)"
+      },
+      "explain": {
+        "de": "Water 💧 — steam cools and condenses back to water (= Kondensieren).",
+        "it": "Acqua 💧 — il vapore si raffredda e condensa in acqua (= condensazione)."
+      },
+      "answer": {
+        "options": [
+          {
+            "emoji": "💧",
+            "label": {
+              "de": "Water"
+            }
+          },
+          {
+            "emoji": "🧊",
+            "label": {
+              "de": "Ice"
+            }
+          },
+          {
+            "emoji": "💨",
+            "label": {
+              "de": "More steam"
+            }
+          },
+          {
+            "emoji": "⛄",
+            "label": {
+              "de": "Snowman"
+            }
+          }
+        ],
+        "correct": 0
+      }
+    },
+    {
+      "id": "formen-h15n2cat",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Kocht die Pfütze? Nein! Das Wasser geht langsam in die Luft über — ohne 100°C. Das nennt man Verdunsten!",
+        "it": "La pozzanghera bolle? No! L'acqua sale nell'aria lentamente — senza 100°C. Si chiama Verdunsten!"
+      },
+      "explain": {
+        "de": "Falsch! Eine Pfütze verdunstet (langsam, ohne Kochen). Verdampfen passiert nur bei 100°C.",
+        "it": "Falso! Una pozzanghera evapora lentamente (Verdunsten). L'ebollizione (Verdampfen) avviene solo a 100°C."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wenn eine Pfütze auf der Straße in der Sonne trocknet, verdampft das Wasser.",
+          "it": "Quando una pozzanghera si asciuga al sole per strada, l'acqua evapora per ebollizione."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "formen-h1eh9d2g",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Verdunsten passiert bei jeder Temperatur — sogar bei kaltem Wetter trocknet Wäsche! Nur Verdampfen braucht 100°C.",
+        "it": "L'evaporazione avviene a qualsiasi temperatura — anche il freddo asciuga i panni! Solo l'ebollizione richiede 100°C."
+      },
+      "explain": {
+        "de": "Falsch! Verdunsten passiert bei jeder Temperatur (langsam, an der Oberfläche). Verdampfen nur bei 100°C.",
+        "it": "Falso! L'evaporazione avviene a qualsiasi temperatura. L'ebollizione (Verdampfen) solo a 100°C."
+      },
+      "answer": {
+        "statement": {
+          "de": "Wasser kann nur bei 100°C zu Wasserdampf werden.",
+          "it": "L'acqua può diventare vapore acqueo solo a 100°C."
+        },
+        "correct": false
+      }
+    },
+    {
+      "id": "formen-h1pa0iar",
+      "type": "text",
+      "prompt": {
+        "de": "Verdunsten passiert langsam an der _____ des Wassers, bei jeder Temperatur.",
+        "it": "L'evaporazione avviene lentamente alla _____ dell'acqua, a qualsiasi temperatura."
+      },
+      "hint": {
+        "de": "Verdunsten beginnt ganz oben am Wasser — nicht in der Tiefe. Wo genau?",
+        "it": "L'evaporazione inizia in cima all'acqua — non in profondità. Dove esattamente?"
+      },
+      "explain": {
+        "de": "Oberfläche — Verdunsten ist ein langsamer Prozess NUR an der Wasseroberfläche.",
+        "it": "Superficie — l'evaporazione è un processo lento SOLO sulla superficie dell'acqua."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Verdunsten passiert langsam an der",
+          "it": "L'evaporazione avviene lentamente alla"
+        },
+        "suffix": {
+          "de": "des Wassers, bei jeder Temperatur.",
+          "it": "dell'acqua, a qualsiasi temperatura."
+        },
+        "accepted": [
+          "oberfläche",
+          "wasseroberfläche"
+        ]
+      }
+    },
+    {
+      "id": "formen-hbrnpgt",
+      "type": "choice",
+      "prompt": {
+        "de": "Wie heißt der Vorgang, wenn flüssiges Wasser zu Eis wird?",
+        "it": "Come si chiama il processo quando l'acqua liquida diventa ghiaccio?"
+      },
+      "hint": {
+        "de": "Das passiert bei 0°C — denk an einen zugefrorenen See! Was wird das Wasser dabei?",
+        "it": "Succede a 0°C — pensa a un lago ghiacciato! Cosa diventa l'acqua?"
+      },
+      "explain": {
+        "de": "Gefrieren — flüssiges Wasser + Kälte (0°C) → fest (Eis).",
+        "it": "Congelamento (Gefrieren) — acqua liquida + freddo (0°C) → solido (ghiaccio)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Schmelzen",
+            "it": "Fusione"
+          },
+          {
+            "de": "Kondensieren",
+            "it": "Condensazione"
+          },
+          {
+            "de": "Gefrieren",
+            "it": "Congelamento"
+          },
+          {
+            "de": "Verdunsten",
+            "it": "Evaporazione"
+          }
+        ],
+        "correct": 2
+      }
+    },
+    {
+      "id": "formen-h1chq6ux",
+      "type": "text",
+      "prompt": {
+        "de": "Wenn Wasser auf 0°C abgekühlt wird, _____ es.",
+        "it": "Quando l'acqua si raffredda a 0°C, _____."
+      },
+      "hint": {
+        "de": "Das Wasser wird zu Eis! Der Vorgang heißt \"Gefrieren\" — welche Form passt im Satz?",
+        "it": "L'acqua diventa ghiaccio! Il processo si chiama \"Gefrieren\" — quale forma si usa nella frase?"
+      },
+      "explain": {
+        "de": "gefriert — bei 0°C gefriert flüssiges Wasser zu Eis (Gefrieren).",
+        "it": "si congela — a 0°C l'acqua liquida si congela in ghiaccio."
+      },
+      "answer": {
+        "prefix": {
+          "de": "Wenn Wasser auf 0°C abgekühlt wird,",
+          "it": "Quando l'acqua si raffredda a 0°C,"
+        },
+        "suffix": {
+          "de": "es.",
+          "it": "."
+        },
+        "accepted": [
+          "gefriert",
+          "friert",
+          "erstarrt"
+        ]
+      }
+    },
+    {
+      "id": "formen-h42iuek",
+      "type": "pairs",
+      "prompt": {
+        "de": "Verbinde jeden Übergang mit dem richtigen Fachbegriff!",
+        "it": "Collega ogni transizione con il termine scientifico corretto!"
+      },
+      "hint": {
+        "de": "Eis macht Gefrieren, Dampf macht Verdampfen, Wolken machen Kondensieren...",
+        "it": "Ghiaccio = Gefrieren, vapore = Verdampfen, nuvole = Kondensieren..."
+      },
+      "explain": {
+        "de": "flüssig→fest = Gefrieren | fest→flüssig = Schmelzen | flüssig→Gas = Verdampfen | Gas→flüssig = Kondensieren.",
+        "it": "liquido→solido = Gefrieren | solido→liquido = Schmelzen | liquido→gas = Verdampfen | gas→liquido = Kondensieren."
+      },
+      "answer": {
+        "pairs": [
+          {
+            "left": {
+              "de": "flüssig → fest",
+              "it": "liquido → solido"
+            },
+            "right": {
+              "de": "Gefrieren",
+              "it": "Congelamento"
+            }
+          },
+          {
+            "left": {
+              "de": "fest → flüssig",
+              "it": "solido → liquido"
+            },
+            "right": {
+              "de": "Schmelzen",
+              "it": "Fusione"
+            }
+          },
+          {
+            "left": {
+              "de": "flüssig → gasförmig",
+              "it": "liquido → gassoso"
+            },
+            "right": {
+              "de": "Verdampfen",
+              "it": "Ebollizione"
+            }
+          },
+          {
+            "left": {
+              "de": "gasförmig → flüssig",
+              "it": "gassoso → liquido"
+            },
+            "right": {
+              "de": "Kondensieren",
+              "it": "Condensazione"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "formen-h1wavk00",
+      "type": "bool",
+      "prompt": {
+        "de": "Stimmt das, was Tropfi sagt?",
+        "it": "Tropfi ha ragione?"
+      },
+      "hint": {
+        "de": "Ja! Gefrieren passiert genau bei 0°C — das ist der Gefrierpunkt von Wasser!",
+        "it": "Sì! Il congelamento avviene esattamente a 0°C — è il punto di congelamento dell'acqua!"
+      },
+      "explain": {
+        "de": "Richtig! Gefrieren = flüssig → fest, bei 0°C.",
+        "it": "Giusto! Congelamento = liquido → solido, a 0°C."
+      },
+      "answer": {
+        "statement": {
+          "de": "Beim Gefrieren wird flüssiges Wasser zu Eis. Das passiert bei 0°C.",
+          "it": "Nel congelamento l'acqua liquida diventa ghiaccio. Succede a 0°C."
+        },
+        "correct": true
+      }
+    },
+    {
+      "id": "formen-h1ftyaf6",
+      "type": "choice",
+      "prompt": {
+        "de": "Du stellst ein Glas Wasser in den Gefrierschrank. Was passiert mit dem Wasser?",
+        "it": "Metti un bicchiere d'acqua nel congelatore. Cosa succede all'acqua?"
+      },
+      "hint": {
+        "de": "Im Gefrierschrank wird es sehr kalt — viel kälter als 0°C. Was passiert dann mit Wasser?",
+        "it": "Nel congelatore fa molto freddo — molto più di 0°C. Cosa succede all'acqua?"
+      },
+      "explain": {
+        "de": "Das Wasser gefriert — es wird zu Eis, weil es unter 0°C abgekühlt wird (Gefrieren).",
+        "it": "L'acqua si congela — diventa ghiaccio perché si raffredda sotto 0°C (Gefrieren)."
+      },
+      "answer": {
+        "options": [
+          {
+            "de": "Das Wasser verdunstet",
+            "it": "L'acqua evapora"
+          },
+          {
+            "de": "Das Wasser gefriert",
+            "it": "L'acqua si congela"
+          },
+          {
+            "de": "Das Wasser kondensiert",
+            "it": "L'acqua condensa"
+          },
+          {
+            "de": "Das Wasser verdampft",
+            "it": "L'acqua bolle"
+          }
+        ],
+        "correct": 1
+      }
+    }
+  ]
+}
