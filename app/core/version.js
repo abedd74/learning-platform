@@ -11,6 +11,12 @@ export function versionFrom(json) {
   return (typeof v === 'string' && /^[\w.+-]{1,40}$/.test(v)) ? v : FALLBACK_VERSION;
 }
 
+/** The app's file list out of version.json: plain relative paths below app/ only (never a URL, never '..'). */
+export function filesFrom(json) {
+  const list = json && typeof json === 'object' && Array.isArray(json.files) ? json.files : [];
+  return list.filter(f => typeof f === 'string' && /^[\w-]+(\/[\w-]+)*\.(js|css)$/.test(f)).slice(0, 400);
+}
+
 /** URL of a module next to `base`, with the version as a cache-breaker. */
 export function versionedUrl(base, file, version) {
   const u = new URL(file, base);

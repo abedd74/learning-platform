@@ -45,18 +45,23 @@ This document is the contract. The table below is generated from the registry in
 | `plan_<P>` | profile | v2 | `newest` | {updatedAt, tests:{moduleId: day}, focus?:[moduleId]} |
 | `app_errors` | family | v2 | `errorLog` | [{ts, v, page, msg, stack}] — last 200 |
 | `app_profile` | device | v2 | none (device-local) | JSON string: <P> last chosen on this device |
+| `app_boot` | device | v2 | none (device-local) | {v: the app version this device loaded last} — decides whether the files are fetched again (boot.js) |
 | `app_settings` | device | v2 | none (device-local) | {sound, italian, parentPin?} — device settings |
 <!-- keys:end -->
 
 ## Differences the children will not notice, written down anyway
 
-- **Records gain optional fields.** SRS records may carry `lz` (a decaying leech score; old records start from `w`). The merge rules ignore unknown fields and pass them through.
+- **Records gain optional fields.** SRS records may carry `lz` (recent wrongs; old records start from `w`). The existing modules do not use it — a card with 4 wrongs in total stays on shortened intervals, exactly as before — it is there for new modules that opt in. The merge rules ignore unknown fields and pass them through.
+- **The scheduler is checked against the old one.** `tests/srs.test.mjs` runs the two schedulers of the old pages, copied as they were, step by step against the new one.
 - **Retry counts once.** The old quiz called the scheduler twice for "wrong, then right on the retry" (two drops). v2 applies one review per card per session (one drop).
 - **Day boundary.** v2 computes the day in Europe/Berlin; the old app used UTC (which flipped at 01:00/02:00 German time). Existing `due` dates keep their strings; the difference is at most a day, once.
 - **History dates.** The old app stored `D.M.YYYY` unpadded and sorted as if padded; v2 keeps writing the same format and sorts both forms correctly.
 - **Lernpfad state** (`gram_path_<P>`) merges deep instead of flat, so units passed on two devices are both kept (DECISIONS 2026-10-18).
 - **Old editor overrides** (`wq_editor_QB*`) no longer replace shipped content at runtime. Their differences are folded into the content files before the switch (from a backup export) and the keys are left alone.
 - **Eltern** is a mode, not a profile. The old `wq_Eltern*` keys stay untouched and unused.
+- **Round history** (`wq_<P>`) keeps its shape (pct is a whole number 0–100). It gets finished quiz rounds of one module, as before; trainer and mixed rounds are counted in `plan_days_<P>`.
+- **Sound and Italian** start from the old switches (`gram_sound_on`, `gram_it_on`, `wr_sound`) on a device's first run, then live in `app_settings`. The old keys are never written.
+- **A cloud snapshot is merged in**, not put on top: bringing one back refills what went missing and never lowers newer progress.
 
 ## Staging (`/next/`)
 

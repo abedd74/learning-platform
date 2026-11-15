@@ -16,7 +16,21 @@
 <script>window.LP_NAMESPACE = 'next_';</script>
 </head>
 <body>
-<div id="app"></div>
+<div id="app"><p id="boot-wait" style="margin:30vh auto 0;max-width:22rem;text-align:center;font:600 18px/1.5 system-ui,sans-serif;color:#3d6470;">Lädt …</p></div>
+<noscript><p style="margin:2rem;font:16px/1.5 system-ui,sans-serif;">Die Lernplattform braucht JavaScript.</p></noscript>
+<script>
+// if nothing has replaced the waiting line after a while (no network, a file did not arrive): offer a retry
+setTimeout(function () {
+  var w = document.getElementById('boot-wait');
+  if (!w) return;
+  w.textContent = 'Das Laden klappt gerade nicht. ';
+  var b = document.createElement('button');
+  b.type = 'button'; b.textContent = 'Nochmal versuchen';
+  b.style.cssText = 'display:block;margin:.75rem auto 0;padding:.6rem 1rem;font:inherit;border-radius:10px;border:0;background:#2a7f8f;color:#fff;';
+  b.onclick = function () { location.reload(); };
+  w.appendChild(b);
+}, 12000);
+</script>
 <script type="module" src="../app/boot.js"></script>
 </body>
 </html>

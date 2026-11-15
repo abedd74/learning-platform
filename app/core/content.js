@@ -6,7 +6,7 @@
 
 import { cardId } from './srs.js';
 
-export function createContent({ base, fetch = globalThis.fetch?.bind(globalThis) } = {}) {
+export function createContent({ base, fetch = globalThis.fetch?.bind(globalThis), wait = ms => new Promise(r => setTimeout(r, ms)) } = {}) {
   // base: URL of the content folder (default: ../content/ next to app/)
   const root = base ?? new URL('../../content/', import.meta.url).href;
   const cache = new Map();
@@ -14,9 +14,18 @@ export function createContent({ base, fetch = globalThis.fetch?.bind(globalThis)
   async function json(rel) {
     if (cache.has(rel)) return cache.get(rel);
     const p = (async () => {
-      const res = await fetch(new URL(rel, root).href, { cache: 'no-cache' });
-      if (!res.ok) throw new Error(`Inhalt fehlt: ${rel} (${res.status})`);
-      return res.json();
+      // a shaky connection gets three tries; a file that is not there (404) is final at once
+      let last;
+      for (let attempt = 0; attempt < 3; attempt++) {
+        if (attempt) await wait(400 * attempt * attempt);
+        try {
+          const res = await fetch(new URL(rel, root).href, { cache: 'no-cache' });
+          if (res.ok) return await res.json();
+          last = new Error(`Inhalt fehlt: ${rel} (${res.status})`);
+          if (res.status < 500 && res.status !== 429) break;
+        } catch (e) { last = new Error(`Inhalt nicht erreichbar: ${rel} (${e?.message || e})`); }
+      }
+      throw last;
     })();
     cache.set(rel, p);
     try { return await p; } catch (e) { cache.delete(rel); throw e; }
@@ -51,7 +60,8 @@ export function createContent({ base, fetch = globalThis.fetch?.bind(globalThis)
     const t = mod.topics.find(x => x.id === topicId);
     if (!t) throw new Error(`Thema ${topicId} fehlt in ${mod.id}`);
     const data = await json(`${mod.id}/${t.file}`);
-    return (data.items || []).map(q => ({ ...q, module: mod.id, topic: topicId }));
+    const items = Array.isArray(data) ? data : (data.items || []);   // a bare list is a topic file too
+    return items.map(q => ({ ...q, module: mod.id, topic: topicId }));
   }
 
   /** All questions of a module, in topic order. */

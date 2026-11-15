@@ -97,6 +97,8 @@ export const REGISTRY = [
     shape: '[{ts, v, page, msg, stack}] — last 200' },
   { id: 'appProfile',     re: /^app_profile$/, build: () => 'app_profile',
     sync: null, scope: 'device', since: 2, shape: 'JSON string: <P> last chosen on this device' },
+  { id: 'appBoot',        re: /^app_boot$/, build: () => 'app_boot',
+    sync: null, scope: 'device', since: 2, shape: '{v: the app version this device loaded last} — decides whether the files are fetched again (boot.js)' },
   { id: 'appSettings',    re: /^app_settings$/, build: () => 'app_settings',
     sync: null, scope: 'device', since: 2,
     shape: '{sound, italian, parentPin?} — device settings' },
