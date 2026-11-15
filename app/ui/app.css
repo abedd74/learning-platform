@@ -18,7 +18,11 @@ h1 { font-size: var(--fs-3xl); line-height: var(--lh-tight); }
 h2 { font-size: var(--fs-l); }
 .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--ink-soft); }
 .soft { color: var(--ink-soft); } .muted { color: var(--muted); }
-.it { display: block; color: var(--muted); font-weight: 700; font-size: .92em; margin-top: 2px; }
+.it, .subline { display: block; color: var(--muted); font-weight: 700; font-size: .92em; margin-top: 2px; }
+.it.inline { display: inline; font-size: 1em; font-weight: inherit; margin: 0; }
+/* German only is the standard: the Italian lines are on the page and appear with 🇮🇹 (class it-on on <html>) */
+html:not(.it-on) .it { display: none !important; }
+.topbar .it-toggle { flex: none; }
 .bil .de { display: block; }
 
 /* ── surfaces and buttons ───────────────────────────────────────────── */

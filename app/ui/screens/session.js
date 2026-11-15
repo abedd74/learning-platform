@@ -10,10 +10,13 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
   const segments = el('div', { class: 'segments' });
   const counter = el('span', { class: 'counter' });
   const closeBtn = el('button', { class: 'icon-btn', type: 'button', 'aria-label': i18n.t('session.close'), onClick: askQuit }, '✕');
+  // 🇮🇹 for a parent who wants to read along: shows or hides the Italian lines of the card that is open, nothing is drawn again
+  const itBtn = el('button', { class: `icon-btn it-toggle${i18n.showItalian ? ' on' : ''}`, type: 'button', title: i18n.t('home.italian'), 'aria-label': i18n.t('home.italian'), 'aria-pressed': String(i18n.showItalian),
+    onClick: () => { i18n.setShowItalian(!i18n.showItalian); itBtn.classList.toggle('on', i18n.showItalian); itBtn.setAttribute('aria-pressed', String(i18n.showItalian)); } }, '🇮🇹');
   const bubble = el('div', { class: 'bubble' });
   const mascot = el('span', { class: 'm' });
   const body = el('div', { class: 'stack', id: 'session-body' });
-  col.append(el('div', { class: 'topbar' }, closeBtn, segments, counter), el('div', { class: 'speech' }, mascot, bubble), body);
+  col.append(el('div', { class: 'topbar' }, closeBtn, segments, counter, itBtn), el('div', { class: 'speech' }, mascot, bubble), body);
   mount(root, el('div', { class: 'stage' }, horizon(), col));
 
   const outcomes = [];   // per queue position: 'ok' | 'miss' | undefined
@@ -68,7 +71,7 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
     if (q.type === 'case') audio.speak({ text: `${q.solution} ${q.nounForm}` });
     if (q.type === 'pfill' && q.t) audio.speak({ text: q.t.replace('___', q.correct) });
     if (q.type === 'gender' && q.noun) {
-      sheet.appendChild(el('div', { class: 'hint-text' }, `${q.noun.g} ${q.noun.de}${q.noun.pl ? ` · die ${q.noun.pl}` : ''}${q.noun.it && i18n.showItalian ? ` · ${q.noun.it}` : ''}`));
+      sheet.appendChild(el('div', { class: 'hint-text' }, `${q.noun.g} ${q.noun.de}${q.noun.pl ? ` · die ${q.noun.pl}` : ''}`, q.noun.it ? el('span', { class: 'it inline' }, ` · ${q.noun.it}`) : null));
       audio.speak({ clip: `a_${audio.slug(q.noun.de)}`, text: `${q.noun.g} ${q.noun.de}` });
     }
     const next = el('button', { class: 'btn primary', type: 'button', onClick: () => { session.next(); show(); } }, i18n.t('session.next'));
@@ -97,15 +100,15 @@ function questionCard(q, ctx, mod) {
   if (q.type === 'gender') {
     if (q.noun.em) card.appendChild(el('div', { class: 'em' }, q.noun.em));
     card.appendChild(el('div', { class: 'word' }, q.noun.de));
-    if (q.noun.it && i18n.showItalian) card.appendChild(el('div', { class: 'it' }, q.noun.it));
+    if (q.noun.it) card.appendChild(el('div', { class: 'it' }, q.noun.it));
     return card;
   }
   if (q.type === 'case' || q.type === 'pfill' || q.type === 'pmcq') {
     if (q.em) card.appendChild(el('div', { class: 'em' }, q.em));
     card.appendChild(el('div', { class: 'q' }, q.sentence || q.sent || q.t || ''));
-    if (q.sentence_it && i18n.showItalian) card.appendChild(el('div', { class: 'it' }, q.sentence_it));
+    if (q.sentence_it) card.appendChild(el('div', { class: 'it' }, q.sentence_it));
     if (q.task) card.appendChild(el('div', { class: 'soft' }, q.task));
-    if (q.task_it && i18n.showItalian) card.appendChild(el('div', { class: 'it' }, q.task_it));
+    if (q.task_it) card.appendChild(el('div', { class: 'it' }, q.task_it));
     if (q.base) card.appendChild(el('div', { class: 'chip' }, q.base));
     return card;
   }

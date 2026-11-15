@@ -1,6 +1,6 @@
 {
- "version": "2026.11.15-7dfaeeb",
- "hash": "7dfaeebe258282a1014fe986021dc5fae942117c2b656bde79a9935be0fe4493",
+ "version": "2026.11.15-f03825a",
+ "hash": "f03825a1f2b9f5da7781c38297a018ccab39a18d5a8f80a58bcdfec0c7dc28b9",
  "files": [
   "boot.js",
   "core/audio.js",

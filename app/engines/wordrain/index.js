@@ -88,8 +88,8 @@ export function createWordRain(ctx, nouns) {
       const modes = el('div', { class: 'answers answers-2' });
       const paint = () => modes.querySelectorAll('button').forEach(b => b.classList.toggle('chosen', b.dataset.mode === mode));
       modes.append(
-        el('button', { class: 'answer', type: 'button', dataset: { mode: 'normal' }, onClick: () => { mode = 'normal'; paint(); } }, '🚀 Normal', el('span', { class: 'it' }, 'schneller')),
-        el('button', { class: 'answer', type: 'button', dataset: { mode: 'sanft' }, onClick: () => { mode = 'sanft'; paint(); } }, '🌸 Sanft', el('span', { class: 'it' }, 'langsamer + Bilder')));
+        el('button', { class: 'answer', type: 'button', dataset: { mode: 'normal' }, onClick: () => { mode = 'normal'; paint(); } }, '🚀 Normal', el('span', { class: 'subline' }, 'schneller')),
+        el('button', { class: 'answer', type: 'button', dataset: { mode: 'sanft' }, onClick: () => { mode = 'sanft'; paint(); } }, '🌸 Sanft', el('span', { class: 'subline' }, 'langsamer + Bilder')));
       paint();
       col.appendChild(el('section', { class: 'card stack' }, modes,
         el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, onClick: () => play(root) }, 'Spielen! 🌧️'),

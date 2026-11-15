@@ -102,20 +102,26 @@ test('content text normalises to {de, it|null}', () => {
   assert.deepEqual(text(null), { de: '', it: null });
 });
 
-test('the Italian toggle is a device setting; t/it/pick honour it', () => {
+test('German only is the standard; the Italian toggle is a device setting and tells the page', () => {
   const s = fresh();
-  const i = createI18n({ store: s, strings: { hi: { de: 'Hallo {n}', it: 'Ciao {n}' }, only: 'Nur Deutsch' } });
+  const seen = [];
+  const i = createI18n({ store: s, strings: { hi: { de: 'Hallo {n}', it: 'Ciao {n}' }, only: 'Nur Deutsch' }, onChange: on => seen.push(on) });
   assert.equal(i.showItalian, false);
   assert.equal(i.t('hi', { n: 'Mia' }), 'Hallo Mia');
-  assert.equal(i.it('hi', { n: 'Mia' }), null);
-  assert.deepEqual(i.pick({ de: 'a', it: 'b' }), { de: 'a', it: null });
-  i.setShowItalian(true);
-  assert.equal(i.showItalian, true);
+  // the Italian text is always handed out: the page carries it and hides it until the toggle is on
   assert.equal(i.it('hi', { n: 'Mia' }), 'Ciao Mia');
   assert.equal(i.it('only'), null);
-  assert.equal(i.t('unknown.id'), 'unknown.id');
   assert.deepEqual(i.pick({ de: 'a', it: 'b' }), { de: 'a', it: 'b' });
+  assert.deepEqual(i.pick('nur'), { de: 'nur', it: null });
+  i.setShowItalian(true);
+  assert.equal(i.showItalian, true);
   assert.equal(s.get(K.appSettings()).italian, true);
+  i.setShowItalian(false);
+  assert.equal(i.showItalian, false);
+  assert.deepEqual(seen, [true, false]);
+  assert.equal(i.t('unknown.id'), 'unknown.id');
+  // anything but a stored `true` is off
+  assert.equal(createI18n({ store: createStore({ backend: memoryBackend({ app_settings: '{"italian":"yes"}' }), log: quiet }) }).showItalian, false);
 });
 
 // ── router ────────────────────────────────────────────────────────────
@@ -238,26 +244,28 @@ test('a clip that is replaced while loading stays quiet: the device voice does n
   assert.deepEqual(f.spoken.filter(t => t !== '<cancel>'), []);
 });
 
-test('the first start takes sound and Italian from the old pages\' switches, once', () => {
+test('the first start takes the sound from the old pages\' switches, once; Italian is never carried over', () => {
   const none = fresh();
   assert.deepEqual(seedLegacySettings(none), {});
   assert.equal(none.has(K.appSettings()), false);
-  assert.equal(createI18n({ store: none, defaultItalian: true }).showItalian, true, 'no old switch: the Italian line is on, as in the old quiz');
+  assert.equal(createI18n({ store: none }).showItalian, false, 'the standard screen is German only');
 
-  const off = createStore({ backend: memoryBackend({ gram_it_on: 'false', gram_sound_on: 'false', wr_sound: '1' }), log: quiet });
-  assert.deepEqual(seedLegacySettings(off), { italian: false, sound: false });
-  assert.equal(createI18n({ store: off, defaultItalian: true }).showItalian, false);
-  assert.equal(createAudio({ store: off, AudioCtor: null, speech: null }).enabled, false);
+  // the old trainer's Italian switch was on: the new app still starts in German only
+  const on = createStore({ backend: memoryBackend({ gram_it_on: 'true', gram_sound_on: 'false', wr_sound: '1' }), log: quiet });
+  assert.deepEqual(seedLegacySettings(on), { sound: false });
+  assert.equal(createI18n({ store: on }).showItalian, false);
+  assert.equal(createAudio({ store: on, AudioCtor: null, speech: null }).enabled, false);
 
   const game = createStore({ backend: memoryBackend({ wr_sound: '0' }), log: quiet });
   assert.deepEqual(seedLegacySettings(game), { sound: false });
 
   // a choice made in the new app is never overwritten, and the old keys are never written
-  const chosen = createStore({ backend: memoryBackend({ gram_it_on: 'false', app_settings: '{"italian":true,"sound":true}' }), log: quiet });
+  const chosen = createStore({ backend: memoryBackend({ gram_it_on: 'false', gram_sound_on: 'false', app_settings: '{"italian":true,"sound":true}' }), log: quiet });
   assert.deepEqual(seedLegacySettings(chosen), {});
   assert.equal(chosen.get(K.appSettings()).italian, true);
+  assert.equal(chosen.get(K.appSettings()).sound, true);
   assert.equal(chosen.getRaw('gram_it_on'), 'false');
-  assert.deepEqual(seedLegacySettings(off), {}, 'only once');
+  assert.deepEqual(seedLegacySettings(on), {}, 'only once');
 });
 
 test('sound off is a device setting and silences everything', async () => {

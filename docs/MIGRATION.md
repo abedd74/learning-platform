@@ -60,7 +60,7 @@ This document is the contract. The table below is generated from the registry in
 - **Old editor overrides** (`wq_editor_QB*`) no longer replace shipped content at runtime. Their differences are folded into the content files before the switch (from a backup export) and the keys are left alone.
 - **Eltern** is a mode, not a profile. The old `wq_Eltern*` keys stay untouched and unused.
 - **Round history** (`wq_<P>`) keeps its shape (pct is a whole number 0–100). It gets finished quiz rounds of one module, as before; trainer and mixed rounds are counted in `plan_days_<P>`.
-- **Sound and Italian** start from the old switches (`gram_sound_on`, `gram_it_on`, `wr_sound`) on a device's first run, then live in `app_settings`. The old keys are never written.
+- **Sound** starts from the old switches (`gram_sound_on`, `wr_sound`) on a device's first run, then lives in `app_settings`. **Italian** is not carried over (owner, 2026-11-15): every device starts in German only, and `app_settings.italian` is set by the 🇮🇹 toggle; `gram_it_on` is no longer read. The old keys are never written.
 - **A cloud snapshot is merged in**, not put on top: bringing one back refills what went missing and never lowers newer progress.
 
 ## Staging (`/next/`)

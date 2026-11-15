@@ -70,7 +70,7 @@ export function createEllaModule(ctx, data) {
   const profile = () => ctx.profile.key;
   const srsOf = () => store.get(K.gramSrs(profile()), {}) || {};
   const concepts = () => createConcepts({ store, profile: profile(), units: paths, today: () => todayOf() });
-  const t = (key, p) => { const v = TXT[key]; return { de: fmt(v.de, p), it: i18n.showItalian ? fmt(v.it, p) : null }; };
+  const t = (key, p) => { const v = TXT[key]; return { de: fmt(v.de, p), it: v.it ? fmt(v.it, p) : null }; };
   const line = (key, p, cls = 'soft') => { const v = t(key, p); const n = el('div', { class: cls }, v.de); if (v.it) n.appendChild(el('span', { class: 'it' }, v.it)); return n; };
 
   // ── cards and items for sessions ───────────────────────────────────
@@ -278,7 +278,7 @@ export function createEllaModule(ctx, data) {
   // ── screens ───────────────────────────────────────────────────────
   const stage = col => el('div', { class: 'stage' }, horizon(), col);
   const topbar = (title, back = () => ctx.go('home')) => el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': TXT.back.de, onClick: back }, '←'),
-    el('div', { class: 'greet' }, el('span', { class: 'disc' }, '🦉'), el('div', {}, el('h1', {}, title.de), title.it && i18n.showItalian ? el('div', { class: 'it' }, title.it) : null)));
+    el('div', { class: 'greet' }, el('span', { class: 'disc' }, '🦉'), el('div', {}, el('h1', {}, title.de), title.it ? el('div', { class: 'it' }, title.it) : null)));
 
   function renderHome(root) {
     const c = concepts();
@@ -336,7 +336,6 @@ export function createEllaModule(ctx, data) {
     card.appendChild(el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, onClick: () => startPathCheck(k, unitN) }, TXT.go.de));
     col.appendChild(card);
     mount(root, stage(col));
-    if (!i18n.showItalian) col.querySelectorAll('.lesson .it').forEach(n => { n.hidden = true; });
   }
 
   function renderMcIntro(root, k) {

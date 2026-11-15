@@ -44,7 +44,10 @@ export async function start({ version = 'dev' } = {}) {
   // Progress from the old app on this device: its children are there at once, nothing to set up.
   const adopt = () => { try { return adoptLegacyProfiles(store).length; } catch (err) { errors.record(err); return 0; } };
   adopt();
-  const i18n = createI18n({ store, strings: STRINGS, defaultItalian: true });   // the old quiz always showed the Italian line
+  // German only is the standard; 🇮🇹 shows the Italian lines, which are on the page all along (hidden by the style sheet)
+  const paintItalian = () => document.documentElement.classList.toggle('it-on', i18n.showItalian);
+  const i18n = createI18n({ store, strings: STRINGS, onChange: () => paintItalian() });
+  paintItalian();
   const content = createContent();
   const plannerCfg = planConfig();
   const pending = {};
