@@ -31,7 +31,19 @@ export async function start({ version = 'dev' } = {}) {
   let sync;
   const store = createStore({ namespace, onDirty: k => sync?.markDirty(k), onRemove: k => sync?.remove(k) });
   let errors = null;
-  sync = createFamilySync({ store, onError: err => errors?.record(err) });
+  // Preview only — the sync test (…/next/?synctest=1&familie=test-…): the preview may then talk to the
+  // real cloud, but only as a made-up TEST family. Two locks keep the real family out of it: the code
+  // must start with "test-", and it must not be the code the real app on this device uses.
+  let syncTest = false;
+  if (namespace) {
+    try {
+      const flag = new URLSearchParams(location.search).get('synctest');
+      if (flag === '1' || flag === '0') store.set(K.appStaging(), { ...(store.get(K.appStaging(), null) || {}), sync: flag === '1' });
+      syncTest = !!(store.get(K.appStaging(), null) || {}).sync;
+    } catch {}
+  }
+  const testCodeOnly = code => /^test-[A-Za-z0-9_-]{11,59}$/.test(String(code)) && !store.sameAsLive(K.familyId(), code);
+  sync = createFamilySync({ store, onError: err => errors?.record(err), allowNamespaced: syncTest, acceptCode: namespace ? testCodeOnly : null });
   errors = createErrorLog({ store, version, page: () => location.hash });
   errors.install();
   const audio = createAudio({ store, clipUrl: name => new URL(`../audio/${name}.mp3`, import.meta.url).href });
@@ -40,10 +52,10 @@ export async function start({ version = 'dev' } = {}) {
   // The preview then starts as the real app will on the day of the switch: profiles someone
   // made by hand while trying the preview are dropped and found again from the data.
   // Nothing to copy yet (no data in this browser): it is tried again on the next start.
-  if (namespace && !store.has(K.appStaging())) {
+  if (namespace && !(store.get(K.appStaging(), null) || {}).copied) {
     try {
       const n = store.copyFromLive();
-      if (n) { store.removeRaw(K.familyProfiles()); store.set(K.appStaging(), { copied: todayOf(), n }); }
+      if (n) { store.removeRaw(K.familyProfiles()); store.set(K.appStaging(), { ...(store.get(K.appStaging(), null) || {}), copied: todayOf(), n }); }
     } catch (err) { errors.record(err); }
   }
   seedLegacySettings(store);
@@ -87,7 +99,7 @@ export async function start({ version = 'dev' } = {}) {
   const live = { session: null, summary: null, after: null, extras: null };
 
   const ctx = {
-    version, namespace, store, sync, errors, audio, i18n, content, plannerCfg,
+    version, namespace, syncTest, store, sync, errors, audio, i18n, content, plannerCfg,
     assetsBase: new URL('../assets/', import.meta.url).href,
     modules: [], games: {}, profile: null, lastSessionConfig: null, lastHomeConfig: null, router: null,
     go(name, params = {}) {
@@ -192,6 +204,12 @@ export async function start({ version = 'dev' } = {}) {
   }
   let mustPick = !(linked && getProfile(store, linked)) && listProfiles(store).length > 1;
   ctx.profileChosen = () => { mustPick = false; };
+  // "Wer bist du?" stood in for another screen (an old link straight to the game or to Ella): go there, not home
+  ctx.afterPick = () => {
+    const [name] = router.current.path;
+    if (['module', 'ella', 'game'].includes(name)) router.navigate(router.current.path, router.current.params, { replace: true });
+    else ctx.go('home');
+  };
 
   function requireProfile() {
     const key = mustPick ? null : currentProfileKey(store);

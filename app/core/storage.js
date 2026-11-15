@@ -102,7 +102,7 @@ export const REGISTRY = [
   { id: 'appMigrated',    re: /^app_migrated$/, build: () => 'app_migrated',
     sync: null, scope: 'device', since: 2, shape: '{oldProfiles: day} — what this device has taken over from the old app, once' },
   { id: 'appStaging',     re: /^app_staging$/, build: () => 'app_staging',
-    sync: null, scope: 'device', since: 2, shape: '{copied: day, n} — preview only: this device\'s learning data was copied into the preview once' },
+    sync: null, scope: 'device', since: 2, shape: '{copied: day, n, sync?} — preview only: this device\'s learning data was copied into the preview once; sync = the cloud test with a test family is on' },
   { id: 'appSettings',    re: /^app_settings$/, build: () => 'app_settings',
     sync: null, scope: 'device', since: 2,
     shape: '{sound, italian, parentPin?} — device settings' },
@@ -239,7 +239,17 @@ export function createStore({ backend, namespace = '', onDirty = null, onRemove 
     return count;
   }
 
-  return { get, set, remove, has, getRaw, setRaw, removeRaw, list, copyFromLive, namespace: ns, keyInfo, keys };
+  /**
+   * Staging only: is `value` exactly what the live app holds under this key?
+   * A comparison, never the value itself — used to keep the real family code
+   * out of a staging sync test.
+   */
+  function sameAsLive(key, value) {
+    if (!ns) return false;
+    try { const v = be.getItem(key); return v !== null && v === value; } catch { return false; }
+  }
+
+  return { get, set, remove, has, getRaw, setRaw, removeRaw, list, copyFromLive, sameAsLive, namespace: ns, keyInfo, keys };
 }
 
 export { byId as registryById };

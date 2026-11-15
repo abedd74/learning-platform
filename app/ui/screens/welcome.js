@@ -21,7 +21,7 @@ export function renderWelcome(root, ctx, params = {}) {
     col.appendChild(el('h1', {}, i18n.t('welcome.who')));
     const row = el('div', { class: 'avatars' });
     for (const p of profiles) {
-      row.appendChild(el('button', { class: `avatar${p.key === hintKey ? ' selected' : ''}`, type: 'button', onClick: () => { setCurrentProfile(store, p.key); ctx.profileChosen?.(); ctx.go('home'); } },
+      row.appendChild(el('button', { class: `avatar${p.key === hintKey ? ' selected' : ''}`, type: 'button', onClick: () => { setCurrentProfile(store, p.key); ctx.profileChosen?.(); if (ctx.afterPick) ctx.afterPick(); else ctx.go('home'); } },
         el('span', { class: 'disc' }, p.avatar || AVATARS[0]), el('span', { class: 'name' }, p.name)));
     }
     for (const f of [...found.map(f => ({ key: f.key, name: f.key, avatar: '🌱' })), ...custom]) {

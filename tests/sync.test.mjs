@@ -76,6 +76,42 @@ test('ruleFor follows the registry; device-local keys have no rule', () => {
   assert.equal(ruleFor('unknown'), null);
 });
 
+test('the staging sync test: only a test code is taken, never the code the real app on the device uses', async () => {
+  const fs = fakeFirestore();
+  const TEST = 'test-' + 'abc123def456';            // made up; glued so the scan does not take it for a real code
+  const REAL = 'real' + 'family' + 'code' + '00';   // stands for the real family's code on this device
+  const make = search => {
+    const be = memoryBackend({ family_sync_id: REAL, next_wq_srs_Testkind: '{}' });
+    const store = createStore({ backend: be, namespace: 'next_' });
+    const accept = code => /^test-[A-Za-z0-9_-]{11,59}$/.test(String(code)) && !store.sameAsLive(K.familyId(), code);
+    const sync = createFamilySync({ store, fetch: fs.fetch, allowNamespaced: true, acceptCode: accept, document: null, dispatch() {}, log: { warn() {} },
+      timers: { set() { return 1; }, clear() {} }, location: { search, pathname: '/next/', hash: '' }, history: { replaceState() {} } });
+    return { be, store, sync };
+  };
+  // the real code in the link: refused, not stored, nothing sent
+  const real = make(`?familie=${REAL}`);
+  assert.equal(real.sync.enabled, false);
+  assert.equal(real.sync.refusedCode, true);
+  assert.equal(real.be.getItem('next_family_sync_id'), null);
+  assert.equal(real.sync.init(), false);
+  assert.equal(fs.calls.length, 0);
+  // any other code that is not a test code: refused too
+  assert.equal(make('?familie=' + 'something' + 'else' + '1234').sync.enabled, false);
+  // a test code: taken, and the staging store syncs under the TEST family only
+  const ok = make(`?familie=${TEST}`);
+  assert.equal(ok.sync.enabled, true);
+  assert.equal(ok.be.getItem('next_family_sync_id'), TEST);
+  assert.equal(ok.be.getItem('family_sync_id'), REAL, 'the real app\'s code is untouched');
+  ok.sync.init();
+  await new Promise(r => setTimeout(r, 0));
+  assert.ok(fs.calls.length > 0);
+  assert.ok(fs.calls.every(c => c.path.startsWith(`families/${TEST}/`)), 'every request goes to the test family');
+  // a code stored earlier that is not a test code is not used either
+  const stale = createStore({ backend: memoryBackend({ next_family_sync_id: REAL }), namespace: 'next_' });
+  const s2 = createFamilySync({ store: stale, fetch: fs.fetch, allowNamespaced: true, acceptCode: c => /^test-/.test(c), document: null, dispatch() {}, log: { warn() {} }, location: { search: '', pathname: '/next/', hash: '' }, history: { replaceState() {} } });
+  assert.equal(s2.sync?.enabled ?? s2.enabled, false);
+});
+
 test('disabled without a family code; never exposes the code; refuses a namespaced store', () => {
   const h = harness({ family: null });
   assert.equal(h.sync.enabled, false);

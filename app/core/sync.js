@@ -60,6 +60,7 @@ export function createFamilySync({
   config = CONFIG,
   disabled = false,
   allowNamespaced = false,
+  acceptCode = null,   // (code) → boolean: a code this app may NOT use is neither stored nor used (the staging sync test)
   snapshotKeep = SNAPSHOT_KEEP,
   onError = null,   // (Error) → the app's error log; called for failures a parent should see
   log = console,
@@ -68,6 +69,7 @@ export function createFamilySync({
   if (store.namespace && !allowNamespaced) disabled = true;   // staging never reaches the cloud
 
   const FAMILY_KEY = K.familyId(), META_KEY = K.familyMeta(), TOMB_KEY = K.familyTombstones();
+  let refusedCode = false;
 
   // ── family code ────────────────────────────────────────────────────────
   function familyId() {
@@ -77,14 +79,16 @@ export function createFamilySync({
         const params = new URLSearchParams(search);
         const fromUrl = params.get('familie');
         if (fromUrl) {
-          store.setRaw(FAMILY_KEY, fromUrl);
+          if (!acceptCode || acceptCode(fromUrl)) store.setRaw(FAMILY_KEY, fromUrl);
+          else refusedCode = true;
           // scrub the secret from the address bar (history, bookmarks, screenshots)
           params.delete('familie');
           const clean = location.pathname + (params.toString() ? '?' + params.toString() : '') + (location.hash || '');
           try { history?.replaceState(null, '', clean); } catch {}
         }
       }
-      return store.getRaw(FAMILY_KEY);
+      const code = store.getRaw(FAMILY_KEY);
+      return code && acceptCode && !acceptCode(code) ? null : code;
     } catch { return null; }
   }
   const enabled = () => !disabled && typeof fetch === 'function' && !config.projectId.startsWith('PASTE') && !!familyId();
@@ -497,6 +501,7 @@ export function createFamilySync({
     get status() { return status; },
     get enabled() { return enabled(); },
     get hasFamily() { return !!store.getRaw(FAMILY_KEY); },
+    get refusedCode() { return refusedCode; },
     get dirtyCount() { return dirty.size; },
   };
 }

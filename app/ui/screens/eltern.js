@@ -96,7 +96,11 @@ export async function renderEltern(root, ctx, tab = 'overview') {
   if (tab === 'backup') {
     const info = el('section', { class: 'card stack' });
     info.appendChild(el('span', { class: 'eyebrow' }, 'Familien-Sync'));
-    info.appendChild(el('div', {}, ctx.namespace ? 'Vorschau-Modus: Der Sync ist aus. Dieses Gerät arbeitet mit einer Kopie der Daten.' : sync.hasFamily ? `Dieses Gerät ist mit der Familie verbunden. Status: ${sync.status}.` : 'Dieses Gerät ist noch nicht mit der Familie verbunden. Öffne einmal den Familien-Link.'));
+    info.appendChild(el('div', {}, ctx.namespace ? (ctx.syncTest
+      ? (sync.enabled ? `Vorschau mit Sync-Test: verbunden mit einer TEST-Familie (nicht mit der echten). Status: ${sync.status}.`
+        : sync.refusedCode ? 'Sync-Test: Dieser Code wird hier nicht angenommen. Die Vorschau nimmt nur Test-Codes, die mit „test-“ beginnen.'
+        : 'Sync-Test ist eingeschaltet, aber es fehlt noch ein Test-Code im Link.')
+      : 'Vorschau-Modus: Der Sync ist aus. Dieses Gerät arbeitet mit einer Kopie der Daten.') : sync.hasFamily ? `Dieses Gerät ist mit der Familie verbunden. Status: ${sync.status}.` : 'Dieses Gerät ist noch nicht mit der Familie verbunden. Öffne einmal den Familien-Link.'));
     if (ctx.namespace) info.appendChild(el('button', { class: 'btn small', type: 'button', onClick: () => { const n = store.copyFromLive(); info.appendChild(el('div', { class: 'notice' }, `${n} Einträge von diesem Gerät kopiert. Bitte neu laden.`)); } }, 'Daten von diesem Gerät kopieren'));
     body.appendChild(info);
 

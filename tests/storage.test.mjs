@@ -101,4 +101,11 @@ test('namespace: staging keys never touch live keys; copyFromLive skips the fami
   assert.deepEqual(live.get(`wq_srs_${P}`), { q: { b: 2 } });   // live untouched
   assert.ok(live.list().includes('family_sync_id'));
   assert.throws(() => live.copyFromLive(), /namespace/);
+  // a comparison with the live value, for staging only, without handing the value out
+  const be2 = memoryBackend({ family_sync_id: 'abc' });
+  const st2 = createStore({ backend: be2, namespace: 'next_', log: { warn() {} } });
+  assert.equal(st2.sameAsLive(keys.familyId(), 'abc'), true);
+  assert.equal(st2.sameAsLive(keys.familyId(), 'abd'), false);
+  assert.equal(st2.sameAsLive(keys.quizSrs('X'), 'abc'), false);
+  assert.equal(createStore({ backend: be2, log: { warn() {} } }).sameAsLive(keys.familyId(), 'abc'), false, 'the live app never compares');
 });

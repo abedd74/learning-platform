@@ -47,7 +47,7 @@ This document is the contract. The table below is generated from the registry in
 | `app_profile` | device | v2 | none (device-local) | JSON string: <P> last chosen on this device |
 | `app_boot` | device | v2 | none (device-local) | {v: the app version this device loaded last} — decides whether the files are fetched again (boot.js) |
 | `app_migrated` | device | v2 | none (device-local) | {oldProfiles: day} — what this device has taken over from the old app, once |
-| `app_staging` | device | v2 | none (device-local) | {copied: day, n} — preview only: this device's learning data was copied into the preview once |
+| `app_staging` | device | v2 | none (device-local) | {copied: day, n, sync?} — preview only: this device's learning data was copied into the preview once; sync = the cloud test with a test family is on |
 | `app_settings` | device | v2 | none (device-local) | {sound, italian, parentPin?} — device settings |
 <!-- keys:end -->
 
