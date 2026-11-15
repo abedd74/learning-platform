@@ -279,3 +279,22 @@ test('sound off is a device setting and silences everything', async () => {
   assert.equal(await a.speak({ clip: 'a_apfel', text: 'x' }), 'off');
   assert.equal(f.made.length, 0);
 });
+
+// ── the old editor's saved questions are reported, not read as content ──
+test('the old editor: saved topics are listed per module with their last save', async () => {
+  const { oldEditorChanges } = await import('../app/core/oldeditor.js');
+  assert.deepEqual(oldEditorChanges(fresh()), []);
+  const s = createStore({ backend: memoryBackend({
+    wq_editor_QB: JSON.stringify({ kreislauf: [{}, {}, {}], __meta: { topics: { kreislauf: { ts: 1760000000000 } } } }),
+    wq_editor_QB_whales: JSON.stringify({ atmung: [{}, {}], koerper: [{}], __meta: { topics: { atmung: { ts: 1761000000000 } } } }),
+    wq_editor_QB_whales_ver: '2026-03-15-v3',
+    wq_editor_QB_book: 'not json',
+    wq_srs_Testkind: '{}',
+  }), log: quiet });
+  assert.deepEqual(oldEditorChanges(s), [
+    { module: 'water', topic: 'kreislauf', questions: 3, ts: 1760000000000 },
+    { module: 'whales', topic: 'atmung', questions: 2, ts: 1761000000000 },
+    { module: 'whales', topic: 'koerper', questions: 1, ts: null },
+  ]);
+});
+

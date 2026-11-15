@@ -10,6 +10,7 @@ import { today as todayOf, addDays } from '../../core/time.js';
 import { footerText } from '../../core/version.js';
 import { practisedDays } from './home.js';
 import { nounStatus } from '../../engines/ella/rules.js';
+import { oldEditorChanges } from '../../core/oldeditor.js';
 
 const STATUS = { hilfe: '🔴 Braucht Hilfe', arbeit: '🌱 In Arbeit', fast: '🌤 Fast sicher', sicher: '✅ Sicher', neu: '⬜ Noch neu' };
 const TABS = [['overview', 'Überblick'], ['words', 'Wörter'], ['backup', 'Sicherung'], ['errors', 'Fehler'], ['settings', 'Einstellungen']];
@@ -103,6 +104,16 @@ export async function renderEltern(root, ctx, tab = 'overview') {
       : 'Vorschau-Modus: Der Sync ist aus. Dieses Gerät arbeitet mit einer Kopie der Daten.') : sync.hasFamily ? `Dieses Gerät ist mit der Familie verbunden. Status: ${sync.status}.` : 'Dieses Gerät ist noch nicht mit der Familie verbunden. Öffne einmal den Familien-Link.'));
     if (ctx.namespace) info.appendChild(el('button', { class: 'btn small', type: 'button', onClick: () => { const n = store.copyFromLive(); info.appendChild(el('div', { class: 'notice' }, `${n} Einträge von diesem Gerät kopiert. Bitte neu laden.`)); } }, 'Daten von diesem Gerät kopieren'));
     body.appendChild(info);
+
+    // what a parent changed in the old app's question editor: not part of the new app's questions until a session folds it in
+    const edits = oldEditorChanges(store);
+    const ed = el('section', { class: 'card stack' }, el('span', { class: 'eyebrow' }, 'Alter Fragen-Editor'));
+    if (!edits.length) ed.appendChild(el('div', { class: 'soft' }, 'Auf diesem Gerät gibt es keine Änderungen aus dem alten Fragen-Editor.'));
+    else {
+      ed.appendChild(el('div', {}, `Im alten Fragen-Editor wurden ${edits.length === 1 ? 'in 1 Thema' : `in ${edits.length} Themen`} Fragen gespeichert. Sie sind in der neuen App noch nicht enthalten:`));
+      for (const e of edits) ed.appendChild(el('div', { class: 'soft' }, `${ctx.moduleName(e.module)} › ${e.topic} · ${e.questions} Fragen${e.ts ? ` · gespeichert am ${new Date(e.ts).toLocaleDateString('de-DE')}` : ''}`));
+    }
+    body.appendChild(ed);
 
     const exp = el('section', { class: 'card stack' }, el('span', { class: 'eyebrow' }, 'Backup-Datei'));
     exp.appendChild(el('div', { class: 'row' },

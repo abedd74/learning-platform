@@ -1,6 +1,6 @@
 {
- "version": "2026.11.15-305a5d9",
- "hash": "305a5d943dd8b3ee8f1c40e5b5782a68a66e2d26245bd990b2e20e80b7c62b01",
+ "version": "2026.11.15-239f00f",
+ "hash": "239f00fc95e207459b0e52499fbf63a6f3f1555d0ab9393a3020b2423dedef14",
  "files": [
   "boot.js",
   "core/audio.js",
@@ -8,6 +8,7 @@
   "core/errors.js",
   "core/i18n.js",
   "core/merges.js",
+  "core/oldeditor.js",
   "core/planner.js",
   "core/profiles.js",
   "core/router.js",
