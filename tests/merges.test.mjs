@@ -115,6 +115,41 @@ test('mergeMaxPerEntryDeep: equals the flat rule on flat entries and merges nest
 const pathStore = () => ({ akk: { unit: int(5), passed: Object.fromEntries([1, 2, 3].filter(() => rng() < 0.5).map(n => [n, n * 100])), mc: { tries: int(4) } } });
 algebra('mergeMaxPerEntryDeep', mergeMaxPerEntryDeep, pathStore);
 
+test('mergeSrs: an entry that is not a record never wins over a record and never throws', () => {
+  const rec = { b: 2, due: '2026-10-12', s: 3, r: 3, w: 0, k: 2 };
+  same(mergeSrs({ Apfel: rec }, { Apfel: null, Birne: null }), { Apfel: rec, Birne: null });
+  same(mergeSrs({ Apfel: null, Zug: 7 }, { Apfel: rec, Zug: rec }), { Apfel: rec, Zug: rec });
+  same(mergeSrs({ Apfel: rec }, { Apfel: 'x' }), { Apfel: rec });
+});
+
+test('mergeMaxPerEntryDeep on day counters with per-module counts: every module arrives, in any order', () => {
+  const dayRec = () => {
+    const by = {};
+    for (const m of ['whales', 'nouns', 'states']) if (rng() < 0.6) by[m] = { a: 1 + int(9), c: int(5), n: int(4) };
+    return { a: int(40), c: int(30), n: int(10), ms: int(900000), sess: int(4), ...(Object.keys(by).length ? { by } : {}) };
+  };
+  const days = () => { const o = {}; for (const d of ['2026-10-17', '2026-10-18', '2026-10-19']) if (rng() < 0.7) o[d] = dayRec(); return o; };
+  for (let i = 0; i < 200; i++) {
+    const a = days(), b = days(), c = days();
+    const ab = mergeMaxPerEntryDeep(a, b);
+    same(mergeMaxPerEntryDeep(a, a), a);
+    same(ab, mergeMaxPerEntryDeep(b, a));
+    same(mergeMaxPerEntryDeep(ab, c), mergeMaxPerEntryDeep(a, mergeMaxPerEntryDeep(b, c)));
+    for (const src of [a, b]) for (const [d, r] of Object.entries(src)) {
+      assert.ok(ab[d].a >= r.a && ab[d].n >= r.n);
+      for (const [m, v] of Object.entries(r.by || {})) assert.ok(ab[d].by[m].n >= v.n && ab[d].by[m].a >= v.a, `${d}/${m} kept`);
+    }
+  }
+});
+
+test('the rule of a key fits its shape: a key whose shape nests objects is merged in depth', () => {
+  // a flat maxPerEntry keeps the LOCAL nested object whole — fine for flat counters only
+  for (const e of REGISTRY.filter(e => e.sync === 'maxPerEntry')) {
+    const inner = e.shape.replace(/^\{[^{]*\{/, '');           // inside the per-entry object
+    assert.ok(!/[{[]/.test(inner.split('}')[0]), `${e.id}: nested shape "${e.shape}" needs maxPerEntryDeep`);
+  }
+});
+
 test('mergeDeepUnion: arrays unite without duplicates, objects recurse, scalars local-first', () => {
   setEq(mergeDeepUnion([1, 2], [2, 3]), [1, 2, 3]);
   same(mergeDeepUnion({ a: [1], b: { x: 1 } }, { a: [2], b: { y: 2 }, c: 3 }), { a: [1, 2], b: { x: 1, y: 2 }, c: 3 });

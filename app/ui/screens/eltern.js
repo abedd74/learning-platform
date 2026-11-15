@@ -68,7 +68,7 @@ export async function renderEltern(root, ctx, tab = 'overview') {
     const hist = store.get(K.quizHistory(child), []);
     if (Array.isArray(hist) && hist.length) {
       const ht = el('table', { class: 'table' }, el('thead', {}, el('tr', {}, ...['Datum', 'Zeit', 'Modul', 'Runde', 'Ergebnis'].map(h => el('th', {}, h)))));
-      ht.appendChild(el('tbody', {}, ...hist.slice().reverse().map(h => el('tr', {}, td(h.date), td(h.time), td(ctx.moduleName(h.module)), td(h.mode), td(`${Math.round((h.pct || 0) * 100)} %`)))));
+      ht.appendChild(el('tbody', {}, ...hist.slice().reverse().map(h => el('tr', {}, td(h.date), td(h.time), td(ctx.moduleName(h.module)), td(h.mode), td(`${Math.round(Number(h.pct) || 0)} %`)))));
       body.appendChild(el('section', { class: 'card stack' }, el('span', { class: 'eyebrow' }, 'Letzte Runden'), ht));
     }
   }
@@ -106,21 +106,23 @@ export async function renderEltern(root, ctx, tab = 'overview') {
       (() => { const inp = el('input', { type: 'file', accept: 'application/json,.json', hidden: true }); inp.addEventListener('change', () => { const f = inp.files?.[0]; if (!f) return; const r = new FileReader(); r.onload = () => { try { const n = sync.importAll(String(r.result)); exp.appendChild(el('div', { class: 'notice' }, `${n} Einträge importiert und zusammengeführt.`)); } catch (e) { exp.appendChild(el('div', { class: 'notice' }, e.message)); } }; r.readAsText(f); }); return el('span', {}, inp, el('button', { class: 'btn small', type: 'button', onClick: () => inp.click() }, '📥 Backup einlesen')); })()));
     body.appendChild(exp);
 
-    const snaps = el('section', { class: 'card stack' }, el('span', { class: 'eyebrow' }, 'Tägliche Sicherungen in der Cloud'));
+    const snapsHead = () => [el('span', { class: 'eyebrow' }, 'Tägliche Sicherungen in der Cloud'),
+      el('div', { class: 'soft' }, 'Eine Sicherung holt zurück, was verloren ging. Neuere Fortschritte bleiben dabei erhalten.')];
+    const snaps = el('section', { class: 'card stack' }, ...snapsHead());
     body.appendChild(snaps);
     if (!sync.enabled) snaps.appendChild(el('div', { class: 'soft' }, 'Nur mit verbundener Familie.'));
     else {
       snaps.appendChild(el('div', { class: 'soft' }, 'Lade …'));
       try {
         const list = await sync.listSnapshots();
-        clear(snaps); snaps.appendChild(el('span', { class: 'eyebrow' }, 'Tägliche Sicherungen in der Cloud'));
+        clear(snaps); append(snaps, snapsHead());
         if (!list.length) snaps.appendChild(el('div', { class: 'soft' }, 'Noch keine Sicherung.'));
         for (const s of list.slice().reverse()) {
           const row = el('div', { class: 'row spread' }, el('span', {}, `${s.day} · ${s.n} Einträge`));
           const btn = el('button', { class: 'btn small', type: 'button', onClick: () => {
             if (row.querySelector('.confirm')) return;
-            row.appendChild(el('span', { class: 'confirm row' }, el('button', { class: 'btn small danger', type: 'button', onClick: async () => { try { const n = await sync.restoreSnapshot(s.day); snaps.appendChild(el('div', { class: 'notice' }, `${n} Einträge aus ${s.day} wiederhergestellt. Bitte neu laden.`)); } catch (e) { snaps.appendChild(el('div', { class: 'notice' }, e.message)); } } }, 'Ja, wiederherstellen'), el('button', { class: 'btn small ghost', type: 'button', onClick: () => row.querySelector('.confirm').remove() }, 'Abbrechen')));
-          } }, 'Wiederherstellen …');
+            row.appendChild(el('span', { class: 'confirm row' }, el('button', { class: 'btn small danger', type: 'button', onClick: async () => { row.querySelector('.confirm')?.remove(); try { const r = await sync.restoreSnapshot(s.day); snaps.appendChild(el('div', { class: 'notice' }, r.changed ? `Sicherung vom ${s.day}: in ${r.changed} von ${r.n} Einträgen wurde Fehlendes ergänzt.${r.pushed ? '' : ' Die Cloud war nicht erreichbar – das Hochladen folgt automatisch.'}` : `Sicherung vom ${s.day}: Auf diesem Gerät fehlt nichts daraus.`)); } catch (e) { snaps.appendChild(el('div', { class: 'notice' }, e.message)); } } }, 'Ja, zurückholen'), el('button', { class: 'btn small ghost', type: 'button', onClick: () => row.querySelector('.confirm').remove() }, 'Abbrechen')));
+          } }, 'Fehlendes zurückholen …');
           row.appendChild(btn); snaps.appendChild(row);
         }
       } catch (e) { clear(snaps); snaps.appendChild(el('div', { class: 'notice' }, `Konnte die Sicherungen nicht laden: ${e.message}`)); }

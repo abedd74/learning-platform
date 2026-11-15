@@ -13,7 +13,12 @@
 //     (storage.js) and merges.js. Keys without a rule stay on the device.
 //   - deletions travel as tombstones {deleted:true, ts}
 // New in v2: daily snapshots of all synced keys (families/<code>/snapshots/
-// <day>) with restore, and a refusal to run on a namespaced (staging) store.
+// <day>), and a refusal to run on a namespaced (staging) store.
+// Hardened after the 2026-11 review (DECISIONS 2026-11-15): one odd entry no
+// longer blocks the other keys; an unload flush never writes before this page
+// has merged with the cloud once; a push re-reads the device after waiting
+// for the cloud; bringing back a snapshot MERGES it in (it refills what is
+// missing and never lowers newer progress) and is pushed at once.
 
 import { STRATEGIES, parse } from './merges.js';
 import { keyInfo, keys as K } from './storage.js';
@@ -56,6 +61,7 @@ export function createFamilySync({
   disabled = false,
   allowNamespaced = false,
   snapshotKeep = SNAPSHOT_KEEP,
+  onError = null,   // (Error) → the app's error log; called for failures a parent should see
   log = console,
 } = {}) {
   if (!store) throw new TypeError('FamilySync: store is required');
@@ -99,17 +105,33 @@ export function createFamilySync({
     };
   }
 
+  // An HTTP answer that says "this one document is refused" (bad request,
+  // forbidden, too large): the other keys can still go through.
+  function httpError(what, status) {
+    const err = new Error(`${what} ${status}`);
+    err.status = status;
+    err.keyOnly = status === 400 || status === 403 || status === 413;
+    return err;
+  }
+
   async function listDocs(url, extra = '') {
-    const res = await fetch(withKey(`${url}?pageSize=300${extra}`));
-    if (!res.ok) throw new Error(`list ${res.status}`);
-    const data = await res.json();
-    return (data.documents || []).map(d => ({ key: decodeURIComponent(d.name.split('/').pop()), ...docFields(d) }));
+    const out = [];
+    let token = '';
+    for (let page = 0; page < 20; page++) {
+      const res = await fetch(withKey(`${url}?pageSize=300${extra}${token ? `&pageToken=${encodeURIComponent(token)}` : ''}`));
+      if (!res.ok) throw httpError('list', res.status);
+      const data = await res.json();
+      for (const d of data.documents || []) out.push({ key: decodeURIComponent(d.name.split('/').pop()), ...docFields(d) });
+      token = data.nextPageToken || '';
+      if (!token) break;
+    }
+    return out;
   }
 
   async function getDoc(url) {
     const res = await fetch(withKey(url));
     if (res.status === 404) return null;
-    if (!res.ok) throw new Error(`get ${res.status}`);
+    if (!res.ok) throw httpError('get', res.status);
     return docFields(await res.json());
   }
 
@@ -120,12 +142,12 @@ export function createFamilySync({
     const init = { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body };
     if (keepalive && body.length < 60000) init.keepalive = true;
     const res = await fetch(withKey(url), init);
-    if (!res.ok) throw new Error(`patch ${res.status}`);
+    if (!res.ok) throw httpError('patch', res.status);
   }
 
   async function deleteDoc(url) {
     const res = await fetch(withKey(url), { method: 'DELETE' });
-    if (!res.ok && res.status !== 404) throw new Error(`delete ${res.status}`);
+    if (!res.ok && res.status !== 404) throw httpError('delete', res.status);
   }
 
   const storeDoc = key => `${storesUrl()}/${encodeURIComponent(key)}`;
@@ -156,6 +178,71 @@ export function createFamilySync({
   let lastPull = 0;
   let pushTimer = null;
 
+  // Merge two copies by rule; a failure is tagged so that only this key is skipped.
+  function mergeRaw(merge, key, localRaw, remoteRaw) {
+    try { return JSON.stringify(merge(parse(localRaw), parse(remoteRaw))); }
+    catch (cause) {
+      const err = new Error(`Eintrag "${key}" lässt sich nicht zusammenführen: ${cause?.message || cause}`);
+      err.keyOnly = true;
+      throw err;
+    }
+  }
+
+  const reported = new Set();
+  /** Tell the app's error log once per page and topic (never throws). */
+  function report(topic, err) {
+    log.warn?.(`[FamilySync] ${topic}:`, err?.message);
+    if (reported.has(topic)) return;
+    reported.add(topic);
+    try { onError?.(new Error(`Sync – ${topic}: ${err?.message || err}`)); } catch {}
+  }
+
+  /** One cloud document into the device. Returns true when the local value changed. */
+  function pullOne(d) {
+    const merge = ruleFor(d.key);
+    if (!keyInfo(d.key)?.sync) return false;     // unknown or device-local key in the cloud: ignore
+    const localRaw = store.getRaw(d.key);
+    const seenTs = metaAll()[d.key] || 0;
+
+    // remote tombstone: adopt the deletion — unless the key has local,
+    // not yet pushed changes (dirty); those win and the next push revives it
+    if (d.deleted) {
+      let changed = false;
+      if (d.ts > seenTs) {
+        if (localRaw !== null && !dirty.has(d.key)) {
+          store.removeRaw(d.key);
+          tombSet(d.key, d.ts);
+          changed = true;
+        }
+        metaSet(d.key, d.ts);
+      }
+      return changed;
+    }
+    if (d.json === null) return false;
+
+    let finalRaw;
+    if (localRaw === null) {
+      // deleted locally? revive only if the cloud data is YOUNGER than our tombstone
+      const tombTs = tombAll()[d.key] || 0;
+      if (tombTs >= d.ts) { dirty.add(d.key); return false; }
+      if (tombTs) tombClear(d.key);
+      finalRaw = d.json;
+    } else if (merge) {
+      finalRaw = mergeRaw(merge, d.key, localRaw, d.json);
+    } else {
+      // last-write-wins: never displace local data while it is unsaved (dirty)
+      finalRaw = (dirty.has(d.key) || d.ts <= seenTs) ? localRaw : d.json;
+    }
+    let changed = false;
+    if (finalRaw !== localRaw) {
+      if (!store.setRaw(d.key, finalRaw)) throw Object.assign(new Error(`Speicher voll: "${d.key}" konnte nicht geschrieben werden`), { keyOnly: true });
+      changed = true;
+    }
+    if (merge && finalRaw !== d.json) dirty.add(d.key);   // merging produced news for the cloud too
+    metaSet(d.key, d.ts);
+    return changed;
+  }
+
   async function pullAll() {
     if (!enabled()) return;
     setStatus('sync');
@@ -165,45 +252,9 @@ export function createFamilySync({
       const remoteKeys = new Set();
       for (const d of docs) {
         remoteKeys.add(d.key);
-        const merge = ruleFor(d.key);
-        if (!merge && !keyInfo(d.key)?.sync) {
-          if (!keyInfo(d.key)) continue;           // unknown key: ignore
-        }
-        if (!keyInfo(d.key)?.sync) continue;       // device-local key in the cloud (should not happen): ignore
-        const localRaw = store.getRaw(d.key);
-        const seenTs = metaAll()[d.key] || 0;
-
-        // remote tombstone: adopt the deletion — unless the key has local,
-        // not yet pushed changes (dirty); those win and the next push revives it
-        if (d.deleted) {
-          if (d.ts > seenTs) {
-            if (localRaw !== null && !dirty.has(d.key)) {
-              store.removeRaw(d.key);
-              tombSet(d.key, d.ts);
-              changed.push(d.key);
-            }
-            metaSet(d.key, d.ts);
-          }
-          continue;
-        }
-        if (d.json === null) continue;
-
-        let finalRaw;
-        if (localRaw === null) {
-          // deleted locally? revive only if the cloud data is YOUNGER than our tombstone
-          const tombTs = tombAll()[d.key] || 0;
-          if (tombTs >= d.ts) { dirty.add(d.key); continue; }
-          if (tombTs) tombClear(d.key);
-          finalRaw = d.json;
-        } else if (merge) {
-          finalRaw = JSON.stringify(merge(parse(localRaw), parse(d.json)));
-        } else {
-          // last-write-wins: never displace local data while it is unsaved (dirty)
-          finalRaw = (dirty.has(d.key) || d.ts <= seenTs) ? localRaw : d.json;
-        }
-        if (finalRaw !== localRaw) { store.setRaw(d.key, finalRaw); changed.push(d.key); }
-        if (merge && finalRaw !== d.json) dirty.add(d.key);   // merging produced news for the cloud too
-        metaSet(d.key, d.ts);
+        // one odd entry must not stop the others (it is reported and tried again next time)
+        try { if (pullOne(d)) changed.push(d.key); }
+        catch (err) { report(`Abgleich von ${d.key}`, err); }
       }
       // first start: local keys the cloud does not have yet go up
       for (const k of store.list()) if (ruleFor(k) && !remoteKeys.has(k)) dirty.add(k);
@@ -211,7 +262,7 @@ export function createFamilySync({
       setStatus('ok');
       if (dirty.size) schedulePush();
       if (changed.length) dispatch('familysync-pulled', { keys: changed });
-      try { await maybeSnapshot(); } catch (err) { log.warn?.('[FamilySync] snapshot failed:', err?.message); }
+      try { await maybeSnapshot(); } catch (err) { report('tägliche Sicherung', err); }
     } catch (err) {
       log.warn?.('[FamilySync] pull failed:', err?.message);
       setStatus('offline');
@@ -243,51 +294,72 @@ export function createFamilySync({
     pushTimer = timers.set(() => { pushTimer = null; return pushDirty(); }, PUSH_DEBOUNCE_MS);
   }
 
+  /** Push one key. flush=true: no reads first, a quick keepalive write. */
+  async function pushOne(key, flush) {
+    const merge = ruleFor(key);
+    if (store.getRaw(key) === null) {
+      // deleted key → push the tombstone, unless another device wrote
+      // newer data after our deletion — then the data wins and we revive it
+      const tombTs = tombAll()[key];
+      if (!tombTs) return;
+      if (!flush) {
+        const remote = await getDoc(storeDoc(key));
+        if (remote && !remote.deleted && remote.json !== null && remote.ts > tombTs) {
+          store.setRaw(key, remote.json);
+          tombClear(key);
+          metaSet(key, remote.ts);
+          dispatch('familysync-pulled', { keys: [key] });
+          return;
+        }
+      }
+      await patchTombstone(key, tombTs, flush);
+      return;
+    }
+    let finalRaw = store.getRaw(key);
+    if (!flush && merge) {
+      const remote = await getDoc(storeDoc(key));
+      // read the device again AFTER waiting: an answer saved meanwhile must not be overwritten
+      const localRaw = store.getRaw(key);
+      if (localRaw === null) { dirty.add(key); return; }
+      finalRaw = localRaw;
+      if (remote && remote.json !== null) {
+        finalRaw = mergeRaw(merge, key, localRaw, remote.json);
+        if (finalRaw !== localRaw) store.setRaw(key, finalRaw);
+      }
+    }
+    await patchStore(key, finalRaw, flush);
+    tombClear(key);
+  }
+
   // flush=true: the page is being unloaded — no reads first, only quick
   // keepalive writes; a skipped merge is caught up by the other device's pull.
+  // A flush never runs before this page has merged with the cloud once: an
+  // old device that could not pull would otherwise put its stale copy on top.
   async function pushDirty(flush = false) {
     if (!enabled() || !dirty.size) return;
+    if (flush && !lastPull) return;
     setStatus('sync');
     const list = [...dirty]; dirty.clear();
-    try {
-      for (const key of list) {
-        const localRaw = store.getRaw(key);
-        const merge = ruleFor(key);
-        if (localRaw === null) {
-          // deleted key → push the tombstone, unless another device wrote
-          // newer data after our deletion — then the data wins and we revive it
-          const tombTs = tombAll()[key];
-          if (!tombTs) continue;
-          if (!flush) {
-            const remote = await getDoc(storeDoc(key));
-            if (remote && !remote.deleted && remote.json !== null && remote.ts > tombTs) {
-              store.setRaw(key, remote.json);
-              tombClear(key);
-              metaSet(key, remote.ts);
-              dispatch('familysync-pulled', { keys: [key] });
-              continue;
-            }
-          }
-          await patchTombstone(key, tombTs, flush);
-          continue;
+    let failed = 0;
+    if (flush) {
+      // all at once: an unloading page may not live long enough for a queue
+      const results = await Promise.allSettled(list.map(key => pushOne(key, true)));
+      results.forEach((r, i) => { if (r.status === 'rejected') { failed++; dirty.add(list[i]); } });
+    } else {
+      for (let i = 0; i < list.length; i++) {
+        try { await pushOne(list[i], false); }
+        catch (err) {
+          failed++;
+          dirty.add(list[i]);   // retry on the next occasion
+          if (err?.keyOnly) { report(`Hochladen von ${list[i]}`, err); continue; }
+          // the cloud is not reachable: keep the rest for later instead of failing one by one
+          log.warn?.('[FamilySync] push failed:', err?.message);
+          for (const k of list.slice(i + 1)) dirty.add(k);
+          break;
         }
-        let finalRaw = localRaw;
-        if (!flush && merge) {
-          const remote = await getDoc(storeDoc(key));
-          if (remote && remote.json !== null) {
-            finalRaw = JSON.stringify(merge(parse(localRaw), parse(remote.json)));
-            if (finalRaw !== localRaw) store.setRaw(key, finalRaw);
-          }
-        }
-        await patchStore(key, finalRaw, flush);
-        tombClear(key);
       }
-      setStatus('ok');
-    } catch (err) {
-      log.warn?.('[FamilySync] push failed:', err?.message);
-      list.forEach(k => dirty.add(k));   // retry on the next occasion
-      setStatus('offline');
     }
+    setStatus(failed ? 'offline' : 'ok');
   }
 
   // ── backup parachute: export / import ──────────────────────────────────
@@ -297,20 +369,30 @@ export function createFamilySync({
     return { v: 1, exportedAt: new Date(now()).toISOString(), data };
   }
 
-  function importAll(fileText) {
-    const payload = typeof fileText === 'string' ? parse(fileText) : fileText;
-    if (!payload || !payload.data || typeof payload.data !== 'object') throw new Error('Keine gültige Backup-Datei.');
-    let n = 0;
-    const imported = [];
-    for (const [k, raw] of Object.entries(payload.data)) {
+  /** Merge a {key: raw} map into the device by rule. Returns {n, changed}: keys looked at / keys that gained something. */
+  function mergeIn(data) {
+    let n = 0, changed = 0;
+    const touched = [];
+    for (const [k, raw] of Object.entries(data || {})) {
       const merge = ruleFor(k);
       if (!merge || typeof raw !== 'string') continue;
       const localRaw = store.getRaw(k);
-      const finalRaw = localRaw ? JSON.stringify(merge(parse(localRaw), parse(raw))) : raw;
-      store.setRaw(k, finalRaw);
-      dirty.add(k); imported.push(k); n++;
+      let finalRaw;
+      try { finalRaw = localRaw ? mergeRaw(merge, k, localRaw, raw) : raw; }
+      catch (err) { report(`Einlesen von ${k}`, err); continue; }
+      n++;
+      if (finalRaw !== localRaw) { if (!store.setRaw(k, finalRaw)) continue; changed++; tombClear(k); }
+      dirty.add(k); touched.push(k);
     }
-    if (n) { if (enabled()) schedulePush(); dispatch('familysync-pulled', { keys: imported }); }
+    if (touched.length) dispatch('familysync-pulled', { keys: touched });
+    return { n, changed };
+  }
+
+  function importAll(fileText) {
+    const payload = typeof fileText === 'string' ? parse(fileText) : fileText;
+    if (!payload || !payload.data || typeof payload.data !== 'object') throw new Error('Keine gültige Backup-Datei.');
+    const { n } = mergeIn(payload.data);
+    if (n && enabled()) schedulePush();
     return n;
   }
 
@@ -371,20 +453,20 @@ export function createFamilySync({
     return { day, ts: doc.ts, trimmed: payload.trimmed || [], data: payload.data };
   }
 
-  /** Replace the local synced keys with a snapshot's and push them. Returns the number of keys written. */
+  /**
+   * Bring a snapshot back: MERGE it into the device by the same rules as the
+   * sync, then push at once. This refills what went missing (a lost key, lost
+   * cards) and never lowers newer progress — a "more practice wins" merge
+   * cannot be undone by any device alone (DECISIONS 2026-11-15).
+   * Returns {n, changed, pushed}.
+   */
   async function restoreSnapshot(day) {
     const snap = await getSnapshot(day);
     if (!snap) throw new Error('Snapshot nicht gefunden.');
-    let n = 0;
-    const written = [];
-    for (const [k, raw] of Object.entries(snap.data)) {
-      if (!ruleFor(k) || typeof raw !== 'string') continue;
-      store.setRaw(k, raw);
-      tombClear(k);
-      dirty.add(k); written.push(k); n++;
-    }
-    if (n) { schedulePush(); dispatch('familysync-pulled', { keys: written }); }
-    return n;
+    const { n, changed } = mergeIn(snap.data);
+    if (pushTimer) { timers.clear(pushTimer); pushTimer = null; }
+    await pushDirty();
+    return { n, changed, pushed: dirty.size === 0 };
   }
 
   // ── start ──────────────────────────────────────────────────────────────

@@ -29,8 +29,9 @@ export async function start({ version = 'dev' } = {}) {
   const namespace = globalThis.LP_NAMESPACE || '';
   let sync;
   const store = createStore({ namespace, onDirty: k => sync?.markDirty(k), onRemove: k => sync?.remove(k) });
-  sync = createFamilySync({ store });
-  const errors = createErrorLog({ store, version, page: () => location.hash });
+  let errors = null;
+  sync = createFamilySync({ store, onError: err => errors?.record(err) });
+  errors = createErrorLog({ store, version, page: () => location.hash });
   errors.install();
   const audio = createAudio({ store, clipUrl: name => new URL(`../audio/${name}.mp3`, import.meta.url).href });
   const i18n = createI18n({ store, strings: STRINGS });

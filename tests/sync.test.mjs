@@ -11,6 +11,8 @@ function fakeFirestore() {
   const docs = new Map();   // 'families/<fam>/stores/<key>' → fields
   const calls = [];
   let failNext = 0;
+  const refuse = new Set();   // document paths the cloud answers with 403
+  const hooks = { beforeGet: null };
   const name = path => `projects/x/databases/(default)/documents/${path}`;
   async function fetch(url, init = {}) {
     const u = new URL(url);
@@ -18,6 +20,8 @@ function fakeFirestore() {
     const path = u.pathname.replace(/^.*\/documents\//, '').split('/').map(decodeURIComponent).join('/');
     calls.push({ method, path, keepalive: !!init.keepalive });
     if (failNext > 0) { failNext--; return { ok: false, status: 503, json: async () => ({}) }; }
+    if (refuse.has(path)) return { ok: false, status: 403, json: async () => ({}) };
+    if (method === 'GET' && hooks.beforeGet) await hooks.beforeGet(path);
     const segs = path.split('/');
     if (method === 'GET' && segs.length % 2 === 1) {       // collection → list
       const prefix = path + '/';
@@ -40,12 +44,14 @@ function fakeFirestore() {
     { json: { stringValue: json }, ts: { integerValue: String(ts) }, ...extra });
   const tombstone = (key, ts) => docs.set(`families/${FAM}/stores/${key}`, { deleted: { booleanValue: true }, ts: { integerValue: String(ts) } });
   const read = key => { const f = docs.get(`families/${FAM}/stores/${key}`); return f ? { json: f.json?.stringValue ?? null, ts: Number(f.ts.integerValue), deleted: f.deleted?.booleanValue === true } : null; };
-  return { fetch, docs, calls, storeDoc, tombstone, read, fail: n => { failNext = n; } };
+  return { fetch, docs, calls, storeDoc, tombstone, read, fail: n => { failNext = n; }, hooks,
+    refuse: key => refuse.add(`families/${FAM}/stores/${key}`), refuseSnapshots: day => refuse.add(`families/${FAM}/snapshots/${day}`) };
 }
 
-function harness({ local = {}, family = FAM, fs = fakeFirestore(), day = '2026-10-18', namespace = '' } = {}) {
-  const be = memoryBackend({ ...(family ? { family_sync_id: family } : {}), ...local });
+function harness({ local = {}, family = FAM, fs = fakeFirestore(), day = '2026-10-18', namespace = '', wrap = be => be } = {}) {
+  const be = wrap(memoryBackend({ ...(family ? { family_sync_id: family } : {}), ...local }));
   const events = [];
+  const errors = [];
   const timers = { pending: [], set(f) { this.pending.push(f); return this.pending.length; }, clear(id) { this.pending[id - 1] = null; } };
   const flushTimers = async () => { const p = timers.pending.splice(0); for (const f of p) if (f) await f(); };
   const logs = [];
@@ -55,8 +61,9 @@ function harness({ local = {}, family = FAM, fs = fakeFirestore(), day = '2026-1
     store, fetch: fs.fetch, now: () => (clock += 1000), today: () => day,
     location: { search: '', pathname: '/index.html', hash: '' }, history: { replaceState() {} }, document: null,
     dispatch: (n, d) => events.push({ n, d }), timers, log: { warn: (...a) => logs.push(a.join(' ')) },
+    onError: e => errors.push(e.message),
   });
-  return { be, store, sync, fs, events, timers, flushTimers, logs, setDay: d => { day = d; } };
+  return { be, store, sync, fs, events, errors, timers, flushTimers, logs, setDay: d => { day = d; } };
 }
 
 const srsRaw = o => JSON.stringify(o);
@@ -169,11 +176,106 @@ test('push merges with the cloud copy before writing; flush skips reads and uses
   h.store.set(K.quizStats(P), { q1: { shown: 3, correct: 1 }, q2: { shown: 1, correct: 1 } });
   await h.flushTimers();
   assert.deepEqual(JSON.parse(h.fs.read(K.quizStats(P)).json), { q1: { shown: 5, correct: 4 }, q2: { shown: 1, correct: 1 } });
+  await h.sync.pullAll();
   h.fs.calls.length = 0;
   h.store.set(K.quizStats(P), { q1: { shown: 6, correct: 4 }, q2: { shown: 1, correct: 1 } });
+  h.store.set(K.wrHigh(P), 12);
   await h.sync.pushDirty(true);
-  assert.deepEqual(h.fs.calls.map(c => c.method), ['PATCH']);
-  assert.equal(h.fs.calls[0].keepalive, true);
+  assert.deepEqual(h.fs.calls.map(c => c.method), ['PATCH', 'PATCH'], 'no reads, every key sent at once');
+  assert.ok(h.fs.calls.every(c => c.keepalive));
+});
+
+test('an unload flush never writes before this page has merged with the cloud once', async () => {
+  // a phone that was away for weeks: 1 card here, 3 in the cloud, and the pull fails (offline)
+  const h = harness({ local: { [K.quizSrs(P)]: srsRaw({ q1: { b: 1, due: '2026-10-10', s: 1 } }) } });
+  const cloud = srsRaw({ q1: { b: 3, due: '2026-10-20', s: 5 }, q2: { b: 2, due: '2026-10-19', s: 3 }, q3: { b: 1, due: '2026-10-18', s: 1 } });
+  h.fs.storeDoc(K.quizSrs(P), cloud, 500);
+  h.fs.fail(1);
+  await h.sync.pullAll();
+  assert.equal(h.sync.status, 'offline');
+  h.store.set(K.quizSrs(P), { q1: { b: 2, due: '2026-10-25', s: 2 } });
+  await h.sync.pushDirty(true);                       // the page is hidden
+  assert.equal(h.fs.read(K.quizSrs(P)).json, cloud, 'the cloud copy is untouched');
+  // back online: the pull merges, and the answer given offline still goes up
+  await h.sync.pullAll();
+  await h.flushTimers();
+  const up = JSON.parse(h.fs.read(K.quizSrs(P)).json);
+  assert.deepEqual(Object.keys(up).sort(), ['q1', 'q2', 'q3']);
+  assert.equal(up.q1.s, 5);
+});
+
+test('an answer saved while the push waits for the cloud is not overwritten', async () => {
+  const h = harness();
+  h.fs.storeDoc(K.quizStats(P), '{"q9":{"shown":2,"correct":2,"wrong":0}}', 500);
+  h.store.set(K.quizStats(P), { q1: { shown: 1, correct: 1, wrong: 0 } });
+  let once = true;
+  h.fs.hooks.beforeGet = async path => {
+    if (!once || !path.endsWith(K.quizStats(P))) return;
+    once = false;
+    h.store.set(K.quizStats(P), { q1: { shown: 2, correct: 2, wrong: 0 }, q2: { shown: 1, correct: 0, wrong: 1 } });
+  };
+  await h.flushTimers();
+  const want = { q1: { shown: 2, correct: 2, wrong: 0 }, q2: { shown: 1, correct: 0, wrong: 1 }, q9: { shown: 2, correct: 2, wrong: 0 } };
+  assert.deepEqual(h.store.get(K.quizStats(P)), want);
+  await h.flushTimers();
+  assert.deepEqual(JSON.parse(h.fs.read(K.quizStats(P)).json), want);
+});
+
+test('one entry that cannot be merged or written does not stop the others; it is reported once', async () => {
+  // the device refuses to store one key (storage full for that value)
+  const bad = K.gramSrs(P);
+  const h = harness({
+    local: { [bad]: srsRaw({ Apfel: { b: 1, due: '2026-10-10', s: 1 } }), [K.wrHigh(P)]: '5' },
+    wrap: be => ({ ...be, get length() { return be.length; }, setItem: (k, v) => { if (k === bad) throw new Error('QuotaExceededError'); be.setItem(k, v); } }),
+  });
+  h.fs.storeDoc(bad, srsRaw({ Birne: { b: 2, due: '2026-10-12', s: 2 } }), 500);
+  h.fs.storeDoc(K.wrHigh(P), '40', 500);
+  h.fs.storeDoc(K.quizStats(P), '{"q1":{"shown":1,"correct":1,"wrong":0}}', 500);
+  await h.sync.pullAll();
+  assert.equal(h.sync.status, 'ok');
+  assert.equal(h.store.get(K.wrHigh(P)), 40, 'the key after the odd one is merged');
+  assert.ok(h.store.has(K.quizStats(P)));
+  assert.deepEqual(Object.keys(h.store.get(bad)), ['Apfel'], 'the local copy of the odd key is untouched');
+  assert.equal(h.errors.length, 1);
+  await h.sync.pullAll();
+  assert.equal(h.errors.length, 1, 'reported once per page, not on every pull');
+  assert.ok(h.errors.every(m => !m.includes(FAM)));
+});
+
+test('a document the cloud refuses stays dirty; the other keys still go up', async () => {
+  const h = harness();
+  await h.sync.pullAll();
+  h.fs.refuse(K.quizStats(P));
+  h.store.set(K.quizStats(P), { q1: { shown: 1, correct: 1, wrong: 0 } });
+  h.store.set(K.wrHigh(P), 77);
+  await h.flushTimers();
+  assert.equal(h.fs.read(K.wrHigh(P)).json, '77');
+  assert.equal(h.sync.status, 'offline');
+  assert.equal(h.sync.dirtyCount, 1);
+  assert.equal(h.errors.length, 1);
+});
+
+test('a cloud that refuses the daily snapshot is reported to the error log', async () => {
+  const h = harness({ local: { [K.wrHigh(P)]: '7' } });
+  h.fs.refuseSnapshots('2026-10-18');
+  await h.sync.pullAll();
+  assert.equal(h.sync.status, 'ok');
+  assert.equal(h.errors.length, 1);
+  assert.match(h.errors[0], /Sicherung/);
+});
+
+test('two devices: per-module day counters reach both (plan_days is merged in depth)', async () => {
+  const fs = fakeFirestore();
+  const day = '2026-10-18';
+  const a = harness({ fs }), b = harness({ fs });
+  await a.sync.pullAll(); await b.sync.pullAll();
+  a.store.set(K.planDays(P), { [day]: { a: 6, c: 5, n: 6, by: { whales: { a: 6, c: 5, n: 6 } } } });
+  b.store.set(K.planDays(P), { [day]: { a: 3, c: 3, n: 3, by: { nouns: { a: 3, c: 3, n: 3 } } } });
+  for (let i = 0; i < 2; i++) for (const d of [a, b]) { await d.flushTimers(); await d.sync.pullAll(); await d.flushTimers(); }
+  const want = { [day]: { a: 6, c: 5, n: 6, by: { whales: { a: 6, c: 5, n: 6 }, nouns: { a: 3, c: 3, n: 3 } } } };
+  assert.deepEqual(a.store.get(K.planDays(P)), want);
+  assert.deepEqual(b.store.get(K.planDays(P)), want);
+  assert.equal(a.sync.dirtyCount + b.sync.dirtyCount, 0, 'settled: nothing left to push');
 });
 
 test('a failing cloud sets status offline and keeps the dirty keys for later', async () => {
@@ -211,13 +313,19 @@ test('snapshots: one per day after a pull, listed, restored, pruned', async () =
   const snap = await h.sync.getSnapshot('2026-10-18');
   assert.deepEqual(Object.keys(snap.data).sort(), [K.wrHigh(P), K.quizSrs(P)].sort());
   assert.equal(snap.data[K.familyId()], undefined);
-  // later the data changed; restore brings the snapshot back and pushes it
-  h.store.set(K.wrHigh(P), 1);
   await h.flushTimers();
-  assert.equal(await h.sync.restoreSnapshot('2026-10-18'), 2);
+  // later: one key was lost on the device and in the cloud, the other moved on
+  h.be.removeItem(K.wrHigh(P));
+  h.fs.docs.delete(`families/${FAM}/stores/${K.wrHigh(P)}`);
+  h.store.set(K.quizSrs(P), { q1: { b: 4, due: '2026-11-01', s: 6 }, q2: { b: 1, due: '2026-10-20', s: 1 } });
+  await h.flushTimers();
+  // bringing the snapshot back refills what is missing, never lowers newer progress, and is in the cloud at once
+  assert.deepEqual(await h.sync.restoreSnapshot('2026-10-18'), { n: 2, changed: 1, pushed: true });
   assert.equal(h.store.get(K.wrHigh(P)), 7);
-  await h.flushTimers();
   assert.equal(h.fs.read(K.wrHigh(P)).json, '7');
+  assert.equal(h.store.get(K.quizSrs(P)).q1.s, 6);
+  assert.deepEqual(Object.keys(JSON.parse(h.fs.read(K.quizSrs(P)).json)).sort(), ['q1', 'q2']);
+  assert.equal(h.sync.dirtyCount, 0);
   await assert.rejects(() => h.sync.restoreSnapshot('2020-01-01'), /nicht gefunden/);
   // pruning keeps the last N
   for (const d of ['2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22']) { h.setDay(d); await h.sync.maybeSnapshot(); }

@@ -19,7 +19,10 @@ export function mergeSrs(a, b) {
   const out = Object.assign({}, a || {});
   for (const [w, e] of Object.entries(b || {})) {
     const l = out[w];
-    if (!l) { out[w] = e; continue; }
+    // v2: an entry that is not a record (null, a number) never wins over a record and never
+    // stops the merge — the old rule threw here and blocked the whole sync (review 2026-11-15)
+    if (!e || typeof e !== 'object') { if (l === undefined) out[w] = e; continue; }
+    if (!l || typeof l !== 'object') { out[w] = e; continue; }
     out[w] =
       e.s !== l.s ? (e.s > l.s ? e : l) :
       e.b !== l.b ? (e.b > l.b ? e : l) :
