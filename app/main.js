@@ -12,7 +12,7 @@ import { seedLegacySettings } from './core/settings.js';
 import { planSession, config as planConfig } from './core/planner.js';
 import { config as srsConfig } from './core/srs.js';
 import { today as todayOf } from './core/time.js';
-import { listProfiles, getProfile, currentProfileKey, setCurrentProfile } from './core/profiles.js';
+import { listProfiles, getProfile, currentProfileKey, setCurrentProfile, detectLegacyProfiles, adoptLegacyProfiles } from './core/profiles.js';
 import { STRINGS } from './ui/strings.js';
 import { el, mount } from './ui/dom.js';
 import { renderWelcome } from './ui/screens/welcome.js';
@@ -35,7 +35,15 @@ export async function start({ version = 'dev' } = {}) {
   errors = createErrorLog({ store, version, page: () => location.hash });
   errors.install();
   const audio = createAudio({ store, clipUrl: name => new URL(`../audio/${name}.mp3`, import.meta.url).href });
+  // Preview only: on the first visit this device's learning data is copied into the preview's
+  // own namespace (never the family code), so the preview starts with the real profiles.
+  if (namespace && !store.has(K.familyProfiles()) && !detectLegacyProfiles(store).length) {
+    try { store.copyFromLive(); } catch (err) { errors.record(err); }
+  }
   seedLegacySettings(store);
+  // Progress from the old app on this device: its children are there at once, nothing to set up.
+  const adopt = () => { try { return adoptLegacyProfiles(store).length; } catch (err) { errors.record(err); return 0; } };
+  adopt();
   const i18n = createI18n({ store, strings: STRINGS, defaultItalian: true });   // the old quiz always showed the Italian line
   const content = createContent();
   const plannerCfg = planConfig();
@@ -205,6 +213,7 @@ export async function start({ version = 'dev' } = {}) {
   // and the pull runs even if a content file is missing.
   let started = false;
   window.addEventListener('familysync-pulled', () => {
+    adopt();   // progress that arrived for a child this family has no profile for yet
     if (!started) return;
     const [name] = router.current.path;
     const onPicker = !['home', 'module', 'ella', 'game', 'session', 'results', 'eltern'].includes(name);

@@ -113,7 +113,7 @@ CLAUDE.md, README.md, .gitignore, package.json, .github/workflows/check.yml, fir
 
 - **Synced key `family_profiles`** (new): `{v:1, profiles:{ "<P>": {name, avatar, grade, gentle, createdAt, updatedAt} }}`. Merge: per profile, newer `updatedAt` wins; union of profiles. `<P>` is the storage name, identical to the display name typed into today's code; display name can differ from `<P>` later without touching keys.
 - **Device-local keys** `app_profile` (last chosen), `app_settings` (sound, Italian, gentle override). Not synced, like `gram_lastProfile` today.
-- **First run on a device** (no `family_profiles` after the first pull): "Wer lernt hier?" — name, avatar, grade, gentle mode. If old keys exist on the device (`wq_<P>`, `gram_srs_<P>`), their `<P>` are offered as "Profile gefunden" so nothing is retyped; the app only reads key names, it ships none.
+- **First run on a device** (no `family_profiles` after the first pull): "Wer lernt hier?" — name, avatar, grade, gentle mode. If old keys exist on the device (`wq_<P>`, `gram_srs_<P>`), their `<P>` become profiles at once, without a form (since 2026-11-15: provisional entries, avatars in the order of the names, grade open until a parent sets it); the app only reads key names, it ships none.
 - **Family link** as today (`?familie=`): after the pull the profiles appear on the device.
 - **Eltern** becomes a mode (toggle in the footer, optional 4-digit PIN stored device-locally), not a profile that collects data. Legacy `wq_Eltern*` keys are left alone.
 - Grade and gentle mode are profile fields: the grid filter and the game's mode read them; no code path names a child.

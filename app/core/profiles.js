@@ -121,6 +121,30 @@ export function legacyLastProfile(store) {
   try { const v = JSON.parse(raw); return typeof v === 'string' ? v : null; } catch { return raw; }
 }
 
+/**
+ * The first run on a device that has progress from the old app: the names in
+ * the data become profiles at once, so nobody has to set anything up (the old
+ * app knew its children; this one finds them). The entries are provisional —
+ * anything a parent saves on purpose wins over them when the devices sync.
+ * Avatars are handed out in the order of the names, so every device of the
+ * family comes to the same picture; the grade stays open until a parent sets
+ * it. Returns the profiles it made.
+ */
+export function adoptLegacyProfiles(store) {
+  const known = load(store).profiles;
+  const custom = new Map(legacyCustomProfiles(store).map(c => [c.key, c]));
+  const names = new Map(detectLegacyProfiles(store).map(f => [f.key, { key: f.key, name: custom.get(f.key)?.name || f.key, avatar: custom.get(f.key)?.avatar }]));
+  for (const c of custom.values()) if (!known[c.key] && !names.has(c.key)) names.set(c.key, c);
+  const taken = new Set(Object.values(known).map(p => p?.avatar));
+  const made = [];
+  for (const n of [...names.values()].sort((a, b) => a.key.localeCompare(b.key))) {
+    const avatar = (typeof n.avatar === 'string' && n.avatar) || AVATARS.find(a => !taken.has(a)) || AVATARS[0];
+    taken.add(avatar);
+    made.push(saveProfile(store, { key: n.key, name: n.name, avatar, grade: null, gentle: false }, PROVISIONAL));
+  }
+  return made;
+}
+
 // ── the device's current profile ───────────────────────────────────────
 
 export function currentProfileKey(store) {

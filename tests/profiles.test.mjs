@@ -4,6 +4,7 @@ import { createStore, memoryBackend, keys as K } from '../app/core/storage.js';
 import {
   validKey, keyFromName, listProfiles, getProfile, saveProfile, removeProfile, detectLegacyProfiles,
   legacyCustomProfiles, legacyLastProfile, currentProfileKey, setCurrentProfile, PARENT_KEY,
+  adoptLegacyProfiles, PROVISIONAL, AVATARS,
 } from '../app/core/profiles.js';
 
 const fresh = (init = {}) => createStore({ backend: memoryBackend(init), log: { warn() {} } });
@@ -81,6 +82,39 @@ test('legacy custom profiles and the old trainer profile are read for the first 
   const raw = fresh({ gram_lastProfile: 'Beta' });
   assert.equal(legacyLastProfile(raw), 'Beta');
   assert.equal(legacyLastProfile(fresh()), null);
+});
+
+test('old progress on the device: its names become profiles at once, nothing to set up', () => {
+  const s = fresh({
+    [K.gramSrs('Beta')]: '{}', [K.wrHigh('Beta')]: '5',
+    [K.quizHistory('Alpha')]: '[]', [K.quizSrs('Alpha')]: '{"q1":{"b":3,"due":"2026-11-20"}}',
+    [K.quizHistory(PARENT_KEY)]: '[]', [K.quizStats('has space')]: '{}',
+  });
+  const made = adoptLegacyProfiles(s);
+  assert.deepEqual(made.map(p => [p.key, p.name, p.avatar, p.grade]), [['Alpha', 'Alpha', AVATARS[0], null], ['Beta', 'Beta', AVATARS[1], null]]);
+  assert.deepEqual(listProfiles(s).map(p => p.key), ['Alpha', 'Beta']);
+  // provisional: anything a parent saves on purpose is newer
+  assert.ok(listProfiles(s).every(p => p.updatedAt === PROVISIONAL && p.createdAt === PROVISIONAL));
+  // the progress itself is not touched, and a second run finds nothing new
+  assert.equal(s.getRaw(K.quizSrs('Alpha')), '{"q1":{"b":3,"due":"2026-11-20"}}');
+  assert.deepEqual(adoptLegacyProfiles(s), []);
+  assert.deepEqual(detectLegacyProfiles(s), []);
+});
+
+test('adoption keeps what is there: existing and removed profiles stay, old extra profiles keep their picture', () => {
+  const s = fresh({
+    [K.gramSrs('Alpha')]: '{}', [K.gramSrs('Beta')]: '{}', [K.gramSrs('Gamma')]: '{}', [K.wrHigh('OmaLu')]: '3',
+    custom_profiles: '[{"name":"Oma Lu","avatar":"🌱"},{"name":"Delta","avatar":"🦊"}]',
+  });
+  saveProfile(s, { name: 'Alpha', avatar: AVATARS[0], grade: 4 }, 5000);
+  saveProfile(s, { name: 'Gamma' }, 5000);
+  removeProfile(s, 'Gamma', 6000);
+  const made = adoptLegacyProfiles(s);
+  assert.deepEqual(made.map(p => [p.key, p.name, p.avatar]), [['Beta', 'Beta', AVATARS[1]], ['Delta', 'Delta', '🦊'], ['OmaLu', 'Oma Lu', '🌱']]);
+  assert.equal(getProfile(s, 'Alpha').grade, 4);
+  assert.equal(getProfile(s, 'Alpha').updatedAt, 5000);
+  assert.equal(getProfile(s, 'Gamma'), null);          // a profile a parent removed does not come back
+  assert.deepEqual(adoptLegacyProfiles(fresh()), []);  // a new device: nothing to adopt
 });
 
 test('the device remembers its current profile only while that profile exists', () => {
