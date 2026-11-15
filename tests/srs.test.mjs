@@ -5,6 +5,7 @@ import {
   isMastered, isLeech, leechScore, daysUntilDue, intervalOf, cardId, splitCardId, ladderLevel,
   unlockedSkills, summarize,
 } from '../app/core/srs.js';
+import { addDays } from '../app/core/time.js';
 
 const D = '2026-10-18';
 const quiz = config({ intervals: QUIZ_INTERVALS });
@@ -57,17 +58,61 @@ test('a wrong answer drops one box, resets the streak and keeps the totals', () 
   assert.equal(w.due, '2026-10-22');            // box 1 → 1 day
 });
 
-test('old records without lz start their leech score from w, and it decays', () => {
+test('a card with 4 wrongs in total stays on shortened intervals for ever, as in the old app', () => {
   const old = { b: 3, due: D, s: 10, r: 6, w: 4, k: 0 };
-  assert.equal(leechScore(old), 4);
+  assert.equal(leechScore(old, quiz), 4);
   assert.ok(isLeech(old, quiz));
   assert.equal(intervalOf(old, quiz), 2);      // box 3 = 4 days × 0.6 = 2.4 → 2
   const after = review(old, 'first', D, quiz);
-  assert.equal(after.lz, 3);
-  assert.ok(!isLeech(after, quiz));
-  assert.equal(after.w, 4);                     // total wrongs stay for the dashboard
+  assert.equal(after.w, 4);
+  assert.equal(after.lz, 3);                    // recent wrongs are written, but not used here
+  assert.ok(isLeech(after, quiz));
   assert.equal(after.b, 4);
+  assert.equal(after.due, '2026-10-22');        // box 4 = 7 days × 0.6 = 4.2 → 4 (the old app's date)
+});
+
+test('leechDecay (opt-in for new modules): recent wrongs decide, and they fade with right answers', () => {
+  const cfg = config({ intervals: QUIZ_INTERVALS, leechDecay: true });
+  const old = { b: 3, due: D, s: 10, r: 6, w: 4, k: 0 };
+  assert.equal(leechScore(old, cfg), 4);        // a record without lz starts from w
+  const after = review(old, 'first', D, cfg);
+  assert.equal(after.lz, 3);
+  assert.ok(!isLeech(after, cfg));
   assert.equal(after.due, '2026-10-25');        // box 4 = 7 days, no damping any more
+  assert.throws(() => config({ leechDecay: 1 }), /leechDecay/);
+});
+
+// The two schedulers of the old app, copied as they were (index.html srsRecord,
+// grammatik.html updateSrs): the reference the new scheduler must equal.
+function oldReview(e, firstTry, today, intervals, fuzzRandom) {
+  e = e ? { ...e } : { b: 0, due: today, s: 0, r: 0, w: 0, k: 0 };
+  e.s++;
+  if (firstTry) { e.r++; e.k++; e.b = Math.min(intervals.length - 1, e.b + 1); }
+  else { e.w++; e.k = 0; e.b = Math.max(0, e.b - 1); }
+  let iv = intervals[e.b];
+  if (e.w >= 4 && iv > 2) iv = Math.max(2, Math.round(iv * 0.6));
+  if (fuzzRandom && iv >= 4) iv += Math.floor(fuzzRandom() * 3) - 1;
+  e.due = addDays(today, iv);
+  return e;
+}
+
+test('the scheduler equals the old app step by step: quiz and nouns, 20,000 random answers each', () => {
+  let seed = 7;
+  const rnd = () => { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; };
+  for (const [name, cfg, fuzz] of [['quiz', quiz, false], ['nouns', noun, true]]) {
+    for (let run = 0; run < 400; run++) {
+      let a, b, day = D;
+      for (let step = 0; step < 50; step++) {
+        const first = rnd() < 0.72;
+        const f = rnd();
+        a = oldReview(a, first, day, cfg.intervals, fuzz ? () => f : null);
+        b = review(b, first ? 'first' : (rnd() < 0.5 ? 'retry' : 'wrong'), day, cfg, () => f);
+        const { lz, ...rest } = b;
+        assert.deepEqual(rest, a, `${name} run ${run} step ${step}`);
+        day = addDays(day, Math.floor(rnd() * 9));
+      }
+    }
+  }
 });
 
 test('leech damping: interval × 0.6, never below 2 days, never on short intervals', () => {

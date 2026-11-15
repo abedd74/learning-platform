@@ -19,7 +19,7 @@ function deck({ due = 0, review = 0, fresh = 0, module = 'whales', topic = 't', 
   return out;
 }
 
-test('due cards come first, weakest first; new cards fill up to the session limit', () => {
+test('daily training as the old trainer: new cards are reserved first, then due, then filler', () => {
   const r = planSession({ cards: deck({ due: 4, review: 5, fresh: 10 }), today: D, rng });
   assert.equal(r.cards.length, 10);
   assert.equal(r.counts.due, 4);
@@ -27,9 +27,14 @@ test('due cards come first, weakest first; new cards fill up to the session limi
   assert.equal(r.counts.filler, 1);
   assert.equal(r.counts.dueTotal, 4);
   assert.ok(r.cards.every(c => ['due', 'new', 'filler'].includes(c.reason)));
+  // a steady pile of reviews must not starve new words: 12–15 due → 5 new + 5 due (old trainer)
+  for (const due of [12, 15]) {
+    const steady = planSession({ cards: deck({ due, review: 20, fresh: 30 }), today: D, rng });
+    assert.deepEqual([steady.counts.new, steady.counts.due, steady.counts.filler], [5, 5, 0], `${due} due`);
+  }
 });
 
-test('more due cards than a session holds: the weakest boxes are taken, nothing new', () => {
+test('more due cards than the throttle: the weakest boxes are taken, nothing new', () => {
   const cards = deck({ due: 25, fresh: 10 });
   const r = planSession({ cards, today: D, rng });
   assert.equal(r.cards.length, 10);
@@ -38,23 +43,56 @@ test('more due cards than a session holds: the weakest boxes are taken, nothing 
   assert.ok(r.cards.every(c => c.rec.b <= 1), 'only boxes 0 and 1 were due enough');
 });
 
-test('new cards: per-session limit and a per-module daily limit; an extra round is never empty', () => {
-  const cards = deck({ fresh: 20 });
+test('new cards: per-session limit, per-module daily limit, none after the goal — while known cards can fill the round', () => {
+  const known = deck({ review: 12 });
+  const cards = [...deck({ fresh: 20 }), ...known];
   assert.equal(planSession({ cards, today: D, rng }).counts.new, 5);
   assert.equal(planSession({ cards, today: D, dayRecord: { a: 20, n: 8, by: { whales: { n: 8 } } }, rng }).counts.new, 2);
-  assert.equal(planSession({ cards, today: D, dayRecord: { a: 20, n: 10, by: { whales: { n: 10 } } }, rng }).counts.new, 5, 'the limit is reached, but nothing else exists: extra round');
-  const known = deck({ review: 3 });
-  const r = planSession({ cards: [...cards, ...known], today: D, dayRecord: { a: 20, n: 10, by: { whales: { n: 10 } } }, rng });
-  assert.equal(r.counts.new, 0, 'with known cards to fill, the daily limit holds');
-  assert.equal(r.counts.filler, 3);
-  // the limit is per module: ten new whale cards today do not block Ella
-  const mixed = [...deck({ fresh: 10, module: 'whales' }), ...deck({ fresh: 10, module: 'nouns', topic: 'gender' })];
+  const capped = planSession({ cards, today: D, dayRecord: { a: 20, n: 10, by: { whales: { n: 10 } } }, rng });
+  assert.deepEqual([capped.counts.new, capped.counts.filler], [0, 10]);
+  // the limit is per module: ten new whale cards today do not block the nouns
+  const mixed = [...cards, ...deck({ fresh: 10, module: 'nouns', topic: 'gender' })];
   const r2 = planSession({ cards: mixed, today: D, dayRecord: { a: 20, n: 10, by: { whales: { n: 10 } } }, rng });
   assert.equal(r2.counts.new, 5);
-  assert.ok(r2.cards.every(c => c.module === 'nouns'));
+  assert.ok(r2.cards.filter(c => c.reason === 'new').every(c => c.module === 'nouns'));
   const goal = planSession({ cards, today: D, dayRecord: { a: 50, n: 0 }, rng });
   assert.equal(goal.goalReached, true);
-  assert.equal(goal.counts.new, 5, 'after the goal: still an extra round when nothing is known');
+  assert.deepEqual([goal.counts.new, goal.counts.filler], [0, 10]);
+});
+
+test('a round is never short while cards exist: a new profile gets a full round of new cards (old trainer)', () => {
+  assert.equal(planSession({ cards: deck({ fresh: 20 }), today: D, rng }).counts.new, 10);
+  const few = planSession({ cards: [...deck({ fresh: 20 }), ...deck({ review: 3 })], today: D, rng });
+  assert.deepEqual([few.counts.new, few.counts.filler], [7, 3]);
+  // even after the daily limit or the goal, when nothing else exists
+  assert.equal(planSession({ cards: deck({ fresh: 20 }), today: D, dayRecord: { a: 60, n: 10, by: { whales: { n: 10 } } }, rng }).counts.new, 10);
+  assert.equal(planSession({ cards: deck({ fresh: 4 }), today: D, rng }).cards.length, 4);
+  assert.equal(planSession({ cards: [], today: D, rng }).cards.length, 0);
+});
+
+test('new cards take turns between modules, each module in its own order', () => {
+  const whales = deck({ fresh: 10, module: 'whales' });
+  const nouns = deck({ fresh: 10, module: 'nouns', topic: 'gender' }).map((c, i) => ({ ...c, newPriority: i }));
+  const r = planSession({ cards: [...whales, ...nouns, ...deck({ review: 10, module: 'old' })], today: D, rng });
+  const fresh = r.cards.filter(c => c.reason === 'new');
+  assert.equal(fresh.length, 5);
+  assert.ok(fresh.filter(c => c.module === 'whales').length >= 2 && fresh.filter(c => c.module === 'nouns').length >= 2);
+  assert.deepEqual(fresh.filter(c => c.module === 'nouns').map(c => c.newPriority).sort(), [0, 1, 2].slice(0, fresh.filter(c => c.module === 'nouns').length));
+});
+
+test('free practice (the child picks a topic) as the old quiz: due, then every unseen card, then longest unseen; no limits', () => {
+  // first round of a 13-question topic: 10 questions, not 5
+  assert.equal(planSession({ cards: deck({ fresh: 13 }), today: D, rng, free: true }).counts.new, 10);
+  // the evening before a test: 2 known, 11 unseen, daily limit used up, goal reached → still a round of unseen cards
+  const late = planSession({ cards: [...deck({ review: 2 }), ...deck({ fresh: 11 })], today: D, dayRecord: { a: 70, n: 10, by: { whales: { n: 10 } } }, rng, free: true });
+  assert.deepEqual([late.counts.new, late.counts.filler], [10, 0]);
+  // due first, then unseen, then the rest by earliest due date
+  const cards = [...deck({ due: 3 }), ...deck({ fresh: 4 }), card('r1', 'whales', 't', rec(5, '2026-11-20')), card('r2', 'whales', 't', rec(1, '2026-10-25')), card('r3', 'whales', 't', rec(3, '2026-10-21')), card('r4', 'whales', 't', rec(0, '2026-12-01'))];
+  const r = planSession({ cards, today: D, rng, free: true });
+  assert.deepEqual([r.counts.due, r.counts.new, r.counts.filler], [3, 4, 3]);
+  assert.deepEqual(r.cards.filter(c => c.reason === 'filler').map(c => c.id).sort(), ['r1', 'r2', 'r3']);
+  // a backlog above the throttle does not block unseen cards here
+  assert.equal(planSession({ cards: [...deck({ due: 4 }), ...deck({ fresh: 9 })], today: D, cfg: config({ throttleDue: 2 }), rng, free: true }).counts.new, 6);
 });
 
 test('filler is fair: weakest box first, then earliest due', () => {
@@ -109,7 +147,24 @@ test('test-date mode: that module first, cards due within 3 days pulled forward,
   // with nothing due, the doubled new-card limit shows: 10 instead of 5
   const r2 = planSession({ cards: deck({ fresh: 20, module: 'states' }), today: D, plan, rng });
   assert.equal(r2.counts.new, 10);
-  assert.equal(planSession({ cards: deck({ fresh: 20, module: 'states' }), today: D, rng }).counts.new, 5);
+  const noTest = [...deck({ fresh: 20, module: 'states' }), ...deck({ review: 10 })];
+  assert.equal(planSession({ cards: noTest, today: D, plan, rng }).counts.new, 10);
+  assert.equal(planSession({ cards: noTest, today: D, rng }).counts.new, 5);
+});
+
+test('ladders: the skill cards of one item never meet in a session, due or not', () => {
+  const cards = [
+    card('BY:pick3', 'states', 'de', rec(1, '2026-10-10'), { item: 'BY', level: 0 }),
+    card('BY:tap', 'states', 'de', rec(0, '2026-10-12'), { item: 'BY', level: 1 }),
+    card('BY:type', 'states', 'de', rec(2, '2026-10-30'), { item: 'BY', level: 2 }),
+    card('HE:pick3', 'states', 'de', rec(1, '2026-10-11'), { item: 'HE', level: 0 }),
+  ];
+  for (const free of [false, true]) {
+    const ids = planSession({ cards, today: D, rng, free }).cards.map(c => c.id);
+    assert.equal(ids.filter(id => id.startsWith('BY:')).length, 1, ids.join(' '));
+    assert.ok(ids.includes('BY:tap'), 'the weakest due card of the item');
+    assert.ok(ids.includes('HE:pick3'));
+  }
 });
 
 test('interleave avoids three of the same topic in a row when possible', () => {

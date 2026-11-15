@@ -34,7 +34,80 @@ test('right first time: record climbs, stats and day counters move, points 2/2',
   assert.equal(hist[0].date, '18.10.2026');
   assert.match(hist[0].time, /^\d\d:\d\d$/);
   assert.equal(hist[0].module, 'whales');
+  assert.equal(hist[0].mode, 'arten');
+  assert.equal(hist[0].pct, 100, 'a whole number 0–100, as the old app wrote it');
   assert.equal(store.get(K.planDays(P))[D].sess, 1);
+});
+
+test('the round history keeps the old app\'s shape next to its old entries', () => {
+  const old = { date: '5.3.2026', time: '17:05', mode: 'mixed', pct: 85, module: 'whales', topics: { arten: { pts: 17, max: 20 } } };
+  const { store, s } = harness([item('wal_1'), item('wal_2')], { [K.quizHistory(P)]: JSON.stringify([old]) });
+  s.answer(1); s.next(); s.answer(0); s.answer(1); s.next();
+  s.answer(1); s.next();                                       // the re-asked card
+  s.finish();
+  const hist = store.get(K.quizHistory(P));
+  assert.deepEqual(hist[0], old);
+  assert.deepEqual(Object.keys(hist[1]).sort(), Object.keys(old).sort());
+  assert.equal(hist[1].pct, 75);
+  assert.ok(Number.isInteger(hist[1].pct));
+});
+
+test('the history gets finished quiz rounds only: not a round left early, not a mixed or trainer round', () => {
+  const left = harness([item('wal_1'), item('wal_2')]);
+  left.s.answer(1);
+  left.s.finish();                                             // quit after one card
+  assert.equal(left.store.has(K.quizHistory(P)), false);
+  assert.equal(left.store.get(K.planDays(P))[D].sess, 1, 'the practice time still counts');
+  const noun = { card: { id: 'Apfel', module: 'nouns', topic: 'gender', store: 'gramSrs' }, question: { type: 'gender', noun: { de: 'Apfel', g: 'der' } } };
+  const mixed = harness([item('wal_1'), noun]);
+  mixed.s.answer(1); mixed.s.next(); mixed.s.answer('der'); mixed.s.next();
+  mixed.s.finish();
+  assert.equal(mixed.store.has(K.quizHistory(P)), false);
+});
+
+test('a second tap on a decided card changes nothing', () => {
+  const { store, s } = harness([item('wal_1', { b: 4, due: D, s: 4, r: 4, w: 0, k: 4 })], { [K.quizSrs(P)]: JSON.stringify({ wal_1: { b: 4, due: D, s: 4, r: 4, w: 0, k: 4 } }) });
+  const r1 = s.answer(1);
+  const r2 = s.answer(0);
+  assert.deepEqual(r2, r1);
+  assert.equal(store.get(K.quizSrs(P)).wal_1.b, 5);
+  assert.equal(store.get(K.planDays(P))[D].a, 1);
+});
+
+test('"new" comes from the stored record, not from the card\'s snapshot (a second round with the same cards)', () => {
+  const store = createStore({ backend: memoryBackend(), log: { warn() {} } });
+  const cards = [item('wal_1'), item('wal_2')];                // both new when the list was made
+  for (let round = 0; round < 2; round++) {
+    const s = createSession({ items: cards, profile: P, store, today: D, module: 'whales' });
+    s.answer(1); s.next(); s.answer(1); s.next(); s.finish();
+  }
+  assert.equal(store.get(K.planDays(P))[D].n, 2, 'two new cards, not four');
+  assert.equal(store.get(K.quizSrs(P)).wal_1.s, 2);
+});
+
+test('an item without a record (a grammar sentence) is an answer, never a new card', () => {
+  const store = createStore({ backend: memoryBackend(), log: { warn() {} } });
+  const seen = [];
+  const sentence = { card: { id: 'ella:akk:x', module: 'nouns', topic: 'akk', store: null, tags: ['grammar'], concept: 'akk', onAnswer: e => seen.push(e) }, question: { type: 'pmcq', opts: ['den', 'der'], correct: 'den' } };
+  const s = createSession({ items: [sentence], profile: P, store, today: D, module: 'nouns' });
+  s.answer('den'); s.next();
+  const sum = s.finish();
+  assert.equal(sum.newCount, 0);
+  assert.deepEqual(store.get(K.planDays(P))[D].by, { nouns: { a: 1, c: 1, n: 0 } });
+  assert.equal(store.get(K.gramDays(P))[D].n, undefined);
+  assert.equal(store.has(K.gramSrs(P)), false);
+  assert.deepEqual(seen.map(e => [e.ok, e.final, e.rehearsal]), [[true, true, false]]);
+});
+
+test('the noun trainer\'s ±1 day reaches the due date (the random source is passed on)', () => {
+  const cfg = { intervals: [0, 1, 2, 4, 8, 16, 32, 64, 90], fuzz: 1 };
+  const dueWith = r => {
+    const store = createStore({ backend: memoryBackend({ [K.gramSrs(P)]: JSON.stringify({ Apfel: { b: 2, due: D, s: 2, r: 2, w: 0, k: 2 } }) }), log: { warn() {} } });
+    const s = createSession({ items: [{ card: { id: 'Apfel', module: 'nouns', topic: 'gender', store: 'gramSrs', cfg }, question: { type: 'gender', noun: { de: 'Apfel', g: 'der' } } }], profile: P, store, today: D, module: 'nouns', rng: () => r });
+    s.answer('der');
+    return store.get(K.gramSrs(P)).Apfel.due;
+  };
+  assert.deepEqual([dueWith(0), dueWith(0.5), dueWith(0.99)], ['2026-10-21', '2026-10-22', '2026-10-23']);   // box 3 = 4 days −1 / 0 / +1
 });
 
 test('wrong then right: one retry, outcome retry, one drop, points 1/2, re-asked later without touching records', () => {
@@ -77,8 +150,9 @@ test('trainer cards also feed the old gram_days counters', () => {
   assert.equal(store.get(K.gramSrs(P)).Apfel.b, 1);
   assert.deepEqual(store.get(K.gramDays(P))[D], { a: 1, c: 1, n: 1, m: 0 });
   assert.equal(store.has(K.quizStats(P)), false);
+  s.next();
   s.finish();
-  assert.equal(store.get(K.quizHistory(P)).length, 1);
+  assert.equal(store.has(K.quizHistory(P)), false, 'a trainer round is not a quiz round');
 });
 
 test('an empty session finishes without writing anything', () => {

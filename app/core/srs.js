@@ -10,8 +10,12 @@
 //   { b, due, s, r, w, k, lz?, v? }
 //   b  box 0..n        due 'YYYY-MM-DD'      s times seen
 //   r  first-try rights  w wrongs (total)    k current first-try streak
-//   lz leech score: recent wrongs, +1 per wrong, −1 per first-try right.
-//      Old records have none; they start from w (the old rule used w).
+//   lz recent wrongs: +1 per wrong, −1 per first-try right. Old records have
+//      none; they start from w. Written by every review, but only USED by
+//      modules that switch `leechDecay` on. The existing modules keep the old
+//      app's rule — a card with 4 or more wrongs IN TOTAL (w) stays on
+//      shortened intervals for ever — so that no card comes back later than
+//      it did in the old app (review 2026-11-15, MIGRATION rule 4).
 //
 // A card is item × skill. Single-skill items (a quiz question, a noun's
 // gender) use the item id alone; multi-skill items (a region on a map) use
@@ -28,6 +32,7 @@ export const NOUN_INTERVALS = Object.freeze([0, 1, 2, 4, 8, 16, 32, 64, 90]);
 export const DEFAULTS = Object.freeze({
   intervals: QUIZ_INTERVALS,
   leechAfter: 4,      // leech score at which the interval is shortened
+  leechDecay: false,  // false: the score is the total of wrongs (old app). true: recent wrongs (lz), which fade with right answers
   leechFactor: 0.6,   // … to this share of the normal interval
   leechMinDays: 2,    // … but never below this
   fuzz: 0,            // 1 = ±1 day on long intervals (the trainer does this)
@@ -44,6 +49,7 @@ export function config(o = {}) {
   if (!Array.isArray(c.intervals) || c.intervals.length < 2 || c.intervals.some((d, i) => !Number.isInteger(d) || d < 0 || (i && d < c.intervals[i - 1]))) {
     throw new TypeError('srs: intervals must be a non-decreasing list of whole days, at least two long');
   }
+  if (typeof c.leechDecay !== 'boolean') throw new TypeError('srs: leechDecay must be true or false');
   for (const k of ['leechAfter', 'leechMinDays', 'fuzzFrom', 'masteredBox', 'unlockBox']) {
     if (!Number.isInteger(c[k]) || c[k] < 0) throw new TypeError(`srs: ${k} must be a whole number ≥ 0`);
   }
@@ -58,12 +64,15 @@ export function newRecord(today) {
   return { b: 0, due: today, s: 0, r: 0, w: 0, k: 0 };
 }
 
-export function leechScore(rec) {
+/** Recent wrongs: the stored lz, or the total for a record from the old app. */
+function recentWrongs(rec) { return Number.isFinite(rec.lz) ? rec.lz : (rec.w || 0); }
+
+export function leechScore(rec, cfg = DEFAULTS) {
   if (!rec) return 0;
-  return Number.isFinite(rec.lz) ? rec.lz : (rec.w || 0);
+  return cfg.leechDecay ? recentWrongs(rec) : (rec.w || 0);
 }
 
-export function isLeech(rec, cfg = DEFAULTS) { return leechScore(rec) >= cfg.leechAfter; }
+export function isLeech(rec, cfg = DEFAULTS) { return leechScore(rec, cfg) >= cfg.leechAfter; }
 
 export function isNew(rec) { return !rec; }
 
@@ -88,7 +97,7 @@ export function review(rec, outcome, today, cfg = DEFAULTS, rng = () => 0.5) {
   if (!isDay(today)) throw new TypeError(`srs: not a day: ${today}`);
   const e = rec ? { ...rec } : newRecord(today);
   const top = maxBox(cfg);
-  const lz = leechScore(e);
+  const lz = recentWrongs(e);
   e.b = Math.min(Math.max(Number.isInteger(e.b) ? e.b : 0, 0), top);
   e.s = (e.s || 0) + 1;
   if (outcome === 'first') {

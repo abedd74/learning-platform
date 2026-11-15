@@ -28,7 +28,7 @@ function tile(i18n, text, onTap, extra = {}) {
 function choice(q, ctx) {
   const node = el('div', { class: 'answers' });
   const opts = (q.answer.options || []).map((o, i) => ({ o, i }));
-  const order = q.type === 'image' || q.shuffle === false ? opts : shuffle(opts, ctx.rng);
+  const order = q.shuffle === false ? opts : shuffle(opts, ctx.rng);
   const buttons = new Map();
   for (const { o, i } of order) {
     const label = q.type === 'image' ? { de: `${o.emoji}  ${o.label?.de ?? ''}`, it: o.label?.it } : o;
@@ -39,7 +39,7 @@ function choice(q, ctx) {
   const disableAll = () => buttons.forEach(b => { b.disabled = true; });
   return {
     node,
-    reset() { buttons.forEach(b => { b.disabled = b.classList.contains('no'); b.classList.remove('chosen'); }); },
+    reset() { buttons.forEach(b => { if (b.classList.contains('chosen')) b.classList.add('no'); b.disabled = b.classList.contains('no'); b.classList.remove('chosen'); }); },
     reveal({ ok, response, expected }) {
       buttons.forEach((b, i) => {
         if (i === expected) b.classList.add('ok');
@@ -198,7 +198,7 @@ function gender(q, ctx) {
   }
   return {
     node,
-    reset() { buttons.forEach(b => { b.disabled = b.classList.contains('no'); b.classList.remove('chosen'); }); },
+    reset() { buttons.forEach(b => { if (b.classList.contains('chosen')) b.classList.add('no'); b.disabled = b.classList.contains('no'); b.classList.remove('chosen'); }); },
     reveal({ ok, response, expected }) { buttons.get(expected)?.classList.add('ok'); if (!ok) buttons.get(response)?.classList.add('no'); buttons.forEach(b => { b.disabled = true; }); },
   };
 }
@@ -213,7 +213,7 @@ function options(q, ctx) {
   }
   return {
     node,
-    reset() { buttons.forEach(b => { b.disabled = b.classList.contains('no'); b.classList.remove('chosen'); }); },
+    reset() { buttons.forEach(b => { if (b.classList.contains('chosen')) b.classList.add('no'); b.disabled = b.classList.contains('no'); b.classList.remove('chosen'); }); },
     reveal({ ok, response, expected }) { buttons.get(expected)?.classList.add('ok'); if (!ok) buttons.get(response)?.classList.add('no'); buttons.forEach(b => { b.disabled = true; }); },
   };
 }

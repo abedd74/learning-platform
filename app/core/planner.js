@@ -5,8 +5,8 @@
 // with a reason per card, plus the streak and the day's counters.
 //
 // Defaults are the old trainer's numbers (DESIGN §4.3): 10 cards a session,
-// 50 answers a day, 5 new cards a session, 10 a day, no new cards while more
-// than 20 are due, at most 4 grammar cards. Test-date mode: in the days
+// 50 answers a day, 5 new cards a session (reserved first), 10 a day, no new
+// cards while more than 20 are due, at most 4 grammar cards. Test-date mode: in the days
 // before a known test, that module's cards come first, cards due within a
 // few days are pulled forward and its new-card limit grows.
 
@@ -73,14 +73,28 @@ export function goalReached(dayRecord, cfg = DEFAULTS) {
  * Assemble a session.
  * Returns { cards: [{...card, reason}], counts, goalReached, testPrep }.
  * Reasons: 'due' | 'test-prep' | 'new' | 'filler'.
+ *
+ * Two compositions, both taken from the old app (review 2026-11-15):
+ *   daily training (default) — the old trainer: up to `newPerSession` new
+ *     cards are RESERVED first (so a child with a steady pile of reviews
+ *     still meets new words every round), then due cards weakest first,
+ *     then known cards as filler; a round that is still short is topped up
+ *     with new cards, whatever the limits say (a brand-new profile gets a
+ *     full round). No new cards after the day's goal, above the daily limit
+ *     per module, or while more than `throttleDue` cards are due.
+ *   free practice (`free: true`) — the old quiz, when the child picks a
+ *     module or a topic herself: due cards weakest first, then every unseen
+ *     card, then the ones not seen for longest. No limits.
  */
-export function planSession({ cards, today, dayRecord = null, plan = null, cfg = DEFAULTS, rng = Math.random }) {
+export function planSession({ cards, today, dayRecord = null, plan = null, cfg = DEFAULTS, rng = Math.random, free = false }) {
   if (!isDay(today)) throw new TypeError(`planner: not a day: ${today}`);
   const prep = testPrepModules(plan, today, cfg);
   const tagCount = {};
   const chosen = [];
   const usedItems = new Set();
+  const full = () => chosen.length >= cfg.sessionSize;
   const canTake = c => {
+    if (c.item && usedItems.has(c.item)) return false;      // one card per item in a session (ladders)
     for (const t of c.tags || []) if (cfg.maxPerTag[t] !== undefined && (tagCount[t] || 0) >= cfg.maxPerTag[t]) return false;
     return true;
   };
@@ -89,72 +103,84 @@ export function planSession({ cards, today, dayRecord = null, plan = null, cfg =
     if (c.item) usedItems.add(c.item);
     chosen.push({ ...c, reason });
   };
+  const byDue = (a, b) => (a.rec.due < b.rec.due ? -1 : a.rec.due > b.rec.due ? 1 : 0);
 
   const isPrep = c => c.module in prep;
   const dueLike = c => isDue(c.rec, today) || (isPrep(c) && !isNew(c.rec) && daysUntilDue(c.rec, today) <= cfg.testPrep.pullForward);
 
-  // 1. due cards (and pulled-forward test-prep cards): test-prep first, weakest first, oldest due first
+  // due cards (and pulled-forward test-prep cards): test-prep first, weakest first, oldest due first
   const due = shuffle(cards.filter(c => dueLike(c)), rng)
-    .sort((a, b) => (isPrep(b) - isPrep(a)) || ((a.rec.b || 0) - (b.rec.b || 0)) || (a.rec.due < b.rec.due ? -1 : a.rec.due > b.rec.due ? 1 : 0));
+    .sort((a, b) => (isPrep(b) - isPrep(a)) || ((a.rec.b || 0) - (b.rec.b || 0)) || byDue(a, b));
   const dueCount = due.length;
-  for (const c of due) {
-    if (chosen.length >= cfg.sessionSize) break;
-    if (!canTake(c)) continue;
-    take(c, isPrep(c) && !isDue(c.rec, today) ? 'test-prep' : (isPrep(c) ? 'test-prep' : 'due'));
-  }
+  const dueItems = new Set(due.map(c => c.item).filter(Boolean));
+  const takeDue = limit => {
+    for (const c of due) {
+      if (chosen.length >= limit) break;
+      if (!canTake(c)) continue;
+      take(c, isPrep(c) ? 'test-prep' : 'due');
+    }
+  };
 
-  // 2. new cards: not after the daily goal, not while the review backlog is big.
-  //    The per-day limit counts per module (as the old trainer did for itself).
-  const reached = goalReached(dayRecord, cfg);
-  const newToday = m => (dayRecord?.by?.[m]?.n) ?? 0;
-  let allowNew = 0;
-  if (!reached && dueCount <= cfg.throttleDue) {
-    allowNew = cfg.newPerSession;
-    if (Object.keys(prep).length) allowNew = cfg.newPerSession * cfg.testPrep.newFactor;
-  }
-  const perModuleLeft = m => Math.max(0, cfg.newPerDay * (m in prep ? cfg.testPrep.newFactor : 1) - newToday(m));
-  if (allowNew > 0) {
-    // one card per item: the highest unlocked level
+  // new cards: one per item (the highest unlocked level), never for an item that has a card due;
+  // test-prep modules first, then the modules take turns, each in its own order (newPriority)
+  const freshList = () => {
     const byItem = new Map();
     for (const c of cards) {
       if (!isNew(c.rec) || c.unlocked === false) continue;
+      if (c.item && (dueItems.has(c.item) || usedItems.has(c.item))) continue;
       const k = c.item || c.id;
       const cur = byItem.get(k);
       if (!cur || (c.level || 0) > (cur.level || 0)) byItem.set(k, c);
     }
-    const fresh = shuffle([...byItem.values()].filter(c => !usedItems.has(c.item || c.id)), rng)
-      .sort((a, b) => (isPrep(b) - isPrep(a)) || ((a.newPriority ?? 0) - (b.newPriority ?? 0)));
-    let n = 0;
+    const perModule = new Map();
+    for (const c of shuffle([...byItem.values()], rng)) { if (!perModule.has(c.module)) perModule.set(c.module, []); perModule.get(c.module).push(c); }
+    for (const list of perModule.values()) list.sort((a, b) => (a.newPriority ?? 0) - (b.newPriority ?? 0));
+    const turn = mods => { const out = []; for (let i = 0; mods.some(m => i < perModule.get(m).length); i++) for (const m of mods) if (i < perModule.get(m).length) out.push(perModule.get(m)[i]); return out; };
+    const mods = [...perModule.keys()];
+    return [...turn(mods.filter(m => m in prep)), ...turn(mods.filter(m => !(m in prep)))];
+  };
+  const taken = () => new Set(chosen.map(c => c.id));
+  const reached = goalReached(dayRecord, cfg);
+
+  if (free) {
+    takeDue(cfg.sessionSize);
+    for (const c of shuffle(freshList(), rng)) { if (full()) break; if (canTake(c)) take(c, 'new'); }
+    if (!full()) {
+      const have = taken();
+      for (const c of shuffle(cards.filter(c => !isNew(c.rec) && !have.has(c.id)), rng).sort(byDue)) { if (full()) break; if (canTake(c)) take(c, 'filler'); }
+    }
+  } else {
+    const newToday = m => (dayRecord?.by?.[m]?.n) ?? 0;
+    let allowNew = 0;
+    if (!reached && dueCount <= cfg.throttleDue) allowNew = cfg.newPerSession * (Object.keys(prep).length ? cfg.testPrep.newFactor : 1);
+    const perModuleLeft = m => Math.max(0, cfg.newPerDay * (m in prep ? cfg.testPrep.newFactor : 1) - newToday(m));
     const usedPerModule = {};
-    for (const c of fresh) {
-      if (n >= allowNew || chosen.length >= cfg.sessionSize) break;
-      if (!canTake(c)) continue;
-      if ((usedPerModule[c.module] || 0) >= perModuleLeft(c.module)) continue;
-      take(c, 'new'); n++; usedPerModule[c.module] = (usedPerModule[c.module] || 0) + 1;
+    let n = 0;
+    const takeNew = limit => {
+      if (n >= limit) return;
+      for (const c of freshList()) {
+        if (n >= limit || full()) break;
+        if (taken().has(c.id) || !canTake(c)) continue;
+        if ((usedPerModule[c.module] || 0) >= perModuleLeft(c.module)) continue;
+        take(c, 'new'); n++; usedPerModule[c.module] = (usedPerModule[c.module] || 0) + 1;
+      }
+    };
+    // 1. the reserved new cards (the old trainer's NEW_PER_SESSION)
+    takeNew(Math.min(allowNew, cfg.newPerSession));
+    // 2. due cards
+    takeDue(cfg.sessionSize);
+    // 3. before a test the allowance is bigger: more new cards when there is room
+    takeNew(allowNew);
+    // 4. filler: known cards not yet due — fair: shuffled, then weakest box, then earliest due
+    if (!full()) {
+      const have = taken();
+      const filler = shuffle(cards.filter(c => !isNew(c.rec) && !have.has(c.id)), rng).sort((a, b) => ((a.rec.b || 0) - (b.rec.b || 0)) || byDue(a, b));
+      for (const c of filler) { if (full()) break; if (canTake(c)) take(c, 'filler'); }
     }
-  }
-
-  // 3. filler: known cards not yet due — fair: shuffled, then weakest box, then earliest due
-  if (chosen.length < cfg.sessionSize) {
-    const taken = new Set(chosen.map(c => c.id));
-    const filler = shuffle(cards.filter(c => !isNew(c.rec) && !taken.has(c.id)), rng)
-      .sort((a, b) => ((a.rec.b || 0) - (b.rec.b || 0)) || (a.rec.due < b.rec.due ? -1 : a.rec.due > b.rec.due ? 1 : 0));
-    for (const c of filler) {
-      if (chosen.length >= cfg.sessionSize) break;
-      if (!canTake(c)) continue;
-      take(c, 'filler');
-    }
-  }
-
-  // 4. never an empty round: with nothing due and nothing known, offer new cards anyway (extra round)
-  if (chosen.length === 0) {
-    const fresh = shuffle(cards.filter(c => isNew(c.rec) && c.unlocked !== false), rng);
-    const seenItems = new Set();
-    for (const c of fresh) {
-      if (chosen.length >= Math.min(cfg.sessionSize, cfg.newPerSession)) break;
-      const k = c.item || c.id;
-      if (seenItems.has(k) || !canTake(c)) continue;
-      seenItems.add(k); take(c, 'new');
+    // 5. still short (a new profile, or few known cards): fill the round with new cards, limits or not
+    if (!full()) {
+      const have = taken();
+      for (const c of freshList()) { if (full()) break; if (!have.has(c.id) && canTake(c)) take(c, 'new'); }
     }
   }
   const session = interleave(shuffle(chosen, rng));
