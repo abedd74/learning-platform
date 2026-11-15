@@ -18,6 +18,7 @@ The owner is not a developer. Explain in plain words, keep messages short (often
 
 - Work on a branch or worktree. Every step is its own small commit with a clear message; stage files by name.
 - Run `npm run check` before every commit (the pre-commit hook does it; enable once with `git config core.hooksPath tools/hooks`).
+- After any change in `app/` or `content/`: `npm run stamp` (version.json tells the devices to fetch the files again; a test fails until it is stamped). After adding questions: `npm run ledger` (published ids are held for good).
 - New content goes into `content/` as data that passes `tools/validate-content.mjs`; never into engine code.
 - Record decisions as one dated line in `docs/DECISIONS.md`.
 - Third-party material (maps, pictures, fonts, audio) needs a free licence and a line in `content/ATTRIBUTION.md` (file, source URL, author, licence).
@@ -29,6 +30,7 @@ The children's progress lives in `localStorage` on each device and is mirrored t
 - Existing keys keep their exact names and shapes. New data goes into new keys, added to the registry and, if synced, to the rule list in `sync.js` with a merge function and a property test.
 - Profile names are part of today's key names (`wq_srs_<P>`, `gram_srs_<P>` …). They come from the device and the family sync at runtime — never from the code.
 - Spaced-repetition intervals per module stay as they are, so no card becomes due earlier or later.
+- Where the new app and the old pages differ in what a child's answer does, the old pages are right until the owner decides otherwise (docs/REVIEW-2026-11.md lists the differences that remain).
 - Before anything is switched live: a backup export from a device, the checks green, a test on the real iPad under `/next/`, and the owner's yes.
 
 ## 4. Layout
@@ -41,7 +43,7 @@ Until the switch, the live app is the old single-file pages (`index.html`, `gram
 
 1. The owner shares photos or PDFs from the school archive (outside the repository).
 2. Draft one topic file in `content/<module>/<topic>.json` following `content/schema/`; reword sentences instead of copying booklet text; `source` names the material, not a person.
-3. `npm run check` until green; preview with `npm run serve` and the module in the app.
+3. `npm run ledger` and `npm run stamp`, then `npm run check` until green; preview with `npm run serve` and the module in the app.
 4. Commit the topic alone. Push only with the owner's yes.
 
 ## 6. Commands
@@ -49,6 +51,8 @@ Until the switch, the live app is the old single-file pages (`index.html`, `gram
 - `npm run serve` — local server on http://localhost:8765/
 - `npm run check` — validator, unit tests, personal-data scan
 - `npm run smoke` — browser test in WebKit (Safari's engine)
+- `npm run stamp` — version.json from app/ and content/ (after every change there)
+- `npm run ledger` — adds new question ids to the ledger of published ids
 - `npm run dump-ids` — one-off: golden list of the question ids of the old app
 
 ## 7. Model use
