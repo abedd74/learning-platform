@@ -16,6 +16,8 @@ export const AVATARS = Object.freeze(['🌺', '🌸', '🦊', '🐬', '🦉', '�
 export const GRADES = Object.freeze([1, 2, 3, 4, 5, 6]);
 export const PARENT_KEY = 'Eltern';   // the old app's parent "profile": a mode in v2, never a child
 export const KEY_MAX = 24;
+/** updatedAt of a profile a device made up from old data ("Profil gefunden"): it loses against every deliberate entry. */
+export const PROVISIONAL = 1;
 
 /** A storage name: letters, digits, '_' and '-', no spaces (a space would break the history sync rule). */
 export function validKey(k) {

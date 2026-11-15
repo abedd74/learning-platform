@@ -7,7 +7,8 @@ import { createAudio } from './core/audio.js';
 import { createI18n } from './core/i18n.js';
 import { createContent } from './core/content.js';
 import { createRouter, profileFromSearch } from './core/router.js';
-import { createSession } from './core/session.js';
+import { createSession, STORE_KEY } from './core/session.js';
+import { seedLegacySettings } from './core/settings.js';
 import { planSession, config as planConfig } from './core/planner.js';
 import { config as srsConfig } from './core/srs.js';
 import { today as todayOf } from './core/time.js';
@@ -34,7 +35,8 @@ export async function start({ version = 'dev' } = {}) {
   errors = createErrorLog({ store, version, page: () => location.hash });
   errors.install();
   const audio = createAudio({ store, clipUrl: name => new URL(`../audio/${name}.mp3`, import.meta.url).href });
-  const i18n = createI18n({ store, strings: STRINGS });
+  seedLegacySettings(store);
+  const i18n = createI18n({ store, strings: STRINGS, defaultItalian: true });   // the old quiz always showed the Italian line
   const content = createContent();
   const plannerCfg = planConfig();
   const pending = {};
@@ -50,72 +52,111 @@ export async function start({ version = 'dev' } = {}) {
     },
     moduleName(id) { return ctx.modules.find(m => m.id === id)?.name?.de || id; },
     get ella() { return ctx.modules.find(m => m.engine === 'ella') || null; },
+    /** A module is for this child when it names no grades, the profile has none, or the grade is listed. */
+    fitsGrade(mod) { const g = ctx.profile?.grade; return !g || !Array.isArray(mod.grades) || !mod.grades.length || mod.grades.includes(g); },
+    /** The modules in today's plan and on the tiles: not archived, and for this child's grade. */
+    activeModules() { return ctx.modules.filter(m => !m.archive && ctx.fitsGrade(m)); },
     async cardsOf(mod) {
       if (mod.engine !== 'quiz') return mod.cards ? mod.cards(ctx) : [];
       const qs = await content.questions(mod);
       return content.cardsFor(mod, qs, store.get(K.quizSrs(ctx.profile.key), {}) || {}, { cfg: mod.srs });
     },
     async allCards() {
-      const lists = await Promise.all(ctx.modules.filter(m => !m.archive).map(m => ctx.cardsOf(m)));
+      const lists = await Promise.all(ctx.activeModules().map(m => ctx.cardsOf(m)));
       return lists.flat();
     },
     /**
      * Start a session. Either `cards` (planned here; `grammar` adds Ella's grammar items)
-     * or ready-made `items`. `after(summary)` may return extras for the results screen.
+     * or ready-made `items`. `cards` is best a FUNCTION returning the cards (it may be
+     * async): "Nochmal" then plans the next round from the records as they are now, not
+     * from the list of the round before. `free`: the child picked a module or topic —
+     * the old quiz's order, no new-card limits. `after(summary)` may return extras for
+     * the results screen.
      */
-    startSession({ cards = null, items = null, module = 'mixed', mode = 'mixed', grammar = false, label = null, after = null, skipCheck = false }) {
+    async startSession({ cards = null, items = null, module = 'mixed', mode = 'mixed', grammar = false, free = false, label = null, after = null, skipCheck = false }) {
       const today = todayOf();
       const ella = ctx.ella;
-      // a Meister-Check that waited too long comes first (old trainer rule)
+      const config = { cards, items, module, mode, grammar, free, label, after };
+      // a Meister-Check that waited too long comes first, with its announcement (old trainer rule)
       if (!skipCheck && cards && ella && (module === 'mixed' || module === 'nouns')) {
         const k = ella.overdueCheck();
-        if (k) { ctx.lastHomeConfig = { cards, module, mode, grammar }; ella.startMc(k, true); return; }
+        if (k) { ctx.lastHomeConfig = config; ctx.mcFromTraining = true; router.navigate(['ella', 'mc', k]); return; }
       }
       let list = items;
       if (!list) {
+        let pool = typeof cards === 'function' ? await cards() : cards;
+        if (typeof cards !== 'function') pool = freshRecords(pool);
         const extra = grammar && ella ? ella.extraItems(4) : [];
         const dayRec = store.get(K.planDays(ctx.profile.key), {})?.[today] || null;
         const plan = store.get(K.plan(ctx.profile.key), null);
-        const planned = planSession({ cards, today, dayRecord: dayRec, plan, cfg: { ...plannerCfg, sessionSize: Math.max(1, plannerCfg.sessionSize - extra.length) } });
+        const planned = planSession({ cards: pool, today, dayRecord: dayRec, plan, free, cfg: { ...plannerCfg, sessionSize: Math.max(1, plannerCfg.sessionSize - extra.length) } });
         list = planned.cards.map(card => ({ card, question: card.question }));
         for (const it of extra) list.splice(Math.floor(Math.random() * (list.length + 1)), 0, it);
       }
-      ctx.lastSessionConfig = { cards, items, module, mode, grammar, label, after, skipCheck: true };
+      ctx.lastSessionConfig = { ...config, skipCheck: true };
       ctx.ellaStartMastered = ella ? ella.masteredNow() : 0;
-      live.after = after || (ella && (grammar || module === 'mixed' || module === 'nouns') ? sum => ella.afterTraining(sum, ctx.ellaStartMastered) : null);
+      // concept bookkeeping belongs to the daily training only — a drill or a quiz round never moved a concept (old trainer)
+      live.after = after || (ella && grammar ? sum => ella.afterTraining(sum, ctx.ellaStartMastered) : null);
       live.session = createSession({ items: list, profile: ctx.profile.key, store, today, module, mode, label });
       router.navigate(['session']);
     },
   };
 
+  /** A ready-made card list: look every record up again (the list may be a round old). */
+  function freshRecords(cards) {
+    const stores = {};
+    return (cards || []).map(c => {
+      const key = STORE_KEY[c.store]?.(ctx.profile.key);
+      if (!key) return c;
+      const all = stores[key] || (stores[key] = store.get(key, {}) || {});
+      return { ...c, rec: all[c.id] };
+    });
+  }
+
   async function loadModules() {
     const index = await content.index();
     const out = [];
     for (const m of index) {
-      if (m.kind === 'quiz') {
-        const mod = await content.module(m.id);
-        if (!mod) continue;
-        const count = (await content.questions(mod)).length;
-        out.push({ ...mod, srs: srsConfig(mod.srs || {}), count, tint: TINTS[m.id] || 'var(--card-tint)' });
-      } else if (m.kind === 'pack' && m.id === 'nouns') {
-        const data = await content.nounPack(m.id);
-        if (data) out.push(createEllaModule(ctx, data));
-      }
+      // one missing or broken module must not keep the child from the others
+      try {
+        if (m.kind === 'quiz') {
+          const mod = await content.module(m.id);
+          if (!mod) continue;
+          const count = (await content.questions(mod)).length;
+          out.push({ ...mod, srs: srsConfig(mod.srs || {}), count, tint: TINTS[m.id] || 'var(--card-tint)' });
+        } else if (m.kind === 'pack' && m.id === 'nouns') {
+          const data = await content.nounPack(m.id);
+          if (data) out.push(createEllaModule(ctx, data));
+        }
+      } catch (err) { errors.record(new Error(`Modul "${m.id}" konnte nicht geladen werden: ${err?.message || err}`)); }
     }
+    if (!out.length) throw new Error('Kein Modul konnte geladen werden.');
     ctx.modules = out;
     const ella = ctx.ella;
     if (ella) { const game = createWordRain(ctx, [...ella.byDe.values()]); ctx.games.wordrain = root => game.render(root); }
   }
 
+  // An old link or bookmark names the child (?profil=…): it wins over the profile this device
+  // remembers, once, and is then taken out of the address. With two or more profiles and no
+  // such link, a fresh page starts at "Wer lernt heute?" — on a shared tablet the last child
+  // must not silently become the next one (wrong answers lower her boxes for good).
+  const linked = profileFromSearch(location.search);
+  if (linked && getProfile(store, linked)) {
+    setCurrentProfile(store, linked);
+    try { const u = new URL(location.href); u.searchParams.delete('profil'); history.replaceState(null, '', u.pathname + u.search + u.hash); } catch {}
+  }
+  let mustPick = !(linked && getProfile(store, linked)) && listProfiles(store).length > 1;
+  ctx.profileChosen = () => { mustPick = false; };
+
   function requireProfile() {
-    const key = currentProfileKey(store) || profileFromSearch(location.search);
+    const key = mustPick ? null : currentProfileKey(store);
     const p = key ? getProfile(store, key) : null;
-    if (p) { ctx.profile = p; if (!currentProfileKey(store)) setCurrentProfile(store, p.key); return true; }
+    if (p) { ctx.profile = p; return true; }
     return false;
   }
 
   const screens = {
-    async welcome() { ctx.profile = null; renderWelcome(root, ctx, { form: pending.form }); pending.form = null; },
+    async welcome() { ctx.profile = null; const form = router.current.params.form ? pending.form : null; pending.form = null; renderWelcome(root, ctx, { form }); },
     async home() { if (!requireProfile()) return screens.welcome(); await renderHome(root, ctx); },
     async module(id) { if (!requireProfile()) return screens.welcome(); await renderModule(root, ctx, { id }); },
     async ella(sub, id) { if (!requireProfile()) return screens.welcome(); const m = ctx.ella; if (m) await m.route(root, ctx, sub, id); else router.navigate(['home']); },
@@ -147,16 +188,51 @@ export async function start({ version = 'dev' } = {}) {
       const [name, ...rest] = route.path;
       const fn = screens[name] || (listProfiles(store).length && currentProfileKey(store) ? screens.home : screens.welcome);
       try { await fn(...rest); }
-      catch (err) { errors.record(err); mount(root, el('div', { class: 'col' }, el('div', { class: 'notice' }, i18n.t('error.content'), ' ', String(err?.message || err)))); }
+      catch (err) { errors.record(err); failScreen(err); }
     },
   });
   ctx.router = router;
 
-  try { await loadModules(); }
-  catch (err) { errors.record(err); mount(root, el('div', { class: 'col' }, el('div', { class: 'notice' }, i18n.t('error.content'), ' ', String(err?.message || err)))); return; }
-  document.addEventListener('pointerdown', () => audio.unlock(), { once: true, passive: true });
-  window.addEventListener('familysync-pulled', () => { if (['home', 'module'].includes(router.current.path[0])) router.navigate(router.current.path, router.current.params, { replace: true }); });
+  /** Something could not be shown: say so, and offer the two ways out. */
+  function failScreen(err) {
+    mount(root, el('div', { class: 'col' }, el('div', { class: 'notice' }, i18n.t('error.content'), ' ', String(err?.message || err)),
+      el('div', { class: 'row' }, el('button', { class: 'btn primary', type: 'button', onClick: () => location.reload() }, 'Nochmal versuchen'),
+        ctx.modules.length ? el('button', { class: 'btn', type: 'button', onClick: () => router.navigate(['home']) }, 'Zur Startseite') : null)));
+  }
+
+  // The sync starts before the content loads: the family link is taken out of the address
+  // and the pull runs even if a content file is missing.
+  let started = false;
+  window.addEventListener('familysync-pulled', () => {
+    if (!started) return;
+    const [name] = router.current.path;
+    const onPicker = !['home', 'module', 'ella', 'game', 'session', 'results', 'eltern'].includes(name);
+    // the picker shows the family's profiles as soon as they arrive — but never under a form someone is filling in
+    if (name === 'home' || name === 'module' || (onPicker && !root.querySelector('.form'))) router.navigate(router.current.path, router.current.params, { replace: true });
+  });
   sync.init();
+
+  try { await loadModules(); }
+  catch (err) { errors.record(err); failScreen(err); return; }
+
+  // iOS only lets a page play sound after a real tap; keep trying on every tap until it worked
+  const unlock = () => { audio.unlock(); if (audio.unlocked) for (const ev of ['pointerup', 'touchend', 'click']) document.removeEventListener(ev, unlock, true); };
+  for (const ev of ['pointerup', 'touchend', 'click']) document.addEventListener(ev, unlock, { capture: true, passive: true });
+
+  // A tab that stays open for days: when it comes back and a newer version is online, reload — never during a round.
+  let lastVersionCheck = Date.now();
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState !== 'visible' || Date.now() - lastVersionCheck < 10 * 60 * 1000) return;
+    lastVersionCheck = Date.now();
+    try {
+      const res = await fetch(new URL('../version.json', import.meta.url), { cache: 'no-store' });
+      if (!res.ok) return;
+      const online = (await res.json())?.version;
+      if (typeof online === 'string' && version !== 'dev' && online !== version && !live.session && router.current.path[0] !== 'session') location.reload();
+    } catch {}
+  });
+
+  started = true;
   router.start();
   return ctx;
 }

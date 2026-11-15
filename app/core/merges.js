@@ -150,7 +150,9 @@ export function mergeProfiles(a, b) {
   for (const [k, v] of Object.entries(pb)) {
     const l = profiles[k];
     if (!l) { profiles[k] = v; continue; }
-    profiles[k] = (Number(v?.updatedAt) || 0) > (Number(l?.updatedAt) || 0) ? v : l;
+    const tv = Number(v?.updatedAt) || 0, tl = Number(l?.updatedAt) || 0;
+    // a tie (two devices made the same provisional profile) must end the same way everywhere
+    profiles[k] = tv !== tl ? (tv > tl ? v : l) : (JSON.stringify(v) > JSON.stringify(l) ? v : l);
   }
   return { v: Math.max(Number(a?.v) || 1, Number(b?.v) || 1), profiles };
 }

@@ -8,7 +8,7 @@ import { today as todayOf, addDays } from '../../core/time.js';
 import { el, mount, lessonHtml } from '../../ui/dom.js';
 import { horizon } from '../../ui/horizon.js';
 import { practisedDays } from '../../ui/screens/home.js';
-import { isTrap, masteredCount, buckets, UNLOCK_AKK, MASTERED_BOX } from './rules.js';
+import { isTrap, masteredCount, buckets, diagnoseCase, UNLOCK_AKK, MASTERED_BOX } from './rules.js';
 import { createConcepts, CONCEPTS, CONCEPT_KEYS, FEST_MIN_DAYS, MC_SIZE, MC_RETRY_DAYS } from './concepts.js';
 import { BADGES, checkBadges } from './badges.js';
 import { genderQuestion, caseQuestion, nomenQuestion, pathQuestion, newPriority, shuffle } from './items.js';
@@ -82,19 +82,43 @@ export function createEllaModule(ctx, data) {
     }));
   }
 
+  /**
+   * A grammar item of concept k as a session item. Three kinds, as in the old trainer:
+   *   - an article question on a noun (Nomen-Bausteine): a REAL noun card — it moves the
+   *     noun's record like any other article question
+   *   - a case sentence: no record of its own; it feeds the case statistics, and a final
+   *     wrong article that got the GENDER wrong sends the noun back into the reviews
+   *     (one box down, due today, streak 0)
+   *   - a Lernpfad item: no record
+   * A re-asked item (rehearsal) never counts again.
+   */
   function caseCard(k, q) {
     if (!q) return null;
+    if (q.type === 'gender') {
+      return { card: { id: q.noun.de, module: 'nouns', topic: k, store: 'gramSrs', cfg, tags: ['grammar'], concept: k, rec: srsOf()[q.noun.de] }, question: q };
+    }
     const card = { id: `ella:${k}:${Math.random().toString(36).slice(2, 8)}`, module: 'nouns', topic: k, store: null, cfg, tags: ['grammar'], concept: k, rec: undefined };
     if (q.type === 'case') {
       let errType = null;
-      card.onAnswer = ({ ok, attempt, response, final }) => {
-        if (attempt === 1 && !ok) errType = q.hintFor ? diagnose(q, response) : 'both';
-        if (final) recordCase(k, ok && attempt === 1 ? { c: 1 } : { errType: errType || 'both' });
+      card.onAnswer = ({ ok, attempt, response, final, rehearsal }) => {
+        if (rehearsal) return;
+        if (attempt === 1 && !ok) errType = diagnoseCase(response, q.kase, q.noun);   // the first instinct counts for the parents' statistics
+        if (!final) return;
+        if (!ok && diagnoseCase(response, q.kase, q.noun) !== 'case') demoteNoun(q.noun.de);
+        recordCase(q.kase, ok && attempt === 1 ? { c: 1 } : { errType: errType || 'both' });
       };
     }
     return { card, question: q };
   }
-  function diagnose(q, choice) { return q.hintFor ? (q.hintFor(choice).de.startsWith('Denk dran') ? 'gender' : q.hintFor(choice).de.startsWith('Es heißt') ? 'both' : 'case') : 'both'; }
+  /** A gender mistake inside a sentence: the noun comes back into the reviews (old trainer). */
+  function demoteNoun(de) {
+    const key = K.gramSrs(profile());
+    const all = store.get(key, {}) || {};
+    const e = all[de];
+    if (!e) return;
+    all[de] = { ...e, b: Math.max(0, (e.b || 0) - 1), due: todayOf(), k: 0 };
+    store.set(key, all);
+  }
   function recordCase(k, { c = 0, errType = null }) {
     const key = K.gramCase(profile());
     const all = store.get(key, {}) || {};
@@ -123,7 +147,7 @@ export function createEllaModule(ctx, data) {
     else if (festKs.length === 2) for (const k of festKs) { push(k, live(k, 3)); push(k, conceptItem(k)); }
     for (const k of CONCEPT_KEYS.filter(k => c.due(k)).slice(0, 1)) { push(k, live(k, 2)); push(k, conceptItem(k)); }
     const goldKs = CONCEPT_KEYS.filter(k => c.gold(k) && !c.due(k));
-    while (out.length < max && goldKs.length) { const q = live(goldKs[Math.floor(Math.random() * goldKs.length)], 2); if (!q) break; push(goldKs[0], q); }
+    while (out.length < max && goldKs.length) { const k = goldKs[Math.floor(Math.random() * goldKs.length)]; const q = live(k, 2); if (!q) break; push(k, q); }   // the question is booked on ITS concept
     if (!festKs.length && out.length < max && Math.random() < 0.6) {
       const progK = CONCEPT_KEYS.find(k => !c.done(k) && Object.keys(c.state(k).passed || {}).length);
       if (progK) {
@@ -184,7 +208,7 @@ export function createEllaModule(ctx, data) {
 
   // ── special sessions ──────────────────────────────────────────────
   function startTraining() {
-    ctx.startSession({ cards: cards(), module: 'nouns', mode: 'training', grammar: true });
+    ctx.startSession({ cards: () => cards(), module: 'nouns', mode: 'training', grammar: true });
   }
   function startDrill(k) {
     const items = [];
@@ -244,7 +268,7 @@ export function createEllaModule(ctx, data) {
         } else {
           title = t('mcFailed', { c: sum.firstTry, n: sum.total, need, days: MC_RETRY_DAYS });
         }
-        return { title, notes, again: { label: TXT.toTraining.de, run: () => (fromTraining ? ctx.startSession(ctx.lastHomeConfig || { cards: cards(), module: 'nouns', mode: 'training', grammar: true }) : startTraining()) } };
+        return { title, notes, again: { label: TXT.toTraining.de, run: () => (fromTraining && ctx.lastHomeConfig ? ctx.startSession({ ...ctx.lastHomeConfig, skipCheck: true }) : startTraining()) } };
       },
     });
   }
@@ -317,11 +341,13 @@ export function createEllaModule(ctx, data) {
 
   function renderMcIntro(root, k) {
     const c = concepts();
+    const fromTraining = !!ctx.mcFromTraining;   // set when a training round found the check overdue: afterwards the training goes on
+    ctx.mcFromTraining = false;
     if (!c.mcReady(k)) { ctx.router.navigate(['module', 'nouns']); return; }
     const col = el('div', { class: 'col enter' });
     col.appendChild(topbar({ de: `🏆 ${TXT.mc.de}: ${CONCEPTS[k].name}` }, () => ctx.router.navigate(['module', 'nouns'])));
     col.appendChild(el('section', { class: 'card stack' }, line('mcIntro', { name: CONCEPTS[k].name, d: c.festDays(k), n: MC_SIZE }, 'hint-text'),
-      el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, onClick: () => startMc(k, false) }, TXT.go.de)));
+      el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, onClick: () => startMc(k, fromTraining) }, TXT.go.de)));
     mount(root, stage(col));
   }
 

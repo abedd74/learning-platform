@@ -39,7 +39,8 @@ async function answerOne() {
   if (next) await next.click();
   await wait(200);
 }
-async function playSession(max = 16) {
+// a round holds up to 10 cards and every miss is asked once more: at most 20 answers
+async function playSession(max = 24) {
   for (let i = 0; i < max; i++) { if (!(await page.$('.counter'))) break; await answerOne(); }
   assert.equal(await page.evaluate(() => location.hash), '#/results', 'the session ends on the results screen');
 }

@@ -28,6 +28,8 @@ export function createAudio({
 } = {}) {
   let el = null;          // the one Audio element (created in unlock or on first play)
   let unlocked = false;
+  let unlocking = false;
+  let seq = 0;            // counts speak() calls: a sound that was replaced must not fall back to speech
   let current = null;     // token of the sound playing now
   let voice = null;
 
@@ -40,17 +42,22 @@ export function createAudio({
     return el;
   }
 
-  /** Call inside the first user gesture (tap). Harmless to call again. */
+  /**
+   * Call inside a user gesture (a finished tap). Harmless to call again: it
+   * counts as done only once the browser really played — iOS refuses a play
+   * that does not come from a tap, and then the next tap tries again.
+   */
   function unlock() {
-    if (unlocked) return;
+    if (unlocked || unlocking) return;
+    if (current) return;     // a real sound is playing: do not take the element away from it
     const a = element();
     if (!a) return;
     try {
       // a silent, tiny wav keeps the element "blessed" for later programmatic plays
       a.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
       const p = a.play();
-      if (p && p.catch) p.catch(() => {});
-      unlocked = true;
+      if (p && p.then) { unlocking = true; p.then(() => { unlocked = true; unlocking = false; }, () => { unlocking = false; }); }
+      else unlocked = true;
     } catch {}
     try { speech?.getVoices?.(); } catch {}
   }
@@ -114,9 +121,11 @@ export function createAudio({
   async function speak({ clip = null, text = null, lang = 'de-DE', rate = 0.92 } = {}) {
     if (!enabled()) return 'off';
     stop();
+    const mine = ++seq;
     if (clip) {
       const ok = await playClip(clip);
       if (ok) return 'clip';
+      if (mine !== seq) return 'none';   // replaced by a newer sound while loading: stay quiet, do not talk over it
       if (text) log.warn?.(`[audio] clip "${clip}" failed, using speech`);
     }
     if (text) return (await say(text, { lang, rate })) ? 'speech' : 'none';

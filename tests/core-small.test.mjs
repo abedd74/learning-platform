@@ -1,4 +1,4 @@
-// errors, version, i18n, router, audio
+// errors, version, i18n, router, audio, settings
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createStore, memoryBackend, keys as K } from '../app/core/storage.js';
@@ -8,6 +8,7 @@ import { format, text, createI18n } from '../app/core/i18n.js';
 import { parseHash, buildHash, profileFromSearch, createRouter } from '../app/core/router.js';
 import { slug, clipName, createAudio } from '../app/core/audio.js';
 import { ERROR_LOG_MAX } from '../app/core/merges.js';
+import { seedLegacySettings } from '../app/core/settings.js';
 
 const fresh = (init = {}) => createStore({ backend: memoryBackend(init), log: { warn() {} } });
 const quiet = { warn() {}, error() {} };
@@ -188,6 +189,7 @@ test('speak plays the clip on one shared element; a failing clip falls back to s
   const f = fakeAudio();
   const a = createAudio({ store: fresh(), AudioCtor: f.FakeEl, speech: f.speech, Utterance: f.FakeUtterance, log: quiet });
   a.unlock(); a.unlock();
+  await Promise.resolve();
   assert.equal(a.unlocked, true);
   assert.equal(f.made.length, 1);
   assert.equal(await a.speak({ clip: 'a_apfel', text: 'der Apfel' }), 'clip');
@@ -201,6 +203,61 @@ test('speak plays the clip on one shared element; a failing clip falls back to s
   assert.equal(await b.speak({ clip: 'a_apfel', text: 'der Apfel' }), 'speech');
   assert.ok(g.spoken.includes('der Apfel'));
   assert.equal(await b.speak({ clip: 'a_apfel' }), 'none');
+});
+
+test('unlock counts only once the browser really played; a refused try is repeated on the next tap', async () => {
+  let allow = false;
+  class El { addEventListener() {} removeEventListener() {} pause() {} play() { return allow ? Promise.resolve() : Promise.reject(new Error('NotAllowedError')); } }
+  const a = createAudio({ AudioCtor: El, speech: null, log: quiet });
+  a.unlock();
+  await Promise.resolve(); await Promise.resolve();
+  assert.equal(a.unlocked, false);
+  allow = true;
+  a.unlock();
+  await Promise.resolve(); await Promise.resolve();
+  assert.equal(a.unlocked, true);
+});
+
+test('a clip that is replaced while loading stays quiet: the device voice does not talk over the next one', async () => {
+  const waiting = [];
+  class El {
+    constructor() { this.listeners = {}; }
+    addEventListener(n, f) { this.listeners[n] = f; }
+    removeEventListener(n, f) { if (this.listeners[n] === f) delete this.listeners[n]; }   // as a real element: only the same function
+    pause() {}
+    play() { return new Promise((res, rej) => waiting.push({ src: this.src, abort: () => rej(new Error('AbortError')), end: () => { res(); this.listeners.ended?.(); } })); }
+  }
+  const f = fakeAudio();
+  const a = createAudio({ AudioCtor: El, speech: f.speech, Utterance: f.FakeUtterance, log: quiet });
+  const first = a.speak({ clip: 'w_apfel', text: 'Apfel' });
+  const second = a.speak({ clip: 'a_birne', text: 'die Birne' });
+  waiting[0].abort();                                  // the browser drops the first load when the source changes
+  assert.equal(await first, 'none');
+  waiting[1].end();
+  assert.equal(await second, 'clip');
+  assert.deepEqual(f.spoken.filter(t => t !== '<cancel>'), []);
+});
+
+test('the first start takes sound and Italian from the old pages\' switches, once', () => {
+  const none = fresh();
+  assert.deepEqual(seedLegacySettings(none), {});
+  assert.equal(none.has(K.appSettings()), false);
+  assert.equal(createI18n({ store: none, defaultItalian: true }).showItalian, true, 'no old switch: the Italian line is on, as in the old quiz');
+
+  const off = createStore({ backend: memoryBackend({ gram_it_on: 'false', gram_sound_on: 'false', wr_sound: '1' }), log: quiet });
+  assert.deepEqual(seedLegacySettings(off), { italian: false, sound: false });
+  assert.equal(createI18n({ store: off, defaultItalian: true }).showItalian, false);
+  assert.equal(createAudio({ store: off, AudioCtor: null, speech: null }).enabled, false);
+
+  const game = createStore({ backend: memoryBackend({ wr_sound: '0' }), log: quiet });
+  assert.deepEqual(seedLegacySettings(game), { sound: false });
+
+  // a choice made in the new app is never overwritten, and the old keys are never written
+  const chosen = createStore({ backend: memoryBackend({ gram_it_on: 'false', app_settings: '{"italian":true,"sound":true}' }), log: quiet });
+  assert.deepEqual(seedLegacySettings(chosen), {});
+  assert.equal(chosen.get(K.appSettings()).italian, true);
+  assert.equal(chosen.getRaw('gram_it_on'), 'false');
+  assert.deepEqual(seedLegacySettings(off), {}, 'only once');
 });
 
 test('sound off is a device setting and silences everything', async () => {

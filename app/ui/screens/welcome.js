@@ -2,14 +2,15 @@
 // old app, the names found in the data are offered as "Profil gefunden".
 import { el, mount, append } from '../dom.js';
 import { horizon } from '../horizon.js';
-import { listProfiles, detectLegacyProfiles, legacyCustomProfiles, legacyLastProfile, saveProfile, setCurrentProfile, keyFromName, validKey, AVATARS, GRADES } from '../../core/profiles.js';
+import { listProfiles, getProfile, detectLegacyProfiles, legacyCustomProfiles, legacyLastProfile, saveProfile, setCurrentProfile, currentProfileKey, keyFromName, validKey, AVATARS, GRADES, PROVISIONAL } from '../../core/profiles.js';
+import { seedLegacySettings } from '../../core/settings.js';
 
 export function renderWelcome(root, ctx, params = {}) {
   const { i18n, store } = ctx;
   const profiles = listProfiles(store);
   const found = detectLegacyProfiles(store);
   const custom = legacyCustomProfiles(store).filter(c => !profiles.some(p => p.key === c.key) && !found.some(f => f.key === c.key));
-  const hintKey = legacyLastProfile(store);
+  const hintKey = currentProfileKey(store) || legacyLastProfile(store);
 
   const col = el('div', { class: 'col welcome enter' });
   col.appendChild(el('div', { class: 'brand' }, i18n.t('app.name')));
@@ -20,7 +21,7 @@ export function renderWelcome(root, ctx, params = {}) {
     col.appendChild(el('h1', {}, i18n.t('welcome.who')));
     const row = el('div', { class: 'avatars' });
     for (const p of profiles) {
-      row.appendChild(el('button', { class: `avatar${p.key === hintKey ? ' selected' : ''}`, type: 'button', onClick: () => { setCurrentProfile(store, p.key); ctx.go('home'); } },
+      row.appendChild(el('button', { class: `avatar${p.key === hintKey ? ' selected' : ''}`, type: 'button', onClick: () => { setCurrentProfile(store, p.key); ctx.profileChosen?.(); ctx.go('home'); } },
         el('span', { class: 'disc' }, p.avatar || AVATARS[0]), el('span', { class: 'name' }, p.name)));
     }
     for (const f of [...found.map(f => ({ key: f.key, name: f.key, avatar: '🌱' })), ...custom]) {
@@ -35,7 +36,7 @@ export function renderWelcome(root, ctx, params = {}) {
     if (ctx.namespace && !profiles.length && !found.length) {
       const liveKeys = (() => { try { return Object.keys(localStorage).filter(k => !k.startsWith(ctx.namespace) && /^(wq_|gram_|wr_)/.test(k)).length; } catch { return 0; } })();
       if (liveKeys) col.appendChild(el('section', { class: 'card stack' }, el('div', { class: 'soft' }, 'Vorschau: Auf diesem Gerät gibt es schon Lerndaten. Die Vorschau arbeitet mit einer Kopie — die echte App bleibt unberührt.'),
-        el('button', { class: 'btn', type: 'button', onClick: () => { store.copyFromLive(); renderWelcome(root, ctx, {}); } }, 'Daten von diesem Gerät kopieren')));
+        el('button', { class: 'btn', type: 'button', onClick: () => { store.copyFromLive(); seedLegacySettings(store); renderWelcome(root, ctx, {}); } }, 'Daten von diesem Gerät kopieren')));
     }
     col.appendChild(el('div', { class: 'bottom' }, el('button', { class: 'btn ghost', type: 'button', onClick: () => ctx.go('eltern') }, i18n.t('welcome.parents'))));
   }
@@ -59,8 +60,13 @@ function renderForm(ctx, preset, onDone, onCancel) {
     const key = preset.key || keyFromName(n);
     if (!n || !validKey(key)) { error.textContent = i18n.t('profile.invalid'); error.hidden = false; name.focus(); return; }
     try {
-      const p = saveProfile(store, { key, name: n, avatar, grade: grade.value ? Number(grade.value) : null, gentle: gentle.checked });
+      // "Profil gefunden": if the family's profile has arrived meanwhile (the other device made it),
+      // it is taken as it is. Otherwise this device's entry is provisional — any entry a parent
+      // made on purpose wins over it when the devices sync, whichever came first.
+      const arrived = preset.found && !preset.edit ? getProfile(store, key) : null;
+      const p = arrived || saveProfile(store, { key, name: n, avatar, grade: grade.value ? Number(grade.value) : null, gentle: gentle.checked }, preset.found && !preset.edit ? PROVISIONAL : undefined);
       setCurrentProfile(store, p.key);
+      ctx.profileChosen?.();
       onDone();
     } catch (e) { error.textContent = e.message; error.hidden = false; }
   };

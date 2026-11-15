@@ -36,7 +36,8 @@ export async function renderHome(root, ctx) {
   const toggles = el('div', { class: 'row', style: { marginLeft: 'auto', flexWrap: 'nowrap' } },
     el('button', { class: `icon-btn${i18n.showItalian ? ' on' : ''}`, type: 'button', title: i18n.t('home.italian'), 'aria-pressed': String(i18n.showItalian), onClick: () => { i18n.setShowItalian(!i18n.showItalian); renderHome(root, ctx); } }, '🇮🇹'),
     el('button', { class: `icon-btn${ctx.audio.enabled ? ' on' : ''}`, type: 'button', title: i18n.t('home.sound'), 'aria-pressed': String(ctx.audio.enabled), onClick: () => { ctx.audio.setEnabled(!ctx.audio.enabled); renderHome(root, ctx); } }, ctx.audio.enabled ? '🔊' : '🔇'));
-  col.appendChild(el('div', { class: 'greet' }, el('span', { class: 'disc' }, profile.avatar),
+  // the avatar is the way to "Wer lernt heute?" — big enough for a child to see whose turn it is, and to change it
+  col.appendChild(el('div', { class: 'greet' }, el('button', { class: 'disc switch', type: 'button', title: i18n.t('home.switch'), 'aria-label': i18n.t('home.switch'), onClick: () => ctx.go('welcome') }, profile.avatar),
     el('div', {}, el('h1', {}, i18n.t('home.hello', { name: profile.name })), el('div', { class: 'soft' }, i18n.t('home.sub'))), toggles));
 
   // the Heute card
@@ -58,7 +59,7 @@ export async function renderHome(root, ctx) {
   });
   todayCard.appendChild(week);
   todayCard.appendChild(el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, disabled: planned.cards.length === 0,
-    onClick: () => ctx.startSession({ cards, module: 'mixed', mode: 'mixed' }) }, reached ? i18n.t('home.goal.done') : i18n.t('home.go')));
+    onClick: () => ctx.startSession({ cards: () => ctx.allCards(), module: 'mixed', mode: 'mixed', grammar: true }) }, reached ? i18n.t('home.goal.done') : i18n.t('home.go')));
   col.appendChild(todayCard);
 
   // module tiles
@@ -67,8 +68,11 @@ export async function renderHome(root, ctx) {
   if (prepEntries.length) head.appendChild(el('span', { class: 'chip' }, i18n.t('home.test', { date: fmtDate(plan.tests[prepEntries[0][0]]), module: ctx.moduleName(prepEntries[0][0]) })));
   col.appendChild(head);
   const tiles = el('div', { class: 'tiles' });
-  for (const m of ctx.modules.filter(m => !m.archive)) {
-    const sum = m.engine === 'quiz' ? summarize(store.get(K.quizSrs(profile.key), {}), today, srsConfig(m.srs || {})) : m.summary?.(ctx) || { total: 0, mastered: 0, due: 0 };
+  const quizSrs = store.get(K.quizSrs(profile.key), {}) || {};
+  for (const m of ctx.activeModules()) {
+    // a quiz module's numbers are its OWN cards' — the record store is shared by all quiz modules
+    const own = m.engine === 'quiz' ? Object.fromEntries(cards.filter(c => c.module === m.id && quizSrs[c.id]).map(c => [c.id, quizSrs[c.id]])) : null;
+    const sum = own ? summarize(own, today, srsConfig(m.srs || {})) : m.summary?.(ctx) || { total: 0, mastered: 0, due: 0 };
     const total = m.engine === 'quiz' ? m.count : sum.total;
     const p = total ? Math.round(100 * sum.mastered / total) : 0;
     const sub = sum.due ? i18n.t('module.due', { n: sum.due }) : i18n.t('module.mastered', { n: sum.mastered, total });
@@ -90,7 +94,7 @@ export async function renderHome(root, ctx) {
   col.appendChild(games);
 
   // archive
-  const archive = ctx.modules.filter(m => m.archive);
+  const archive = ctx.modules.filter(m => m.archive || !ctx.fitsGrade(m));   // last year's modules and other grades': still playable, never in the plan
   if (archive.length) {
     const row = el('div', { class: 'folded' }, el('span', { class: 'muted', style: { fontWeight: '800' } }, `${i18n.t('home.archive')}:`));
     for (const m of archive) row.appendChild(el('button', { class: 'mini', type: 'button', onClick: () => ctx.go('module', { id: m.id }) }, `${m.icon} ${m.name.de}`));

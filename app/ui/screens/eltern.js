@@ -147,7 +147,7 @@ export async function renderEltern(root, ctx, tab = 'overview') {
     card.appendChild(el('label', { class: 'check' }, el('input', { type: 'checkbox', checked: ctx.audio.enabled, onChange: e => ctx.audio.setEnabled(e.target.checked) }), i18n.t('settings.sound')));
     body.appendChild(card);
     const prof = el('section', { class: 'card stack' }, el('span', { class: 'eyebrow' }, 'Profile'));
-    for (const p of profiles) prof.appendChild(el('div', { class: 'row spread' }, el('span', {}, `${p.avatar} ${p.name}${p.grade ? ` · Klasse ${p.grade}` : ''}${p.gentle ? ' · sanft' : ''}`), el('button', { class: 'btn small', type: 'button', onClick: () => ctx.go('welcome', { form: { key: p.key, name: p.name, avatar: p.avatar, grade: p.grade, gentle: p.gentle, found: true } }) }, 'Bearbeiten')));
+    for (const p of profiles) prof.appendChild(el('div', { class: 'row spread' }, el('span', {}, `${p.avatar} ${p.name}${p.grade ? ` · Klasse ${p.grade}` : ''}${p.gentle ? ' · sanft' : ''}`), el('button', { class: 'btn small', type: 'button', onClick: () => ctx.go('welcome', { form: { key: p.key, name: p.name, avatar: p.avatar, grade: p.grade, gentle: p.gentle, found: true, edit: true } }) }, 'Bearbeiten')));
     body.appendChild(prof);
     body.appendChild(el('section', { class: 'card stack' }, el('span', { class: 'eyebrow' }, 'Über'), el('div', { class: 'soft' }, `Version ${ctx.version}. Inhalte und Technik: siehe docs/ im Repository.`)));
   }

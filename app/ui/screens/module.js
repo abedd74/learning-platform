@@ -21,13 +21,13 @@ export async function renderModule(root, ctx, { id }) {
   const all = summarize(Object.fromEntries(cards.map(c => [c.id, srs[c.id]]).filter(([, r]) => r)), today, cfg);
   col.appendChild(el('section', { class: 'card stack' },
     el('div', { class: 'row spread' }, el('span', { class: 'eyebrow' }, i18n.t('module.all')), el('span', { class: 'chip' }, i18n.t('module.mastered', { n: all.mastered, total: cards.length }))),
-    el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, onClick: () => ctx.startSession({ cards, module: m.id, mode: 'mixed' }) }, `${i18n.t('module.all')}${all.due ? ` · ${i18n.t('module.due', { n: all.due })}` : ''}`)));
+    el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, onClick: () => ctx.startSession({ cards: () => ctx.cardsOf(m), module: m.id, mode: 'mixed', free: true }) }, `${i18n.t('module.all')}${all.due ? ` · ${i18n.t('module.due', { n: all.due })}` : ''}`)));
 
   const list = el('div', { class: 'topics' });
   for (const t of m.topics) {
     const tc = cards.filter(c => c.topic === t.id);
     const s = summarize(Object.fromEntries(tc.map(c => [c.id, srs[c.id]]).filter(([, r]) => r)), today, cfg);
-    list.appendChild(el('button', { class: 'topic', type: 'button', onClick: () => ctx.startSession({ cards: tc, module: m.id, mode: t.id }) },
+    list.appendChild(el('button', { class: 'topic', type: 'button', onClick: () => ctx.startSession({ cards: async () => (await ctx.cardsOf(m)).filter(c => c.topic === t.id), module: m.id, mode: t.id, free: true }) },
       el('span', { class: 'icon' }, t.icon || '•'),
       el('span', {}, el('div', { class: 't' }, t.label.de), el('div', { class: 's' }, [`${s.mastered}/${tc.length}`, s.due ? i18n.t('module.due', { n: s.due }) : null, i18n.showItalian && t.label.it ? t.label.it : null].filter(Boolean).join(' · '))),
       el('span', { class: 'go' }, `${i18n.t('module.topic.go')} ›`)));

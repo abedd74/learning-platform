@@ -220,6 +220,13 @@ test('mergeProfiles: union of profiles, per profile the newer updatedAt wins', (
   const r = { v: 1, profiles: { A: { name: 'A', grade: 4, updatedAt: 7 }, C: { name: 'C', updatedAt: 1 } } };
   same(mergeProfiles(l, r), { v: 1, profiles: { A: { name: 'A', grade: 4, updatedAt: 7 }, B: { name: 'B', updatedAt: 9 }, C: { name: 'C', updatedAt: 1 } } });
   same(mergeProfiles(null, r), r);
+  // a tie (two devices confirmed the same found profile before they met) ends the same way on both
+  const x = { v: 1, profiles: { A: { name: 'A', avatar: '🦊', updatedAt: 1 } } }, y = { v: 1, profiles: { A: { name: 'A', avatar: '🐢', updatedAt: 1 } } };
+  same(mergeProfiles(x, y), mergeProfiles(y, x));
+  // a provisional entry (updatedAt 1) loses against any deliberate one, whichever device had it first
+  const set = { v: 1, profiles: { A: { name: 'A', grade: 2, gentle: true, updatedAt: 1760000000000 } } };
+  same(mergeProfiles(x, set), set);
+  same(mergeProfiles(set, x), set);
   same(mergeProfiles(undefined, undefined), { v: 1, profiles: {} });
 });
 algebra('mergeProfiles', mergeProfiles, () => {

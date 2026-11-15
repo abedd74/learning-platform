@@ -197,11 +197,12 @@ export function createWordRain(ctx, nouns) {
           const cx = f.col * G.colW + G.colW / 2, cy = stack.length * c.tileH;
           for (const [em, size, delay] of [['💥', 3.2, 0], ['✨', 2.2, 90]]) setTimeout(() => { const b = el('div', { class: 'wr-boom', style: { fontSize: `${size}rem`, left: `${cx - 26}px`, bottom: `${cy}px` } }, em); field.appendChild(b); setTimeout(() => b.remove(), 650); }, delay);
           if (!top.revealed) {
-            // the word drops a box in the trainer's records (same rule as a wrong answer)
+            // the game as a scout (old rule): a miss sends the word back into the trainer's
+            // reviews — one box down and due TODAY, whatever the box's interval is
             try {
               const key = K.gramSrs(profile.key);
               const all = store.get(key, {}) || {};
-              if (all[top.word.de]) { all[top.word.de] = review(all[top.word.de], 'wrong', todayOf(), cfg); store.set(key, all); }
+              if (all[top.word.de]) { all[top.word.de] = { ...review(all[top.word.de], 'wrong', todayOf(), cfg), due: todayOf() }; store.set(key, all); }
             } catch {}
             top.revealed = true;
             top.el.classList.add('broken', `b-${top.word.g}`);
