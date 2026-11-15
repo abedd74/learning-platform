@@ -5,7 +5,7 @@ import { keys as K } from '../../core/storage.js';
 import { config as srsConfig, summarize } from '../../core/srs.js';
 import { streak, goalReached } from '../../core/planner.js';
 import { today as todayOf, addDays } from '../../core/time.js';
-import { el, mount, lessonHtml } from '../../ui/dom.js';
+import { el, mount, lessonHtml, icon } from '../../ui/dom.js';
 import { horizon } from '../../ui/horizon.js';
 import { practisedDays } from '../../ui/screens/home.js';
 import { isTrap, masteredCount, buckets, diagnoseCase, UNLOCK_AKK, MASTERED_BOX } from './rules.js';
@@ -100,11 +100,12 @@ export function createEllaModule(ctx, data) {
     const card = { id: `ella:${k}:${Math.random().toString(36).slice(2, 8)}`, module: 'nouns', topic: k, store: null, cfg, tags: ['grammar'], concept: k, rec: undefined };
     if (q.type === 'case') {
       let errType = null;
-      card.onAnswer = ({ ok, attempt, response, final, rehearsal }) => {
+      card.onAnswer = ({ ok, attempt, response, final, rehearsal, gaveUp }) => {
         if (rehearsal) return;
-        if (attempt === 1 && !ok) errType = diagnoseCase(response, q.kase, q.noun);   // the first instinct counts for the parents' statistics
+        if (attempt === 1 && !ok && !gaveUp) errType = diagnoseCase(response, q.kase, q.noun);   // the first instinct counts for the parents' statistics
         if (!final) return;
-        if (!ok && diagnoseCase(response, q.kase, q.noun) !== 'case') demoteNoun(q.noun.de);
+        // "Weiß ich nicht" names no article: it counts against the case, the noun's own record is left alone
+        if (!ok && !gaveUp && diagnoseCase(response, q.kase, q.noun) !== 'case') demoteNoun(q.noun.de);
         recordCase(q.kase, ok && attempt === 1 ? { c: 1 } : { errType: errType || 'both' });
       };
     }
@@ -277,7 +278,7 @@ export function createEllaModule(ctx, data) {
 
   // ── screens ───────────────────────────────────────────────────────
   const stage = col => el('div', { class: 'stage' }, horizon(), col);
-  const topbar = (title, back = () => ctx.go('home')) => el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': TXT.back.de, onClick: back }, '←'),
+  const topbar = (title, back = () => ctx.go('home')) => el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': TXT.back.de, onClick: back }, icon('back')),
     el('div', { class: 'greet' }, el('span', { class: 'disc' }, '🦉'), el('div', {}, el('h1', {}, title.de), title.it ? el('div', { class: 'it' }, title.it) : null)));
 
   function renderHome(root) {

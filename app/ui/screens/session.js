@@ -1,6 +1,6 @@
 // The session screen: one card at a time, the answer area, feedback sheet,
 // one retry with the hint, then the explanation and "Weiter".
-import { el, mount, clear, bilingual } from '../dom.js';
+import { el, mount, clear, bilingual, icon } from '../dom.js';
 import { horizon } from '../horizon.js';
 import { renderAnswer, instructionKey } from '../../engines/quiz/render.js';
 
@@ -9,18 +9,19 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
   const col = el('div', { class: 'col' });
   const segments = el('div', { class: 'segments' });
   const counter = el('span', { class: 'counter' });
-  const closeBtn = el('button', { class: 'icon-btn', type: 'button', 'aria-label': i18n.t('session.close'), onClick: askQuit }, '✕');
+  const closeBtn = el('button', { class: 'icon-btn', type: 'button', 'aria-label': i18n.t('session.close'), onClick: askQuit }, icon('close'));
   // 🇮🇹 for a parent who wants to read along: shows or hides the Italian lines of the card that is open, nothing is drawn again
   const itBtn = el('button', { class: `icon-btn it-toggle${i18n.showItalian ? ' on' : ''}`, type: 'button', title: i18n.t('home.italian'), 'aria-label': i18n.t('home.italian'), 'aria-pressed': String(i18n.showItalian),
-    onClick: () => { i18n.setShowItalian(!i18n.showItalian); itBtn.classList.toggle('on', i18n.showItalian); itBtn.setAttribute('aria-pressed', String(i18n.showItalian)); } }, '🇮🇹');
+    onClick: () => { i18n.setShowItalian(!i18n.showItalian); itBtn.classList.toggle('on', i18n.showItalian); itBtn.setAttribute('aria-pressed', String(i18n.showItalian)); } }, icon('italian'));
   const bubble = el('div', { class: 'bubble' });
   const mascot = el('span', { class: 'm' });
   const body = el('div', { class: 'stack', id: 'session-body' });
-  col.append(el('div', { class: 'topbar' }, closeBtn, segments, counter, itBtn), el('div', { class: 'speech' }, mascot, bubble), body);
+  col.append(el('div', { class: 'topbar session-bar' }, closeBtn, segments, counter, itBtn), el('div', { class: 'speech' }, mascot, bubble), body);
   mount(root, el('div', { class: 'stage' }, horizon(), col));
 
   const outcomes = [];   // per queue position: 'ok' | 'miss' | undefined
   let answerUi = null;
+  let skipRow = null;
 
   function paintProgress() {
     const cur = session.current();
@@ -44,13 +45,17 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
     body.appendChild(questionCard(q, ctx, mod));
     answerUi = renderAnswer(q, { i18n, rng: Math.random, cycleSteps: mod?.cycleSteps, onAnswer: response => handle(response, q) });
     body.appendChild(el('div', { class: 'enter' }, answerUi.node));
+    // the way out of every card: "Weiß ich nicht" shows the solution and goes on (the card comes back later)
+    skipRow = el('div', { class: 'skip-row' }, el('button', { class: 'btn ghost small skip', type: 'button', onClick: () => conclude(session.giveUp(), undefined, q) },
+      bilingual({ de: i18n.t('session.skip'), it: i18n.it('session.skip') })));
+    body.appendChild(skipRow);
+    try { window.scrollTo(0, 0); } catch {}
     if (q.type === 'gender' && q.noun) audio.speak({ clip: `w_${audio.slug(q.noun.de)}`, text: q.noun.de });
     col.scrollTop = 0;
   }
 
   function handle(response, q) {
     const r = session.answer(response);
-    const cur = session.current();
     if (!r.final) {
       // one retry with the hint
       const sheet = el('section', { class: 'sheet warn' }, el('div', { class: 'head' }, `💡 ${i18n.t('session.almost')}`));
@@ -61,11 +66,19 @@ export function renderSessionScreen(root, ctx, session, { onDone, onQuit }) {
       sheet.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       return;
     }
+    conclude(r, response, q);
+  }
+
+  /** The card is decided (answered, or given up): colour the answer, show the explanation and "Weiter". */
+  function conclude(r, response, q) {
+    const cur = session.current();
+    skipRow?.remove(); skipRow = null;
+    body.querySelectorAll('.sheet.warn').forEach(s => s.remove());   // an open "Fast!" hint
     answerUi.reveal({ ok: r.ok, response, expected: r.expected });
-    if (cur) outcomes[cur.index] = r.ok && r.outcome === 'first' ? 'ok' : (r.ok ? 'ok' : 'miss');
+    if (cur) outcomes[cur.index] = r.ok ? 'ok' : 'miss';
     paintProgress();
     const sheet = el('section', { class: `sheet${r.ok ? '' : ' warn'}` });
-    sheet.appendChild(el('div', { class: 'head' }, r.ok ? `✓ ${i18n.t(r.outcome === 'first' ? 'session.right' : 'session.right.retry')}` : i18n.t('session.wrong')));
+    sheet.appendChild(el('div', { class: 'head' }, r.ok ? `✓ ${i18n.t(r.outcome === 'first' ? 'session.right' : 'session.right.retry')}` : i18n.t(r.gaveUp ? 'session.skipped' : 'session.wrong')));
     const explain = (!r.ok && q.wrongExplain) ? q.wrongExplain : q.explain;
     if (explain?.de) sheet.appendChild(bilingual(i18n.pick(explain)));
     if (q.type === 'case') audio.speak({ text: `${q.solution} ${q.nounForm}` });

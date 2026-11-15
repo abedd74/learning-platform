@@ -12,7 +12,7 @@ import { seedLegacySettings } from './core/settings.js';
 import { planSession, config as planConfig } from './core/planner.js';
 import { config as srsConfig } from './core/srs.js';
 import { today as todayOf } from './core/time.js';
-import { listProfiles, getProfile, currentProfileKey, setCurrentProfile, detectLegacyProfiles, adoptLegacyProfiles } from './core/profiles.js';
+import { listProfiles, getProfile, currentProfileKey, setCurrentProfile, adoptLegacyProfiles, parseOldProfiles, completeFromOldApp, PROVISIONAL } from './core/profiles.js';
 import { STRINGS } from './ui/strings.js';
 import { el, mount } from './ui/dom.js';
 import { renderWelcome } from './ui/screens/welcome.js';
@@ -35,15 +35,40 @@ export async function start({ version = 'dev' } = {}) {
   errors = createErrorLog({ store, version, page: () => location.hash });
   errors.install();
   const audio = createAudio({ store, clipUrl: name => new URL(`../audio/${name}.mp3`, import.meta.url).href });
-  // Preview only: on the first visit this device's learning data is copied into the preview's
-  // own namespace (never the family code), so the preview starts with the real profiles.
-  if (namespace && !store.has(K.familyProfiles()) && !detectLegacyProfiles(store).length) {
-    try { store.copyFromLive(); } catch (err) { errors.record(err); }
+  // Preview only: once per device its learning data is copied into the preview's own namespace
+  // (never the family code), so the preview shows the real profiles with all their history.
+  // The preview then starts as the real app will on the day of the switch: profiles someone
+  // made by hand while trying the preview are dropped and found again from the data.
+  // Nothing to copy yet (no data in this browser): it is tried again on the next start.
+  if (namespace && !store.has(K.appStaging())) {
+    try {
+      const n = store.copyFromLive();
+      if (n) { store.removeRaw(K.familyProfiles()); store.set(K.appStaging(), { copied: todayOf(), n }); }
+    } catch (err) { errors.record(err); }
   }
   seedLegacySettings(store);
   // Progress from the old app on this device: its children are there at once, nothing to set up.
   const adopt = () => { try { return adoptLegacyProfiles(store).length; } catch (err) { errors.record(err); return 0; } };
   adopt();
+  // The old app kept each child's class and picture in its page. While that page is still there
+  // (at its old place, or under legacy/ after the switch) the found profiles are completed from
+  // it, once — so both children are set up as before with nobody typing anything.
+  let completing = null;
+  const completeProfiles = () => {
+    if (completing || !listProfiles(store).some(p => p.updatedAt === PROVISIONAL)) return completing || Promise.resolve(0);
+    completing = (async () => {
+      for (const path of ['../index.html', '../legacy/index.html']) {   // before the switch, after it
+        try {
+          const res = await fetch(new URL(path, import.meta.url), { cache: 'no-cache' });
+          if (!res.ok) continue;
+          const old = parseOldProfiles(await res.text());
+          if (old.length) return completeFromOldApp(store, old).length;
+        } catch {}
+      }
+      return 0;
+    })().catch(() => 0).finally(() => { completing = null; });
+    return completing;
+  };
   // German only is the standard; 🇮🇹 shows the Italian lines, which are on the page all along (hidden by the style sheet)
   const paintItalian = () => document.documentElement.classList.toggle('it-on', i18n.showItalian);
   const i18n = createI18n({ store, strings: STRINGS, onChange: () => paintItalian() });
@@ -215,13 +240,17 @@ export async function start({ version = 'dev' } = {}) {
   // The sync starts before the content loads: the family link is taken out of the address
   // and the pull runs even if a content file is missing.
   let started = false;
-  window.addEventListener('familysync-pulled', () => {
-    adopt();   // progress that arrived for a child this family has no profile for yet
+  /** Draw the open screen again when its data changed under it — never a round, never a form someone is filling in. */
+  const refresh = () => {
     if (!started) return;
     const [name] = router.current.path;
     const onPicker = !['home', 'module', 'ella', 'game', 'session', 'results', 'eltern'].includes(name);
-    // the picker shows the family's profiles as soon as they arrive — but never under a form someone is filling in
     if (name === 'home' || name === 'module' || (onPicker && !root.querySelector('.form'))) router.navigate(router.current.path, router.current.params, { replace: true });
+  };
+  window.addEventListener('familysync-pulled', () => {
+    // progress that arrived for a child this family has no profile for yet
+    if (adopt()) completeProfiles().then(n => { if (n) refresh(); });
+    refresh();   // the picker shows the family's profiles as soon as they arrive
   });
   sync.init();
 
@@ -244,6 +273,20 @@ export async function start({ version = 'dev' } = {}) {
       if (typeof online === 'string' && version !== 'dev' && online !== version && !live.session && router.current.path[0] !== 'session') location.reload();
     } catch {}
   });
+
+  // first run with found profiles: give the old page a moment, so the first screen already knows each child's class
+  await Promise.race([completeProfiles(), new Promise(r => setTimeout(r, 2500))]);
+
+  // iPad: a tap into a text field can push the whole page up, and the bar with ✕ out of sight.
+  // The app fills the window exactly and scrolls inside its own column, so while no on-screen
+  // keyboard takes room the page itself belongs at the top.
+  const settle = () => {
+    const vv = window.visualViewport;
+    if (!vv || window.scrollY === 0) return;
+    if (vv.height >= window.innerHeight - 1) window.scrollTo(0, 0);
+  };
+  window.addEventListener('scroll', settle, { passive: true });
+  document.addEventListener('focusout', () => setTimeout(settle, 60));
 
   started = true;
   router.start();

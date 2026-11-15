@@ -1,5 +1,5 @@
 // A module: practise everything, or one topic.
-import { el, mount } from '../dom.js';
+import { el, mount, icon } from '../dom.js';
 import { horizon } from '../horizon.js';
 import { keys as K } from '../../core/storage.js';
 import { summarize, config as srsConfig } from '../../core/srs.js';
@@ -16,7 +16,7 @@ export async function renderModule(root, ctx, { id }) {
   const cfg = srsConfig(m.srs || {});
 
   const col = el('div', { class: 'col enter' });
-  col.appendChild(el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': i18n.t('module.back'), onClick: () => ctx.go('home') }, '←'),
+  col.appendChild(el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': i18n.t('module.back'), onClick: () => ctx.go('home') }, icon('back')),
     el('div', { class: 'greet' }, el('span', { class: 'disc' }, m.icon), el('div', {}, el('h1', {}, m.name.de), m.name.it ? el('div', { class: 'it' }, m.name.it) : null))));
   const all = summarize(Object.fromEntries(cards.map(c => [c.id, srs[c.id]]).filter(([, r]) => r)), today, cfg);
   col.appendChild(el('section', { class: 'card stack' },

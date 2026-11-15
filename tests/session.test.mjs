@@ -143,6 +143,58 @@ test('wrong twice: final wrong, box 0, re-asked', () => {
   assert.throws(() => { s.next(); s.next(); }, /answer first/);
 });
 
+test('"Weiß ich nicht": the card closes as a wrong answer, shows the solution and comes back later', () => {
+  const seen = [];
+  const first = item('wal_1', { b: 3, due: D, s: 3, r: 3, w: 0, k: 3 });
+  first.card.onAnswer = a => seen.push(a);
+  const { store, s } = harness([first, item('wal_2')]);
+  const r = s.giveUp();
+  assert.deepEqual({ ok: r.ok, final: r.final, outcome: r.outcome, expected: r.expected, gaveUp: r.gaveUp }, { ok: false, final: true, outcome: 'wrong', expected: 1, gaveUp: true });
+  assert.deepEqual(seen, [{ ok: false, attempt: 1, response: null, final: true, rehearsal: false, gaveUp: true }]);
+  // exactly what a wrong answer does: one box down, a wrong in the statistics, an answer in the day
+  assert.equal(store.get(K.quizSrs(P)).wal_1.b, 2);
+  assert.deepEqual(store.get(K.quizStats(P)).wal_1, { shown: 1, correct: 0, wrong: 1, lastSeen: '18.10.2026' });
+  assert.equal(store.get(K.planDays(P))[D].a, 1);
+  assert.equal(s.size, 3, 're-asked later in the round');
+  // pressing again, or answering after it, changes nothing
+  assert.deepEqual(s.giveUp(), r);
+  assert.deepEqual(s.answer(1), r);
+  assert.equal(store.get(K.quizSrs(P)).wal_1.b, 2);
+  assert.equal(s.next(), true);
+  // after a first wrong try the way out is still there, and it stays one wrong answer
+  assert.equal(s.answer(0).final, false);
+  assert.equal(s.giveUp().outcome, 'wrong');
+  assert.equal(store.get(K.quizStats(P)).wal_2.wrong, 1);
+  s.next();
+  // giving up on the re-asked card moves no record
+  const before = JSON.stringify(store.get(K.quizSrs(P)));
+  assert.equal(s.giveUp().outcome, 'wrong');
+  assert.equal(JSON.stringify(store.get(K.quizSrs(P))), before);
+  while (s.next()) s.giveUp();
+  const sum = s.finish();
+  assert.deepEqual({ total: sum.total, wrong: sum.wrong, pct: sum.pct }, { total: 2, wrong: 2, pct: 0 });
+  assert.equal(store.get(K.quizHistory(P)).at(-1).pct, 0, 'a round given up to the end is a finished round');
+});
+
+test('"Weiß ich nicht" works for every kind of question', () => {
+  const kinds = [
+    { type: 'multi', answer: { options: [{ de: 'a' }, { de: 'b' }], correct: [0, 1] } },
+    { type: 'bool', answer: { statement: { de: 's' }, correct: false } },
+    { type: 'text', answer: { accepted: ['Wal'] } },
+    { type: 'order', answer: { items: [{ de: 'a' }, { de: 'b' }], correct: [1, 0] } },
+    { type: 'pairs', answer: { pairs: [{ left: { de: 'a' }, right: { de: 'b' } }] } },
+    { type: 'gender', noun: { de: 'Hund', g: 'der' } },
+    { type: 'case', solution: 'dem', kase: 'dat', noun: { de: 'Hund', g: 'der' } },
+    { type: 'pfill', correct: 'ge' },
+    { type: 'unknown-kind' },
+  ];
+  const items = kinds.map((k, i) => ({ card: { id: `k${i}`, module: 'whales', topic: 'arten', store: 'quizSrs' }, question: { id: `k${i}`, ...k } }));
+  const { s } = harness(items);
+  const expected = [];
+  do { const r = s.giveUp(); assert.equal(r.outcome, 'wrong'); if (!s.current().rehearsal) expected.push(r.expected); } while (s.next());
+  assert.deepEqual(expected, [[0, 1], false, 'Wal', [1, 0], { 0: 0 }, 'der', 'dem', 'ge', undefined]);
+});
+
 test('trainer cards also feed the old gram_days counters', () => {
   const store = createStore({ backend: memoryBackend(), log: { warn() {} } });
   const s = createSession({ items: [{ card: { id: 'Apfel', module: 'nouns', topic: 'gender', store: 'gramSrs', cfg: { intervals: [0, 1, 2, 4, 8, 16, 32, 64, 90], fuzz: 1 } }, question: { type: 'gender', noun: { de: 'Apfel', g: 'der' } } }], profile: P, store, today: D, module: 'nouns' });

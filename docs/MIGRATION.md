@@ -46,6 +46,7 @@ This document is the contract. The table below is generated from the registry in
 | `app_errors` | family | v2 | `errorLog` | [{ts, v, page, msg, stack}] — last 200 |
 | `app_profile` | device | v2 | none (device-local) | JSON string: <P> last chosen on this device |
 | `app_boot` | device | v2 | none (device-local) | {v: the app version this device loaded last} — decides whether the files are fetched again (boot.js) |
+| `app_staging` | device | v2 | none (device-local) | {copied: day, n} — preview only: this device's learning data was copied into the preview once |
 | `app_settings` | device | v2 | none (device-local) | {sound, italian, parentPin?} — device settings |
 <!-- keys:end -->
 

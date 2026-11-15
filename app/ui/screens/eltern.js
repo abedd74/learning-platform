@@ -1,6 +1,6 @@
 // Eltern mode: the parents' view. Dense, tabular, the same tokens.
 // Tabs: Überblick · Wörter · Sicherung · Fehler · Einstellungen
-import { el, mount, clear, append } from '../dom.js';
+import { el, mount, clear, append, icon } from '../dom.js';
 import { horizon } from '../horizon.js';
 import { keys as K } from '../../core/storage.js';
 import { listProfiles } from '../../core/profiles.js';
@@ -20,7 +20,7 @@ export async function renderEltern(root, ctx, tab = 'overview') {
   let child = ctx.elternChild && profiles.some(p => p.key === ctx.elternChild) ? ctx.elternChild : profiles[0]?.key || null;
 
   const col = el('div', { class: 'col wide enter' });
-  col.appendChild(el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Zurück', onClick: () => ctx.go(ctx.profile ? 'home' : 'welcome') }, '←'),
+  col.appendChild(el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Zurück', onClick: () => ctx.go(ctx.profile ? 'home' : 'welcome') }, icon('back')),
     el('h1', {}, 'Eltern'), el('span', { class: 'chip', style: { marginLeft: 'auto' } }, footerText(ctx.version, sync.status))));
   const tabs = el('div', { class: 'tabs' }, ...TABS.map(([id, label]) => el('button', { type: 'button', class: id === tab ? 'on' : '', onClick: () => renderEltern(root, ctx, id) }, label)));
   col.appendChild(tabs);

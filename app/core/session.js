@@ -6,6 +6,7 @@
 //   const s = createSession({ items, profile, store, today, now, rng, module, mode })
 //   s.current()            → { item, index, total, attempt, rehearsal }
 //   s.answer(response)     → { ok, final, outcome, expected }   (final=false → retry allowed)
+//   s.giveUp()             → the same, final and wrong: "Weiß ich nicht" — the way out of any card
 //   s.next()               → true while there is a next card
 //   s.finish()             → summary (also writes history + session time)
 //
@@ -88,29 +89,51 @@ export function createSession({
     const { ok, expected } = check(item.question, response);
     attempt++;
     try { item.card.onAnswer?.({ ok, attempt, response, final: ok || attempt >= maxAttempts, rehearsal: item.rehearsal }); } catch {}
-    if (ok || attempt >= maxAttempts) {
-      const outcome = ok ? (attempt === 1 ? 'first' : 'retry') : 'wrong';
-      if (!item.rehearsal) {
-        const card = item.card;
-        const t = topicPts[card.topic || '_'] || (topicPts[card.topic || '_'] = { pts: 0, max: 0 });
-        t.max += 2; if (ok) t.pts += attempt === 1 ? 2 : 1;
-        const updated = applyRecord(card, outcome);
-        const wasNew = !!updated?.wasNew;
-        applyStats(card, outcome);
-        applyDay(card, outcome, wasNew, updated);
-        results.push({ id: card.id, module: card.module, topic: card.topic, store: card.store || null, outcome, wasNew, reason: card.reason, concept: card.concept, tags: card.tags });
-        if (outcome !== 'first') {
-          // re-ask later in the session; the re-ask changes no record
-          const rest = rehearse(queue.slice(index + 1), { ...item, rehearsal: true }, rehearsalGap);
-          queue.splice(index + 1, queue.length - index - 1, ...rest);
-        }
-      } else {
-        results.push({ id: item.card.id, module: item.card.module, topic: item.card.topic, outcome, rehearsal: true });
-      }
-      last = { ok, final: true, outcome, expected };
-      return last;
-    }
+    if (ok || attempt >= maxAttempts) return settle(item, ok, expected);
     return { ok, final: false, expected };
+  }
+
+  /**
+   * "Weiß ich nicht": the child cannot or will not answer. The card is closed
+   * as a wrong answer — the solution is shown, the record goes down as for any
+   * wrong answer, and the card comes back later in the round. Without this a
+   * child who is stuck could only guess or leave the whole round.
+   */
+  function giveUp() {
+    const cur = current();
+    if (!cur || finished) throw new Error('session: no current card');
+    if (last) return last;
+    const { item } = cur;
+    let expected;
+    try { expected = check(item.question, null).expected; } catch {}
+    attempt++;
+    try { item.card.onAnswer?.({ ok: false, attempt, response: null, final: true, rehearsal: item.rehearsal, gaveUp: true }); } catch {}
+    last = { ...settle(item, false, expected), gaveUp: true };
+    return last;
+  }
+
+  /** The current card is decided: book the record, the day and the re-ask. */
+  function settle(item, ok, expected) {
+    const outcome = ok ? (attempt === 1 ? 'first' : 'retry') : 'wrong';
+    if (!item.rehearsal) {
+      const card = item.card;
+      const t = topicPts[card.topic || '_'] || (topicPts[card.topic || '_'] = { pts: 0, max: 0 });
+      t.max += 2; if (ok) t.pts += attempt === 1 ? 2 : 1;
+      const updated = applyRecord(card, outcome);
+      const wasNew = !!updated?.wasNew;
+      applyStats(card, outcome);
+      applyDay(card, outcome, wasNew, updated);
+      results.push({ id: card.id, module: card.module, topic: card.topic, store: card.store || null, outcome, wasNew, reason: card.reason, concept: card.concept, tags: card.tags });
+      if (outcome !== 'first') {
+        // re-ask later in the session; the re-ask changes no record
+        const rest = rehearse(queue.slice(index + 1), { ...item, rehearsal: true }, rehearsalGap);
+        queue.splice(index + 1, queue.length - index - 1, ...rest);
+      }
+    } else {
+      results.push({ id: item.card.id, module: item.card.module, topic: item.card.topic, outcome, rehearsal: true });
+    }
+    last = { ok, final: true, outcome, expected };
+    return last;
   }
 
   function next() {
@@ -170,7 +193,7 @@ export function createSession({
     return s;
   }
 
-  return { current, answer, next, finish, summary, label, get finished() { return finished; }, get size() { return queue.length; } };
+  return { current, answer, giveUp, next, finish, summary, label, get finished() { return finished; }, get size() { return queue.length; } };
 }
 
 /** Helper for callers: a card id for a quiz question. */

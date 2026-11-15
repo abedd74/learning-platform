@@ -61,7 +61,7 @@ function bool(q, ctx) {
     reveal({ ok, response, expected }) {
       const btn = v => (v ? yes : no);
       btn(expected).classList.add('ok');
-      if (!ok) btn(response).classList.add('no');
+      if (!ok && typeof response === 'boolean') btn(response).classList.add('no');
       yes.disabled = no.disabled = true;
     },
   };

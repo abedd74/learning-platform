@@ -1,6 +1,6 @@
 // Home: greeting, the "Heute" card with one big button, the streak, the
 // module tiles, games, last year's modules folded, a tiny footer.
-import { el, mount } from '../dom.js';
+import { el, mount, icon } from '../dom.js';
 import { horizon } from '../horizon.js';
 import { keys as K } from '../../core/storage.js';
 import { planSession, streak, goalReached, testPrepModules } from '../../core/planner.js';
@@ -34,8 +34,8 @@ export async function renderHome(root, ctx) {
 
   const col = el('div', { class: 'col enter' });
   const toggles = el('div', { class: 'row', style: { marginLeft: 'auto', flexWrap: 'nowrap' } },
-    el('button', { class: `icon-btn${i18n.showItalian ? ' on' : ''}`, type: 'button', title: i18n.t('home.italian'), 'aria-pressed': String(i18n.showItalian), onClick: () => { i18n.setShowItalian(!i18n.showItalian); renderHome(root, ctx); } }, '🇮🇹'),
-    el('button', { class: `icon-btn${ctx.audio.enabled ? ' on' : ''}`, type: 'button', title: i18n.t('home.sound'), 'aria-pressed': String(ctx.audio.enabled), onClick: () => { ctx.audio.setEnabled(!ctx.audio.enabled); renderHome(root, ctx); } }, ctx.audio.enabled ? '🔊' : '🔇'));
+    el('button', { class: `icon-btn${i18n.showItalian ? ' on' : ''}`, type: 'button', title: i18n.t('home.italian'), 'aria-pressed': String(i18n.showItalian), onClick: () => { i18n.setShowItalian(!i18n.showItalian); renderHome(root, ctx); } }, icon('italian')),
+    el('button', { class: `icon-btn${ctx.audio.enabled ? ' on' : ''}`, type: 'button', title: i18n.t('home.sound'), 'aria-pressed': String(ctx.audio.enabled), onClick: () => { ctx.audio.setEnabled(!ctx.audio.enabled); renderHome(root, ctx); } }, icon(ctx.audio.enabled ? 'sound' : 'mute')));
   // the avatar is the way to "Wer lernt heute?" — big enough for a child to see whose turn it is, and to change it
   col.appendChild(el('div', { class: 'greet' }, el('button', { class: 'disc switch', type: 'button', title: i18n.t('home.switch'), 'aria-label': i18n.t('home.switch'), onClick: () => ctx.go('welcome') }, profile.avatar),
     el('div', {}, el('h1', {}, i18n.t('home.hello', { name: profile.name })), el('div', { class: 'soft' }, i18n.t('home.sub'))), toggles));

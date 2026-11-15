@@ -86,6 +86,20 @@ test('a gender mistake in a sentence sends the noun back into the reviews: one b
   assert.equal(stat.dat.gErr + stat.dat.bothErr, 1);
 });
 
+test('"Weiß ich nicht" on a sentence counts against the case and leaves the noun\'s own record alone', () => {
+  const { ella, store } = harness({ path: { dat: fest(), akk: gold() } });
+  let item;
+  for (let i = 0; i < 50 && !item; i++) item = ella.extraItems(4).find(it => it.question.type === 'case' && it.question.kase === 'dat' && wrongGender(it.question));
+  const q = item.question;
+  const before = JSON.stringify(store.get(K.gramSrs(P))[q.noun.de]);
+  const s = createSession({ items: [item], profile: P, store, today: TODAY, module: 'nouns' });
+  assert.equal(s.giveUp().expected, q.solution);
+  assert.equal(JSON.stringify(store.get(K.gramSrs(P))[q.noun.de]), before, 'no article was named: the noun is not sent back');
+  const stat = store.get(K.gramCase(P));
+  assert.deepEqual(Object.keys(stat), ['dat']);
+  assert.equal(stat.dat.bothErr, 1, 'recorded as a miss of the case, kind unknown');
+});
+
 test('an article question from Nomen-Bausteine is a real noun card and moves the noun\'s record', () => {
   const { ella, store } = harness({ path: { nomen: fest() } });
   let item;

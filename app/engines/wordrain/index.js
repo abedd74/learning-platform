@@ -7,7 +7,7 @@
 import { keys as K } from '../../core/storage.js';
 import { review, config as srsConfig } from '../../core/srs.js';
 import { today as todayOf } from '../../core/time.js';
-import { el, mount, clear } from '../../ui/dom.js';
+import { el, mount, clear, icon } from '../../ui/dom.js';
 import { horizon } from '../../ui/horizon.js';
 
 const COLS = 3;
@@ -83,7 +83,7 @@ export function createWordRain(ctx, nouns) {
 
     function start(root) {
       const col = el('div', { class: 'col enter' });
-      col.appendChild(el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Zurück', onClick: () => ctx.go('home') }, '←'),
+      col.appendChild(el('div', { class: 'topbar' }, el('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Zurück', onClick: () => ctx.go('home') }, icon('back')),
         el('div', { class: 'greet' }, el('span', { class: 'disc' }, '🌧️'), el('div', {}, el('h1', {}, 'Wort-Regen'), el('div', { class: 'soft' }, 'Fang die Wörter mit dem richtigen Artikel!')))));
       const modes = el('div', { class: 'answers answers-2' });
       const paint = () => modes.querySelectorAll('button').forEach(b => b.classList.toggle('chosen', b.dataset.mode === mode));
@@ -103,7 +103,7 @@ export function createWordRain(ctx, nouns) {
       const wrap = el('div', { class: 'wr-wrap' });
       const hud = el('div', { class: 'wr-hud' });
       const score = el('span', { class: 'chip' }), hearts = el('span', { class: 'chip' });
-      hud.append(el('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Beenden', onClick: () => end(true) }, '✕'), score, hearts);
+      hud.append(el('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Beenden', onClick: () => end(true) }, icon('close')), score, hearts);
       const field = el('div', { class: 'wr-field' });
       const deadline = el('div', { class: 'wr-deadline', style: { top: `${c.tileH * 1.6}px` } });
       field.appendChild(deadline);

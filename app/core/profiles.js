@@ -18,6 +18,8 @@ export const PARENT_KEY = 'Eltern';   // the old app's parent "profile": a mode 
 export const KEY_MAX = 24;
 /** updatedAt of a profile a device made up from old data ("Profil gefunden"): it loses against every deliberate entry. */
 export const PROVISIONAL = 1;
+/** updatedAt of a found profile that was completed from the old app's own settings: above PROVISIONAL, below every deliberate entry. */
+export const ADOPTED = 2;
 
 /** A storage name: letters, digits, '_' and '-', no spaces (a space would break the history sync rule). */
 export function validKey(k) {
@@ -143,6 +145,40 @@ export function adoptLegacyProfiles(store) {
     made.push(saveProfile(store, { key: n.key, name: n.name, avatar, grade: null, gentle: false }, PROVISIONAL));
   }
   return made;
+}
+
+/**
+ * The old app kept each child's picture and class in its page, never in
+ * storage. This reads them out of that page's text (the PROFILES table), so
+ * the new app can take them over without anyone typing them again — and
+ * without this code ever naming a child: the names stay in the old page.
+ * Returns [{name, avatar, grade}].
+ */
+export function parseOldProfiles(html) {
+  const out = [];
+  const block = /\bPROFILES\s*=\s*\{([\s\S]*?)\n\s*\};/.exec(String(html || ''));
+  if (!block) return out;
+  const re = /name:\s*'([^']*)'\s*,\s*avatar:\s*'([^']*)'\s*,\s*grade:\s*(\d+|null)/g;
+  for (let m; (m = re.exec(block[1]));) out.push({ name: m[1], avatar: m[2], grade: m[3] === 'null' ? null : Number(m[3]) });
+  return out;
+}
+
+/**
+ * Complete the provisional profiles from the old app's settings: a child the
+ * old app knew gets its picture and its class. Every provisional profile is
+ * then marked ADOPTED (checked once, not again); profiles a parent saved are
+ * never touched. Returns the profiles that changed.
+ */
+export function completeFromOldApp(store, oldProfiles) {
+  const data = load(store);
+  const byKey = new Map((oldProfiles || []).map(o => [keyFromName(o.name), o]));
+  const changed = [];
+  for (const [key, p] of Object.entries(data.profiles)) {
+    if (!p || p.deleted || p.updatedAt !== PROVISIONAL) continue;
+    const o = byKey.get(key);
+    changed.push(saveProfile(store, { key, name: p.name, avatar: (o && typeof o.avatar === 'string' && o.avatar) || p.avatar, grade: o ? o.grade : p.grade, gentle: p.gentle }, ADOPTED));
+  }
+  return changed;
 }
 
 // ── the device's current profile ───────────────────────────────────────

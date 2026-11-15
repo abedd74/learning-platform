@@ -58,6 +58,8 @@ export const STRINGS = {
   'session.wrong':       { de: 'Nicht ganz.', it: 'Non proprio.' },
   'session.solution':    { de: 'Richtig wäre:', it: 'La risposta giusta:' },
   'session.again':       { de: 'Noch einmal', it: 'Ancora una volta' },
+  'session.skip':        { de: 'Weiß ich nicht', it: 'Non lo so' },
+  'session.skipped':     { de: 'So ist es richtig:', it: 'Ecco la risposta giusta:' },
   'session.says':        { de: '{name} sagt:', it: '{name} dice:' },
   'session.quit.ask':    { de: 'Runde wirklich beenden?', it: 'Terminare davvero il giro?' },
   'session.quit.yes':    { de: 'Ja, beenden', it: 'Sì, termina' },

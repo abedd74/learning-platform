@@ -4,8 +4,9 @@ import { createStore, memoryBackend, keys as K } from '../app/core/storage.js';
 import {
   validKey, keyFromName, listProfiles, getProfile, saveProfile, removeProfile, detectLegacyProfiles,
   legacyCustomProfiles, legacyLastProfile, currentProfileKey, setCurrentProfile, PARENT_KEY,
-  adoptLegacyProfiles, PROVISIONAL, AVATARS,
+  adoptLegacyProfiles, PROVISIONAL, AVATARS, ADOPTED, parseOldProfiles, completeFromOldApp,
 } from '../app/core/profiles.js';
+import { mergeProfiles } from '../app/core/merges.js';
 
 const fresh = (init = {}) => createStore({ backend: memoryBackend(init), log: { warn() {} } });
 
@@ -115,6 +116,47 @@ test('adoption keeps what is there: existing and removed profiles stay, old extr
   assert.equal(getProfile(s, 'Alpha').updatedAt, 5000);
   assert.equal(getProfile(s, 'Gamma'), null);          // a profile a parent removed does not come back
   assert.deepEqual(adoptLegacyProfiles(fresh()), []);  // a new device: nothing to adopt
+});
+
+// the old page's table, in its own layout (the names here are made up)
+const OLD_PAGE = `<script>
+const PROFILES = {
+  // Alpha startet im August in der 4. Klasse
+  alpha: { name: 'Alpha', avatar: '🦊', grade: 4 },
+  beta:  { name: 'Beta',  avatar: '🐢', grade: 2 },   // ab August in der 2. Klasse
+  parent: { name: 'Eltern', avatar: '👨‍👩‍👧', grade: null },
+};
+const OTHER = { name: 'Nope', avatar: 'x', grade: 9 };
+</script>`;
+
+test('the old app\'s page yields each child\'s picture and class', () => {
+  assert.deepEqual(parseOldProfiles(OLD_PAGE), [
+    { name: 'Alpha', avatar: '🦊', grade: 4 }, { name: 'Beta', avatar: '🐢', grade: 2 }, { name: 'Eltern', avatar: '👨‍👩‍👧', grade: null },
+  ]);
+  assert.deepEqual(parseOldProfiles('<html>the new shell</html>'), []);
+  assert.deepEqual(parseOldProfiles(null), []);
+});
+
+test('found profiles are completed from the old app: class and picture as before, nothing to set up', () => {
+  const s = fresh({ [K.gramSrs('Alpha')]: '{}', [K.wrHigh('Beta')]: '5', [K.wrHigh('Gamma')]: '1', [K.quizStats('Delta')]: '{}' });
+  saveProfile(s, { name: 'Delta', avatar: '⭐', grade: 3 }, 5000);          // a parent's own entry
+  adoptLegacyProfiles(s);
+  const changed = completeFromOldApp(s, parseOldProfiles(OLD_PAGE));
+  assert.deepEqual(changed.map(p => p.key), ['Alpha', 'Beta', 'Gamma']);
+  assert.deepEqual(listProfiles(s).map(p => [p.key, p.avatar, p.grade, p.updatedAt]), [
+    ['Alpha', '🦊', 4, ADOPTED], ['Beta', '🐢', 2, ADOPTED],
+    ['Gamma', AVATARS[2], null, ADOPTED],        // the old app did not know this one: kept as found, checked once
+    ['Delta', '⭐', 3, 5000],                     // never touched
+  ]);
+  assert.equal(getProfile(s, 'Eltern'), null, 'the parents are a mode, never a profile');
+  assert.deepEqual(completeFromOldApp(s, parseOldProfiles(OLD_PAGE)), [], 'once');
+  // between devices: the completed entry beats a bare found one, a parent's entry beats both
+  const bare = fresh({ [K.gramSrs('Alpha')]: '{}' }); adoptLegacyProfiles(bare);
+  const a = s.get(K.familyProfiles()), b = bare.get(K.familyProfiles());
+  assert.equal(mergeProfiles(a, b).profiles.Alpha.grade, 4);
+  assert.equal(mergeProfiles(b, a).profiles.Alpha.grade, 4);
+  const parent = { v: 1, profiles: { Alpha: { name: 'Alpha', avatar: '🎈', grade: 5, gentle: true, createdAt: 9000, updatedAt: 9000 } } };
+  assert.equal(mergeProfiles(a, parent).profiles.Alpha.grade, 5);
 });
 
 test('the device remembers its current profile only while that profile exists', () => {
