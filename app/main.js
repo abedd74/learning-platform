@@ -75,7 +75,8 @@ export async function start({ version = 'dev' } = {}) {
      */
     async startSession({ cards = null, items = null, module = 'mixed', mode = 'mixed', grammar = false, free = false, label = null, after = null, skipCheck = false }) {
       const today = todayOf();
-      const ella = ctx.ella;
+      // Ella's grammar items and checks belong to a round only when the trainer is this child's module
+      const ella = ctx.ella && (module === 'nouns' || ctx.fitsGrade(ctx.ella)) ? ctx.ella : null;
       const config = { cards, items, module, mode, grammar, free, label, after };
       // a Meister-Check that waited too long comes first, with its announcement (old trainer rule)
       if (!skipCheck && cards && ella && (module === 'mixed' || module === 'nouns')) {

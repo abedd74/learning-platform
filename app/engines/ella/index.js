@@ -433,6 +433,7 @@ export function createEllaModule(ctx, data) {
 
   return {
     id: 'nouns', engine: 'ella', name: TXT.name, icon: '🦉', archive: false, tint: 'var(--m-ella)', mascot: { key: 'ella', name: 'Ella' },
+    grades: Array.isArray(data.pack.grades) ? data.pack.grades : undefined,   // the old platform showed the trainer as a class-4 card
     topics: [{ id: 'gender', label: { de: 'Wörter' } }, ...CONCEPT_KEYS.map(k => ({ id: k, label: { de: CONCEPTS[k].name } }))],
     srs: cfg, count: nouns.length, byDe,
     cards, extraItems, summary, afterTraining, overdueCheck, startTraining, startMc,
