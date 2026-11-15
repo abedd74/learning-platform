@@ -164,19 +164,32 @@ export function parseOldProfiles(html) {
 }
 
 /**
- * Complete the provisional profiles from the old app's settings: a child the
- * old app knew gets its picture and its class. Every provisional profile is
- * then marked ADOPTED (checked once, not again); profiles a parent saved are
- * never touched. Returns the profiles that changed.
+ * Take the children over from the old app's settings.
+ *  - A provisional (found) profile the old app knew gets its picture and its
+ *    class; every provisional profile is then marked ADOPTED (checked once).
+ *  - With `create` (a device's first take-over): a child the old app knew and
+ *    this family has no profile for is made too. The old app showed its
+ *    children on every device, whether or not they had learned there — a
+ *    child with no data on this device must not be missing.
+ * Profiles a parent saved are never touched, and one a parent removed does
+ * not come back. Returns the profiles that changed or were made.
  */
-export function completeFromOldApp(store, oldProfiles) {
+export function completeFromOldApp(store, oldProfiles, { create = false } = {}) {
   const data = load(store);
-  const byKey = new Map((oldProfiles || []).map(o => [keyFromName(o.name), o]));
+  const old = (oldProfiles || []).map(o => ({ ...o, key: keyFromName(o.name) })).filter(o => validKey(o.key));
+  const byKey = new Map(old.map(o => [o.key, o]));
+  const pic = o => (o && typeof o.avatar === 'string' && o.avatar) || null;
   const changed = [];
   for (const [key, p] of Object.entries(data.profiles)) {
     if (!p || p.deleted || p.updatedAt !== PROVISIONAL) continue;
     const o = byKey.get(key);
-    changed.push(saveProfile(store, { key, name: p.name, avatar: (o && typeof o.avatar === 'string' && o.avatar) || p.avatar, grade: o ? o.grade : p.grade, gentle: p.gentle }, ADOPTED));
+    changed.push(saveProfile(store, { key, name: p.name, avatar: pic(o) || p.avatar, grade: o ? o.grade : p.grade, gentle: p.gentle }, ADOPTED));
+  }
+  if (create) {
+    for (const o of old) {
+      if (data.profiles[o.key]) continue;                 // there already, or removed by a parent
+      changed.push(saveProfile(store, { key: o.key, name: o.name, avatar: pic(o) || undefined, grade: o.grade, gentle: false }, ADOPTED));
+    }
   }
   return changed;
 }

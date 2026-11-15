@@ -53,16 +53,24 @@ export async function start({ version = 'dev' } = {}) {
   // The old app kept each child's class and picture in its page. While that page is still there
   // (at its old place, or under legacy/ after the switch) the found profiles are completed from
   // it, once — so both children are set up as before with nobody typing anything.
+  // A device does this take-over once (app_migrated): then also a child the old app knew but
+  // who has no data on this device gets her profile — the old app showed both on every device.
   let completing = null;
+  const tookOver = () => !!(store.get(K.appMigrated(), null) || {}).oldProfiles;
   const completeProfiles = () => {
-    if (completing || !listProfiles(store).some(p => p.updatedAt === PROVISIONAL)) return completing || Promise.resolve(0);
+    if (completing) return completing;
+    if (tookOver() && !listProfiles(store).some(p => p.updatedAt === PROVISIONAL)) return Promise.resolve(0);
     completing = (async () => {
       for (const path of ['../index.html', '../legacy/index.html']) {   // before the switch, after it
         try {
           const res = await fetch(new URL(path, import.meta.url), { cache: 'no-cache' });
           if (!res.ok) continue;
           const old = parseOldProfiles(await res.text());
-          if (old.length) return completeFromOldApp(store, old).length;
+          if (!old.length) continue;
+          const first = !tookOver();
+          const n = completeFromOldApp(store, old, { create: first }).length;
+          if (first) store.set(K.appMigrated(), { ...(store.get(K.appMigrated(), null) || {}), oldProfiles: todayOf() });
+          return n;
         } catch {}
       }
       return 0;
@@ -275,7 +283,11 @@ export async function start({ version = 'dev' } = {}) {
   });
 
   // first run with found profiles: give the old page a moment, so the first screen already knows each child's class
-  await Promise.race([completeProfiles(), new Promise(r => setTimeout(r, 2500))]);
+  const taking = completeProfiles();
+  await Promise.race([taking, new Promise(r => setTimeout(r, 2500))]);
+  // a second child may just have got her profile: then this start, too, begins at "Wer lernt heute?"
+  mustPick = !(linked && getProfile(store, linked)) && listProfiles(store).length > 1;
+  taking.then(n => { if (n) refresh(); });   // a slow line: the screen catches up when the old page has arrived
 
   // iPad: a tap into a text field can push the whole page up, and the bar with ✕ out of sight.
   // The app fills the window exactly and scrolls inside its own column, so while no on-screen

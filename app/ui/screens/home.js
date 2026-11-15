@@ -58,18 +58,25 @@ export async function renderHome(root, ctx) {
     week.appendChild(el('div', { class: 'd' }, el('span', { class: `dot${on ? ' on' : ''}${d === today ? ' today' : ''}` }, on ? '✓' : ''), lab));
   });
   todayCard.appendChild(week);
-  todayCard.appendChild(el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, disabled: planned.cards.length === 0,
-    onClick: () => ctx.startSession({ cards: () => ctx.allCards(), module: 'mixed', mode: 'mixed', grammar: true }) }, reached ? i18n.t('home.goal.done') : i18n.t('home.go')));
+  const active = ctx.activeModules();
+  if (!active.length && GAMES.length) {
+    // a child whose class has no topics yet (the old app showed her the game only): the big button leads to the game
+    const g = GAMES[0];
+    todayCard.appendChild(el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, onClick: () => ctx.go('game', { id: g.id }) }, `${g.icon} ${i18n.t('home.play', { name: g.name.de })}`));
+  } else {
+    todayCard.appendChild(el('button', { class: 'btn primary', type: 'button', style: { width: '100%' }, disabled: planned.cards.length === 0,
+      onClick: () => ctx.startSession({ cards: () => ctx.allCards(), module: 'mixed', mode: 'mixed', grammar: true }) }, reached ? i18n.t('home.goal.done') : i18n.t('home.go')));
+  }
   col.appendChild(todayCard);
 
   // module tiles
   const head = el('div', { class: 'row spread' }, el('h2', {}, i18n.t('home.topics')));
   const prepEntries = Object.entries(prep);
   if (prepEntries.length) head.appendChild(el('span', { class: 'chip' }, i18n.t('home.test', { date: fmtDate(plan.tests[prepEntries[0][0]]), module: ctx.moduleName(prepEntries[0][0]) })));
-  col.appendChild(head);
+  if (active.length) col.appendChild(head);
   const tiles = el('div', { class: 'tiles' });
   const quizSrs = store.get(K.quizSrs(profile.key), {}) || {};
-  for (const m of ctx.activeModules()) {
+  for (const m of active) {
     // a quiz module's numbers are its OWN cards' — the record store is shared by all quiz modules
     const own = m.engine === 'quiz' ? Object.fromEntries(cards.filter(c => c.module === m.id && quizSrs[c.id]).map(c => [c.id, quizSrs[c.id]])) : null;
     const sum = own ? summarize(own, today, srsConfig(m.srs || {})) : m.summary?.(ctx) || { total: 0, mastered: 0, due: 0 };
@@ -80,7 +87,7 @@ export async function renderHome(root, ctx) {
       el('span', { class: 'mascot', style: { background: m.tint || 'var(--card-tint)' } }, m.icon), el('span', { class: 't' }, m.name.de),
       el('span', { class: 'foot' }, el('span', { class: 's' }, sub), el('span', { class: 'ring', style: { '--p': String(p) } }))));
   }
-  col.appendChild(tiles);
+  if (active.length) col.appendChild(tiles);
 
   // games
   col.appendChild(el('div', { class: 'row spread' }, el('h2', {}, i18n.t('home.games'))));
@@ -93,11 +100,14 @@ export async function renderHome(root, ctx) {
   }
   col.appendChild(games);
 
-  // archive
-  const archive = ctx.modules.filter(m => m.archive || !ctx.fitsGrade(m));   // last year's modules and other grades': still playable, never in the plan
-  if (archive.length) {
-    const row = el('div', { class: 'folded' }, el('span', { class: 'muted', style: { fontWeight: '800' } }, `${i18n.t('home.archive')}:`));
-    for (const m of archive) row.appendChild(el('button', { class: 'mini', type: 'button', onClick: () => ctx.go('module', { id: m.id }) }, `${m.icon} ${m.name.de}`));
+  // folded away, still playable, never in the plan: last year's modules of this child's class, and the other classes' modules
+  // "last year" is an archived module of this child's class or of a class she has been through
+  const g = profile.grade;
+  const past = m => m.archive && (ctx.fitsGrade(m) || (g && Array.isArray(m.grades) && m.grades.every(x => x < g)));
+  for (const [label, list] of [['home.archive', ctx.modules.filter(past)], ['home.others', ctx.modules.filter(m => !past(m) && !ctx.fitsGrade(m))]]) {
+    if (!list.length) continue;
+    const row = el('div', { class: 'folded' }, el('span', { class: 'muted', style: { fontWeight: '800' } }, `${i18n.t(label)}:`));
+    for (const m of list) row.appendChild(el('button', { class: 'mini', type: 'button', onClick: () => ctx.go('module', { id: m.id }) }, `${m.icon} ${m.name.de}`));
     col.appendChild(row);
   }
 

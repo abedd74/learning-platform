@@ -31,6 +31,8 @@ export const STRINGS = {
   'home.topics':         { de: 'Deine Themen', it: 'I tuoi temi' },
   'home.games':          { de: 'Spiele', it: 'Giochi' },
   'home.archive':        { de: 'Letztes Jahr', it: "L'anno scorso" },
+  'home.others':         { de: 'Andere Klassen', it: 'Altre classi' },
+  'home.play':           { de: '{name} spielen', it: 'Gioca a {name}' },
   'home.test':           { de: 'Test am {date} · {module}', it: 'Verifica il {date} · {module}' },
   'home.switch':         { de: 'Profil wechseln', it: 'Cambia profilo' },
   'module.all':          { de: 'Alle Themen üben', it: 'Esercita tutti i temi' },

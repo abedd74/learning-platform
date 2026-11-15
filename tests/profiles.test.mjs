@@ -159,6 +159,33 @@ test('found profiles are completed from the old app: class and picture as before
   assert.equal(mergeProfiles(a, parent).profiles.Alpha.grade, 5);
 });
 
+test('a child the old app knew is there on every device, also where she has no data yet', () => {
+  // this device holds data of one child only; the old app showed both
+  const s = fresh({ [K.gramSrs('Alpha')]: '{}' });
+  adoptLegacyProfiles(s);
+  const made = completeFromOldApp(s, parseOldProfiles(OLD_PAGE), { create: true });
+  assert.deepEqual(made.map(p => p.key), ['Alpha', 'Beta']);
+  assert.deepEqual(listProfiles(s).map(p => [p.key, p.name, p.avatar, p.grade, p.updatedAt]), [
+    ['Alpha', 'Alpha', '🦊', 4, ADOPTED], ['Beta', 'Beta', '🐢', 2, ADOPTED],
+  ]);
+  assert.equal(getProfile(s, 'Eltern'), null, 'the parents never become a profile');
+  assert.deepEqual(completeFromOldApp(s, parseOldProfiles(OLD_PAGE), { create: true }), [], 'a second run changes nothing');
+
+  // a device with no data at all: both children, as the old app's first screen
+  const empty = fresh();
+  assert.deepEqual(completeFromOldApp(empty, parseOldProfiles(OLD_PAGE), { create: true }).map(p => p.key), ['Alpha', 'Beta']);
+  // without `create` (every later start) nobody is made
+  assert.deepEqual(completeFromOldApp(fresh(), parseOldProfiles(OLD_PAGE)), []);
+
+  // what a parent did stands: a removed profile does not come back, an edited one is not overwritten
+  const p = fresh();
+  saveProfile(p, { name: 'Alpha', avatar: '⭐', grade: 5 }, 5000);
+  saveProfile(p, { name: 'Beta' }, 5000);
+  removeProfile(p, 'Beta', 6000);
+  assert.deepEqual(completeFromOldApp(p, parseOldProfiles(OLD_PAGE), { create: true }), []);
+  assert.deepEqual(listProfiles(p).map(x => [x.key, x.avatar, x.grade]), [['Alpha', '⭐', 5]]);
+});
+
 test('the device remembers its current profile only while that profile exists', () => {
   const s = fresh();
   assert.equal(currentProfileKey(s), null);

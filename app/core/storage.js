@@ -99,6 +99,8 @@ export const REGISTRY = [
     sync: null, scope: 'device', since: 2, shape: 'JSON string: <P> last chosen on this device' },
   { id: 'appBoot',        re: /^app_boot$/, build: () => 'app_boot',
     sync: null, scope: 'device', since: 2, shape: '{v: the app version this device loaded last} — decides whether the files are fetched again (boot.js)' },
+  { id: 'appMigrated',    re: /^app_migrated$/, build: () => 'app_migrated',
+    sync: null, scope: 'device', since: 2, shape: '{oldProfiles: day} — what this device has taken over from the old app, once' },
   { id: 'appStaging',     re: /^app_staging$/, build: () => 'app_staging',
     sync: null, scope: 'device', since: 2, shape: '{copied: day, n} — preview only: this device\'s learning data was copied into the preview once' },
   { id: 'appSettings',    re: /^app_settings$/, build: () => 'app_settings',
